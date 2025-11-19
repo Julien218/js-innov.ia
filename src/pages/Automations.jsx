@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
+import DemoModal from '../components/automations/DemoModal';
 import { motion } from 'framer-motion';
-import { Bot, Zap, Clock, TrendingUp, Star } from 'lucide-react';
+import { Bot, Zap, Clock, TrendingUp, Star, Play } from 'lucide-react';
 
 export default function Automations() {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [demoAutomation, setDemoAutomation] = useState(null);
 
   const { data: automations = [], isLoading } = useQuery({
     queryKey: ['automations'],
@@ -119,21 +121,30 @@ export default function Automations() {
                   )}
 
                   {/* Price & CTA */}
-                  <div className="flex items-center justify-between pt-6 border-t border-gray-800">
-                    <div>
-                      {automation.price ? (
-                        <>
-                          <div className="text-sm text-gray-500">À partir de</div>
-                          <div className="text-3xl font-bold text-white">
-                            {automation.price}€
-                          </div>
-                        </>
-                      ) : (
-                        <div className="text-lg font-semibold text-gray-400">Sur devis</div>
-                      )}
+                  <div className="space-y-3 pt-6 border-t border-gray-800">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        {automation.price ? (
+                          <>
+                            <div className="text-sm text-gray-500">À partir de</div>
+                            <div className="text-3xl font-bold text-white">
+                              {automation.price}€
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-lg font-semibold text-gray-400">Sur devis</div>
+                        )}
+                      </div>
+                      <button className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-medium hover:shadow-xl hover:shadow-cyan-500/50 transition-all transform hover:scale-105">
+                        Commander
+                      </button>
                     </div>
-                    <button className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-medium hover:shadow-xl hover:shadow-cyan-500/50 transition-all transform hover:scale-105">
-                      Commander
+                    <button
+                      onClick={() => setDemoAutomation(automation)}
+                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-cyan-500/30 text-cyan-400 font-medium hover:bg-cyan-600/10 hover:border-cyan-500/50 transition-all flex items-center justify-center gap-2"
+                    >
+                      <Play className="w-4 h-4" />
+                      Essayer la démo interactive
                     </button>
                   </div>
                 </div>
@@ -141,6 +152,13 @@ export default function Automations() {
             ))}
           </div>
         )}
+
+        {/* Demo Modal */}
+        <DemoModal
+          automation={demoAutomation}
+          isOpen={!!demoAutomation}
+          onClose={() => setDemoAutomation(null)}
+        />
       </div>
     </div>
   );
