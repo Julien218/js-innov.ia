@@ -3,12 +3,21 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
 import DemoModal from '../components/automations/DemoModal';
+import RecommendationsSection from '../components/recommendations/RecommendationsSection';
+import { useNavigationTracking } from '../components/recommendations/useRecommendations';
 import { motion } from 'framer-motion';
 import { Bot, Zap, Clock, TrendingUp, Star, Play } from 'lucide-react';
 
 export default function Automations() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [demoAutomation, setDemoAutomation] = useState(null);
+  const [viewedAutomation, setViewedAutomation] = useState(null);
+  const { trackView } = useNavigationTracking();
+
+  const handleAutomationClick = (automation) => {
+    trackView('automation', automation);
+    setViewedAutomation(automation);
+  };
 
   const { data: automations = [], isLoading } = useQuery({
     queryKey: ['automations'],
@@ -70,6 +79,7 @@ export default function Automations() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group relative"
+                onClick={() => handleAutomationClick(automation)}
               >
                 <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-purple-500/20 hover:border-cyan-500/50 transition-all duration-300 p-8">
                   {/* Popular Badge */}
@@ -150,6 +160,17 @@ export default function Automations() {
                 </div>
               </motion.div>
             ))}
+          </div>
+        )}
+
+        {/* Recommendations */}
+        {viewedAutomation && (
+          <div className="mt-20">
+            <RecommendationsSection 
+              currentType="automation" 
+              currentItem={viewedAutomation}
+              compact={true}
+            />
           </div>
         )}
 

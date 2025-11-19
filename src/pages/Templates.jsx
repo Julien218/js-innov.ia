@@ -145,9 +145,20 @@ export default function Templates() {
                 </div>
               </motion.div>
             ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+            </div>
+            )}
+
+            {/* Recommendations */}
+            {viewedTemplate && (
+            <div className="mt-20">
+            <RecommendationsSection 
+              currentType="template" 
+              currentItem={viewedTemplate}
+              compact={true}
+            />
+            </div>
+            )}
+            </div>
+            </div>
+            );
+            }

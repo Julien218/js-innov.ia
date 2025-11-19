@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
+import RecommendationsSection from '../components/recommendations/RecommendationsSection';
+import { useNavigationTracking } from '../components/recommendations/useRecommendations';
 import { motion } from 'framer-motion';
 import { Lightbulb, Calendar, Tag, ExternalLink } from 'lucide-react';
 import { format } from 'date-fns';
@@ -9,6 +11,13 @@ import { fr } from 'date-fns/locale';
 
 export default function Innovations() {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [viewedInnovation, setViewedInnovation] = useState(null);
+  const { trackView } = useNavigationTracking();
+
+  const handleInnovationClick = (innovation) => {
+    trackView('innovation', innovation);
+    setViewedInnovation(innovation);
+  };
 
   const { data: innovations = [], isLoading } = useQuery({
     queryKey: ['innovations'],
@@ -70,6 +79,7 @@ export default function Innovations() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group relative"
+                onClick={() => handleInnovationClick(innovation)}
               >
                 <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-purple-500/20 hover:border-pink-500/50 transition-all duration-300">
                   {/* Image */}
@@ -136,9 +146,20 @@ export default function Innovations() {
                 </div>
               </motion.div>
             ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+            </div>
+            )}
+
+            {/* Recommendations */}
+            {viewedInnovation && (
+            <div className="mt-20">
+            <RecommendationsSection 
+              currentType="innovation" 
+              currentItem={viewedInnovation}
+              compact={true}
+            />
+            </div>
+            )}
+            </div>
+            </div>
+            );
+            }

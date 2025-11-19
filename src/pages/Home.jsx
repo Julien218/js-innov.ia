@@ -1,6 +1,7 @@
 import React from 'react';
 import HeroSection from '../components/home/HeroSection';
 import SectionHeader from '../components/shared/SectionHeader';
+import RecommendationsSection from '../components/recommendations/RecommendationsSection';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../utils';
@@ -41,6 +42,9 @@ export default function Home() {
   return (
     <div>
       <HeroSection />
+
+      {/* Recommendations Section */}
+      <RecommendationsSection />
 
       {/* Services Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
