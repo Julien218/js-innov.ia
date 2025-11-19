@@ -4,6 +4,8 @@ import Templates from './pages/Templates';
 import Automations from './pages/Automations';
 import Applications from './pages/Applications';
 import Contact from './pages/Contact';
+import PaymentSuccess from './pages/PaymentSuccess';
+import PaymentCancel from './pages/PaymentCancel';
 import __Layout from './Layout.jsx';
 
 
@@ -14,6 +16,8 @@ export const PAGES = {
     "Automations": Automations,
     "Applications": Applications,
     "Contact": Contact,
+    "PaymentSuccess": PaymentSuccess,
+    "PaymentCancel": PaymentCancel,
 }
 
 export const pagesConfig = {

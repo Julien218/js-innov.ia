@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
 import DemoModal from '../components/automations/DemoModal';
 import RecommendationsSection from '../components/recommendations/RecommendationsSection';
+import CheckoutButton from '../components/payment/CheckoutButton';
 import { useNavigationTracking } from '../components/recommendations/useRecommendations';
 import { motion } from 'framer-motion';
 import { Bot, Zap, Clock, TrendingUp, Star, Play } from 'lucide-react';
@@ -145,9 +146,13 @@ export default function Automations() {
                           <div className="text-lg font-semibold text-gray-400">Sur devis</div>
                         )}
                       </div>
-                      <button className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-medium hover:shadow-xl hover:shadow-cyan-500/50 transition-all transform hover:scale-105">
-                        Commander
-                      </button>
+                      <CheckoutButton
+                        productType="automation"
+                        productId={automation.id}
+                        productName={automation.name}
+                        price={automation.price}
+                        className="px-6 py-3 bg-gradient-to-r from-cyan-600 to-teal-600 text-white hover:shadow-xl hover:shadow-cyan-500/50 transform hover:scale-105"
+                      />
                     </div>
                     <button
                       onClick={() => setDemoAutomation(automation)}

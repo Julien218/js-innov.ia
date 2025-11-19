@@ -3,9 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
 import RecommendationsSection from '../components/recommendations/RecommendationsSection';
+import CheckoutButton from '../components/payment/CheckoutButton';
 import { useNavigationTracking } from '../components/recommendations/useRecommendations';
 import { motion } from 'framer-motion';
-import { Wand2, Play, Clock, ShoppingCart } from 'lucide-react';
+import { Wand2, Play, Clock } from 'lucide-react';
 
 export default function Templates() {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -146,10 +147,13 @@ export default function Templates() {
                           <div className="text-sm text-gray-500">Sur devis</div>
                         )}
                       </div>
-                      <button className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-sm font-medium hover:shadow-lg hover:shadow-purple-500/50 transition-all flex items-center gap-2">
-                        <ShoppingCart className="w-4 h-4" />
-                        Acheter
-                      </button>
+                      <CheckoutButton
+                        productType="template"
+                        productId={template.id}
+                        productName={template.name}
+                        price={template.price}
+                        className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:shadow-lg hover:shadow-purple-500/50"
+                      />
                     </div>
                   </div>
                 </div>
