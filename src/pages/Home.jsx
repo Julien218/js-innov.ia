@@ -2,6 +2,7 @@ import React from 'react';
 import HeroSection from '../components/home/HeroSection';
 import SectionHeader from '../components/shared/SectionHeader';
 import RecommendationsSection from '../components/recommendations/RecommendationsSection';
+import PowerWord from '../components/shared/PowerWord';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../utils';
@@ -50,7 +51,7 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <SectionHeader
           title="Nos Services"
-          subtitle="Des solutions IA complètes pour transformer vos projets"
+          subtitle={<span>Des <PowerWord>solutions IA</PowerWord> complètes pour <PowerWord>transformer</PowerWord> vos projets</span>}
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -107,10 +108,10 @@ export default function Home() {
           
           <div className="relative">
             <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">
-              Prêt à transformer votre vision en réalité ?
+              Prêt à <PowerWord>transformer</PowerWord> votre vision en <PowerWord>réalité</PowerWord> ?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Discutons de votre projet et découvrons ensemble comment l'IA peut propulser votre entreprise vers le futur.
+              Discutons de votre projet et découvrons ensemble comment l'<PowerWord>IA</PowerWord> peut <PowerWord>propulser</PowerWord> votre entreprise vers le <PowerWord>futur</PowerWord>.
             </p>
             <Link
               to={createPageUrl('Contact')}
