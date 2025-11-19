@@ -148,20 +148,21 @@ export default function Innovations() {
                 </div>
               </motion.div>
             ))}
-            </div>
-            )}
+          </div>
+        )}
 
-            {/* Recommendations */}
-            {viewedInnovation && (
-            <div className="mt-20">
+        {/* Recommendations */}
+        {viewedInnovation && (
+          <div className="mt-20">
             <RecommendationsSection 
               currentType="innovation" 
               currentItem={viewedInnovation}
               compact={true}
             />
-            </div>
-            )}
-            </div>
-            </div>
-            );
-            }
+          </div>
+        )}
+      </div>
+    </div>
+    </ProductSEOWrapper>
+  );
+}
