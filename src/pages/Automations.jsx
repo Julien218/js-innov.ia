@@ -5,6 +5,7 @@ import SectionHeader from '../components/shared/SectionHeader';
 import DemoModal from '../components/automations/DemoModal';
 import RecommendationsSection from '../components/recommendations/RecommendationsSection';
 import CheckoutButton from '../components/payment/CheckoutButton';
+import ProductSEOWrapper from '../components/seo/ProductSEOWrapper';
 import { useNavigationTracking } from '../components/recommendations/useRecommendations';
 import { motion } from 'framer-motion';
 import { Bot, Zap, Clock, TrendingUp, Star, Play } from 'lucide-react';
@@ -32,8 +33,9 @@ export default function Automations() {
     : automations.filter(a => a.category === selectedCategory);
 
   return (
-    <div className="min-h-screen py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <ProductSEOWrapper product={viewedAutomation} type="automation">
+      <div className="min-h-screen py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           icon={Bot}
           title="Automatisations Intelligentes"
@@ -185,7 +187,8 @@ export default function Automations() {
           isOpen={!!demoAutomation}
           onClose={() => setDemoAutomation(null)}
         />
+        </div>
       </div>
-    </div>
+    </ProductSEOWrapper>
   );
 }

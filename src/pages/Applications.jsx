@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
 import RecommendationsSection from '../components/recommendations/RecommendationsSection';
+import ProductSEOWrapper from '../components/seo/ProductSEOWrapper';
 import { useNavigationTracking } from '../components/recommendations/useRecommendations';
 import { motion } from 'framer-motion';
 import { Rocket, ExternalLink, Code2 } from 'lucide-react';
@@ -35,8 +36,9 @@ export default function Applications() {
   };
 
   return (
-    <div className="min-h-screen py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <ProductSEOWrapper product={viewedApplication} type="application">
+      <div className="min-h-screen py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           icon={Rocket}
           title="Applications IA"
@@ -172,7 +174,9 @@ export default function Applications() {
             />
             </div>
             )}
-            </div>
-            </div>
-            );
-            }
+          </div>
+        </div>
+      </div>
+    </ProductSEOWrapper>
+  );
+}

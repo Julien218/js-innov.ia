@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
 import RecommendationsSection from '../components/recommendations/RecommendationsSection';
+import ProductSEOWrapper from '../components/seo/ProductSEOWrapper';
 import { useNavigationTracking } from '../components/recommendations/useRecommendations';
 import { motion } from 'framer-motion';
 import { Lightbulb, Calendar, Tag, ExternalLink } from 'lucide-react';
@@ -31,8 +32,9 @@ export default function Innovations() {
     : innovations.filter(i => i.category === selectedCategory);
 
   return (
-    <div className="min-h-screen py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <ProductSEOWrapper product={viewedInnovation} type="innovation">
+      <div className="min-h-screen py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           icon={Lightbulb}
           title="Innovations & Idées"
