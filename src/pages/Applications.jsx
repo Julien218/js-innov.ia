@@ -161,20 +161,19 @@ export default function Applications() {
                 </div>
               </motion.div>
             ))}
-            </div>
-            )}
+          </div>
+        )}
 
-            {/* Recommendations */}
-            {viewedApplication && (
-            <div className="mt-20">
+        {/* Recommendations */}
+        {viewedApplication && (
+          <div className="mt-20">
             <RecommendationsSection 
               currentType="application" 
               currentItem={viewedApplication}
               compact={true}
             />
-            </div>
-            )}
           </div>
+        )}
         </div>
       </div>
     </ProductSEOWrapper>
