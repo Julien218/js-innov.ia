@@ -4,6 +4,7 @@ import { createPageUrl } from './utils';
 import { Menu, X, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AIChatbot from './components/chatbot/AIChatbot';
+import PowerWord from './components/shared/PowerWord';
 
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -84,26 +85,51 @@ export default function Layout({ children, currentPageName }) {
           --neon-cyan: #06ffa5;
           --neon-gold: #ffb703;
         }
-        
+
         .glow-text {
           text-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
         }
-        
+
         .glow-box {
           box-shadow: 0 0 30px rgba(131, 56, 236, 0.3);
         }
-        
+
         .gradient-border {
           background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple), var(--neon-cyan));
           padding: 2px;
           border-radius: 12px;
         }
-        
+
         .gradient-text {
           background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple), var(--neon-cyan), var(--neon-gold));
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
+        }
+
+        @keyframes power-pulse {
+          0%, 100% {
+            text-shadow: 0 0 10px rgba(255, 0, 110, 0.6),
+                         0 0 20px rgba(131, 56, 236, 0.4),
+                         0 0 30px rgba(6, 255, 165, 0.3);
+            filter: brightness(1);
+          }
+          50% {
+            text-shadow: 0 0 20px rgba(255, 0, 110, 0.9),
+                         0 0 40px rgba(131, 56, 236, 0.6),
+                         0 0 60px rgba(6, 255, 165, 0.5);
+            filter: brightness(1.3);
+          }
+        }
+
+        .power-word {
+          background: linear-gradient(135deg, #ff006e, #8338ec, #06ffa5);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: power-pulse 3s ease-in-out infinite;
+          font-weight: 700;
+          display: inline-block;
         }
       `}</style>
 
@@ -192,8 +218,8 @@ export default function Layout({ children, currentPageName }) {
             <div>
               <div className="font-bold text-lg gradient-text mb-3">JS-INNOV.IA</div>
               <p className="text-gray-400 text-sm">
-                Créations artistiques et automatisations intelligentes avec l'IA.
-                Innovons ensemble pour un futur digital.
+                Créations artistiques et <PowerWord>automatisations intelligentes</PowerWord> avec l'<PowerWord>IA</PowerWord>.
+                <PowerWord>Innovons</PowerWord> ensemble pour un <PowerWord>futur digital</PowerWord>.
               </p>
             </div>
             <div>
