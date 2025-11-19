@@ -1,11 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from './utils';
 import { Menu, X, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import AIChatbot from './components/chatbot/AIChatbot';
 
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // SEO Meta Tags
+  useEffect(() => {
+    const pageTitles = {
+      'Home': 'JS-INNOV.IA - Intelligence Artificielle & Automatisations | Solutions IA Sur Mesure',
+      'Innovations': 'Innovations IA | JS-INNOV.IA - Découvrez le Futur de l\'Intelligence Artificielle',
+      'Templates': 'Templates Vidéo IA | JS-INNOV.IA - Créations Professionnelles Générées par IA',
+      'Automations': 'Automatisations Intelligentes | JS-INNOV.IA - Solutions Clé en Main',
+      'Applications': 'Applications IA Sur Mesure | JS-INNOV.IA - Développement Innovant',
+      'Contact': 'Contactez-nous | JS-INNOV.IA - Transformez Votre Vision en Réalité'
+    };
+
+    const pageDescriptions = {
+      'Home': 'JS-INNOV.IA propose des solutions d\'intelligence artificielle innovantes : templates vidéo, automatisations, applications sur mesure. Transformez votre entreprise avec l\'IA.',
+      'Innovations': 'Explorez nos dernières innovations en intelligence artificielle. Découvrez comment l\'IA révolutionne le business et la créativité.',
+      'Templates': 'Bibliothèque de templates vidéo professionnels générés par IA. Marketing, réseaux sociaux, présentations et plus encore.',
+      'Automations': 'Automatisations intelligentes clé en main pour optimiser votre productivité, marketing, e-commerce et service client.',
+      'Applications': 'Créations d\'applications sur mesure propulsées par l\'IA. Assistants intelligents, analyse de données, génération de contenu.',
+      'Contact': 'Contactez JS-INNOV.IA pour discuter de votre projet IA. Devis gratuit et consultation personnalisée.'
+    };
+
+    document.title = pageTitles[currentPageName] || 'JS-INNOV.IA';
+    
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.name = 'description';
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.content = pageDescriptions[currentPageName] || 'JS-INNOV.IA - Intelligence Artificielle et Automatisations';
+
+    // Keywords
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.name = 'keywords';
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.content = 'intelligence artificielle, IA, automatisation, templates vidéo, applications IA, innovation, machine learning, créations IA, solutions IA, France';
+
+    // Open Graph
+    const ogTags = [
+      { property: 'og:title', content: pageTitles[currentPageName] || 'JS-INNOV.IA' },
+      { property: 'og:description', content: pageDescriptions[currentPageName] || 'JS-INNOV.IA - Intelligence Artificielle et Automatisations' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:image', content: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png' }
+    ];
+
+    ogTags.forEach(tag => {
+      let metaTag = document.querySelector(`meta[property="${tag.property}"]`);
+      if (!metaTag) {
+        metaTag = document.createElement('meta');
+        metaTag.setAttribute('property', tag.property);
+        document.head.appendChild(metaTag);
+      }
+      metaTag.content = tag.content;
+    });
+  }, [currentPageName]);
 
   const navItems = [
     { name: 'Accueil', path: 'Home' },
@@ -54,10 +113,10 @@ export default function Layout({ children, currentPageName }) {
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
             <Link to={createPageUrl('Home')} className="group">
-              <div className="relative w-16 h-16">
+              <div className="relative w-24 h-24">
                 <img 
                   src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png"
-                  alt="JS-INNOV.IA"
+                  alt="JS-INNOV.IA - Intelligence Artificielle et Automatisations"
                   className="w-full h-full object-contain group-hover:scale-105 transition-transform"
                 />
                 <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-500 blur-xl opacity-30 group-hover:opacity-50 transition-opacity -z-10"></div>
@@ -169,6 +228,9 @@ export default function Layout({ children, currentPageName }) {
           </div>
         </div>
       </footer>
+
+      {/* AI Chatbot */}
+      <AIChatbot />
     </div>
   );
 }
