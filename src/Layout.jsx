@@ -117,7 +117,7 @@ export default function Layout({ children, currentPageName }) {
                 <img 
                   src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png"
                   alt="JS-INNOV.IA - Intelligence Artificielle et Automatisations"
-                  className="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                  className="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform"
                 />
                 <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-500 blur-xl opacity-30 group-hover:opacity-50 transition-opacity -z-10"></div>
               </div>
