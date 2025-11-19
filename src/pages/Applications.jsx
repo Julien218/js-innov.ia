@@ -2,11 +2,20 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
+import RecommendationsSection from '../components/recommendations/RecommendationsSection';
+import { useNavigationTracking } from '../components/recommendations/useRecommendations';
 import { motion } from 'framer-motion';
 import { Rocket, ExternalLink, Code2 } from 'lucide-react';
 
 export default function Applications() {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [viewedApplication, setViewedApplication] = useState(null);
+  const { trackView } = useNavigationTracking();
+
+  const handleApplicationClick = (application) => {
+    trackView('application', application);
+    setViewedApplication(application);
+  };
 
   const { data: applications = [], isLoading } = useQuery({
     queryKey: ['applications'],
@@ -74,6 +83,7 @@ export default function Applications() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group"
+                onClick={() => handleApplicationClick(app)}
               >
                 <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-purple-500/20 hover:border-amber-500/50 transition-all duration-300">
                   {/* Image/Preview */}

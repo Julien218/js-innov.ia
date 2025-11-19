@@ -2,11 +2,20 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
+import RecommendationsSection from '../components/recommendations/RecommendationsSection';
+import { useNavigationTracking } from '../components/recommendations/useRecommendations';
 import { motion } from 'framer-motion';
 import { Wand2, Play, Clock, ShoppingCart } from 'lucide-react';
 
 export default function Templates() {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [viewedTemplate, setViewedTemplate] = useState(null);
+  const { trackView } = useNavigationTracking();
+
+  const handleTemplateClick = (template) => {
+    trackView('template', template);
+    setViewedTemplate(template);
+  };
 
   const { data: templates = [], isLoading } = useQuery({
     queryKey: ['templates'],
@@ -68,6 +77,7 @@ export default function Templates() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group"
+                onClick={() => handleTemplateClick(template)}
               >
                 <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300">
                   {/* Preview */}
