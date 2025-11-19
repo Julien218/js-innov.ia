@@ -54,9 +54,13 @@ export default function Layout({ children, currentPageName }) {
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
             <Link to={createPageUrl('Home')} className="flex items-center gap-3 group">
-              <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-500 flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-white" />
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-500 blur-lg opacity-50 group-hover:opacity-75 transition-opacity"></div>
+              <div className="relative w-14 h-14">
+                <img 
+                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png"
+                  alt="JS-INNOV.IA Logo"
+                  className="w-full h-full object-contain"
+                />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-500 blur-lg opacity-30 group-hover:opacity-50 transition-opacity -z-10"></div>
               </div>
               <div>
                 <div className="font-bold text-xl gradient-text">JS-INNOV.IA</div>
