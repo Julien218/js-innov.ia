@@ -53,18 +53,14 @@ export default function Layout({ children, currentPageName }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
-            <Link to={createPageUrl('Home')} className="flex items-center gap-3 group">
-              <div className="relative w-14 h-14">
+            <Link to={createPageUrl('Home')} className="group">
+              <div className="relative w-16 h-16">
                 <img 
                   src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png"
-                  alt="JS-INNOV.IA Logo"
-                  className="w-full h-full object-contain"
+                  alt="JS-INNOV.IA"
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform"
                 />
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-500 blur-lg opacity-30 group-hover:opacity-50 transition-opacity -z-10"></div>
-              </div>
-              <div>
-                <div className="font-bold text-xl gradient-text">JS-INNOV.IA</div>
-                <div className="text-xs text-gray-400">Artistic Creations & Automatisations</div>
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-500 blur-xl opacity-30 group-hover:opacity-50 transition-opacity -z-10"></div>
               </div>
             </Link>
 
