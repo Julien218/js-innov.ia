@@ -6,6 +6,7 @@ import Applications from './pages/Applications';
 import Contact from './pages/Contact';
 import PaymentSuccess from './pages/PaymentSuccess';
 import PaymentCancel from './pages/PaymentCancel';
+import News from './pages/News';
 import __Layout from './Layout.jsx';
 
 
@@ -18,6 +19,7 @@ export const PAGES = {
     "Contact": Contact,
     "PaymentSuccess": PaymentSuccess,
     "PaymentCancel": PaymentCancel,
+    "News": News,
 }
 
 export const pagesConfig = {

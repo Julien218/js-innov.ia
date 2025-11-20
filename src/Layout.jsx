@@ -13,6 +13,7 @@ export default function Layout({ children, currentPageName }) {
   useEffect(() => {
     const pageTitles = {
       'Home': 'JS-INNOV.IA - Intelligence Artificielle & Automatisations | Solutions IA Sur Mesure',
+      'News': 'Actualités IA | JS-INNOV.IA - Dernières Innovations et Découvertes en Intelligence Artificielle',
       'Innovations': 'Innovations IA | JS-INNOV.IA - Découvrez le Futur de l\'Intelligence Artificielle',
       'Templates': 'Templates Vidéo IA | JS-INNOV.IA - Créations Professionnelles Générées par IA',
       'Automations': 'Automatisations Intelligentes | JS-INNOV.IA - Solutions Clé en Main',
@@ -22,6 +23,7 @@ export default function Layout({ children, currentPageName }) {
 
     const pageDescriptions = {
       'Home': 'JS-INNOV.IA propose des solutions d\'intelligence artificielle innovantes : templates vidéo, automatisations, applications sur mesure. Transformez votre entreprise avec l\'IA.',
+      'News': 'Suivez les dernières actualités, innovations et découvertes en IA. Scoops quotidiens des sources officielles : OpenAI, Google AI, Meta AI et plus encore.',
       'Innovations': 'Explorez nos dernières innovations en intelligence artificielle. Découvrez comment l\'IA révolutionne le business et la créativité.',
       'Templates': 'Bibliothèque de templates vidéo professionnels générés par IA. Marketing, réseaux sociaux, présentations et plus encore.',
       'Automations': 'Automatisations intelligentes clé en main pour optimiser votre productivité, marketing, e-commerce et service client.',
@@ -69,6 +71,7 @@ export default function Layout({ children, currentPageName }) {
 
   const navItems = [
     { name: 'Accueil', path: 'Home' },
+    { name: 'Actualités IA', path: 'News' },
     { name: 'Innovations', path: 'Innovations' },
     { name: 'Templates', path: 'Templates' },
     { name: 'Automatisations', path: 'Automations' },
