@@ -19,6 +19,7 @@ import CRM from './pages/CRM';
 import AIMusic from './pages/AIMusic';
 import Partners from './pages/Partners';
 import ContentStudio from './pages/ContentStudio';
+import SEOAudit from './pages/SEOAudit';
 import __Layout from './Layout.jsx';
 
 
@@ -44,6 +45,7 @@ export const PAGES = {
     "AIMusic": AIMusic,
     "Partners": Partners,
     "ContentStudio": ContentStudio,
+    "SEOAudit": SEOAudit,
 }
 
 export const pagesConfig = {

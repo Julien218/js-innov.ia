@@ -35,6 +35,7 @@ function LayoutContent({ children, currentPageName }) {
     { name: 'Actualités IA', path: 'News' },
     { name: 'Innovations', path: 'Innovations' },
     { name: 'Portfolio', path: 'Showcase' },
+    { name: 'Audit SEO', path: 'SEOAudit' },
     { name: 'Musiques', path: 'MusicShop' },
     { name: 'Templates', path: 'Templates' },
     { name: 'Automatisations', path: 'Automations' },
