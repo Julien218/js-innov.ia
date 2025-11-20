@@ -44,21 +44,21 @@ export default function FloatingMusicAssistant() {
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="fixed bottom-8 right-8 z-40 flex items-end gap-3"
+        className="fixed bottom-8 left-8 z-40 flex items-start gap-3"
       >
         {/* Speech Bubble */}
         <AnimatePresence>
           {showBubble && (
             <motion.div
-              initial={{ opacity: 0, x: 20, scale: 0.8 }}
+              initial={{ opacity: 0, x: -20, scale: 0.8 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 20, scale: 0.8 }}
-              className="relative max-w-xs"
+              exit={{ opacity: 0, x: -20, scale: 0.8 }}
+              className="relative max-w-xs order-2"
             >
-              <div className="bg-white rounded-2xl shadow-2xl p-4 pr-10 border-2 border-pink-400/50">
+              <div className="bg-white rounded-2xl shadow-2xl p-4 pl-10 border-2 border-pink-400/50">
                 <button
                   onClick={() => setShowBubble(false)}
-                  className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                  className="absolute top-2 left-2 p-1 rounded-full hover:bg-gray-100 transition-colors"
                 >
                   <X className="w-4 h-4 text-gray-500" />
                 </button>
@@ -67,7 +67,7 @@ export default function FloatingMusicAssistant() {
                 </p>
               </div>
               {/* Arrow */}
-              <div className="absolute bottom-4 -right-2 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-l-8 border-l-white"></div>
+              <div className="absolute bottom-4 -left-2 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-white"></div>
             </motion.div>
           )}
         </AnimatePresence>
