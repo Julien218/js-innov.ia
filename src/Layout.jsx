@@ -5,6 +5,7 @@ import { Menu, X, Sparkles, ShoppingCart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AIChatbot from './components/chatbot/AIChatbot';
 import PowerWord from './components/shared/PowerWord';
+import SEOMetaTags from './components/seo/SEOMetaTags';
 
 import { CartProvider, useCart } from './components/cart/CartContext';
 import { base44 } from '@/api/base44Client';
@@ -27,69 +28,7 @@ function LayoutContent({ children, currentPageName }) {
     checkAdmin();
   }, []);
 
-  // SEO Meta Tags
-  useEffect(() => {
-    const pageTitles = {
-      'Home': 'JS-INNOV.IA - Intelligence Artificielle & Automatisations | Solutions IA Sur Mesure',
-      'News': 'Actualités IA | JS-INNOV.IA - Dernières Innovations et Découvertes en Intelligence Artificielle',
-      'Innovations': 'Innovations IA | JS-INNOV.IA - Découvrez le Futur de l\'Intelligence Artificielle',
-      'Showcase': 'Portfolio IA | JS-INNOV.IA - Cas d\'Usage & Réalisations en Intelligence Artificielle',
-      'MusicShop': 'Musiques pour Commerces | JS-INNOV.IA - Économisez sur la SABAM',
-      'Templates': 'Templates Vidéo IA | JS-INNOV.IA - Créations Professionnelles Générées par IA',
-      'Automations': 'Automatisations Intelligentes | JS-INNOV.IA - Solutions Clé en Main',
-      'Applications': 'Applications IA Sur Mesure | JS-INNOV.IA - Développement Innovant',
-      'Contact': 'Contactez-nous | JS-INNOV.IA - Transformez Votre Vision en Réalité'
-    };
-
-    const pageDescriptions = {
-      'Home': 'JS-INNOV.IA propose des solutions d\'intelligence artificielle innovantes : templates vidéo, automatisations, applications sur mesure. Transformez votre entreprise avec l\'IA.',
-      'News': 'Suivez les dernières actualités, innovations et découvertes en IA. Scoops quotidiens des sources officielles : OpenAI, Google AI, Meta AI et plus encore.',
-      'Innovations': 'Explorez nos dernières innovations en intelligence artificielle. Découvrez comment l\'IA révolutionne le business et la créativité.',
-      'Showcase': 'Portfolio de projets IA réalisés par JS-INNOV.IA : créations artistiques, automatisations, chatbots, applications sur mesure. Cas d\'usage concrets avec résultats mesurables.',
-      'MusicShop': 'Musiques libres de droits pour commerces. Économisez sur les frais SABAM avec nos bandes sonores professionnelles. Solution économique pour commerçants.',
-      'Templates': 'Bibliothèque de templates vidéo professionnels générés par IA. Marketing, réseaux sociaux, présentations et plus encore.',
-      'Automations': 'Automatisations intelligentes clé en main pour optimiser votre productivité, marketing, e-commerce et service client.',
-      'Applications': 'Créations d\'applications sur mesure propulsées par l\'IA. Assistants intelligents, analyse de données, génération de contenu.',
-      'Contact': 'Contactez JS-INNOV.IA pour discuter de votre projet IA. Devis gratuit et consultation personnalisée.'
-    };
-
-    document.title = pageTitles[currentPageName] || 'JS-INNOV.IA';
-    
-    let metaDescription = document.querySelector('meta[name="description"]');
-    if (!metaDescription) {
-      metaDescription = document.createElement('meta');
-      metaDescription.name = 'description';
-      document.head.appendChild(metaDescription);
-    }
-    metaDescription.content = pageDescriptions[currentPageName] || 'JS-INNOV.IA - Intelligence Artificielle et Automatisations';
-
-    // Keywords
-    let metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (!metaKeywords) {
-      metaKeywords = document.createElement('meta');
-      metaKeywords.name = 'keywords';
-      document.head.appendChild(metaKeywords);
-    }
-    metaKeywords.content = 'intelligence artificielle, IA, automatisation, templates vidéo, applications IA, innovation, machine learning, créations IA, solutions IA, France';
-
-    // Open Graph
-    const ogTags = [
-      { property: 'og:title', content: pageTitles[currentPageName] || 'JS-INNOV.IA' },
-      { property: 'og:description', content: pageDescriptions[currentPageName] || 'JS-INNOV.IA - Intelligence Artificielle et Automatisations' },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png' }
-    ];
-
-    ogTags.forEach(tag => {
-      let metaTag = document.querySelector(`meta[property="${tag.property}"]`);
-      if (!metaTag) {
-        metaTag = document.createElement('meta');
-        metaTag.setAttribute('property', tag.property);
-        document.head.appendChild(metaTag);
-      }
-      metaTag.content = tag.content;
-    });
-  }, [currentPageName]);
+  // Les meta tags SEO sont maintenant gérés par le composant SEOMetaTags
 
   const navItems = [
     { name: 'Accueil', path: 'Home' },
@@ -111,6 +50,7 @@ function LayoutContent({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white">
+      <SEOMetaTags pageName={currentPageName} />
       <style>{`
         :root {
           --neon-pink: #ff006e;
