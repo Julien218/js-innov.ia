@@ -109,16 +109,14 @@ export default function Layout({ children, currentPageName }) {
 
         @keyframes power-pulse {
           0%, 100% {
-            text-shadow: 0 0 10px rgba(255, 0, 110, 0.6),
-                         0 0 20px rgba(131, 56, 236, 0.4),
-                         0 0 30px rgba(6, 255, 165, 0.3);
+            text-shadow: 0 0 8px rgba(255, 0, 110, 0.3),
+                         0 0 12px rgba(131, 56, 236, 0.2);
             filter: brightness(1);
           }
           50% {
-            text-shadow: 0 0 20px rgba(255, 0, 110, 0.9),
-                         0 0 40px rgba(131, 56, 236, 0.6),
-                         0 0 60px rgba(6, 255, 165, 0.5);
-            filter: brightness(1.3);
+            text-shadow: 0 0 12px rgba(255, 0, 110, 0.5),
+                         0 0 18px rgba(131, 56, 236, 0.3);
+            filter: brightness(1.1);
           }
         }
 
@@ -127,8 +125,8 @@ export default function Layout({ children, currentPageName }) {
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
-          animation: power-pulse 3s ease-in-out infinite;
-          font-weight: 700;
+          animation: power-pulse 4s ease-in-out infinite;
+          font-weight: 600;
           display: inline-block;
         }
       `}</style>
