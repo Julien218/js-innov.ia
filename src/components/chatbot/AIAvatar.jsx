@@ -58,7 +58,11 @@ export default function AIAvatar({ onClick, showWelcome }) {
           src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/691d332d17337e06a0c04ae3/cd1069b69_avatar.png"
           alt="Assistant IA"
           className="w-full h-full object-contain"
-          style={{ display: 'block' }}
+          style={{ 
+            display: 'block',
+            background: 'transparent',
+            mixBlendMode: 'normal'
+          }}
         />
       </motion.div>
 
