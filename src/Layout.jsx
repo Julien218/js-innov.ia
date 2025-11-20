@@ -217,13 +217,6 @@ export default function Layout({ children, currentPageName }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <div className="font-bold text-lg gradient-text mb-3">JS-INNOV.IA</div>
-              <p className="text-gray-400 text-sm">
-                Créations artistiques et <PowerWord>automatisations intelligentes</PowerWord> avec l'<PowerWord>IA</PowerWord>.
-                <PowerWord>Innovons</PowerWord> ensemble pour un <PowerWord>futur digital</PowerWord>.
-              </p>
-            </div>
-            <div>
               <h3 className="font-semibold text-white mb-3">Navigation</h3>
               <div className="space-y-2">
                 {navItems.slice(1).map((item) => (
@@ -249,6 +242,7 @@ export default function Layout({ children, currentPageName }) {
                 Nous contacter
               </Link>
             </div>
+            <div></div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
             <p>© 2024 JS-INNOV.IA - Tous droits réservés</p>
