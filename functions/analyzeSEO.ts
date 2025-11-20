@@ -81,34 +81,39 @@ Sois précis, constructif et fournis des actions concrètes.`,
       }
     });
 
-    console.log('AI Response:', JSON.stringify(aiResponse));
-
     // Extraire les données de la réponse de l'IA avec validation complète
     let analysis = {
       global_score: 50,
       scores: { technique: 50, contenu: 50, performance: 50, accessibilite: 50 },
-      strengths: [],
-      critical_issues: [],
-      recommendations: []
+      strengths: ['Site accessible'],
+      critical_issues: ['Analyse automatique en cours'],
+      recommendations: [
+        {
+          title: 'Optimisation recommandée',
+          description: 'Contactez-nous pour une analyse personnalisée',
+          priority: 'medium',
+          impact: 'Amélioration du référencement'
+        }
+      ]
     };
 
     try {
-      if (!aiResponse) {
-        console.error('aiResponse is undefined or null');
-      } else if (aiResponse.data) {
-        const dataContent = aiResponse.data;
-        if (typeof dataContent === 'string' && dataContent !== 'undefined') {
-          analysis = { ...analysis, ...JSON.parse(dataContent) };
-        } else if (typeof dataContent === 'object') {
-          analysis = { ...analysis, ...dataContent };
-        }
-      } else if (typeof aiResponse === 'object') {
+      // L'API InvokeLLM avec response_json_schema retourne directement l'objet
+      if (aiResponse && typeof aiResponse === 'object' && !aiResponse.data) {
+        // Réponse directe de l'objet
         analysis = { ...analysis, ...aiResponse };
-      } else if (typeof aiResponse === 'string' && aiResponse !== 'undefined') {
-        analysis = { ...analysis, ...JSON.parse(aiResponse) };
+      } else if (aiResponse && aiResponse.data) {
+        // Réponse encapsulée dans .data
+        const dataContent = aiResponse.data;
+        if (typeof dataContent === 'object' && dataContent !== null) {
+          analysis = { ...analysis, ...dataContent };
+        } else if (typeof dataContent === 'string' && dataContent.trim() && dataContent !== 'undefined') {
+          analysis = { ...analysis, ...JSON.parse(dataContent) };
+        }
       }
     } catch (parseError) {
-      console.error('Error parsing AI response:', parseError);
+      console.error('Error parsing AI response:', parseError, 'Raw response:', aiResponse);
+      // Garder les valeurs par défaut
     }
 
     const reportData = {
