@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function AIAvatar({ onClick, showWelcome }) {
+export default function AIAvatar({ onClick, showWelcome, isSpeaking }) {
   const [brightness, setBrightness] = useState(1);
   const [showBubble, setShowBubble] = useState(false);
 
@@ -33,14 +33,14 @@ export default function AIAvatar({ onClick, showWelcome }) {
         initial={{ opacity: 0, scale: 0 }}
         animate={{ 
           opacity: 1, 
-          scale: 1,
+          scale: isSpeaking ? [1, 1.15, 1] : 1,
           y: [0, -20, 0],
         }}
         className="fixed bottom-6 right-6 cursor-pointer"
         style={{
           width: '150px',
           height: '150px',
-          filter: `brightness(${brightness}) drop-shadow(0 0 30px rgba(6,255,165,0.6))`,
+          filter: `brightness(${brightness}) drop-shadow(0 0 ${isSpeaking ? '50px' : '30px'} rgba(6,255,165,${isSpeaking ? '1' : '0.6'}))`,
           zIndex: 9999,
         }}
         whileHover={{ scale: 1.1 }}
@@ -51,7 +51,12 @@ export default function AIAvatar({ onClick, showWelcome }) {
             duration: 3,
             repeat: Infinity,
             ease: "easeInOut"
-          }
+          },
+          scale: isSpeaking ? {
+            duration: 0.5,
+            repeat: Infinity,
+            ease: "easeInOut"
+          } : {}
         }}
       >
         <img
