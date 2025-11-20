@@ -4,9 +4,11 @@ import { MessageCircle, X, Send, Bot, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { base44 } from '@/api/base44Client';
+import AIAvatar from './AIAvatar';
 
 export default function AIChatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
@@ -72,21 +74,16 @@ export default function AIChatbot() {
 
   return (
     <>
-      {/* Chat Button */}
-      <AnimatePresence>
-        {!isOpen && (
-          <motion.button
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-2xl hover:shadow-pink-500/50 transition-all hover:scale-110"
-          >
-            <MessageCircle className="w-6 h-6" />
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-          </motion.button>
-        )}
-      </AnimatePresence>
+      {/* AI Avatar Button */}
+      {!isOpen && (
+        <AIAvatar 
+          onClick={() => {
+            setIsOpen(true);
+            setShowWelcome(false);
+          }} 
+          showWelcome={showWelcome}
+        />
+      )}
 
       {/* Chat Window */}
       <AnimatePresence>
