@@ -26,10 +26,10 @@ export default function MusicProductCard({ product, index = 0, popular = false }
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className="group relative"
     >
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-purple-500/20 hover:border-pink-500/50 transition-all duration-300">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm border border-purple-500/20 hover:border-pink-500/50 hover:shadow-2xl hover:shadow-pink-500/20 hover:-translate-y-2 transition-all duration-300">
         
         {/* Cover Image */}
-        <div className="relative h-64 overflow-hidden bg-gradient-to-br from-pink-900/30 to-purple-900/30">
+        <div className="relative h-48 overflow-hidden bg-gradient-to-br from-pink-900/30 to-purple-900/30">
           {product.cover_image ? (
             <img
               src={product.cover_image}
