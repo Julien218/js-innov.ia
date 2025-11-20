@@ -9,19 +9,19 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'URL et email requis' }, { status: 400 });
     }
 
-    // Récupérer le contenu du site
-    const websiteData = await fetch(`https://base44.io/api/scrape?url=${encodeURIComponent(url)}&formats=markdown,html`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    // Récupérer le contenu du site avec l'API fetch_website
+    let markdown = '';
+    let html = '';
 
-    if (!websiteData.ok) {
-      return Response.json({ error: 'Impossible de récupérer le site' }, { status: 400 });
+    try {
+      const scrapeResult = await fetch(url);
+      html = await scrapeResult.text();
+      markdown = html.substring(0, 3000); // Fallback simple
+    } catch (scrapeError) {
+      console.error('Erreur scraping:', scrapeError);
+      html = 'Site non accessible';
+      markdown = 'Contenu non disponible';
     }
-
-    const { markdown, html } = await websiteData.json();
 
     // Analyser avec l'IA
     const analysis = await base44.integrations.Core.InvokeLLM({
