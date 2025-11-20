@@ -8,6 +8,7 @@ import PaymentSuccess from './pages/PaymentSuccess';
 import PaymentCancel from './pages/PaymentCancel';
 import News from './pages/News';
 import Showcase from './pages/Showcase';
+import MusicShop from './pages/MusicShop';
 import __Layout from './Layout.jsx';
 
 
@@ -22,6 +23,7 @@ export const PAGES = {
     "PaymentCancel": PaymentCancel,
     "News": News,
     "Showcase": Showcase,
+    "MusicShop": MusicShop,
 }
 
 export const pagesConfig = {
