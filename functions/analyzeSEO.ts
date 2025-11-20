@@ -112,14 +112,27 @@ Sois précis, constructif et fournis des actions concrètes.`,
       if (aiResponse.recommendations?.length) analysis.recommendations = aiResponse.recommendations;
     }
 
+    // Construire reportData avec validation stricte de toutes les valeurs
     const reportData = {
-      url,
+      url: String(url || ''),
       analyzed_at: new Date().toISOString(),
-      global_score: analysis.global_score || 50,
-      scores: analysis.scores || { technique: 50, contenu: 50, performance: 50, accessibilite: 50 },
-      strengths: analysis.strengths || [],
-      critical_issues: analysis.critical_issues || [],
-      recommendations: analysis.recommendations || []
+      global_score: Number(analysis.global_score) || 50,
+      scores: {
+        technique: Number(analysis.scores?.technique) || 50,
+        contenu: Number(analysis.scores?.contenu) || 50,
+        performance: Number(analysis.scores?.performance) || 50,
+        accessibilite: Number(analysis.scores?.accessibilite) || 50
+      },
+      strengths: Array.isArray(analysis.strengths) ? analysis.strengths.filter(s => s) : [],
+      critical_issues: Array.isArray(analysis.critical_issues) ? analysis.critical_issues.filter(i => i) : [],
+      recommendations: Array.isArray(analysis.recommendations) 
+        ? analysis.recommendations.filter(r => r).map(rec => ({
+            title: String(rec.title || 'Recommandation'),
+            description: String(rec.description || 'Amélioration suggérée'),
+            priority: String(rec.priority || 'medium'),
+            impact: String(rec.impact || 'Optimisation SEO')
+          }))
+        : []
     };
 
     // Sauvegarder le lead
