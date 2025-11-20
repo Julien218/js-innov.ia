@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, Loader2 } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, Loader2, Mic, MicOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { base44 } from '@/api/base44Client';
@@ -17,7 +17,11 @@ export default function AIChatbot() {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const messagesEndRef = useRef(null);
+  const recognitionRef = useRef(null);
+  const synthRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -26,6 +30,76 @@ export default function AIChatbot() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Initialize speech synthesis and recognition
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      synthRef.current = window.speechSynthesis;
+
+      // Initialize speech recognition
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        recognitionRef.current = new SpeechRecognition();
+        recognitionRef.current.continuous = false;
+        recognitionRef.current.interimResults = false;
+        recognitionRef.current.lang = 'fr-FR';
+
+        recognitionRef.current.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          setInput(transcript);
+          setIsListening(false);
+        };
+
+        recognitionRef.current.onerror = () => {
+          setIsListening(false);
+        };
+
+        recognitionRef.current.onend = () => {
+          setIsListening(false);
+        };
+      }
+    }
+
+    return () => {
+      if (synthRef.current) {
+        synthRef.current.cancel();
+      }
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, []);
+
+  const speakText = (text) => {
+    if (synthRef.current) {
+      synthRef.current.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'fr-FR';
+      utterance.rate = 1.0;
+      utterance.pitch = 1.1;
+      
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
+      utterance.onerror = () => setIsSpeaking(false);
+
+      synthRef.current.speak(utterance);
+    }
+  };
+
+  const toggleListening = () => {
+    if (!recognitionRef.current) {
+      alert('La reconnaissance vocale n\'est pas supportée par votre navigateur');
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
+  };
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -51,10 +125,14 @@ export default function AIChatbot() {
         add_context_from_internet: false
       });
 
+      const assistantMessage = response.data || 'Désolé, je n\'ai pas pu générer une réponse. Pouvez-vous reformuler ?';
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: response.data || 'Désolé, je n\'ai pas pu générer une réponse. Pouvez-vous reformuler ?' 
+        content: assistantMessage
       }]);
+
+      // Speak the response
+      speakText(assistantMessage);
     } catch (error) {
       setMessages(prev => [...prev, { 
         role: 'assistant', 
@@ -82,6 +160,7 @@ export default function AIChatbot() {
             setShowWelcome(false);
           }} 
           showWelcome={showWelcome}
+          isSpeaking={isSpeaking}
         />
       )}
 
@@ -145,13 +224,24 @@ export default function AIChatbot() {
             {/* Input */}
             <div className="p-4 bg-gray-900 border-t border-gray-800">
               <div className="flex gap-2">
+                <Button
+                  onClick={toggleListening}
+                  disabled={isLoading}
+                  className={`${
+                    isListening 
+                      ? 'bg-red-600 hover:bg-red-700' 
+                      : 'bg-gray-700 hover:bg-gray-600'
+                  }`}
+                >
+                  {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                </Button>
                 <Input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Posez votre question..."
+                  placeholder={isListening ? "En écoute..." : "Posez votre question..."}
                   className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
-                  disabled={isLoading}
+                  disabled={isLoading || isListening}
                 />
                 <Button
                   onClick={handleSend}
