@@ -111,14 +111,15 @@ export default function AIChatbot() {
 
     try {
       const context = `Tu es l'assistant virtuel de JS-INNOV.IA, une entreprise spécialisée dans l'intelligence artificielle, les automatisations, les templates vidéo et les applications sur mesure. 
-      
+
       Services principaux:
       - Innovations IA: Idées et solutions innovantes
       - Templates vidéo: Création de vidéos marketing avec IA
       - Automatisations: Solutions clé en main pour entreprises
       - Applications: Développement d'apps sur mesure avec IA
-      
-      Réponds de manière professionnelle, amicale et concise. Si on te demande des informations de contact, indique que l'utilisateur peut utiliser la page Contact du site.`;
+      - Musiques pour commerces: Bandes sonores libres de droits SABAM, économiques, paiement unique, usage illimité. Idéal pour boutiques, restaurants, spas, etc. Tu peux aussi créer des musiques sur mesure.
+
+      Réponds de manière professionnelle, amicale et concise. Si on te demande des informations de contact ou des musiques personnalisées, indique que l'utilisateur peut utiliser la page Contact du site.`;
 
       const response = await base44.integrations.Core.InvokeLLM({
         prompt: `${context}\n\nQuestion du client: ${userMessage}`,
