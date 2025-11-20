@@ -31,10 +31,17 @@ export default function SEOAudit() {
         url: url.trim(),
         email: email.trim()
       });
-      setReport(response.data);
-      setEmailSent(true);
+      
+      // Validation de la réponse
+      if (response && response.data) {
+        setReport(response.data);
+        setEmailSent(true);
+      } else {
+        setError('Réponse invalide du serveur. Veuillez réessayer.');
+      }
     } catch (err) {
-      setError('Impossible d\'analyser ce site. Vérifiez l\'URL et réessayez.');
+      console.error('Error analyzing:', err);
+      setError(err.message || 'Impossible d\'analyser ce site. Vérifiez l\'URL et réessayez.');
     } finally {
       setIsAnalyzing(false);
     }
