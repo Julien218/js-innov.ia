@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Pause, Music, Clock, Activity, Check } from 'lucide-react';
-import CheckoutButton from '../payment/CheckoutButton';
+import { useCart } from '../cart/CartContext';
+import { ShoppingCart } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 export default function MusicProductCard({ product, index = 0, popular = false }) {

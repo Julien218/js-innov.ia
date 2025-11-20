@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from './utils';
-import { Menu, X, Sparkles } from 'lucide-react';
+import { Menu, X, Sparkles, ShoppingCart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AIChatbot from './components/chatbot/AIChatbot';
 import PowerWord from './components/shared/PowerWord';
 import FloatingQuote from './components/shared/FloatingQuote';
+import { CartProvider, useCart } from './components/cart/CartContext';
 
-export default function Layout({ children, currentPageName }) {
+function LayoutContent({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { getCartCount } = useCart();
 
   // SEO Meta Tags
   useEffect(() => {
@@ -172,9 +174,24 @@ export default function Layout({ children, currentPageName }) {
                   {item.name}
                 </Link>
               ))}
-            </div>
+              </div>
 
-            {/* Mobile Menu Button */}
+              {/* Cart Icon */}
+              <Link 
+              to={createPageUrl('Cart')} 
+              className="relative hidden lg:block"
+              >
+              <div className="p-2 rounded-lg hover:bg-white/5 transition-colors">
+                <ShoppingCart className="w-6 h-6 text-gray-300 hover:text-pink-400 transition-colors" />
+                {getCartCount() > 0 && (
+                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-pink-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                    {getCartCount()}
+                  </div>
+                )}
+              </div>
+              </Link>
+
+              {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 text-gray-300 hover:text-white"
@@ -263,5 +280,13 @@ export default function Layout({ children, currentPageName }) {
       {/* Floating Quote */}
       <FloatingQuote />
       </div>
+      );
+      }
+
+      export default function Layout({ children, currentPageName }) {
+      return (
+      <CartProvider>
+      <LayoutContent children={children} currentPageName={currentPageName} />
+      </CartProvider>
       );
       }
