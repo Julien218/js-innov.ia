@@ -78,8 +78,12 @@ ${data.message}`
 
           {/* Avatar Header */}
           <div className="p-8 text-center border-b border-purple-500/20">
-            <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center shadow-2xl mb-4">
-              <div className="text-5xl">🎵</div>
+            <div className="w-24 h-24 mx-auto rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-2xl mb-4 overflow-hidden border-2 border-pink-400/30">
+              <img 
+                src="https://drive.google.com/uc?export=view&id=1ySt1ej95d6U1gMbAZ_Hw-wdKG3hj8KuF" 
+                alt="Assistant Musical"
+                className="w-full h-full object-cover"
+              />
             </div>
             <h2 className="text-2xl font-bold text-white mb-2 gradient-text">
               Création Musicale Sur Mesure

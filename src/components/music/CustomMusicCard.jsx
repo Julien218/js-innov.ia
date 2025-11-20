@@ -26,8 +26,12 @@ export default function CustomMusicCard() {
           <div className="relative h-48 overflow-hidden bg-gradient-to-br from-pink-900/40 to-purple-900/40 flex items-center justify-center">
             <div className="relative">
               {/* Cute Avatar */}
-              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
-                <div className="text-6xl">🎵</div>
+              <div className="w-32 h-32 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300 overflow-hidden border-2 border-pink-400/30">
+                <img 
+                  src="https://drive.google.com/uc?export=view&id=1ySt1ej95d6U1gMbAZ_Hw-wdKG3hj8KuF" 
+                  alt="Assistant Musical"
+                  className="w-full h-full object-cover"
+                />
               </div>
               {/* Chat Bubble */}
               <motion.div

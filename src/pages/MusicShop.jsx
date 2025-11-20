@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
 import MusicProductCard from '../components/music/MusicProductCard';
 import CustomMusicCard from '../components/music/CustomMusicCard';
+import FloatingMusicAssistant from '../components/music/FloatingMusicAssistant';
 import PowerWord from '../components/shared/PowerWord';
 import { motion } from 'framer-motion';
 import { Music, TrendingDown, Shield, Volume2 } from 'lucide-react';
@@ -146,6 +147,9 @@ export default function MusicShop() {
           </div>
         )}
       </div>
+
+      {/* Floating Music Assistant */}
+      <FloatingMusicAssistant />
     </div>
   );
 }
