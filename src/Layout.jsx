@@ -7,10 +7,25 @@ import AIChatbot from './components/chatbot/AIChatbot';
 import PowerWord from './components/shared/PowerWord';
 import FloatingQuote from './components/shared/FloatingQuote';
 import { CartProvider, useCart } from './components/cart/CartContext';
+import { base44 } from '@/api/base44Client';
 
 function LayoutContent({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { getCartCount } = useCart();
+
+  // Check if user is admin
+  useEffect(() => {
+    const checkAdmin = async () => {
+      try {
+        const user = await base44.auth.me();
+        setIsAdmin(user?.role === 'admin');
+      } catch {
+        setIsAdmin(false);
+      }
+    };
+    checkAdmin();
+  }, []);
 
   // SEO Meta Tags
   useEffect(() => {
@@ -85,7 +100,8 @@ function LayoutContent({ children, currentPageName }) {
     { name: 'Templates', path: 'Templates' },
     { name: 'Automatisations', path: 'Automations' },
     { name: 'Applications', path: 'Applications' },
-    { name: 'Contact', path: 'Contact' }
+    { name: 'Contact', path: 'Contact' },
+    ...(isAdmin ? [{ name: 'Admin', path: 'Admin' }] : [])
   ];
 
   return (

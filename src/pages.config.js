@@ -12,6 +12,7 @@ import MusicShop from './pages/MusicShop';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
+import Admin from './pages/Admin';
 import __Layout from './Layout.jsx';
 
 
@@ -30,6 +31,7 @@ export const PAGES = {
     "Cart": Cart,
     "Checkout": Checkout,
     "OrderConfirmation": OrderConfirmation,
+    "Admin": Admin,
 }
 
 export const pagesConfig = {
