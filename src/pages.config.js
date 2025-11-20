@@ -16,6 +16,7 @@ import Admin from './pages/Admin';
 import FormBuilder from './pages/FormBuilder';
 import PublicForm from './pages/PublicForm';
 import CRM from './pages/CRM';
+import AIMusic from './pages/AIMusic';
 import __Layout from './Layout.jsx';
 
 
@@ -38,6 +39,7 @@ export const PAGES = {
     "FormBuilder": FormBuilder,
     "PublicForm": PublicForm,
     "CRM": CRM,
+    "AIMusic": AIMusic,
 }
 
 export const pagesConfig = {
