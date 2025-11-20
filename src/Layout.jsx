@@ -101,7 +101,11 @@ function LayoutContent({ children, currentPageName }) {
     { name: 'Automatisations', path: 'Automations' },
     { name: 'Applications', path: 'Applications' },
     { name: 'Contact', path: 'Contact' },
-    ...(isAdmin ? [{ name: 'Admin', path: 'Admin' }] : [])
+    ...(isAdmin ? [
+      { name: 'Admin', path: 'Admin' },
+      { name: 'Formulaires', path: 'FormBuilder' },
+      { name: 'CRM', path: 'CRM' }
+    ] : [])
   ];
 
   return (

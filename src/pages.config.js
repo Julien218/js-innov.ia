@@ -13,6 +13,9 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
 import Admin from './pages/Admin';
+import FormBuilder from './pages/FormBuilder';
+import PublicForm from './pages/PublicForm';
+import CRM from './pages/CRM';
 import __Layout from './Layout.jsx';
 
 
@@ -32,6 +35,9 @@ export const PAGES = {
     "Checkout": Checkout,
     "OrderConfirmation": OrderConfirmation,
     "Admin": Admin,
+    "FormBuilder": FormBuilder,
+    "PublicForm": PublicForm,
+    "CRM": CRM,
 }
 
 export const pagesConfig = {
