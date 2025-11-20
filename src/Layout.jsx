@@ -171,7 +171,7 @@ function LayoutContent({ children, currentPageName }) {
             {/* Logo */}
             <Link to={createPageUrl('Home')} className="group">
               <motion.div 
-                className="relative w-24 h-24 mt-12"
+                className="relative w-24 h-24 mt-20"
                 animate={{ 
                   y: [0, -10, 0],
                 }}
