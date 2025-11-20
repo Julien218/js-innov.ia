@@ -192,8 +192,8 @@ function LayoutContent({ children, currentPageName }) {
             </Link>
 
             {/* Desktop Menu */}
-            <div className="hidden lg:flex items-center gap-8">
-              {navItems.map((item) => (
+            <div className="hidden lg:flex items-center gap-6">
+              {navItems.map((item, index) => (
                 <Link
                   key={item.path}
                   to={createPageUrl(item.path)}
@@ -202,6 +202,10 @@ function LayoutContent({ children, currentPageName }) {
                       ? 'text-pink-400 glow-text'
                       : 'text-gray-300'
                   }`}
+                  style={{ 
+                    marginTop: index % 2 === 0 ? '0' : '12px',
+                    marginBottom: index % 2 === 0 ? '12px' : '0'
+                  }}
                 >
                   {item.name}
                 </Link>
