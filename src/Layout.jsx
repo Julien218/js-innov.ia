@@ -192,23 +192,35 @@ function LayoutContent({ children, currentPageName }) {
             </Link>
 
             {/* Desktop Menu */}
-            <div className="hidden lg:flex items-center gap-6">
+            <div className="hidden lg:flex items-center gap-3">
               {navItems.map((item, index) => (
-                <Link
+                <motion.div
                   key={item.path}
-                  to={createPageUrl(item.path)}
-                  className={`text-sm font-medium transition-all hover:text-pink-400 ${
-                    currentPageName === item.path
-                      ? 'text-pink-400 glow-text'
-                      : 'text-gray-300'
-                  }`}
+                  animate={{ 
+                    y: [0, -5, 0],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: index * 0.2
+                  }}
                   style={{ 
-                    marginTop: index % 2 === 0 ? '0' : '12px',
-                    marginBottom: index % 2 === 0 ? '12px' : '0'
+                    marginTop: index % 2 === 0 ? '0' : '16px',
+                    marginBottom: index % 2 === 0 ? '16px' : '0'
                   }}
                 >
-                  {item.name}
-                </Link>
+                  <Link
+                    to={createPageUrl(item.path)}
+                    className={`block px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 ${
+                      currentPageName === item.path
+                        ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg shadow-pink-500/50'
+                        : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-pink-400 hover:shadow-lg hover:shadow-purple-500/30'
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                </motion.div>
               ))}
               </div>
 
