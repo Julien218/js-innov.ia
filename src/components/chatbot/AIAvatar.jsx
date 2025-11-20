@@ -46,8 +46,8 @@ export default function AIAvatar({ onClick, showWelcome, isSpeaking }) {
     const interval = setInterval(() => {
       setCurrentMessage(prev => (prev + 1) % messages.length);
       setShowBubble(true);
-      setTimeout(() => setShowBubble(false), 5000);
-    }, 15000); // Toutes les 15 secondes
+      setTimeout(() => setShowBubble(false), 6000);
+    }, 45000); // Toutes les 45 secondes
 
     return () => clearInterval(interval);
   }, []);
