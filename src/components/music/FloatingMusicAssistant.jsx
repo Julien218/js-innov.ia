@@ -44,7 +44,7 @@ export default function FloatingMusicAssistant() {
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="fixed bottom-8 left-8 z-40 flex items-start gap-3"
+        className="fixed bottom-8 left-8 z-[60] flex items-start gap-3"
       >
         {/* Speech Bubble */}
         <AnimatePresence>
