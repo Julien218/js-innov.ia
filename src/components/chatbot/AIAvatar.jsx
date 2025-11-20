@@ -31,19 +31,21 @@ export default function AIAvatar({ onClick, showWelcome }) {
     <>
       <motion.div
         initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="fixed bottom-6 right-6 z-50 cursor-pointer"
+        animate={{ 
+          opacity: 1, 
+          scale: 1,
+          y: [0, -20, 0],
+        }}
+        className="fixed bottom-6 right-6 cursor-pointer"
         style={{
           width: '150px',
           height: '150px',
-          filter: `brightness(${brightness})`,
+          filter: `brightness(${brightness}) drop-shadow(0 0 30px rgba(6,255,165,0.6))`,
+          zIndex: 9999,
         }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={onClick}
-        animate={{
-          y: [0, -20, 0],
-        }}
         transition={{
           y: {
             duration: 3,
@@ -55,7 +57,8 @@ export default function AIAvatar({ onClick, showWelcome }) {
         <img
           src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/691d332d17337e06a0c04ae3/cd1069b69_avatar.png"
           alt="Assistant IA"
-          className="w-full h-full object-contain drop-shadow-[0_0_30px_rgba(6,255,165,0.6)]"
+          className="w-full h-full object-contain"
+          style={{ display: 'block' }}
         />
       </motion.div>
 
