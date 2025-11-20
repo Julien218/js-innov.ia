@@ -167,17 +167,27 @@ function LayoutContent({ children, currentPageName }) {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-purple-900/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+          <div className="flex justify-between items-center h-28">
             {/* Logo */}
             <Link to={createPageUrl('Home')} className="group">
-              <div className="relative w-24 h-24">
+              <motion.div 
+                className="relative w-24 h-24"
+                animate={{ 
+                  y: [0, -10, 0],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
                 <img 
                   src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png"
                   alt="JS-INNOV.IA - Intelligence Artificielle et Automatisations"
                   className="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform"
                 />
                 <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-500 blur-xl opacity-30 group-hover:opacity-50 transition-opacity -z-10"></div>
-              </div>
+              </motion.div>
             </Link>
 
             {/* Desktop Menu */}
@@ -253,7 +263,7 @@ function LayoutContent({ children, currentPageName }) {
       </nav>
 
       {/* Main Content */}
-      <main className="pt-20">
+      <main className="pt-28">
         {children}
       </main>
 
