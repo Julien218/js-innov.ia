@@ -101,6 +101,7 @@ function LayoutContent({ children, currentPageName }) {
     { name: 'Templates', path: 'Templates' },
     { name: 'Automatisations', path: 'Automations' },
     { name: 'Applications', path: 'Applications' },
+    { name: 'Partenaires', path: 'Partners' },
     { name: 'Contact', path: 'Contact' },
     ...(isAdmin ? [
       { name: 'Admin', path: 'Admin' },
