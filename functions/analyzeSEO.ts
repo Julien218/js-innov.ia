@@ -81,8 +81,17 @@ Sois précis, constructif et fournis des actions concrètes.`,
       }
     });
 
-    const analysis = typeof aiResponse === 'object' ? aiResponse : 
-                     typeof aiResponse === 'string' ? JSON.parse(aiResponse) : aiResponse;
+    // Extraire les données de la réponse de l'IA
+    let analysis;
+    if (aiResponse?.data) {
+      analysis = typeof aiResponse.data === 'string' ? JSON.parse(aiResponse.data) : aiResponse.data;
+    } else if (typeof aiResponse === 'object') {
+      analysis = aiResponse;
+    } else if (typeof aiResponse === 'string') {
+      analysis = JSON.parse(aiResponse);
+    } else {
+      analysis = {};
+    }
 
     const reportData = {
       url,
