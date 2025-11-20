@@ -1,23 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function AIAvatar({ onClick, showWelcome, isSpeaking }) {
+export default function AIAvatar({ onClick, showWelcome, isSpeaking, messageTypes }) {
   const [brightness, setBrightness] = useState(1);
   const [showBubble, setShowBubble] = useState(false);
   const [currentMessage, setCurrentMessage] = useState(0);
 
+  const allMessages = {
+    conseils: [
+      "👋 Bonjour ! Je suis votre assistant IA. Comment puis-je vous aider ?",
+      "💬 Besoin d'aide ? Je suis là pour vous guider !",
+      "🌟 Chaque innovation commence par une idée audacieuse."
+    ],
+    proverbes: [
+      "💡 L'IA ne remplace pas l'intelligence humaine, elle l'amplifie.",
+      "🚀 L'avenir appartient à ceux qui comprennent l'IA.",
+      "✨ L'intelligence artificielle : transformer l'impossible en possible.",
+      "⚡ L'IA n'est pas magique, elle est intelligente.",
+      "🔮 L'IA : le meilleur outil pour libérer la créativité."
+    ],
+    services: [
+      "🎯 Découvrez nos templates vidéo et automatisations !",
+      "🎵 Économisez sur la SABAM avec nos musiques !"
+    ]
+  };
+
   const messages = [
-    "👋 Bonjour ! Je suis votre assistant IA. Comment puis-je vous aider ?",
-    "💡 L'IA ne remplace pas l'intelligence humaine, elle l'amplifie.",
-    "🚀 L'avenir appartient à ceux qui comprennent l'IA.",
-    "✨ L'intelligence artificielle : transformer l'impossible en possible.",
-    "🎯 Découvrez nos templates vidéo et automatisations !",
-    "🎵 Économisez sur la SABAM avec nos musiques !",
-    "⚡ L'IA n'est pas magique, elle est intelligente.",
-    "🌟 Chaque innovation commence par une idée audacieuse.",
-    "💬 Besoin d'aide ? Je suis là pour vous guider !",
-    "🔮 L'IA : le meilleur outil pour libérer la créativité."
-  ];
+    ...(messageTypes?.conseils ? allMessages.conseils : []),
+    ...(messageTypes?.proverbes ? allMessages.proverbes : []),
+    ...(messageTypes?.services ? allMessages.services : [])
+  ].filter(Boolean);
 
   useEffect(() => {
     const handleScroll = () => {

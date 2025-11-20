@@ -1,14 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, Loader2, Mic, MicOff } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, Loader2, Mic, MicOff, Settings, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Slider } from '@/components/ui/slider';
 import { base44 } from '@/api/base44Client';
 import AIAvatar from './AIAvatar';
 
 export default function AIChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
+  const [showSettings, setShowSettings] = useState(false);
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
@@ -19,9 +23,29 @@ export default function AIChatbot() {
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  
+  // Paramètres de personnalisation
+  const [settings, setSettings] = useState(() => {
+    const saved = localStorage.getItem('chatbotSettings');
+    return saved ? JSON.parse(saved) : {
+      tone: 'amical',
+      speechRate: 1.0,
+      messageTypes: {
+        proverbes: true,
+        conseils: true,
+        services: true
+      }
+    };
+  });
+
   const messagesEndRef = useRef(null);
   const recognitionRef = useRef(null);
   const synthRef = useRef(null);
+
+  // Sauvegarder les paramètres
+  useEffect(() => {
+    localStorage.setItem('chatbotSettings', JSON.stringify(settings));
+  }, [settings]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -75,7 +99,7 @@ export default function AIChatbot() {
       synthRef.current.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'fr-FR';
-      utterance.rate = 1.0;
+      utterance.rate = settings.speechRate;
       utterance.pitch = 1.1;
       
       utterance.onstart = () => setIsSpeaking(true);
@@ -84,6 +108,19 @@ export default function AIChatbot() {
 
       synthRef.current.speak(utterance);
     }
+  };
+
+  const saveConversation = () => {
+    const conversationData = JSON.stringify(messages, null, 2);
+    const blob = new Blob([conversationData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `conversation-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   const toggleListening = () => {
@@ -110,6 +147,12 @@ export default function AIChatbot() {
     setIsLoading(true);
 
     try {
+      const toneInstructions = {
+        formel: 'Utilise un ton professionnel, courtois et précis. Vouvoie le client. Sois concis et direct.',
+        amical: 'Utilise un ton chaleureux, accessible et enthousiaste. Tutoie le client. Sois convivial et engageant.',
+        technique: 'Utilise un ton expert et détaillé. Mets l\'accent sur les spécifications techniques, les technologies IA utilisées et les bénéfices techniques.'
+      };
+
       const context = `Tu es l'assistant virtuel commercial de JS-INNOV.IA. Ton rôle est de présenter nos services et convaincre le client d'acheter.
 
       🎯 SERVICES À PROMOUVOIR:
@@ -136,14 +179,17 @@ export default function AIChatbot() {
          - Idéal pour boutiques, restaurants, salons, spas
          - Aussi: créations musicales sur mesure
 
+      🎯 TON STYLE DE COMMUNICATION:
+      ${toneInstructions[settings.tone]}
+
       🎯 TON APPROCHE:
-      - Être enthousiaste et convainquant
+      - Être ${settings.tone === 'formel' ? 'professionnel' : settings.tone === 'amical' ? 'enthousiaste' : 'précis et technique'}
       - Mettre en avant les bénéfices concrets et économies
       - Orienter vers la page Contact pour devis/commande
       - Pour les musiques, insister sur l'économie SABAM
       - Toujours finir en suggérant une action (visiter une page, nous contacter)
 
-      Réponds de manière professionnelle, persuasive et orientée vente. Mets en avant les avantages économiques et la valeur ajoutée.`;
+      Réponds de manière ${settings.tone === 'formel' ? 'professionnelle et courtoise' : settings.tone === 'amical' ? 'chaleureuse et persuasive' : 'technique et détaillée'}. Mets en avant les avantages économiques et la valeur ajoutée.`;
 
       const response = await base44.integrations.Core.InvokeLLM({
         prompt: `${context}\n\nQuestion du client: ${userMessage}`,
@@ -188,6 +234,7 @@ export default function AIChatbot() {
           }} 
           showWelcome={showWelcome}
           isSpeaking={isSpeaking}
+          messageTypes={settings.messageTypes}
         />
       )}
 
@@ -208,16 +255,108 @@ export default function AIChatbot() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-white">Assistant IA</h3>
-                  <p className="text-xs text-pink-100">En ligne</p>
+                  <p className="text-xs text-pink-100">Ton {settings.tone}</p>
                 </div>
               </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-2 hover:bg-white/20 rounded-lg transition-colors"
-              >
-                <X className="w-5 h-5 text-white" />
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={saveConversation}
+                  className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                  title="Sauvegarder la conversation"
+                >
+                  <Download className="w-5 h-5 text-white" />
+                </button>
+                <button
+                  onClick={() => setShowSettings(!showSettings)}
+                  className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                  title="Paramètres"
+                >
+                  <Settings className="w-5 h-5 text-white" />
+                </button>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 text-white" />
+                </button>
+              </div>
             </div>
+
+            {/* Settings Panel */}
+            <AnimatePresence>
+              {showSettings && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="bg-gray-800 border-b border-gray-700 overflow-hidden"
+                >
+                  <div className="p-4 space-y-4">
+                    <div>
+                      <label className="text-xs text-gray-400 mb-2 block">Ton de l'assistant</label>
+                      <Select value={settings.tone} onValueChange={(value) => setSettings({...settings, tone: value})}>
+                        <SelectTrigger className="bg-gray-900 border-gray-700 text-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="formel">Formel</SelectItem>
+                          <SelectItem value="amical">Amical</SelectItem>
+                          <SelectItem value="technique">Technique</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <label className="text-xs text-gray-400 mb-2 block">Vitesse de parole: {settings.speechRate.toFixed(1)}x</label>
+                      <Slider
+                        value={[settings.speechRate]}
+                        onValueChange={([value]) => setSettings({...settings, speechRate: value})}
+                        min={0.5}
+                        max={2.0}
+                        step={0.1}
+                        className="w-full"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs text-gray-400 mb-2 block">Types de messages de l'avatar</label>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            checked={settings.messageTypes.proverbes}
+                            onCheckedChange={(checked) => setSettings({
+                              ...settings,
+                              messageTypes: {...settings.messageTypes, proverbes: checked}
+                            })}
+                          />
+                          <span className="text-sm text-gray-300">Proverbes IA</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            checked={settings.messageTypes.conseils}
+                            onCheckedChange={(checked) => setSettings({
+                              ...settings,
+                              messageTypes: {...settings.messageTypes, conseils: checked}
+                            })}
+                          />
+                          <span className="text-sm text-gray-300">Conseils</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            checked={settings.messageTypes.services}
+                            onCheckedChange={(checked) => setSettings({
+                              ...settings,
+                              messageTypes: {...settings.messageTypes, services: checked}
+                            })}
+                          />
+                          <span className="text-sm text-gray-300">Info services</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-950">
