@@ -5,6 +5,7 @@ import { Menu, X, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AIChatbot from './components/chatbot/AIChatbot';
 import PowerWord from './components/shared/PowerWord';
+import FloatingBrand from './components/shared/FloatingBrand';
 
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -258,6 +259,9 @@ export default function Layout({ children, currentPageName }) {
 
       {/* AI Chatbot */}
       <AIChatbot />
-    </div>
-  );
-}
+
+      {/* Floating Brand */}
+      <FloatingBrand />
+      </div>
+      );
+      }
