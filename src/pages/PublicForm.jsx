@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Loader2 } from 'lucide-react';
+import { CheckCircle2, Loader2, Upload, Sparkles } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,8 @@ export default function PublicForm() {
   
   const [formValues, setFormValues] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const { data: form, isLoading } = useQuery({
     queryKey: ['customForm', slug],
@@ -38,6 +40,51 @@ export default function PublicForm() {
       setSubmitted(true);
     }
   });
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsProcessing(true);
+    try {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      setUploadedFile(file_url);
+
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt: `Analyse ce document et extrais toutes les informations pertinentes. Retourne un objet JSON avec des clés correspondant aux champs du formulaire si possible (nom, email, téléphone, entreprise, message, etc.).`,
+        file_urls: [file_url],
+        response_json_schema: {
+          type: "object",
+          properties: {
+            nom: { type: "string" },
+            email: { type: "string" },
+            telephone: { type: "string" },
+            entreprise: { type: "string" },
+            message: { type: "string" }
+          }
+        }
+      });
+
+      if (response) {
+        const newValues = {};
+        form.fields.forEach(field => {
+          const fieldKey = field.label.toLowerCase();
+          const matchingKey = Object.keys(response).find(key => 
+            key.toLowerCase().includes(fieldKey) || fieldKey.includes(key.toLowerCase())
+          );
+          if (matchingKey && response[matchingKey]) {
+            newValues[field.label] = response[matchingKey];
+          }
+        });
+        setFormValues(prev => ({ ...prev, ...newValues }));
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+      alert('Erreur lors du traitement du fichier');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -106,6 +153,49 @@ export default function PublicForm() {
           {form.description && (
             <p className="text-gray-400 mb-8">{form.description}</p>
           )}
+
+          {/* AI Document Upload */}
+          <div className="mb-8 p-6 rounded-2xl bg-gradient-to-br from-pink-600/20 to-purple-600/20 border border-pink-500/30">
+            <div className="flex items-center gap-3 mb-3">
+              <Sparkles className="w-5 h-5 text-pink-400" />
+              <h3 className="text-lg font-semibold text-white">Pré-remplissage IA</h3>
+            </div>
+            <p className="text-sm text-gray-300 mb-4">
+              Téléchargez un document (CV, carte de visite, email...) et notre IA remplira automatiquement les champs du formulaire.
+            </p>
+            <input
+              type="file"
+              id="file-upload"
+              onChange={handleFileUpload}
+              disabled={isProcessing}
+              accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
+              className="hidden"
+            />
+            <Button
+              type="button"
+              disabled={isProcessing}
+              className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700"
+              onClick={() => document.getElementById('file-upload').click()}
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Analyse en cours...
+                </>
+              ) : (
+                <>
+                  <Upload className="w-4 h-4 mr-2" />
+                  Télécharger un document
+                </>
+              )}
+            </Button>
+            {uploadedFile && !isProcessing && (
+              <div className="mt-3 flex items-center gap-2 text-sm text-green-400">
+                <CheckCircle2 className="w-4 h-4" />
+                Document analysé et formulaire pré-rempli !
+              </div>
+            )}
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {form.fields.map((field) => (
