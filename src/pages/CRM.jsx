@@ -97,6 +97,37 @@ export default function CRM() {
         />
 
         {/* Stats Cards with Halo Effect */}
+        <style>{`
+          @keyframes halo-pulse {
+            0%, 100% {
+              box-shadow: 0 0 25px rgba(255, 0, 110, 0.4),
+                          0 0 50px rgba(131, 56, 236, 0.3),
+                          0 0 75px rgba(6, 255, 165, 0.2);
+            }
+            50% {
+              box-shadow: 0 0 35px rgba(255, 0, 110, 0.6),
+                          0 0 70px rgba(131, 56, 236, 0.5),
+                          0 0 100px rgba(6, 255, 165, 0.3);
+            }
+          }
+          .halo-card {
+            animation: halo-pulse 3s ease-in-out infinite;
+          }
+          .halo-card::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #ff006e, #8338ec, #06ffa5);
+            border-radius: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+            filter: blur(10px);
+          }
+          .halo-card:hover::before {
+            opacity: 0.3;
+          }
+        `}</style>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {stats.map((stat, index) => (
             <motion.div
@@ -106,29 +137,16 @@ export default function CRM() {
               transition={{ delay: index * 0.1 }}
               className="group relative"
             >
-              <style jsx>{`
-                @keyframes halo-pulse {
-                  0%, 100% {
-                    box-shadow: 0 0 20px rgba(255, 0, 110, 0.3),
-                                0 0 40px rgba(131, 56, 236, 0.2),
-                                0 0 60px rgba(255, 0, 110, 0.1);
-                  }
-                  50% {
-                    box-shadow: 0 0 30px rgba(255, 0, 110, 0.5),
-                                0 0 60px rgba(131, 56, 236, 0.3),
-                                0 0 80px rgba(255, 0, 110, 0.2);
-                  }
-                }
-                .halo-card {
-                  animation: halo-pulse 3s ease-in-out infinite;
-                }
-              `}</style>
-              <div className="halo-card relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-purple-500/20 hover:border-pink-500/50 p-6 transition-all duration-300 hover:scale-105">
-                <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${stat.color} bg-opacity-20 mb-4`}>
+              <div className="halo-card relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900/90 to-black/90 backdrop-blur-xl border border-purple-500/30 hover:border-pink-500/60 p-6 transition-all duration-500 hover:scale-105 hover:-translate-y-1">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-pink-600/10 to-purple-600/10 rounded-full blur-3xl -z-10"></div>
+                <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${stat.color} mb-4 shadow-lg`}>
                   <stat.icon className="w-6 h-6 text-white" />
                 </div>
-                <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                <div className="text-sm text-gray-400">{stat.label}</div>
+                <div className="text-4xl font-bold text-white mb-1 bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                  {stat.value}
+                </div>
+                <div className="text-sm text-gray-400 font-medium">{stat.label}</div>
+                <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </div>
             </motion.div>
           ))}
