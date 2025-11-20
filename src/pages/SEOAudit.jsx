@@ -9,20 +9,30 @@ import PowerWord from '../components/shared/PowerWord';
 
 export default function SEOAudit() {
   const [url, setUrl] = useState('');
+  const [email, setEmail] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [report, setReport] = useState(null);
   const [error, setError] = useState(null);
+  const [emailSent, setEmailSent] = useState(false);
 
   const analyzeWebsite = async () => {
-    if (!url.trim()) return;
+    if (!url.trim() || !email.trim()) {
+      setError('Veuillez remplir l\'URL et votre email');
+      return;
+    }
 
     setIsAnalyzing(true);
     setError(null);
     setReport(null);
+    setEmailSent(false);
 
     try {
-      const response = await base44.functions.invoke('analyzeSEO', { url: url.trim() });
+      const response = await base44.functions.invoke('analyzeSEO', { 
+        url: url.trim(),
+        email: email.trim()
+      });
       setReport(response.data);
+      setEmailSent(true);
     } catch (err) {
       setError('Impossible d\'analyser ce site. Vérifiez l\'URL et réessayez.');
     } finally {
@@ -75,39 +85,64 @@ export default function SEOAudit() {
           className="max-w-3xl mx-auto mb-12"
         >
           <div className="p-8 rounded-3xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-purple-500/20">
-            <div className="flex gap-3">
+            <div className="space-y-4">
               <Input
                 type="url"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && analyzeWebsite()}
                 placeholder="https://votre-site-web.com"
-                className="flex-1 bg-black/30 border-gray-700 text-white text-lg py-6"
+                className="w-full bg-black/30 border-gray-700 text-white text-lg py-6"
+                disabled={isAnalyzing}
+              />
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && analyzeWebsite()}
+                placeholder="votre@email.com"
+                className="w-full bg-black/30 border-gray-700 text-white text-lg py-6"
                 disabled={isAnalyzing}
               />
               <Button
                 onClick={analyzeWebsite}
-                disabled={isAnalyzing || !url.trim()}
-                className="px-8 py-6 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 hover:shadow-2xl hover:shadow-pink-500/50"
+                disabled={isAnalyzing || !url.trim() || !email.trim()}
+                className="w-full py-6 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 hover:shadow-2xl hover:shadow-pink-500/50"
               >
                 {isAnalyzing ? (
                   <>
                     <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Analyse...
+                    Analyse en cours...
                   </>
                 ) : (
                   <>
                     <Search className="w-5 h-5 mr-2" />
-                    Analyser
+                    Analyser et recevoir le rapport
                   </>
                 )}
               </Button>
             </div>
             <p className="text-sm text-gray-400 mt-4">
-              ✨ Audit complet gratuit : SEO technique, contenu, performance et recommandations personnalisées
+              📧 Vous recevrez le rapport complet par email + recommandations personnalisées
             </p>
           </div>
         </motion.div>
+
+        {/* Success Message */}
+        <AnimatePresence>
+          {emailSent && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="max-w-3xl mx-auto mb-8 p-4 rounded-xl bg-green-500/10 border border-green-500/30 text-green-400"
+            >
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5" />
+                <span>✅ Rapport envoyé à {email} ! Consultez votre boîte email.</span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Error */}
         <AnimatePresence>
