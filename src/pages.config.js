@@ -18,6 +18,7 @@ import PublicForm from './pages/PublicForm';
 import CRM from './pages/CRM';
 import AIMusic from './pages/AIMusic';
 import Partners from './pages/Partners';
+import ContentStudio from './pages/ContentStudio';
 import __Layout from './Layout.jsx';
 
 
@@ -42,6 +43,7 @@ export const PAGES = {
     "CRM": CRM,
     "AIMusic": AIMusic,
     "Partners": Partners,
+    "ContentStudio": ContentStudio,
 }
 
 export const pagesConfig = {

@@ -43,6 +43,7 @@ function LayoutContent({ children, currentPageName }) {
     { name: 'Contact', path: 'Contact' },
     ...(isAdmin ? [
       { name: 'Admin', path: 'Admin' },
+      { name: 'Studio Contenu', path: 'ContentStudio' },
       { name: 'Formulaires', path: 'FormBuilder' },
       { name: 'CRM', path: 'CRM' }
     ] : [])
