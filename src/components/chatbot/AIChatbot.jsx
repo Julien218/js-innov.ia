@@ -150,7 +150,9 @@ export default function AIChatbot() {
         add_context_from_internet: false
       });
 
-      const assistantMessage = response.data || 'Désolé, je n\'ai pas pu générer une réponse. Pouvez-vous reformuler ?';
+      const assistantMessage = typeof response.data === 'string' 
+        ? response.data 
+        : (response.data?.response || response.data?.content || 'Je suis ravi de vous aider ! Pouvez-vous me donner plus de détails sur ce que vous recherchez ?');
       setMessages(prev => [...prev, { 
         role: 'assistant', 
         content: assistantMessage
