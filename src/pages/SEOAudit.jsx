@@ -10,6 +10,7 @@ import PowerWord from '../components/shared/PowerWord';
 export default function SEOAudit() {
   const [url, setUrl] = useState('');
   const [email, setEmail] = useState('');
+  const [competitors, setCompetitors] = useState(['', '', '']);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [report, setReport] = useState(null);
   const [error, setError] = useState(null);
@@ -27,9 +28,11 @@ export default function SEOAudit() {
     setEmailSent(false);
 
     try {
+      const competitorUrls = competitors.filter(c => c.trim()).map(c => c.trim());
       const response = await base44.functions.invoke('analyzeSEO', { 
         url: url.trim(),
-        email: email.trim()
+        email: email.trim(),
+        competitors: competitorUrls
       });
       
       // Validation de la réponse
@@ -105,11 +108,30 @@ export default function SEOAudit() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && analyzeWebsite()}
                 placeholder="votre@email.com"
                 className="w-full bg-black/30 border-gray-700 text-white text-lg py-6"
                 disabled={isAnalyzing}
               />
+              
+              <div className="pt-4 border-t border-gray-700">
+                <h4 className="text-sm font-medium text-gray-300 mb-3">🔍 Analyse Comparative (optionnel)</h4>
+                <p className="text-xs text-gray-500 mb-3">Ajoutez jusqu'à 3 sites concurrents pour une analyse comparative</p>
+                {competitors.map((comp, index) => (
+                  <Input
+                    key={index}
+                    type="url"
+                    value={comp}
+                    onChange={(e) => {
+                      const newCompetitors = [...competitors];
+                      newCompetitors[index] = e.target.value;
+                      setCompetitors(newCompetitors);
+                    }}
+                    placeholder={`Concurrent ${index + 1}: https://...`}
+                    className="w-full bg-black/30 border-gray-700 text-white py-3 mb-2"
+                    disabled={isAnalyzing}
+                  />
+                ))}
+              </div>
               <Button
                 onClick={analyzeWebsite}
                 disabled={isAnalyzing || !url.trim() || !email.trim()}
@@ -284,6 +306,91 @@ export default function SEOAudit() {
                       </li>
                     ))}
                   </ul>
+                </div>
+              )}
+
+              {/* Analyse Comparative */}
+              {report.comparison && report.comparison.length > 0 && (
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-purple-500/20">
+                  <div className="flex items-center gap-3 mb-4">
+                    <TrendingUp className="w-6 h-6 text-cyan-400" />
+                    <h3 className="text-xl font-bold text-white">Analyse Comparative</h3>
+                  </div>
+                  <div className="space-y-6">
+                    {/* Tableau comparatif */}
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-gray-700">
+                            <th className="text-left py-3 px-4 text-gray-400">Site</th>
+                            <th className="text-center py-3 px-4 text-gray-400">Score Global</th>
+                            <th className="text-center py-3 px-4 text-gray-400">Technique</th>
+                            <th className="text-center py-3 px-4 text-gray-400">Contenu</th>
+                            <th className="text-center py-3 px-4 text-gray-400">Performance</th>
+                            <th className="text-center py-3 px-4 text-gray-400">Accessibilité</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b border-gray-700 bg-pink-500/10">
+                            <td className="py-3 px-4 font-semibold text-pink-400">Votre site</td>
+                            <td className={`text-center py-3 px-4 font-bold ${getScoreColor(report.global_score)}`}>
+                              {report.global_score}
+                            </td>
+                            <td className={`text-center py-3 px-4 ${getScoreColor(report.scores.technique)}`}>
+                              {report.scores.technique}
+                            </td>
+                            <td className={`text-center py-3 px-4 ${getScoreColor(report.scores.contenu)}`}>
+                              {report.scores.contenu}
+                            </td>
+                            <td className={`text-center py-3 px-4 ${getScoreColor(report.scores.performance)}`}>
+                              {report.scores.performance}
+                            </td>
+                            <td className={`text-center py-3 px-4 ${getScoreColor(report.scores.accessibilite)}`}>
+                              {report.scores.accessibilite}
+                            </td>
+                          </tr>
+                          {report.comparison.map((comp, idx) => (
+                            <tr key={idx} className="border-b border-gray-700 hover:bg-white/5">
+                              <td className="py-3 px-4 text-gray-400">{comp.url}</td>
+                              <td className={`text-center py-3 px-4 font-bold ${getScoreColor(comp.global_score)}`}>
+                                {comp.global_score}
+                              </td>
+                              <td className={`text-center py-3 px-4 ${getScoreColor(comp.scores.technique)}`}>
+                                {comp.scores.technique}
+                              </td>
+                              <td className={`text-center py-3 px-4 ${getScoreColor(comp.scores.contenu)}`}>
+                                {comp.scores.contenu}
+                              </td>
+                              <td className={`text-center py-3 px-4 ${getScoreColor(comp.scores.performance)}`}>
+                                {comp.scores.performance}
+                              </td>
+                              <td className={`text-center py-3 px-4 ${getScoreColor(comp.scores.accessibilite)}`}>
+                                {comp.scores.accessibilite}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Insights comparatifs */}
+                    {report.competitive_insights && (
+                      <div className="space-y-3">
+                        <h4 className="font-semibold text-white">📊 Insights Comparatifs</h4>
+                        {report.competitive_insights.map((insight, idx) => (
+                          <div key={idx} className="p-4 rounded-xl bg-cyan-500/5 border border-cyan-500/20">
+                            <div className="flex items-start gap-3">
+                              <div className="text-cyan-400 font-semibold">{insight.category}</div>
+                            </div>
+                            <p className="text-gray-300 text-sm mt-2">{insight.insight}</p>
+                            {insight.recommendation && (
+                              <p className="text-cyan-400 text-sm mt-2">💡 {insight.recommendation}</p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
 

@@ -3,7 +3,7 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.4';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { url, email } = await req.json();
+    const { url, email, competitors = [] } = await req.json();
 
     if (!url || !email) {
       return Response.json({ error: 'URL et email requis' }, { status: 400 });
@@ -134,6 +134,91 @@ Sois précis, constructif et fournis des actions concrètes.`,
           }))
         : []
     };
+
+    // Analyse comparative avec concurrents
+    if (competitors && competitors.length > 0) {
+      const competitorAnalyses = [];
+      
+      for (const competitorUrl of competitors) {
+        try {
+          const compHtml = await fetch(competitorUrl).then(r => r.text()).catch(() => 'Non accessible');
+          
+          const compResponse = await base44.integrations.Core.InvokeLLM({
+            prompt: `Analyse SEO rapide pour ${competitorUrl}. HTML: ${compHtml.substring(0, 3000)}
+            
+            Fournis des scores (0-100) pour: technique, contenu, performance, accessibilité.`,
+            response_json_schema: {
+              type: 'object',
+              properties: {
+                global_score: { type: 'number' },
+                scores: {
+                  type: 'object',
+                  properties: {
+                    technique: { type: 'number' },
+                    contenu: { type: 'number' },
+                    performance: { type: 'number' },
+                    accessibilite: { type: 'number' }
+                  }
+                }
+              }
+            }
+          });
+
+          competitorAnalyses.push({
+            url: competitorUrl,
+            global_score: Number(compResponse?.global_score) || 50,
+            scores: {
+              technique: Number(compResponse?.scores?.technique) || 50,
+              contenu: Number(compResponse?.scores?.contenu) || 50,
+              performance: Number(compResponse?.scores?.performance) || 50,
+              accessibilite: Number(compResponse?.scores?.accessibilite) || 50
+            }
+          });
+        } catch (err) {
+          console.error('Erreur analyse concurrent:', err);
+        }
+      }
+
+      reportData.comparison = competitorAnalyses;
+
+      // Générer des insights comparatifs
+      const insightsPrompt = `Compare ce site avec ses concurrents:
+
+Votre site: Score ${reportData.global_score}/100
+Technique: ${reportData.scores.technique}, Contenu: ${reportData.scores.contenu}, Performance: ${reportData.scores.performance}, Accessibilité: ${reportData.scores.accessibilite}
+
+Concurrents:
+${competitorAnalyses.map(c => `${c.url}: Score ${c.global_score}/100 - Technique: ${c.scores.technique}, Contenu: ${c.scores.contenu}, Performance: ${c.scores.performance}, Accessibilité: ${c.scores.accessibilite}`).join('\n')}
+
+Fournis 3-4 insights comparatifs sur les forces/faiblesses relatives et opportunités d'amélioration.`;
+
+      try {
+        const insightsResponse = await base44.integrations.Core.InvokeLLM({
+          prompt: insightsPrompt,
+          response_json_schema: {
+            type: 'object',
+            properties: {
+              insights: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    category: { type: 'string' },
+                    insight: { type: 'string' },
+                    recommendation: { type: 'string' }
+                  }
+                }
+              }
+            }
+          }
+        });
+
+        reportData.competitive_insights = insightsResponse?.insights || [];
+      } catch (err) {
+        console.error('Erreur insights:', err);
+        reportData.competitive_insights = [];
+      }
+    }
 
     // Sauvegarder le lead
     await base44.asServiceRole.entities.SEOLead.create({
