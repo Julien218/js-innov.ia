@@ -38,8 +38,8 @@ export default function AIAvatar({ onClick, showWelcome, isSpeaking }) {
         }}
         className="fixed bottom-6 right-6 cursor-pointer"
         style={{
-          width: '150px',
-          height: '150px',
+          width: '180px',
+          height: '180px',
           filter: `brightness(${brightness}) drop-shadow(0 0 ${isSpeaking ? '50px' : '30px'} rgba(6,255,165,${isSpeaking ? '1' : '0.6'}))`,
           zIndex: 9999,
         }}
