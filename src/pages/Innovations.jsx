@@ -27,6 +27,16 @@ export default function Innovations() {
 
   const categories = ['all', 'IA Générative', 'Automatisation', 'Vision par ordinateur', 'NLP', 'Robotique', 'Autre'];
 
+  const categoryDescriptions = {
+    'all': 'Toutes nos innovations en intelligence artificielle',
+    'IA Générative': 'Création de contenu texte, image, vidéo par IA',
+    'Automatisation': 'Optimisez vos processus avec l\'intelligence artificielle',
+    'Vision par ordinateur': 'Reconnaissance d\'images et analyse visuelle',
+    'NLP': 'Traitement et compréhension du langage naturel',
+    'Robotique': 'IA appliquée aux systèmes robotiques autonomes',
+    'Autre': 'Autres innovations et technologies émergentes'
+  };
+
   const filteredInnovations = selectedCategory === 'all'
     ? innovations
     : innovations.filter(i => i.category === selectedCategory);
@@ -42,20 +52,35 @@ export default function Innovations() {
         />
 
         {/* Category Filter */}
-        <div className="flex flex-wrap gap-3 justify-center mb-16">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
-                selectedCategory === category
-                  ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg shadow-pink-500/30'
-                  : 'bg-white/5 text-gray-400 border border-purple-500/20 hover:border-pink-500/50'
-              }`}
-            >
-              {category === 'all' ? 'Toutes' : category}
-            </button>
-          ))}
+        <div className="mb-16">
+          <div className="flex flex-wrap gap-3 justify-center mb-6">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+                  selectedCategory === category
+                    ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg shadow-pink-500/30'
+                    : 'bg-white/5 text-gray-400 border border-purple-500/20 hover:border-pink-500/50'
+                }`}
+              >
+                {category === 'all' ? 'Toutes' : category}
+              </button>
+            ))}
+          </div>
+          
+          {/* Category Description */}
+          <motion.div
+            key={selectedCategory}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-center"
+          >
+            <p className="text-gray-400 text-sm italic">
+              {categoryDescriptions[selectedCategory]}
+            </p>
+          </motion.div>
         </div>
 
         {/* Innovations Grid */}
