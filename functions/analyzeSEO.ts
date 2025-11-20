@@ -151,12 +151,14 @@ Sois précis, constructif et fournis des actions concrètes.`,
 
         <div style="margin-bottom: 30px;">
           <h2 style="color: #8338ec; border-bottom: 2px solid #8338ec; padding-bottom: 10px;">📊 Scores Détaillés</h2>
-          ${Object.entries(reportData.scores || {}).map(([cat, score]) => `
+          ${Object.entries(reportData.scores || {}).map(([cat, score]) => {
+            const safeScore = score || 50;
+            return `
             <div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); margin-bottom: 10px; border-radius: 8px;">
               <span style="text-transform: capitalize;">${cat.replace('_', ' ')}</span>
-              <strong style="color: ${score >= 80 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444'};">${score}%</strong>
+              <strong style="color: ${safeScore >= 80 ? '#10b981' : safeScore >= 50 ? '#f59e0b' : '#ef4444'};">${safeScore}%</strong>
             </div>
-          `).join('')}
+          `;}).join('')}
         </div>
 
         ${reportData.strengths?.length ? `
@@ -180,13 +182,20 @@ Sois précis, constructif et fournis des actions concrètes.`,
         ${reportData.recommendations?.length ? `
           <div style="margin-bottom: 30px;">
             <h2 style="color: #8338ec; border-bottom: 2px solid #8338ec; padding-bottom: 10px;">🚀 Recommandations</h2>
-            ${reportData.recommendations.slice(0, 5).map(rec => `
-              <div style="background: rgba(255,255,255,0.05); padding: 15px; margin-bottom: 15px; border-radius: 10px; border-left: 4px solid ${rec.priority === 'high' ? '#ef4444' : rec.priority === 'medium' ? '#f59e0b' : '#3b82f6'};">
-                <strong style="color: #fff;">${rec.title}</strong>
-                <p style="color: #aaa; margin: 5px 0;">${rec.description}</p>
-                <small style="color: #666;">💡 ${rec.impact}</small>
+            ${reportData.recommendations.slice(0, 5).map(rec => {
+              const safeRec = {
+                title: rec?.title || 'Recommandation',
+                description: rec?.description || 'Amélioration suggérée',
+                priority: rec?.priority || 'medium',
+                impact: rec?.impact || 'Optimisation SEO'
+              };
+              return `
+              <div style="background: rgba(255,255,255,0.05); padding: 15px; margin-bottom: 15px; border-radius: 10px; border-left: 4px solid ${safeRec.priority === 'high' ? '#ef4444' : safeRec.priority === 'medium' ? '#f59e0b' : '#3b82f6'};">
+                <strong style="color: #fff;">${safeRec.title}</strong>
+                <p style="color: #aaa; margin: 5px 0;">${safeRec.description}</p>
+                <small style="color: #666;">💡 ${safeRec.impact}</small>
               </div>
-            `).join('')}
+            `;}).join('')}
           </div>
         ` : ''}
 
