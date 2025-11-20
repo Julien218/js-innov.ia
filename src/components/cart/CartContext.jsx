@@ -60,6 +60,10 @@ export function CartProvider({ children }) {
     return cartItems.reduce((count, item) => count + item.quantity, 0);
   };
 
+  const isInCart = (productId) => {
+    return cartItems.some(item => item.id === productId);
+  };
+
   return (
     <CartContext.Provider value={{
       cartItems,
@@ -68,7 +72,8 @@ export function CartProvider({ children }) {
       updateQuantity,
       clearCart,
       getCartTotal,
-      getCartCount
+      getCartCount,
+      isInCart
     }}>
       {children}
     </CartContext.Provider>
