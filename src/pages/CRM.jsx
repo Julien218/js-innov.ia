@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Users, Eye, MessageSquare, Filter } from 'lucide-react';
+import { Users, Eye, MessageSquare, Filter, TrendingUp, Clock, CheckCircle2, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -58,6 +58,33 @@ export default function CRM() {
     'Fermé': 'bg-gray-600/20 text-gray-300 border-gray-500/30'
   };
 
+  const stats = [
+    { 
+      icon: TrendingUp, 
+      label: 'Total Leads', 
+      value: submissions.length,
+      color: 'from-pink-600 to-purple-600'
+    },
+    { 
+      icon: Clock, 
+      label: 'En attente', 
+      value: submissions.filter(s => s.status === 'Nouveau').length,
+      color: 'from-blue-600 to-cyan-600'
+    },
+    { 
+      icon: Zap, 
+      label: 'En cours', 
+      value: submissions.filter(s => s.status === 'En cours').length,
+      color: 'from-yellow-600 to-orange-600'
+    },
+    { 
+      icon: CheckCircle2, 
+      label: 'Traités', 
+      value: submissions.filter(s => s.status === 'Traité').length,
+      color: 'from-green-600 to-emerald-600'
+    }
+  ];
+
   if (!user) return null;
 
   return (
@@ -68,6 +95,44 @@ export default function CRM() {
           title="CRM - Suivi des Soumissions"
           subtitle="Gérez vos leads et demandes clients"
         />
+
+        {/* Stats Cards with Halo Effect */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {stats.map((stat, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="group relative"
+            >
+              <style jsx>{`
+                @keyframes halo-pulse {
+                  0%, 100% {
+                    box-shadow: 0 0 20px rgba(255, 0, 110, 0.3),
+                                0 0 40px rgba(131, 56, 236, 0.2),
+                                0 0 60px rgba(255, 0, 110, 0.1);
+                  }
+                  50% {
+                    box-shadow: 0 0 30px rgba(255, 0, 110, 0.5),
+                                0 0 60px rgba(131, 56, 236, 0.3),
+                                0 0 80px rgba(255, 0, 110, 0.2);
+                  }
+                }
+                .halo-card {
+                  animation: halo-pulse 3s ease-in-out infinite;
+                }
+              `}</style>
+              <div className="halo-card relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-purple-500/20 hover:border-pink-500/50 p-6 transition-all duration-300 hover:scale-105">
+                <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${stat.color} bg-opacity-20 mb-4`}>
+                  <stat.icon className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
+                <div className="text-sm text-gray-400">{stat.label}</div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
         {/* Filters */}
         <motion.div
