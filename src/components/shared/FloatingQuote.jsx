@@ -5,14 +5,14 @@ import { Sparkles } from 'lucide-react';
 
 export default function FloatingQuote() {
   const quotes = [
-    <span>L'<PowerWord>IA</PowerWord> n'est pas le futur, c'est le <PowerWord>présent</PowerWord>.</span>,
-    <span><PowerWord>Transformez</PowerWord> vos idées en <PowerWord>réalité</PowerWord> avec l'IA.</span>,
-    <span>L'<PowerWord>innovation</PowerWord> commence par l'<PowerWord>intelligence artificielle</PowerWord>.</span>,
-    <span><PowerWord>Automatisez</PowerWord> le possible, <PowerWord>créez</PowerWord> l'impossible.</span>,
-    <span>L'IA : votre <PowerWord>partenaire</PowerWord> de <PowerWord>croissance</PowerWord>.</span>,
-    <span><PowerWord>Pensez digital</PowerWord>, <PowerWord>agissez intelligent</PowerWord>.</span>,
-    <span>Chaque <PowerWord>projet</PowerWord> mérite l'<PowerWord>excellence de l'IA</PowerWord>.</span>,
-    <span>L'<PowerWord>avenir</PowerWord> appartient à ceux qui <PowerWord>innovent</PowerWord>.</span>
+    <span><PowerWord>JS-INNOV.IA</PowerWord> : Créations artistiques et <PowerWord>automatisations intelligentes</PowerWord>.</span>,
+    <span>Avec <PowerWord>JS-INNOV.IA</PowerWord>, <PowerWord>transformez</PowerWord> vos idées en <PowerWord>réalité</PowerWord>.</span>,
+    <span><PowerWord>JS-INNOV.IA</PowerWord> : Votre partenaire <PowerWord>innovation</PowerWord> et <PowerWord>IA</PowerWord>.</span>,
+    <span><PowerWord>Templates</PowerWord>, <PowerWord>automatisations</PowerWord>, <PowerWord>applications</PowerWord> : tout avec <PowerWord>JS-INNOV.IA</PowerWord>.</span>,
+    <span><PowerWord>Innovons</PowerWord> ensemble pour un <PowerWord>futur digital</PowerWord> - <PowerWord>JS-INNOV.IA</PowerWord>.</span>,
+    <span><PowerWord>JS-INNOV.IA</PowerWord> : L'<PowerWord>excellence IA</PowerWord> à votre service.</span>,
+    <span>Chaque <PowerWord>projet</PowerWord> unique mérite <PowerWord>JS-INNOV.IA</PowerWord>.</span>,
+    <span><PowerWord>JS-INNOV.IA</PowerWord> : Là où l'<PowerWord>art</PowerWord> rencontre l'<PowerWord>intelligence</PowerWord>.</span>
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
