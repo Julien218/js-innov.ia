@@ -5,6 +5,7 @@ import SectionHeader from '../components/shared/SectionHeader';
 import ShowcaseCard from '../components/showcase/ShowcaseCard';
 import ShowcaseFilters from '../components/showcase/ShowcaseFilters';
 import AITagSuggester from '../components/showcase/AITagSuggester';
+import ShowcaseSEOWrapper from '../components/seo/ShowcaseSEOWrapper';
 import { motion } from 'framer-motion';
 import { Sparkles, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -13,6 +14,7 @@ export default function Showcase() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedTechniques, setSelectedTechniques] = useState([]);
+  const [viewedProject, setViewedProject] = useState(null);
 
   const { data: projects = [], isLoading } = useQuery({
     queryKey: ['showcase'],
@@ -40,7 +42,8 @@ export default function Showcase() {
   const regularProjects = filteredProjects.filter(p => !p.featured);
 
   return (
-    <div className="min-h-screen py-20">
+    <ShowcaseSEOWrapper project={viewedProject}>
+      <div className="min-h-screen py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           icon={Sparkles}
@@ -86,7 +89,7 @@ export default function Showcase() {
             </h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {featuredProjects.map((project) => (
-                <ShowcaseCard key={project.id} project={project} featured />
+                <ShowcaseCard key={project.id} project={project} featured onView={setViewedProject} />
               ))}
             </div>
           </div>
@@ -119,12 +122,13 @@ export default function Showcase() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {regularProjects.map((project, index) => (
-                <ShowcaseCard key={project.id} project={project} index={index} />
+                <ShowcaseCard key={project.id} project={project} index={index} onView={setViewedProject} />
               ))}
             </div>
           )}
         </div>
       </div>
     </div>
+    </ShowcaseSEOWrapper>
   );
 }

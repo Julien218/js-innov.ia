@@ -4,11 +4,12 @@ import { ExternalLink, Calendar, Clock, Award } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
-export default function ShowcaseCard({ project, featured = false, index = 0 }) {
+export default function ShowcaseCard({ project, featured = false, index = 0, onView }) {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
     <motion.div
+      onClick={() => onView && onView(project)}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
