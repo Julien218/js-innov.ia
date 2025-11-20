@@ -6,12 +6,14 @@ import RecommendationsSection from '../components/recommendations/Recommendation
 import ProductSEOWrapper from '../components/seo/ProductSEOWrapper';
 import { useNavigationTracking } from '../components/recommendations/useRecommendations';
 import { motion } from 'framer-motion';
-import { Rocket, ExternalLink, Code2 } from 'lucide-react';
+import { Rocket, ExternalLink, Code2, ShoppingCart, Check } from 'lucide-react';
+import { useCart } from '../components/cart/CartContext';
 
 export default function Applications() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [viewedApplication, setViewedApplication] = useState(null);
   const { trackView } = useNavigationTracking();
+  const { addToCart, isInCart } = useCart();
 
   const handleApplicationClick = (application) => {
     trackView('application', application);
@@ -23,7 +25,7 @@ export default function Applications() {
     queryFn: () => base44.entities.Application.list('-created_date'),
   });
 
-  const categories = ['all', 'IA Générative', 'Assistant IA', 'Analyse de données', 'Création de contenu', 'Autre'];
+  const categories = ['all', 'IA Générative', 'Assistant IA', 'Analyse de données', 'Création de contenu', 'CRM', 'Autre'];
 
   const filteredApplications = selectedCategory === 'all'
     ? applications
@@ -145,17 +147,84 @@ export default function Applications() {
                       </div>
                     )}
 
-                    {/* Demo Link */}
-                    {app.demo_url && app.status === 'Disponible' && (
-                      <a
-                        href={app.demo_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-amber-600 to-orange-600 text-white text-sm font-medium hover:shadow-lg hover:shadow-amber-500/50 transition-all"
-                      >
-                        <span>Voir la démo</span>
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
+                    {/* Features */}
+                    {app.features && app.features.length > 0 && (
+                      <div className="mb-4 space-y-1">
+                        {app.features.slice(0, 3).map((feature, i) => (
+                          <div key={i} className="flex items-start gap-2 text-xs text-gray-400">
+                            <Check className="w-3 h-3 text-green-400 mt-0.5 flex-shrink-0" />
+                            <span>{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Price & Actions */}
+                    {app.for_sale && app.price ? (
+                      <div className="space-y-3">
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-2xl font-bold text-white">{app.price}€</span>
+                          <span className="text-xs text-gray-500">TTC</span>
+                        </div>
+                        <div className="flex gap-2">
+                          {app.demo_url && (
+                            <a
+                              href={app.demo_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-white/5 text-white text-sm font-medium hover:bg-white/10 transition-all border border-gray-700"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <ExternalLink className="w-4 h-4" />
+                              <span>Démo</span>
+                            </a>
+                          )}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (!isInCart(app.id)) {
+                                addToCart({
+                                  id: app.id,
+                                  name: app.name,
+                                  price: app.price,
+                                  image: app.image_url,
+                                  type: 'application'
+                                });
+                              }
+                            }}
+                            disabled={isInCart(app.id)}
+                            className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                              isInCart(app.id)
+                                ? 'bg-green-600/20 text-green-400 border border-green-500/30'
+                                : 'bg-gradient-to-r from-amber-600 to-orange-600 text-white hover:shadow-lg hover:shadow-amber-500/50'
+                            }`}
+                          >
+                            {isInCart(app.id) ? (
+                              <>
+                                <Check className="w-4 h-4" />
+                                <span>Ajouté</span>
+                              </>
+                            ) : (
+                              <>
+                                <ShoppingCart className="w-4 h-4" />
+                                <span>Acheter</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      app.demo_url && app.status === 'Disponible' && (
+                        <a
+                          href={app.demo_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-amber-600 to-orange-600 text-white text-sm font-medium hover:shadow-lg hover:shadow-amber-500/50 transition-all"
+                        >
+                          <span>Voir la démo</span>
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      )
                     )}
                   </div>
                 </div>
