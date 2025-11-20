@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Sparkles, Zap, Cpu } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../../utils';
+import PowerWord from '../shared/PowerWord';
 
 export default function HeroSection() {
   return (
@@ -24,7 +25,7 @@ export default function HeroSection() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-900/30 border border-purple-500/30 mb-8"
           >
             <Sparkles className="w-4 h-4 text-pink-400" />
-            <span className="text-sm text-gray-300">Intelligence Artificielle Nouvelle Génération</span>
+            <span className="text-sm text-gray-300"><PowerWord>Intelligence Artificielle</PowerWord> Nouvelle Génération</span>
           </motion.div>
 
           {/* Main Title */}
@@ -34,9 +35,9 @@ export default function HeroSection() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
           >
-            <span className="gradient-text">Innovons le futur</span>
+            <span className="gradient-text"><PowerWord>Innovons</PowerWord> le <PowerWord>futur</PowerWord></span>
             <br />
-            <span className="text-white">avec l'IA</span>
+            <span className="text-white">avec l'<PowerWord>IA</PowerWord></span>
           </motion.h1>
 
           {/* Subtitle */}
@@ -46,8 +47,8 @@ export default function HeroSection() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-xl text-gray-400 mb-12 max-w-3xl mx-auto"
           >
-            Créations artistiques, automatisations intelligentes et applications sur mesure.
-            Explorez nos solutions IA clé en main pour transformer votre vision en réalité.
+            Créations artistiques, <PowerWord>automatisations intelligentes</PowerWord> et applications sur mesure.
+            Explorez nos <PowerWord>solutions IA</PowerWord> clé en main pour <PowerWord>transformer</PowerWord> votre vision en <PowerWord>réalité</PowerWord>.
           </motion.p>
 
           {/* CTA Buttons */}
