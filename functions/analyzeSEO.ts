@@ -174,7 +174,7 @@ Sois précis, constructif et fournis des actions concrètes.`,
           <div style="margin-bottom: 30px;">
             <h2 style="color: #10b981; border-bottom: 2px solid #10b981; padding-bottom: 10px;">✅ Points Forts</h2>
             <ul style="color: #ccc;">
-              ${reportData.strengths.map(s => `<li style="margin-bottom: 8px;">${s}</li>`).join('')}
+              ${reportData.strengths.filter(s => s && typeof s === 'string').map(s => `<li style="margin-bottom: 8px;">${String(s)}</li>`).join('')}
             </ul>
           </div>
         ` : ''}
@@ -183,7 +183,7 @@ Sois précis, constructif et fournis des actions concrètes.`,
           <div style="margin-bottom: 30px;">
             <h2 style="color: #ef4444; border-bottom: 2px solid #ef4444; padding-bottom: 10px;">⚠️ Problèmes Critiques</h2>
             <ul style="color: #ccc;">
-              ${reportData.critical_issues.map(i => `<li style="margin-bottom: 8px;">${i}</li>`).join('')}
+              ${reportData.critical_issues.filter(i => i && typeof i === 'string').map(i => `<li style="margin-bottom: 8px;">${String(i)}</li>`).join('')}
             </ul>
           </div>
         ` : ''}
@@ -229,7 +229,9 @@ Sois précis, constructif et fournis des actions concrètes.`,
       body: emailHTML
     });
 
-    return Response.json(reportData);
+    // Validation finale: s'assurer qu'aucune valeur undefined n'existe
+    const cleanedReportData = JSON.parse(JSON.stringify(reportData));
+    return Response.json(cleanedReportData);
 
   } catch (error) {
     console.error('Erreur analyse SEO:', error);
