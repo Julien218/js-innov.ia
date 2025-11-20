@@ -212,10 +212,10 @@ function LayoutContent({ children, currentPageName }) {
                 >
                   <Link
                     to={createPageUrl(item.path)}
-                    className={`block px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                    className={`block px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 text-center ${
                       currentPageName === item.path
-                        ? 'bg-gradient-to-r from-amber-500 to-yellow-600 text-gray-900 shadow-lg shadow-amber-500/50'
-                        : 'bg-white/5 text-amber-400 hover:bg-white/10 hover:text-amber-300 hover:shadow-lg hover:shadow-amber-500/30'
+                        ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-gray-900 shadow-lg shadow-amber-400/50'
+                        : 'bg-white/5 text-amber-300 hover:bg-white/10 hover:text-amber-200 hover:shadow-lg hover:shadow-amber-400/30'
                     }`}
                   >
                     {item.name}
