@@ -81,16 +81,34 @@ Sois précis, constructif et fournis des actions concrètes.`,
       }
     });
 
-    // Extraire les données de la réponse de l'IA
-    let analysis;
-    if (aiResponse?.data) {
-      analysis = typeof aiResponse.data === 'string' ? JSON.parse(aiResponse.data) : aiResponse.data;
-    } else if (typeof aiResponse === 'object') {
-      analysis = aiResponse;
-    } else if (typeof aiResponse === 'string') {
-      analysis = JSON.parse(aiResponse);
-    } else {
-      analysis = {};
+    console.log('AI Response:', JSON.stringify(aiResponse));
+
+    // Extraire les données de la réponse de l'IA avec validation complète
+    let analysis = {
+      global_score: 50,
+      scores: { technique: 50, contenu: 50, performance: 50, accessibilite: 50 },
+      strengths: [],
+      critical_issues: [],
+      recommendations: []
+    };
+
+    try {
+      if (!aiResponse) {
+        console.error('aiResponse is undefined or null');
+      } else if (aiResponse.data) {
+        const dataContent = aiResponse.data;
+        if (typeof dataContent === 'string' && dataContent !== 'undefined') {
+          analysis = { ...analysis, ...JSON.parse(dataContent) };
+        } else if (typeof dataContent === 'object') {
+          analysis = { ...analysis, ...dataContent };
+        }
+      } else if (typeof aiResponse === 'object') {
+        analysis = { ...analysis, ...aiResponse };
+      } else if (typeof aiResponse === 'string' && aiResponse !== 'undefined') {
+        analysis = { ...analysis, ...JSON.parse(aiResponse) };
+      }
+    } catch (parseError) {
+      console.error('Error parsing AI response:', parseError);
     }
 
     const reportData = {
