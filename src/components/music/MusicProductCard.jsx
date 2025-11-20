@@ -1,12 +1,14 @@
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Play, Pause, Music, Clock, Activity, Check } from 'lucide-react';
+import { Play, Pause, Music, Clock, Activity, Check, ShoppingCart, CheckCircle2 } from 'lucide-react';
 import { useCart } from '../cart/CartContext';
-import { ShoppingCart } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 export default function MusicProductCard({ product, index = 0, popular = false }) {
+  const { addToCart } = useCart();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
   const audioRef = useRef(null);
 
   const handlePlayPause = () => {
@@ -134,18 +136,38 @@ export default function MusicProductCard({ product, index = 0, popular = false }
             </div>
           )}
 
-          {/* Price & Checkout */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-800">
-            <div>
-              <div className="text-2xl font-bold text-white">{product.price}€</div>
-              <div className="text-xs text-gray-500">Paiement unique</div>
+          {/* Price & Add to Cart */}
+          <div className="pt-4 border-t border-gray-800">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <div className="text-2xl font-bold text-white">{product.price}€</div>
+                <div className="text-xs text-gray-500">Paiement unique</div>
+              </div>
             </div>
-            <CheckoutButton
-              productName={product.title}
-              amount={product.price}
-              stripePriceId={product.stripe_price_id}
-              className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700"
-            />
+            <Button 
+              onClick={() => {
+                addToCart(product);
+                setIsAdded(true);
+                setTimeout(() => setIsAdded(false), 2000);
+              }}
+              className={`w-full transition-all ${
+                isAdded 
+                  ? 'bg-green-600 hover:bg-green-700' 
+                  : 'bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700'
+              }`}
+            >
+              {isAdded ? (
+                <>
+                  <CheckCircle2 className="w-4 h-4 mr-2" />
+                  Ajouté au panier
+                </>
+              ) : (
+                <>
+                  <ShoppingCart className="w-4 h-4 mr-2" />
+                  Ajouter au panier
+                </>
+              )}
+            </Button>
           </div>
         </div>
 
