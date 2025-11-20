@@ -24,8 +24,10 @@ Deno.serve(async (req) => {
     }
 
     // Analyser avec l'IA
-    const aiResponse = await base44.integrations.Core.InvokeLLM({
-      prompt: `Tu es un expert SEO. Analyse ce site web et fournis un rapport détaillé.
+    let aiResponse;
+    try {
+      aiResponse = await base44.integrations.Core.InvokeLLM({
+        prompt: `Tu es un expert SEO. Analyse ce site web et fournis un rapport détaillé.
 
 URL: ${url}
 HTML: ${html.substring(0, 5000)}
@@ -44,49 +46,53 @@ Identifie:
 - Recommandations d'amélioration avec priorité (high/medium/low)
 
 Sois précis, constructif et fournis des actions concrètes.`,
-      response_json_schema: {
-        type: 'object',
-        properties: {
-          global_score: { type: 'number' },
-          scores: {
-            type: 'object',
-            properties: {
-              technique: { type: 'number' },
-              contenu: { type: 'number' },
-              performance: { type: 'number' },
-              accessibilite: { type: 'number' }
-            }
-          },
-          strengths: {
-            type: 'array',
-            items: { type: 'string' }
-          },
-          critical_issues: {
-            type: 'array',
-            items: { type: 'string' }
-          },
-          recommendations: {
-            type: 'array',
-            items: {
+        response_json_schema: {
+          type: 'object',
+          properties: {
+            global_score: { type: 'number' },
+            scores: {
               type: 'object',
               properties: {
-                title: { type: 'string' },
-                description: { type: 'string' },
-                priority: { type: 'string' },
-                impact: { type: 'string' }
+                technique: { type: 'number' },
+                contenu: { type: 'number' },
+                performance: { type: 'number' },
+                accessibilite: { type: 'number' }
+              }
+            },
+            strengths: {
+              type: 'array',
+              items: { type: 'string' }
+            },
+            critical_issues: {
+              type: 'array',
+              items: { type: 'string' }
+            },
+            recommendations: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  title: { type: 'string' },
+                  description: { type: 'string' },
+                  priority: { type: 'string' },
+                  impact: { type: 'string' }
+                }
               }
             }
           }
         }
-      }
-    });
+      });
+    } catch (llmError) {
+      console.error('LLM Error:', llmError);
+      aiResponse = null;
+    }
 
     // Extraire les données de la réponse de l'IA avec validation complète
-    let analysis = {
+    const analysis = {
       global_score: 50,
       scores: { technique: 50, contenu: 50, performance: 50, accessibilite: 50 },
       strengths: ['Site accessible'],
-      critical_issues: ['Analyse automatique en cours'],
+      critical_issues: ['Analyse en cours'],
       recommendations: [
         {
           title: 'Optimisation recommandée',
@@ -97,23 +103,13 @@ Sois précis, constructif et fournis des actions concrètes.`,
       ]
     };
 
-    try {
-      // L'API InvokeLLM avec response_json_schema retourne directement l'objet
-      if (aiResponse && typeof aiResponse === 'object' && !aiResponse.data) {
-        // Réponse directe de l'objet
-        analysis = { ...analysis, ...aiResponse };
-      } else if (aiResponse && aiResponse.data) {
-        // Réponse encapsulée dans .data
-        const dataContent = aiResponse.data;
-        if (typeof dataContent === 'object' && dataContent !== null) {
-          analysis = { ...analysis, ...dataContent };
-        } else if (typeof dataContent === 'string' && dataContent.trim() && dataContent !== 'undefined') {
-          analysis = { ...analysis, ...JSON.parse(dataContent) };
-        }
-      }
-    } catch (parseError) {
-      console.error('Error parsing AI response:', parseError, 'Raw response:', aiResponse);
-      // Garder les valeurs par défaut
+    // Merger avec la réponse de l'IA si disponible
+    if (aiResponse && typeof aiResponse === 'object') {
+      if (aiResponse.global_score) analysis.global_score = aiResponse.global_score;
+      if (aiResponse.scores) analysis.scores = { ...analysis.scores, ...aiResponse.scores };
+      if (aiResponse.strengths?.length) analysis.strengths = aiResponse.strengths;
+      if (aiResponse.critical_issues?.length) analysis.critical_issues = aiResponse.critical_issues;
+      if (aiResponse.recommendations?.length) analysis.recommendations = aiResponse.recommendations;
     }
 
     const reportData = {
