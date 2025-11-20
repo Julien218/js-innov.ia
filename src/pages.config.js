@@ -7,6 +7,7 @@ import Contact from './pages/Contact';
 import PaymentSuccess from './pages/PaymentSuccess';
 import PaymentCancel from './pages/PaymentCancel';
 import News from './pages/News';
+import Showcase from './pages/Showcase';
 import __Layout from './Layout.jsx';
 
 
@@ -20,6 +21,7 @@ export const PAGES = {
     "PaymentSuccess": PaymentSuccess,
     "PaymentCancel": PaymentCancel,
     "News": News,
+    "Showcase": Showcase,
 }
 
 export const pagesConfig = {

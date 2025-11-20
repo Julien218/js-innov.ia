@@ -74,6 +74,7 @@ export default function Layout({ children, currentPageName }) {
     { name: 'Accueil', path: 'Home' },
     { name: 'Actualités IA', path: 'News' },
     { name: 'Innovations', path: 'Innovations' },
+    { name: 'Portfolio', path: 'Showcase' },
     { name: 'Templates', path: 'Templates' },
     { name: 'Automatisations', path: 'Automations' },
     { name: 'Applications', path: 'Applications' },
