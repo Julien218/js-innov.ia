@@ -5,7 +5,7 @@ import { Menu, X, Sparkles, ShoppingCart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AIChatbot from './components/chatbot/AIChatbot';
 import PowerWord from './components/shared/PowerWord';
-import FloatingQuote from './components/shared/FloatingQuote';
+
 import { CartProvider, useCart } from './components/cart/CartContext';
 import { base44 } from '@/api/base44Client';
 
@@ -324,9 +324,6 @@ function LayoutContent({ children, currentPageName }) {
 
       {/* AI Chatbot */}
       <AIChatbot />
-
-      {/* Floating Quote */}
-      <FloatingQuote />
       </div>
       );
       }
