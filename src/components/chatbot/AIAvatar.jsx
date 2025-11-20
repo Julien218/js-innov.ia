@@ -55,7 +55,7 @@ export default function AIAvatar({ onClick, showWelcome }) {
         }}
       >
         <img
-          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/691d332d17337e06a0c04ae3/cd1069b69_avatar.png"
+          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/691d332d17337e06a0c04ae3/dfb5c5ef3_Designsanstitre.png"
           alt="Assistant IA"
           className="w-full h-full object-contain"
           style={{ 
