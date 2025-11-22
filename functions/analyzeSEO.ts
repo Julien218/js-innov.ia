@@ -367,16 +367,44 @@ Fournis 3-4 insights comparatifs sur les forces/faiblesses relatives et opportun
       console.error('Erreur envoi email:', emailError);
     }
 
-    // Validation finale: convertir en JSON et parser pour garantir qu'aucun undefined n'existe
-    const safeStringify = (obj) => {
-      return JSON.parse(JSON.stringify(obj, (key, value) => {
-        if (value === undefined || value === null) return undefined;
-        if (typeof value === 'number' && (isNaN(value) || !isFinite(value))) return 50;
-        return value;
-      }));
+    // Validation finale: nettoyage récursif pour éliminer tous les undefined
+    const deepClean = (obj) => {
+      if (obj === null || obj === undefined) {
+        return null;
+      }
+      
+      if (typeof obj === 'number') {
+        return isNaN(obj) || !isFinite(obj) ? 0 : obj;
+      }
+      
+      if (typeof obj === 'string') {
+        return obj;
+      }
+      
+      if (typeof obj === 'boolean') {
+        return obj;
+      }
+      
+      if (Array.isArray(obj)) {
+        return obj
+          .filter(item => item !== undefined && item !== null)
+          .map(item => deepClean(item));
+      }
+      
+      if (typeof obj === 'object') {
+        const cleaned = {};
+        for (const [key, value] of Object.entries(obj)) {
+          if (value !== undefined && value !== null) {
+            cleaned[key] = deepClean(value);
+          }
+        }
+        return cleaned;
+      }
+      
+      return obj;
     };
     
-    const cleanedReportData = safeStringify(reportData);
+    const cleanedReportData = deepClean(reportData);
     return Response.json(cleanedReportData);
 
   } catch (error) {
