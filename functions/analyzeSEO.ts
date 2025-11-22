@@ -136,53 +136,65 @@ Sois précis, constructif et fournis des actions concrètes.`,
     };
 
     // Analyse comparative avec concurrents
-    if (competitors && competitors.length > 0) {
-      const competitorAnalyses = [];
-      
-      for (const competitorUrl of competitors) {
-        try {
-          const compHtml = await fetch(competitorUrl).then(r => r.text()).catch(() => 'Non accessible');
-          
-          const compResponse = await base44.integrations.Core.InvokeLLM({
-            prompt: `Analyse SEO rapide pour ${competitorUrl}. HTML: ${compHtml.substring(0, 3000)}
+    if (competitors && Array.isArray(competitors) && competitors.length > 0) {
+      try {
+        const competitorAnalyses = [];
+        
+        for (const competitorUrl of competitors.slice(0, 3)) {
+          try {
+            let compHtml = 'Non accessible';
+            try {
+              const compFetch = await fetch(competitorUrl, { 
+                signal: AbortSignal.timeout(8000),
+                headers: { 'User-Agent': 'Mozilla/5.0' }
+              });
+              compHtml = await compFetch.text();
+            } catch (fetchErr) {
+              console.log('Fetch competitor failed:', competitorUrl);
+            }
             
-            Fournis des scores (0-100) pour: technique, contenu, performance, accessibilité.`,
-            response_json_schema: {
-              type: 'object',
-              properties: {
-                global_score: { type: 'number' },
-                scores: {
-                  type: 'object',
-                  properties: {
-                    technique: { type: 'number' },
-                    contenu: { type: 'number' },
-                    performance: { type: 'number' },
-                    accessibilite: { type: 'number' }
+            const compResponse = await base44.integrations.Core.InvokeLLM({
+              prompt: `Analyse SEO rapide pour ${competitorUrl}. HTML: ${compHtml.substring(0, 3000)}
+              
+              Fournis des scores (0-100) pour: technique, contenu, performance, accessibilité et un score global.`,
+              response_json_schema: {
+                type: 'object',
+                properties: {
+                  global_score: { type: 'number' },
+                  scores: {
+                    type: 'object',
+                    properties: {
+                      technique: { type: 'number' },
+                      contenu: { type: 'number' },
+                      performance: { type: 'number' },
+                      accessibilite: { type: 'number' }
+                    }
                   }
                 }
               }
-            }
-          });
+            });
 
-          competitorAnalyses.push({
-            url: competitorUrl,
-            global_score: Number(compResponse?.global_score) || 50,
-            scores: {
-              technique: Number(compResponse?.scores?.technique) || 50,
-              contenu: Number(compResponse?.scores?.contenu) || 50,
-              performance: Number(compResponse?.scores?.performance) || 50,
-              accessibilite: Number(compResponse?.scores?.accessibilite) || 50
-            }
-          });
-        } catch (err) {
-          console.error('Erreur analyse concurrent:', err);
+            competitorAnalyses.push({
+              url: String(competitorUrl),
+              global_score: Number(compResponse?.global_score) || 50,
+              scores: {
+                technique: Number(compResponse?.scores?.technique) || 50,
+                contenu: Number(compResponse?.scores?.contenu) || 50,
+                performance: Number(compResponse?.scores?.performance) || 50,
+                accessibilite: Number(compResponse?.scores?.accessibilite) || 50
+              }
+            });
+          } catch (compErr) {
+            console.error('Erreur analyse concurrent:', competitorUrl, compErr);
+          }
         }
-      }
 
-      reportData.comparison = competitorAnalyses;
+        if (competitorAnalyses.length > 0) {
+          reportData.comparison = competitorAnalyses;
 
-      // Générer des insights comparatifs
-      const insightsPrompt = `Compare ce site avec ses concurrents:
+          // Générer des insights comparatifs
+          try {
+            const insightsPrompt = `Compare ce site avec ses concurrents:
 
 Votre site: Score ${reportData.global_score}/100
 Technique: ${reportData.scores.technique}, Contenu: ${reportData.scores.contenu}, Performance: ${reportData.scores.performance}, Accessibilité: ${reportData.scores.accessibilite}
@@ -192,31 +204,40 @@ ${competitorAnalyses.map(c => `${c.url}: Score ${c.global_score}/100 - Technique
 
 Fournis 3-4 insights comparatifs sur les forces/faiblesses relatives et opportunités d'amélioration.`;
 
-      try {
-        const insightsResponse = await base44.integrations.Core.InvokeLLM({
-          prompt: insightsPrompt,
-          response_json_schema: {
-            type: 'object',
-            properties: {
-              insights: {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  properties: {
-                    category: { type: 'string' },
-                    insight: { type: 'string' },
-                    recommendation: { type: 'string' }
+            const insightsResponse = await base44.integrations.Core.InvokeLLM({
+              prompt: insightsPrompt,
+              response_json_schema: {
+                type: 'object',
+                properties: {
+                  insights: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        category: { type: 'string' },
+                        insight: { type: 'string' },
+                        recommendation: { type: 'string' }
+                      }
+                    }
                   }
                 }
               }
-            }
-          }
-        });
+            });
 
-        reportData.competitive_insights = insightsResponse?.insights || [];
-      } catch (err) {
-        console.error('Erreur insights:', err);
-        reportData.competitive_insights = [];
+            reportData.competitive_insights = Array.isArray(insightsResponse?.insights) 
+              ? insightsResponse.insights.map(ins => ({
+                  category: String(ins?.category || 'Comparaison'),
+                  insight: String(ins?.insight || ''),
+                  recommendation: String(ins?.recommendation || '')
+                }))
+              : [];
+          } catch (insightsErr) {
+            console.error('Erreur insights:', insightsErr);
+            reportData.competitive_insights = [];
+          }
+        }
+      } catch (comparisonErr) {
+        console.error('Erreur analyse comparative:', comparisonErr);
       }
     }
 
