@@ -131,20 +131,22 @@ Points forts (strengths), problèmes critiques (critical_issues), recommandation
       analyzed_at: new Date().toISOString(),
       global_score: Number(analysis.global_score) || 50,
       scores: {
-        technique: Number(analysis.scores?.technique) || 50,
-        contenu: Number(analysis.scores?.contenu) || 50,
-        performance: Number(analysis.scores?.performance) || 50,
-        accessibilite: Number(analysis.scores?.accessibilite) || 50
+        technique: Number(analysis.scores?.technique || 50),
+        contenu: Number(analysis.scores?.contenu || 50),
+        performance: Number(analysis.scores?.performance || 50),
+        accessibilite: Number(analysis.scores?.accessibilite || 50)
       },
-      strengths: Array.isArray(analysis.strengths) ? analysis.strengths.filter(s => s) : [],
-      critical_issues: Array.isArray(analysis.critical_issues) ? analysis.critical_issues.filter(i => i) : [],
+      strengths: Array.isArray(analysis.strengths) ? analysis.strengths.filter(s => s && typeof s === 'string') : [],
+      critical_issues: Array.isArray(analysis.critical_issues) ? analysis.critical_issues.filter(i => i && typeof i === 'string') : [],
       recommendations: Array.isArray(analysis.recommendations) 
-        ? analysis.recommendations.filter(r => r).map(rec => ({
-            title: String(rec.title || 'Recommandation'),
-            description: String(rec.description || 'Amélioration suggérée'),
-            priority: String(rec.priority || 'medium'),
-            impact: String(rec.impact || 'Optimisation SEO')
-          }))
+        ? analysis.recommendations
+            .filter(r => r && typeof r === 'object')
+            .map(rec => ({
+              title: String(rec.title || 'Recommandation'),
+              description: String(rec.description || 'Amélioration suggérée'),
+              priority: String(rec.priority || 'medium'),
+              impact: String(rec.impact || 'Optimisation SEO')
+            }))
         : []
     };
 
@@ -192,13 +194,13 @@ Points forts (strengths), problèmes critiques (critical_issues), recommandation
             const compScores = compResponse?.scores || {};
 
             competitorAnalyses.push({
-              url: String(competitorUrl),
-              global_score: compGlobalScore,
+              url: String(competitorUrl || ''),
+              global_score: Number(compGlobalScore) || 50,
               scores: {
-                technique: typeof compScores.technique === 'number' ? compScores.technique : 50,
-                contenu: typeof compScores.contenu === 'number' ? compScores.contenu : 50,
-                performance: typeof compScores.performance === 'number' ? compScores.performance : 50,
-                accessibilite: typeof compScores.accessibilite === 'number' ? compScores.accessibilite : 50
+                technique: Number(compScores.technique) || 50,
+                contenu: Number(compScores.contenu) || 50,
+                performance: Number(compScores.performance) || 50,
+                accessibilite: Number(compScores.accessibilite) || 50
               }
             });
           } catch (compErr) {
