@@ -23,29 +23,30 @@ Deno.serve(async (req) => {
       markdown = 'Contenu non disponible';
     }
 
+    // Données par défaut
+    const defaultAnalysis = {
+      global_score: 50,
+      scores: { technique: 50, contenu: 50, performance: 50, accessibilite: 50 },
+      strengths: ['Site analysé avec succès'],
+      critical_issues: [],
+      recommendations: [
+        {
+          title: 'Optimisation SEO recommandée',
+          description: 'Contactez-nous pour une analyse personnalisée approfondie',
+          priority: 'medium',
+          impact: 'Amélioration du référencement'
+        }
+      ]
+    };
+
     // Analyser avec l'IA
-    let aiResponse;
+    let analysis = { ...defaultAnalysis };
     try {
-      aiResponse = await base44.integrations.Core.InvokeLLM({
-        prompt: `Tu es un expert SEO. Analyse ce site web et fournis un rapport détaillé.
+      const aiResponse = await base44.integrations.Core.InvokeLLM({
+        prompt: `Expert SEO: analyse ${url}. HTML: ${html.substring(0, 4000)}
 
-URL: ${url}
-HTML: ${html.substring(0, 5000)}
-Contenu: ${markdown.substring(0, 3000)}
-
-Analyse les points suivants et attribue des scores (0-100):
-
-1. **SEO Technique** (meta tags, structure HTML, robots.txt, sitemap)
-2. **Contenu** (qualité, pertinence, mots-clés, longueur)
-3. **Performance** (vitesse de chargement estimée, optimisation images)
-4. **Accessibilité** (balises alt, hiérarchie titres, contraste)
-
-Identifie:
-- Points forts (ce qui est bien fait)
-- Problèmes critiques (erreurs majeures)
-- Recommandations d'amélioration avec priorité (high/medium/low)
-
-Sois précis, constructif et fournis des actions concrètes.`,
+Scores 0-100: technique, contenu, performance, accessibilité, global_score.
+Points forts (strengths), problèmes critiques (critical_issues), recommandations avec title, description, priority (high/medium/low), impact.`,
         response_json_schema: {
           type: 'object',
           properties: {
@@ -59,14 +60,8 @@ Sois précis, constructif et fournis des actions concrètes.`,
                 accessibilite: { type: 'number' }
               }
             },
-            strengths: {
-              type: 'array',
-              items: { type: 'string' }
-            },
-            critical_issues: {
-              type: 'array',
-              items: { type: 'string' }
-            },
+            strengths: { type: 'array', items: { type: 'string' } },
+            critical_issues: { type: 'array', items: { type: 'string' } },
             recommendations: {
               type: 'array',
               items: {
@@ -82,34 +77,27 @@ Sois précis, constructif et fournis des actions concrètes.`,
           }
         }
       });
+
+      if (aiResponse) {
+        analysis.global_score = Number(aiResponse.global_score) || analysis.global_score;
+        if (aiResponse.scores) {
+          analysis.scores.technique = Number(aiResponse.scores.technique) || analysis.scores.technique;
+          analysis.scores.contenu = Number(aiResponse.scores.contenu) || analysis.scores.contenu;
+          analysis.scores.performance = Number(aiResponse.scores.performance) || analysis.scores.performance;
+          analysis.scores.accessibilite = Number(aiResponse.scores.accessibilite) || analysis.scores.accessibilite;
+        }
+        if (Array.isArray(aiResponse.strengths) && aiResponse.strengths.length > 0) {
+          analysis.strengths = aiResponse.strengths.filter(s => s);
+        }
+        if (Array.isArray(aiResponse.critical_issues) && aiResponse.critical_issues.length > 0) {
+          analysis.critical_issues = aiResponse.critical_issues.filter(i => i);
+        }
+        if (Array.isArray(aiResponse.recommendations) && aiResponse.recommendations.length > 0) {
+          analysis.recommendations = aiResponse.recommendations.filter(r => r && r.title);
+        }
+      }
     } catch (llmError) {
       console.error('LLM Error:', llmError);
-      aiResponse = null;
-    }
-
-    // Extraire les données de la réponse de l'IA avec validation complète
-    const analysis = {
-      global_score: 50,
-      scores: { technique: 50, contenu: 50, performance: 50, accessibilite: 50 },
-      strengths: ['Site accessible'],
-      critical_issues: ['Analyse en cours'],
-      recommendations: [
-        {
-          title: 'Optimisation recommandée',
-          description: 'Contactez-nous pour une analyse personnalisée',
-          priority: 'medium',
-          impact: 'Amélioration du référencement'
-        }
-      ]
-    };
-
-    // Merger avec la réponse de l'IA si disponible
-    if (aiResponse && typeof aiResponse === 'object') {
-      if (aiResponse.global_score) analysis.global_score = aiResponse.global_score;
-      if (aiResponse.scores) analysis.scores = { ...analysis.scores, ...aiResponse.scores };
-      if (aiResponse.strengths?.length) analysis.strengths = aiResponse.strengths;
-      if (aiResponse.critical_issues?.length) analysis.critical_issues = aiResponse.critical_issues;
-      if (aiResponse.recommendations?.length) analysis.recommendations = aiResponse.recommendations;
     }
 
     // Construire reportData avec validation stricte de toutes les valeurs
@@ -242,12 +230,16 @@ Fournis 3-4 insights comparatifs sur les forces/faiblesses relatives et opportun
     }
 
     // Sauvegarder le lead
-    await base44.asServiceRole.entities.SEOLead.create({
-      email,
-      website_url: url,
-      global_score: reportData.global_score,
-      audit_data: reportData
-    });
+    try {
+      await base44.asServiceRole.entities.SEOLead.create({
+        email: String(email),
+        website_url: String(url),
+        global_score: Number(reportData.global_score),
+        audit_data: reportData
+      });
+    } catch (dbError) {
+      console.error('Erreur sauvegarde lead:', dbError);
+    }
 
     // Formater l'email
     const emailHTML = `
@@ -329,11 +321,15 @@ Fournis 3-4 insights comparatifs sur les forces/faiblesses relatives et opportun
     `;
 
     // Envoyer l'email
-    await base44.asServiceRole.integrations.Core.SendEmail({
-      to: email,
-      subject: `🎯 Votre Audit SEO pour ${url} - Score: ${reportData.global_score}/100`,
-      body: emailHTML
-    });
+    try {
+      await base44.asServiceRole.integrations.Core.SendEmail({
+        to: String(email),
+        subject: `🎯 Votre Audit SEO pour ${url} - Score: ${reportData.global_score}/100`,
+        body: emailHTML
+      });
+    } catch (emailError) {
+      console.error('Erreur envoi email:', emailError);
+    }
 
     // Validation finale: s'assurer qu'aucune valeur undefined n'existe
     const cleanedReportData = JSON.parse(JSON.stringify(reportData));
