@@ -42,7 +42,7 @@ Deno.serve(async (req) => {
     // Analyser avec l'IA
     let analysis = { ...defaultAnalysis };
     try {
-      const aiResponse = await base44.integrations.Core.InvokeLLM({
+      const llmResult = await base44.integrations.Core.InvokeLLM({
         prompt: `Expert SEO: analyse ${url}. HTML: ${html.substring(0, 4000)}
 
 Scores 0-100: technique, contenu, performance, accessibilité, global_score.
@@ -78,22 +78,47 @@ Points forts (strengths), problèmes critiques (critical_issues), recommandation
         }
       });
 
-      if (aiResponse) {
-        analysis.global_score = Number(aiResponse.global_score) || analysis.global_score;
-        if (aiResponse.scores) {
-          analysis.scores.technique = Number(aiResponse.scores.technique) || analysis.scores.technique;
-          analysis.scores.contenu = Number(aiResponse.scores.contenu) || analysis.scores.contenu;
-          analysis.scores.performance = Number(aiResponse.scores.performance) || analysis.scores.performance;
-          analysis.scores.accessibilite = Number(aiResponse.scores.accessibilite) || analysis.scores.accessibilite;
+      // Extraire les données - l'API peut retourner {data: {...}} ou directement {...}
+      const aiResponse = llmResult?.data || llmResult;
+      
+      if (aiResponse && typeof aiResponse === 'object') {
+        const gs = aiResponse.global_score;
+        if (typeof gs === 'number' && !isNaN(gs)) {
+          analysis.global_score = gs;
         }
-        if (Array.isArray(aiResponse.strengths) && aiResponse.strengths.length > 0) {
-          analysis.strengths = aiResponse.strengths.filter(s => s);
+        
+        if (aiResponse.scores && typeof aiResponse.scores === 'object') {
+          const st = aiResponse.scores.technique;
+          const sc = aiResponse.scores.contenu;
+          const sp = aiResponse.scores.performance;
+          const sa = aiResponse.scores.accessibilite;
+          
+          if (typeof st === 'number' && !isNaN(st)) analysis.scores.technique = st;
+          if (typeof sc === 'number' && !isNaN(sc)) analysis.scores.contenu = sc;
+          if (typeof sp === 'number' && !isNaN(sp)) analysis.scores.performance = sp;
+          if (typeof sa === 'number' && !isNaN(sa)) analysis.scores.accessibilite = sa;
         }
-        if (Array.isArray(aiResponse.critical_issues) && aiResponse.critical_issues.length > 0) {
-          analysis.critical_issues = aiResponse.critical_issues.filter(i => i);
+        
+        if (Array.isArray(aiResponse.strengths)) {
+          const validStrengths = aiResponse.strengths.filter(s => s && typeof s === 'string' && s.trim());
+          if (validStrengths.length > 0) analysis.strengths = validStrengths;
         }
-        if (Array.isArray(aiResponse.recommendations) && aiResponse.recommendations.length > 0) {
-          analysis.recommendations = aiResponse.recommendations.filter(r => r && r.title);
+        
+        if (Array.isArray(aiResponse.critical_issues)) {
+          const validIssues = aiResponse.critical_issues.filter(i => i && typeof i === 'string' && i.trim());
+          if (validIssues.length > 0) analysis.critical_issues = validIssues;
+        }
+        
+        if (Array.isArray(aiResponse.recommendations)) {
+          const validRecs = aiResponse.recommendations
+            .filter(r => r && typeof r === 'object' && r.title)
+            .map(r => ({
+              title: String(r.title || ''),
+              description: String(r.description || ''),
+              priority: String(r.priority || 'medium'),
+              impact: String(r.impact || '')
+            }));
+          if (validRecs.length > 0) analysis.recommendations = validRecs;
         }
       }
     } catch (llmError) {
@@ -141,7 +166,7 @@ Points forts (strengths), problèmes critiques (critical_issues), recommandation
               console.log('Fetch competitor failed:', competitorUrl);
             }
             
-            const compResponse = await base44.integrations.Core.InvokeLLM({
+            const compResult = await base44.integrations.Core.InvokeLLM({
               prompt: `Analyse SEO rapide pour ${competitorUrl}. HTML: ${compHtml.substring(0, 3000)}
               
               Fournis des scores (0-100) pour: technique, contenu, performance, accessibilité et un score global.`,
@@ -162,14 +187,18 @@ Points forts (strengths), problèmes critiques (critical_issues), recommandation
               }
             });
 
+            const compResponse = compResult?.data || compResult;
+            const compGlobalScore = typeof compResponse?.global_score === 'number' ? compResponse.global_score : 50;
+            const compScores = compResponse?.scores || {};
+
             competitorAnalyses.push({
               url: String(competitorUrl),
-              global_score: Number(compResponse?.global_score) || 50,
+              global_score: compGlobalScore,
               scores: {
-                technique: Number(compResponse?.scores?.technique) || 50,
-                contenu: Number(compResponse?.scores?.contenu) || 50,
-                performance: Number(compResponse?.scores?.performance) || 50,
-                accessibilite: Number(compResponse?.scores?.accessibilite) || 50
+                technique: typeof compScores.technique === 'number' ? compScores.technique : 50,
+                contenu: typeof compScores.contenu === 'number' ? compScores.contenu : 50,
+                performance: typeof compScores.performance === 'number' ? compScores.performance : 50,
+                accessibilite: typeof compScores.accessibilite === 'number' ? compScores.accessibilite : 50
               }
             });
           } catch (compErr) {
@@ -192,7 +221,7 @@ ${competitorAnalyses.map(c => `${c.url}: Score ${c.global_score}/100 - Technique
 
 Fournis 3-4 insights comparatifs sur les forces/faiblesses relatives et opportunités d'amélioration.`;
 
-            const insightsResponse = await base44.integrations.Core.InvokeLLM({
+            const insightsResult = await base44.integrations.Core.InvokeLLM({
               prompt: insightsPrompt,
               response_json_schema: {
                 type: 'object',
@@ -212,12 +241,17 @@ Fournis 3-4 insights comparatifs sur les forces/faiblesses relatives et opportun
               }
             });
 
-            reportData.competitive_insights = Array.isArray(insightsResponse?.insights) 
-              ? insightsResponse.insights.map(ins => ({
-                  category: String(ins?.category || 'Comparaison'),
-                  insight: String(ins?.insight || ''),
-                  recommendation: String(ins?.recommendation || '')
-                }))
+            const insightsResponse = insightsResult?.data || insightsResult;
+            const rawInsights = insightsResponse?.insights;
+            
+            reportData.competitive_insights = Array.isArray(rawInsights)
+              ? rawInsights
+                  .filter(ins => ins && typeof ins === 'object')
+                  .map(ins => ({
+                    category: String(ins.category || 'Comparaison'),
+                    insight: String(ins.insight || ''),
+                    recommendation: String(ins.recommendation || '')
+                  }))
               : [];
           } catch (insightsErr) {
             console.error('Erreur insights:', insightsErr);
