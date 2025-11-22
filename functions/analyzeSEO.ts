@@ -277,68 +277,68 @@ Fournis 3-4 insights comparatifs sur les forces/faiblesses relatives et opportun
       console.error('Erreur sauvegarde lead:', dbError);
     }
 
-    // Formater l'email
+    // Formater l'email - Validation stricte de toutes les valeurs
+    const safeUrl = String(url || 'votre site');
+    const safeGlobalScore = Number(reportData.global_score) || 50;
+    const safeScores = {
+      technique: Number(reportData.scores?.technique) || 50,
+      contenu: Number(reportData.scores?.contenu) || 50,
+      performance: Number(reportData.scores?.performance) || 50,
+      accessibilite: Number(reportData.scores?.accessibilite) || 50
+    };
+    
     const emailHTML = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #000; color: #fff; padding: 30px; border-radius: 20px;">
         <div style="text-align: center; margin-bottom: 30px;">
           <h1 style="color: #ff006e; margin: 0;">🎯 Votre Audit SEO Complet</h1>
-          <p style="color: #888;">Rapport généré pour ${url}</p>
+          <p style="color: #888;">Rapport généré pour ${safeUrl}</p>
         </div>
 
         <div style="background: linear-gradient(135deg, rgba(255,0,110,0.1), rgba(131,56,236,0.1)); padding: 30px; border-radius: 15px; text-align: center; margin-bottom: 30px;">
-          <div style="font-size: 60px; font-weight: bold; color: ${reportData.global_score >= 80 ? '#10b981' : reportData.global_score >= 50 ? '#f59e0b' : '#ef4444'};">
-            ${reportData.global_score}/100
+          <div style="font-size: 60px; font-weight: bold; color: ${safeGlobalScore >= 80 ? '#10b981' : safeGlobalScore >= 50 ? '#f59e0b' : '#ef4444'};">
+            ${safeGlobalScore}/100
           </div>
           <p style="color: #aaa;">Score SEO Global</p>
         </div>
 
         <div style="margin-bottom: 30px;">
           <h2 style="color: #8338ec; border-bottom: 2px solid #8338ec; padding-bottom: 10px;">📊 Scores Détaillés</h2>
-          ${Object.entries(reportData.scores || {}).map(([cat, score]) => {
-            const safeScore = score || 50;
-            return `
+          ${Object.entries(safeScores).map(([cat, score]) => `
             <div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); margin-bottom: 10px; border-radius: 8px;">
-              <span style="text-transform: capitalize;">${cat.replace('_', ' ')}</span>
-              <strong style="color: ${safeScore >= 80 ? '#10b981' : safeScore >= 50 ? '#f59e0b' : '#ef4444'};">${safeScore}%</strong>
+              <span style="text-transform: capitalize;">${cat}</span>
+              <strong style="color: ${score >= 80 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444'};">${score}%</strong>
             </div>
-          `;}).join('')}
+          `).join('')}
         </div>
 
-        ${reportData.strengths?.length ? `
+        ${Array.isArray(reportData.strengths) && reportData.strengths.length > 0 ? `
           <div style="margin-bottom: 30px;">
             <h2 style="color: #10b981; border-bottom: 2px solid #10b981; padding-bottom: 10px;">✅ Points Forts</h2>
             <ul style="color: #ccc;">
-              ${reportData.strengths.filter(s => s && typeof s === 'string').map(s => `<li style="margin-bottom: 8px;">${String(s)}</li>`).join('')}
+              ${reportData.strengths.filter(s => s && typeof s === 'string').map(s => `<li style="margin-bottom: 8px;">${s}</li>`).join('')}
             </ul>
           </div>
         ` : ''}
 
-        ${reportData.critical_issues?.length ? `
+        ${Array.isArray(reportData.critical_issues) && reportData.critical_issues.length > 0 ? `
           <div style="margin-bottom: 30px;">
             <h2 style="color: #ef4444; border-bottom: 2px solid #ef4444; padding-bottom: 10px;">⚠️ Problèmes Critiques</h2>
             <ul style="color: #ccc;">
-              ${reportData.critical_issues.filter(i => i && typeof i === 'string').map(i => `<li style="margin-bottom: 8px;">${String(i)}</li>`).join('')}
+              ${reportData.critical_issues.filter(i => i && typeof i === 'string').map(i => `<li style="margin-bottom: 8px;">${i}</li>`).join('')}
             </ul>
           </div>
         ` : ''}
 
-        ${reportData.recommendations?.length ? `
+        ${Array.isArray(reportData.recommendations) && reportData.recommendations.length > 0 ? `
           <div style="margin-bottom: 30px;">
             <h2 style="color: #8338ec; border-bottom: 2px solid #8338ec; padding-bottom: 10px;">🚀 Recommandations</h2>
-            ${reportData.recommendations.slice(0, 5).map(rec => {
-              const safeRec = {
-                title: rec?.title || 'Recommandation',
-                description: rec?.description || 'Amélioration suggérée',
-                priority: rec?.priority || 'medium',
-                impact: rec?.impact || 'Optimisation SEO'
-              };
-              return `
-              <div style="background: rgba(255,255,255,0.05); padding: 15px; margin-bottom: 15px; border-radius: 10px; border-left: 4px solid ${safeRec.priority === 'high' ? '#ef4444' : safeRec.priority === 'medium' ? '#f59e0b' : '#3b82f6'};">
-                <strong style="color: #fff;">${safeRec.title}</strong>
-                <p style="color: #aaa; margin: 5px 0;">${safeRec.description}</p>
-                <small style="color: #666;">💡 ${safeRec.impact}</small>
+            ${reportData.recommendations.slice(0, 5).map(rec => `
+              <div style="background: rgba(255,255,255,0.05); padding: 15px; margin-bottom: 15px; border-radius: 10px; border-left: 4px solid ${rec.priority === 'high' ? '#ef4444' : rec.priority === 'medium' ? '#f59e0b' : '#3b82f6'};">
+                <strong style="color: #fff;">${rec.title}</strong>
+                <p style="color: #aaa; margin: 5px 0;">${rec.description}</p>
+                <small style="color: #666;">💡 ${rec.impact}</small>
               </div>
-            `;}).join('')}
+            `).join('')}
           </div>
         ` : ''}
 
@@ -360,7 +360,7 @@ Fournis 3-4 insights comparatifs sur les forces/faiblesses relatives et opportun
     try {
       await base44.asServiceRole.integrations.Core.SendEmail({
         to: String(email),
-        subject: `🎯 Votre Audit SEO pour ${url} - Score: ${reportData.global_score}/100`,
+        subject: `🎯 Votre Audit SEO pour ${safeUrl} - Score: ${safeGlobalScore}/100`,
         body: emailHTML
       });
     } catch (emailError) {
