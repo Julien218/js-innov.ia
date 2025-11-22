@@ -365,8 +365,21 @@ Fournis 3-4 insights comparatifs sur les forces/faiblesses relatives et opportun
       console.error('Erreur envoi email:', emailError);
     }
 
-    // Validation finale: s'assurer qu'aucune valeur undefined n'existe
-    const cleanedReportData = JSON.parse(JSON.stringify(reportData));
+    // Validation finale: remplacer toutes les valeurs undefined par des valeurs par défaut
+    const cleanReportData = (obj) => {
+      if (obj === null || obj === undefined) return null;
+      if (typeof obj !== 'object') return obj;
+      if (Array.isArray(obj)) return obj.map(cleanReportData).filter(item => item !== undefined);
+      
+      const cleaned = {};
+      for (const [key, value] of Object.entries(obj)) {
+        if (value === undefined) continue;
+        cleaned[key] = cleanReportData(value);
+      }
+      return cleaned;
+    };
+    
+    const cleanedReportData = cleanReportData(reportData);
     return Response.json(cleanedReportData);
 
   } catch (error) {
