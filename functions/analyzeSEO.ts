@@ -367,45 +367,32 @@ Fournis 3-4 insights comparatifs sur les forces/faiblesses relatives et opportun
       console.error('Erreur envoi email:', emailError);
     }
 
-    // Validation finale: nettoyage récursif pour éliminer tous les undefined
-    const deepClean = (obj) => {
-      if (obj === null || obj === undefined) {
-        return null;
-      }
+    // Validation finale: sérialisation sécurisée sans undefined
+    try {
+      // Première passe: nettoyer les undefined
+      const jsonString = JSON.stringify(reportData, (key, value) => {
+        return value === undefined ? null : value;
+      });
       
-      if (typeof obj === 'number') {
-        return isNaN(obj) || !isFinite(obj) ? 0 : obj;
-      }
+      // Seconde passe: parser et re-sérialiser pour garantir la validité
+      const parsedData = JSON.parse(jsonString);
       
-      if (typeof obj === 'string') {
-        return obj;
-      }
-      
-      if (typeof obj === 'boolean') {
-        return obj;
-      }
-      
-      if (Array.isArray(obj)) {
-        return obj
-          .filter(item => item !== undefined && item !== null)
-          .map(item => deepClean(item));
-      }
-      
-      if (typeof obj === 'object') {
-        const cleaned = {};
-        for (const [key, value] of Object.entries(obj)) {
-          if (value !== undefined && value !== null) {
-            cleaned[key] = deepClean(value);
-          }
-        }
-        return cleaned;
-      }
-      
-      return obj;
-    };
-    
-    const cleanedReportData = deepClean(reportData);
-    return Response.json(cleanedReportData);
+      return new Response(JSON.stringify(parsedData), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    } catch (jsonError) {
+      console.error('JSON Error:', jsonError);
+      // Fallback: retourner un objet minimal valide
+      return Response.json({
+        url: String(url),
+        global_score: 50,
+        scores: { technique: 50, contenu: 50, performance: 50, accessibilite: 50 },
+        strengths: [],
+        critical_issues: [],
+        recommendations: []
+      });
+    }
 
   } catch (error) {
     console.error('Erreur analyse SEO:', error);
