@@ -21,6 +21,9 @@ import Partners from './pages/Partners';
 import ContentStudio from './pages/ContentStudio';
 import SEOAudit from './pages/SEOAudit';
 import SEODashboard from './pages/SEODashboard';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
+import BlogAdmin from './pages/BlogAdmin';
 import __Layout from './Layout.jsx';
 
 
@@ -48,6 +51,9 @@ export const PAGES = {
     "ContentStudio": ContentStudio,
     "SEOAudit": SEOAudit,
     "SEODashboard": SEODashboard,
+    "Blog": Blog,
+    "BlogPost": BlogPost,
+    "BlogAdmin": BlogAdmin,
 }
 
 export const pagesConfig = {

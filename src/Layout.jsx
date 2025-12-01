@@ -31,24 +31,26 @@ function LayoutContent({ children, currentPageName }) {
   // Les meta tags SEO sont maintenant gérés par le composant SEOMetaTags
 
   const navItems = [
-    { name: 'Accueil', path: 'Home' },
-    { name: 'Actualités IA', path: 'News' },
-    { name: 'Innovations', path: 'Innovations' },
-    { name: 'Portfolio', path: 'Showcase' },
-    { name: 'Audit SEO', path: 'SEOAudit' },
-    { name: 'Musiques', path: 'MusicShop' },
-    { name: 'Templates', path: 'Templates' },
-    { name: 'Automatisations', path: 'Automations' },
-    { name: 'Applications', path: 'Applications' },
-    { name: 'Partenaires', path: 'Partners' },
-    { name: 'Contact', path: 'Contact' },
-    ...(isAdmin ? [
-      { name: 'Admin', path: 'Admin' },
-          { name: 'Studio Contenu', path: 'ContentStudio' },
-          { name: 'SEO Dashboard', path: 'SEODashboard' },
-          { name: 'Formulaires', path: 'FormBuilder' },
-          { name: 'CRM', path: 'CRM' }
-        ] : [])
+        { name: 'Accueil', path: 'Home' },
+        { name: 'Actualités IA', path: 'News' },
+        { name: 'Blog', path: 'Blog' },
+        { name: 'Innovations', path: 'Innovations' },
+        { name: 'Portfolio', path: 'Showcase' },
+        { name: 'Audit SEO', path: 'SEOAudit' },
+        { name: 'Musiques', path: 'MusicShop' },
+        { name: 'Templates', path: 'Templates' },
+        { name: 'Automatisations', path: 'Automations' },
+        { name: 'Applications', path: 'Applications' },
+        { name: 'Partenaires', path: 'Partners' },
+        { name: 'Contact', path: 'Contact' },
+        ...(isAdmin ? [
+          { name: 'Admin', path: 'Admin' },
+              { name: 'Studio Contenu', path: 'ContentStudio' },
+              { name: 'SEO Dashboard', path: 'SEODashboard' },
+              { name: 'Blog Admin', path: 'BlogAdmin' },
+              { name: 'Formulaires', path: 'FormBuilder' },
+              { name: 'CRM', path: 'CRM' }
+            ] : [])
   ];
 
   return (
