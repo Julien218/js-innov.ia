@@ -7,7 +7,12 @@ import PowerWord from '../shared/PowerWord';
 
 export default function HeroSection() {
   return (
-    <div className="relative overflow-hidden">
+    <header 
+      className="relative overflow-hidden" 
+      role="banner"
+      itemScope 
+      itemType="https://schema.org/WPHeader"
+    >
       {/* Animated Background */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 -left-20 w-96 h-96 bg-pink-600/20 rounded-full blur-3xl animate-pulse"></div>
@@ -28,47 +33,54 @@ export default function HeroSection() {
             <span className="text-sm text-gray-300"><PowerWord>Intelligence Artificielle</PowerWord> Nouvelle Génération</span>
           </motion.div>
 
-          {/* Main Title */}
+          {/* Main Title - H1 SEO optimisé */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+            itemProp="headline"
           >
-            <span className="gradient-text"><PowerWord>Innovons</PowerWord> le <PowerWord>futur</PowerWord></span>
+            <span className="gradient-text"><PowerWord>Automatisation</PowerWord> & <PowerWord>IA</PowerWord></span>
             <br />
-            <span className="text-white">avec l'<PowerWord>IA</PowerWord></span>
+            <span className="text-white">à <PowerWord>Dour</PowerWord>, Belgique</span>
           </motion.h1>
 
-          {/* Subtitle */}
+          {/* Subtitle - Description SEO optimisée */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-xl text-gray-400 mb-12 max-w-3xl mx-auto"
+            itemProp="description"
           >
-            Créations artistiques, <PowerWord>automatisations intelligentes</PowerWord> et applications sur mesure.
-            Explorez nos <PowerWord>solutions IA</PowerWord> clé en main pour <PowerWord>transformer</PowerWord> votre vision en <PowerWord>réalité</PowerWord>.
+            <strong>JS-INNOV.IA</strong> : expert en <PowerWord>automatisation</PowerWord> et <PowerWord>intelligence artificielle</PowerWord> pour 
+            <strong> indépendants</strong>, <strong>courtiers</strong> et <strong>PME</strong> en <strong>Hainaut</strong>. 
+            Solutions <PowerWord>IA sur mesure</PowerWord> pour <PowerWord>booster</PowerWord> votre productivité.
           </motion.p>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons avec ARIA */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            role="group"
+            aria-label="Actions principales"
           >
             <Link
               to={createPageUrl('Innovations')}
               className="px-8 py-4 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:shadow-2xl hover:shadow-pink-500/50 transition-all transform hover:scale-105"
+              aria-label="Découvrir nos innovations en intelligence artificielle"
             >
               Découvrir nos innovations
             </Link>
             <Link
               to={createPageUrl('Contact')}
               className="px-8 py-4 rounded-xl bg-white/5 backdrop-blur-sm border border-purple-500/30 text-white font-semibold hover:bg-white/10 transition-all"
+              aria-label="Demander un devis gratuit pour automatisation IA"
             >
-              Demander un devis
+              Demander un devis gratuit
             </Link>
           </motion.div>
 
@@ -108,6 +120,6 @@ export default function HeroSection() {
           </motion.div>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
