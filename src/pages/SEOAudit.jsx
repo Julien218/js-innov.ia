@@ -35,9 +35,23 @@ export default function SEOAudit() {
         competitors: competitorUrls
       });
       
-      // Validation de la réponse
+      // Validation robuste de la réponse
+      let reportData = null;
+      
       if (response && response.data) {
-        setReport(response.data);
+        if (typeof response.data === 'string') {
+          try {
+            reportData = JSON.parse(response.data);
+          } catch {
+            reportData = null;
+          }
+        } else if (typeof response.data === 'object') {
+          reportData = response.data;
+        }
+      }
+      
+      if (reportData && typeof reportData.global_score === 'number') {
+        setReport(reportData);
         setEmailSent(true);
       } else {
         setError('Réponse invalide du serveur. Veuillez réessayer.');
