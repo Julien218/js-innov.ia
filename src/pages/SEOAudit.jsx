@@ -84,16 +84,127 @@ export default function SEOAudit() {
   };
 
   const downloadReport = () => {
-    const reportText = JSON.stringify(report, null, 2);
-    const blob = new Blob([reportText], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
+    // Générer un PDF HTML
+    const getScoreEmoji = (score) => {
+      if (score >= 80) return '🟢';
+      if (score >= 50) return '🟡';
+      return '🔴';
+    };
+
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html lang="fr">
+      <head>
+        <meta charset="UTF-8">
+        <title>Rapport SEO - ${url}</title>
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+          body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; color: #eee; padding: 40px; }
+          .container { max-width: 800px; margin: 0 auto; }
+          .header { text-align: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 2px solid #ff006e; }
+          .header h1 { color: #ff006e; font-size: 28px; margin-bottom: 10px; }
+          .header p { color: #888; }
+          .score-circle { text-align: center; margin: 30px 0; }
+          .score-value { font-size: 72px; font-weight: bold; color: ${report.global_score >= 80 ? '#10b981' : report.global_score >= 50 ? '#f59e0b' : '#ef4444'}; }
+          .score-label { color: #888; font-size: 14px; }
+          .scores-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 30px 0; }
+          .score-card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; text-align: center; }
+          .score-card .value { font-size: 24px; font-weight: bold; margin-bottom: 5px; }
+          .score-card .label { font-size: 12px; color: #888; text-transform: capitalize; }
+          .section { margin: 30px 0; padding: 20px; border-radius: 10px; }
+          .section-green { background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; }
+          .section-red { background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; }
+          .section-purple { background: rgba(139, 92, 246, 0.1); border-left: 4px solid #8b5cf6; }
+          .section h2 { font-size: 18px; margin-bottom: 15px; }
+          .section ul { list-style: none; }
+          .section li { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+          .section li:last-child { border-bottom: none; }
+          .rec-card { background: rgba(0,0,0,0.3); padding: 15px; margin: 10px 0; border-radius: 8px; }
+          .rec-card h4 { color: #fff; margin-bottom: 8px; }
+          .rec-card p { color: #aaa; font-size: 14px; }
+          .priority { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-bottom: 10px; }
+          .priority-high { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+          .priority-medium { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+          .priority-low { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+          .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #333; color: #666; font-size: 12px; }
+          @media print { body { background: white; color: #333; } .section { border: 1px solid #ddd; } }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>🎯 Rapport Audit SEO</h1>
+            <p>${url}</p>
+            <p style="margin-top: 5px; font-size: 12px;">Généré le ${new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+          </div>
+
+          <div class="score-circle">
+            <div class="score-value">${report.global_score}/100</div>
+            <div class="score-label">Score SEO Global</div>
+          </div>
+
+          <div class="scores-grid">
+            ${Object.entries(report.scores || {}).map(([cat, score]) => `
+              <div class="score-card">
+                <div class="value" style="color: ${score >= 80 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444'}">${getScoreEmoji(score)} ${score}%</div>
+                <div class="label">${cat.replace('_', ' ')}</div>
+              </div>
+            `).join('')}
+          </div>
+
+          ${report.strengths && report.strengths.length > 0 ? `
+            <div class="section section-green">
+              <h2>✅ Points Forts</h2>
+              <ul>
+                ${report.strengths.map(s => `<li>• ${s}</li>`).join('')}
+              </ul>
+            </div>
+          ` : ''}
+
+          ${report.critical_issues && report.critical_issues.length > 0 ? `
+            <div class="section section-red">
+              <h2>⚠️ Problèmes Critiques</h2>
+              <ul>
+                ${report.critical_issues.map(i => `<li>• ${i}</li>`).join('')}
+              </ul>
+            </div>
+          ` : ''}
+
+          ${report.recommendations && report.recommendations.length > 0 ? `
+            <div class="section section-purple">
+              <h2>🚀 Recommandations</h2>
+              ${report.recommendations.map(rec => `
+                <div class="rec-card">
+                  <span class="priority priority-${rec.priority || 'medium'}">${
+                    rec.priority === 'high' ? 'Priorité haute' : 
+                    rec.priority === 'low' ? 'Priorité basse' : 'Priorité moyenne'
+                  }</span>
+                  <h4>${rec.title}</h4>
+                  <p>${rec.description}</p>
+                  ${rec.impact ? `<p style="color: #8b5cf6; margin-top: 8px;">💡 ${rec.impact}</p>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+
+          <div class="footer">
+            <p>Rapport généré par JS-INNOV.IA</p>
+            <p>Besoin d'aide ? Contactez-nous sur js-innovia.com</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const downloadUrl = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = `seo-audit-${new Date().toISOString().slice(0,10)}.json`;
+    a.href = downloadUrl;
+    a.download = `rapport-seo-${new Date().toISOString().slice(0,10)}.html`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(downloadUrl);
   };
 
   return (
