@@ -20,6 +20,7 @@ import AIMusic from './pages/AIMusic';
 import Partners from './pages/Partners';
 import ContentStudio from './pages/ContentStudio';
 import SEOAudit from './pages/SEOAudit';
+import SEODashboard from './pages/SEODashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -46,6 +47,7 @@ export const PAGES = {
     "Partners": Partners,
     "ContentStudio": ContentStudio,
     "SEOAudit": SEOAudit,
+    "SEODashboard": SEODashboard,
 }
 
 export const pagesConfig = {
