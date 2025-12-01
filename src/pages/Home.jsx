@@ -3,6 +3,7 @@ import HeroSection from '../components/home/HeroSection';
 import SectionHeader from '../components/shared/SectionHeader';
 import RecommendationsSection from '../components/recommendations/RecommendationsSection';
 import PowerWord from '../components/shared/PowerWord';
+import SEOContent from '../components/seo/SEOContent';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../utils';
@@ -42,6 +43,9 @@ export default function Home() {
 
   return (
     <div>
+      {/* Contenu SEO sémantique visible par les moteurs */}
+      <SEOContent variant="minimal" />
+      
       <HeroSection />
 
       {/* Recommendations Section */}
@@ -116,12 +120,16 @@ export default function Home() {
             <Link
               to={createPageUrl('Contact')}
               className="inline-block px-8 py-4 rounded-xl bg-white text-gray-900 font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-xl"
+              aria-label="Contactez JS-INNOV.IA pour démarrer votre projet IA"
             >
               Démarrer un projet
             </Link>
           </div>
         </motion.div>
       </section>
+
+      {/* Section SEO complète (visible) */}
+      <SEOContent variant="full" />
     </div>
   );
 }
