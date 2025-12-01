@@ -33,8 +33,8 @@ Deno.serve(async (req) => {
         {
           title: 'Optimisation SEO recommandée',
           description: 'Contactez-nous pour une analyse personnalisée approfondie',
-          priority: 'medium',
-          impact: 'Amélioration du référencement'
+          priority: 'high',
+          impact: 'Amélioration significative du référencement naturel'
         }
       ]
     };
@@ -43,10 +43,15 @@ Deno.serve(async (req) => {
     let analysis = { ...defaultAnalysis };
     try {
       const llmResult = await base44.integrations.Core.InvokeLLM({
-        prompt: `Expert SEO: analyse ${url}. HTML: ${html.substring(0, 4000)}
+        prompt: `Tu es un expert SEO francophone. Analyse ce site: ${url}. HTML: ${html.substring(0, 4000)}
 
-Scores 0-100: technique, contenu, performance, accessibilité, global_score.
-Points forts (strengths), problèmes critiques (critical_issues), recommandations avec title, description, priority (high/medium/low), impact.`,
+    IMPORTANT: Réponds UNIQUEMENT EN FRANÇAIS.
+
+    Fournis:
+    - Scores 0-100: technique, contenu, performance, accessibilité, global_score
+    - Points forts (strengths) - EN FRANÇAIS
+    - Problèmes critiques (critical_issues) - EN FRANÇAIS  
+    - Recommandations avec title, description, priority (high/medium/low), impact - TOUT EN FRANÇAIS`,
         response_json_schema: {
           type: 'object',
           properties: {
@@ -169,9 +174,10 @@ Points forts (strengths), problèmes critiques (critical_issues), recommandation
             }
             
             const compResult = await base44.integrations.Core.InvokeLLM({
-              prompt: `Analyse SEO rapide pour ${competitorUrl}. HTML: ${compHtml.substring(0, 3000)}
-              
-              Fournis des scores (0-100) pour: technique, contenu, performance, accessibilité et un score global.`,
+                  prompt: `Analyse SEO rapide pour ${competitorUrl}. HTML: ${compHtml.substring(0, 3000)}
+
+                  Fournis des scores (0-100) pour: technique, contenu, performance, accessibilité et un score global.
+                  Réponds en JSON uniquement.`,
               response_json_schema: {
                 type: 'object',
                 properties: {
@@ -213,15 +219,15 @@ Points forts (strengths), problèmes critiques (critical_issues), recommandation
 
           // Générer des insights comparatifs
           try {
-            const insightsPrompt = `Compare ce site avec ses concurrents:
+            const insightsPrompt = `Compare ce site avec ses concurrents. RÉPONDS UNIQUEMENT EN FRANÇAIS.
 
-Votre site: Score ${reportData.global_score}/100
-Technique: ${reportData.scores.technique}, Contenu: ${reportData.scores.contenu}, Performance: ${reportData.scores.performance}, Accessibilité: ${reportData.scores.accessibilite}
+            Votre site: Score ${reportData.global_score}/100
+            Technique: ${reportData.scores.technique}, Contenu: ${reportData.scores.contenu}, Performance: ${reportData.scores.performance}, Accessibilité: ${reportData.scores.accessibilite}
 
-Concurrents:
-${competitorAnalyses.map(c => `${c.url}: Score ${c.global_score}/100 - Technique: ${c.scores.technique}, Contenu: ${c.scores.contenu}, Performance: ${c.scores.performance}, Accessibilité: ${c.scores.accessibilite}`).join('\n')}
+            Concurrents:
+            ${competitorAnalyses.map(c => `${c.url}: Score ${c.global_score}/100 - Technique: ${c.scores.technique}, Contenu: ${c.scores.contenu}, Performance: ${c.scores.performance}, Accessibilité: ${c.scores.accessibilite}`).join('\n')}
 
-Fournis 3-4 insights comparatifs sur les forces/faiblesses relatives et opportunités d'amélioration.`;
+            Fournis 3-4 insights comparatifs EN FRANÇAIS sur les forces/faiblesses relatives et opportunités d'amélioration.`;
 
             const insightsResult = await base44.integrations.Core.InvokeLLM({
               prompt: insightsPrompt,
