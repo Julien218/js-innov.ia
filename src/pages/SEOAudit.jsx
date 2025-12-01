@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, CheckCircle, AlertCircle, XCircle, TrendingUp, Loader2, Download, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
 import PowerWord from '../components/shared/PowerWord';
+import SEOHero from '../components/seo/SEOHero';
+import SEOPricingCards from '../components/seo/SEOPricingCards';
 
 export default function SEOAudit() {
   const [url, setUrl] = useState('');
@@ -15,6 +17,11 @@ export default function SEOAudit() {
   const [report, setReport] = useState(null);
   const [error, setError] = useState(null);
   const [emailSent, setEmailSent] = useState(false);
+  const auditFormRef = useRef(null);
+
+  const scrollToAudit = () => {
+    auditFormRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const analyzeWebsite = async () => {
     if (!url.trim() || !email.trim()) {
@@ -94,15 +101,26 @@ export default function SEOAudit() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           icon={Search}
-          title="Audit SEO Gratuit"
+          title="Audit SEO & Référencement"
           subtitle={
             <span>
-              Analysez votre site et obtenez des <PowerWord>recommandations</PowerWord> pour <PowerWord>améliorer</PowerWord> votre référencement
+              De l'audit <PowerWord>gratuit</PowerWord> à l'accompagnement <PowerWord>complet</PowerWord>, boostez votre visibilité en ligne
             </span>
           }
         />
 
-        {/* Formulaire */}
+        {/* Hero Visuel */}
+        <SEOHero />
+
+        {/* Section Pricing */}
+        <SEOPricingCards onSelectPlan={scrollToAudit} />
+
+        {/* Formulaire Audit Gratuit */}
+        <div ref={auditFormRef} className="pt-16">
+          <h2 className="text-2xl font-bold text-white text-center mb-8">
+            🎁 Commencez par l'<span className="gradient-text">Audit Gratuit</span>
+          </h2>
+        </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
