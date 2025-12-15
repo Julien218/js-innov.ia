@@ -134,11 +134,11 @@ export default function LogoSenergieDour() {
             <span className="text-blue-600 font-semibold">Senergie Dour</span>
           </div>
           
-          <h1 className="text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-yellow-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl lg:text-5xl font-bold mb-4 text-gray-900">
             Construisons ensemble le logo de Senergie Dour
           </h1>
           
-          <p className="text-2xl text-gray-700 mb-6 flex items-center justify-center gap-2">
+          <p className="text-2xl text-gray-800 mb-6 flex items-center justify-center gap-2">
             Habitants et commerçants de Dour, votre avis compte 
             <Heart className="w-6 h-6 text-blue-600 fill-blue-600" />
             <span className="text-yellow-500">💛</span>
