@@ -226,7 +226,7 @@ export default function LogoSenergieDour() {
             <p className="text-blue-600 font-semibold">
               Merci de prendre 2 à 3 minutes pour participer.
             </p>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Formulaire */}
