@@ -178,15 +178,15 @@ export default function LogoSenergieDour() {
               <RadioGroup required value={formData.type} onValueChange={(value) => setFormData({...formData, type: value})}>
                 <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 transition-colors">
                   <RadioGroupItem value="Habitant de Dour" id="habitant" />
-                  <Label htmlFor="habitant" className="cursor-pointer">Habitant de Dour</Label>
+                  <Label htmlFor="habitant" className="cursor-pointer text-gray-900 font-medium">Habitant de Dour</Label>
                 </div>
                 <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 transition-colors">
                   <RadioGroupItem value="Commerçant à Dour" id="commercant" />
-                  <Label htmlFor="commercant" className="cursor-pointer">Commerçant à Dour</Label>
+                  <Label htmlFor="commercant" className="cursor-pointer text-gray-900 font-medium">Commerçant à Dour</Label>
                 </div>
                 <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 transition-colors">
                   <RadioGroupItem value="Les deux" id="lesdeux" />
-                  <Label htmlFor="lesdeux" className="cursor-pointer">Les deux</Label>
+                  <Label htmlFor="lesdeux" className="cursor-pointer text-gray-900 font-medium">Les deux</Label>
                 </div>
               </RadioGroup>
             </div>
@@ -220,7 +220,7 @@ export default function LogoSenergieDour() {
                     onCheckedChange={() => handleCheckboxChange('valeurs', valeur, 4)}
                     disabled={!formData.valeurs.includes(valeur) && formData.valeurs.length >= 4}
                   />
-                  <Label htmlFor={`valeur-${valeur}`} className="cursor-pointer flex-1">{valeur}</Label>
+                  <Label htmlFor={`valeur-${valeur}`} className="cursor-pointer flex-1 text-gray-900 font-medium">{valeur}</Label>
                 </div>
               ))}
             </div>
@@ -253,7 +253,7 @@ export default function LogoSenergieDour() {
                     checked={formData.image_dour.includes(option)}
                     onCheckedChange={() => handleCheckboxChange('image_dour', option)}
                   />
-                  <Label htmlFor={`image-${option}`} className="cursor-pointer flex-1">{option}</Label>
+                  <Label htmlFor={`image-${option}`} className="cursor-pointer flex-1 text-gray-900 font-medium">{option}</Label>
                 </div>
               ))}
             </div>
@@ -268,7 +268,7 @@ export default function LogoSenergieDour() {
               {['Moderne & simple', 'Chaleureux & humain', 'Associatif & citoyen', 'Institutionnel', 'Créatif / original'].map((style) => (
                 <div key={style} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-yellow-50 transition-colors">
                   <RadioGroupItem value={style} id={`style-${style}`} />
-                  <Label htmlFor={`style-${style}`} className="cursor-pointer">{style}</Label>
+                  <Label htmlFor={`style-${style}`} className="cursor-pointer text-gray-900 font-medium">{style}</Label>
                 </div>
               ))}
             </RadioGroup>
@@ -287,7 +287,7 @@ export default function LogoSenergieDour() {
                     checked={formData.couleurs.includes(couleur)}
                     onCheckedChange={() => handleCheckboxChange('couleurs', couleur)}
                   />
-                  <Label htmlFor={`couleur-${couleur}`} className="cursor-pointer flex-1">{couleur}</Label>
+                  <Label htmlFor={`couleur-${couleur}`} className="cursor-pointer flex-1 text-gray-900 font-medium">{couleur}</Label>
                 </div>
               ))}
             </div>
@@ -312,15 +312,15 @@ export default function LogoSenergieDour() {
             <RadioGroup required value={formData.slogan_souhaite} onValueChange={(value) => setFormData({...formData, slogan_souhaite: value})}>
               <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 transition-colors">
                 <RadioGroupItem value="Oui" id="slogan-oui" />
-                <Label htmlFor="slogan-oui" className="cursor-pointer">Oui</Label>
+                <Label htmlFor="slogan-oui" className="cursor-pointer text-gray-900 font-medium">Oui</Label>
               </div>
               <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 transition-colors">
                 <RadioGroupItem value="Non" id="slogan-non" />
-                <Label htmlFor="slogan-non" className="cursor-pointer">Non</Label>
+                <Label htmlFor="slogan-non" className="cursor-pointer text-gray-900 font-medium">Non</Label>
               </div>
               <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 transition-colors">
                 <RadioGroupItem value="Je ne sais pas" id="slogan-sais-pas" />
-                <Label htmlFor="slogan-sais-pas" className="cursor-pointer">Je ne sais pas</Label>
+                <Label htmlFor="slogan-sais-pas" className="cursor-pointer text-gray-900 font-medium">Je ne sais pas</Label>
               </div>
             </RadioGroup>
 
