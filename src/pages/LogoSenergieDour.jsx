@@ -711,10 +711,10 @@ export default function LogoSenergieDour() {
           >
             <Heart className="w-12 h-12 text-red-500 fill-red-500" />
           </motion.div>
-          <p className="text-gray-800 italic text-lg leading-relaxed">
+          <p className="text-gray-800 italic text-sm sm:text-base lg:text-lg leading-relaxed px-2">
             Le logo de Senergie Dour sera créé à partir des avis des habitants et des commerçants.
             <br />
-            <strong className="text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-xl">
+            <strong className="text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-base sm:text-lg lg:text-xl">
               Un logo collectif, pour une énergie locale.
             </strong>
           </p>
