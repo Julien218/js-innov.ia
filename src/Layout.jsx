@@ -15,6 +15,9 @@ function LayoutContent({ children, currentPageName }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const { getCartCount } = useCart();
 
+  // Page standalone sans navigation
+  const isStandalonePage = currentPageName === 'LogoSenergieDour';
+
   // Check if user is admin
   useEffect(() => {
     const checkAdmin = async () => {
@@ -52,6 +55,16 @@ function LayoutContent({ children, currentPageName }) {
               { name: 'CRM', path: 'CRM' }
             ] : [])
   ];
+
+  // Si c'est une page standalone, ne pas afficher la navigation
+  if (isStandalonePage) {
+    return (
+      <div className="min-h-screen">
+        <SEOMetaTags pageName={currentPageName} />
+        {children}
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white">
