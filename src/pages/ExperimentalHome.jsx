@@ -56,14 +56,45 @@ export default function ExperimentalHome() {
     engagementScore: 0
   });
 
-  // Détecter visiteur récurrent
+  // Système d'apprentissage et de complexité évolutive
   useEffect(() => {
-    const hasVisited = localStorage.getItem('experimental_visited');
-    if (hasVisited) {
-      setIsReturningVisitor(true);
-    } else {
-      localStorage.setItem('experimental_visited', Date.now());
+    // Charger les données d'interaction
+    const storedData = localStorage.getItem('experimental_learning_data');
+    if (storedData) {
+      try {
+        const data = JSON.parse(storedData);
+        interactionData.current = data;
+        setIsReturningVisitor(true);
+        
+        // Calculer le niveau de complexité basé sur l'engagement
+        const visitCount = data.totalVisits || 0;
+        const totalTime = data.totalTimeSpent || 0;
+        const engagementScore = data.engagementScore || 0;
+        
+        // Progression: niveau 1 (0-10 pts), niveau 2 (10-30 pts), niveau 3 (30+ pts)
+        const complexityScore = (visitCount * 2) + (totalTime / 60) + engagementScore;
+        
+        if (complexityScore >= 30) {
+          setComplexityLevel(3);
+        } else if (complexityScore >= 10) {
+          setComplexityLevel(2);
+        } else {
+          setComplexityLevel(1);
+        }
+      } catch (e) {
+        console.error('Error loading learning data', e);
+      }
     }
+    
+    // Incrémenter le compteur de visites
+    interactionData.current.totalVisits = (interactionData.current.totalVisits || 0) + 1;
+    interactionData.current.visitDates = [...(interactionData.current.visitDates || []), Date.now()];
+    
+    // Sauvegarder à l'unmount
+    return () => {
+      interactionData.current.totalTimeSpent = (interactionData.current.totalTimeSpent || 0) + timeOnPage;
+      localStorage.setItem('experimental_learning_data', JSON.stringify(interactionData.current));
+    };
   }, []);
 
   // Séquence d'initialisation
