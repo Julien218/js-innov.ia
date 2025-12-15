@@ -654,7 +654,7 @@ export default function LogoSenergieDour() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full py-7 text-xl font-bold rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white shadow-2xl hover:shadow-3xl transition-all relative overflow-hidden group"
+              className="w-full py-5 sm:py-7 text-base sm:text-xl font-bold rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white shadow-2xl hover:shadow-3xl transition-all relative overflow-hidden group touch-manipulation"
             >
               <motion.span
                 className="relative z-10 flex items-center justify-center gap-3"
