@@ -43,9 +43,18 @@ export default function ExperimentalHome() {
   const [scrollBehavior, setScrollBehavior] = useState('neutral');
   const [timeOnPage, setTimeOnPage] = useState(0);
   const [isReturningVisitor, setIsReturningVisitor] = useState(false);
+  const [complexityLevel, setComplexityLevel] = useState(1);
+  const [learningState, setLearningState] = useState('observing'); // observing, integrating, evolving
   const lastScrollY = useRef(0);
   const scrollSpeed = useRef(0);
   const messageUpdateInterval = useRef(null);
+  const interactionData = useRef({
+    totalVisits: 0,
+    totalTimeSpent: 0,
+    scrollPatterns: [],
+    visitDates: [],
+    engagementScore: 0
+  });
 
   // Détecter visiteur récurrent
   useEffect(() => {
