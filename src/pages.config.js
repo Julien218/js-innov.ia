@@ -24,6 +24,7 @@ import SEODashboard from './pages/SEODashboard';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import BlogAdmin from './pages/BlogAdmin';
+import LogoSenergieDour from './pages/LogoSenergieDour';
 import __Layout from './Layout.jsx';
 
 
@@ -54,6 +55,7 @@ export const PAGES = {
     "Blog": Blog,
     "BlogPost": BlogPost,
     "BlogAdmin": BlogAdmin,
+    "LogoSenergieDour": LogoSenergieDour,
 }
 
 export const pagesConfig = {
