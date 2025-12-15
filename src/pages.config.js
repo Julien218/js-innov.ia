@@ -25,6 +25,7 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import BlogAdmin from './pages/BlogAdmin';
 import LogoSenergieDour from './pages/LogoSenergieDour';
+import ExperimentalHome from './pages/ExperimentalHome';
 import __Layout from './Layout.jsx';
 
 
@@ -56,6 +57,7 @@ export const PAGES = {
     "BlogPost": BlogPost,
     "BlogAdmin": BlogAdmin,
     "LogoSenergieDour": LogoSenergieDour,
+    "ExperimentalHome": ExperimentalHome,
 }
 
 export const pagesConfig = {
