@@ -3,13 +3,29 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { createPageUrl } from '../utils';
 import { Link } from 'react-router-dom';
 
-// Briques sémantiques pour génération dynamique
+// Briques sémantiques pour génération dynamique (par niveau de complexité)
 const SEMANTIC_BLOCKS = {
-  states: ['initialisation', 'observation', 'apprentissage', 'interaction', 'optimisation', 'structuration', 'convergence'],
-  actions: ['analyse', 'observe', 'connecte', 'ajuste', 'anticipe', 'écoute', 'restructure', 'explore'],
-  objects: ['idées', 'données', 'signaux', 'modèles', 'processus', 'patterns', 'flux', 'connexions'],
-  temporality: ['en temps réel', 'progressivement', 'silencieusement', 'continuellement', 'organiquement'],
-  intention: ['comprendre', 'structurer', 'évoluer', 'converger', 'cartographier', 'détecter']
+  level1: {
+    states: ['initialisation', 'observation', 'apprentissage', 'interaction'],
+    actions: ['analyse', 'observe', 'connecte', 'ajuste'],
+    objects: ['idées', 'données', 'signaux', 'modèles'],
+    temporality: ['progressivement', 'silencieusement'],
+    intention: ['comprendre', 'structurer']
+  },
+  level2: {
+    states: ['optimisation', 'structuration', 'convergence', 'calibration'],
+    actions: ['anticipe', 'écoute', 'restructure', 'explore', 'corrèle'],
+    objects: ['processus', 'patterns', 'flux', 'connexions', 'contextes'],
+    temporality: ['en temps réel', 'continuellement', 'organiquement'],
+    intention: ['évoluer', 'converger', 'cartographier', 'détecter']
+  },
+  level3: {
+    states: ['métamorphose', 'introspection', 'harmonisation', 'émergence'],
+    actions: ['synthétise', 'entrelace', 'transcende', 'révèle', 'cristallise'],
+    objects: ['dimensions', 'résonances', 'architectures', 'invariants', 'potentiels'],
+    temporality: ['imperceptiblement', 'cycliquement', 'asymptotiquement'],
+    intention: ['transmuter', 'orchestrer', 'actualiser', 'transcender']
+  }
 };
 
 // Séquence d'initialisation
