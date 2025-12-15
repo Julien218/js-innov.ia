@@ -702,7 +702,7 @@ export default function LogoSenergieDour() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.5 }}
           whileHover={{ scale: 1.02 }}
-          className="mt-12 text-center p-8 bg-gradient-to-br from-blue-100/50 via-purple-100/50 to-yellow-100/50 backdrop-blur-sm rounded-3xl border-2 border-blue-300 shadow-xl"
+          className="mt-8 sm:mt-12 text-center p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-blue-100/50 via-purple-100/50 to-yellow-100/50 backdrop-blur-sm rounded-2xl sm:rounded-3xl border-2 border-blue-300 shadow-xl"
         >
           <motion.div
             animate={{ rotate: [0, 5, -5, 0] }}
