@@ -403,24 +403,31 @@ export default function ExperimentalHome() {
             )}
           </AnimatePresence>
 
-          {/* Visualisation système vivant */}
+          {/* Visualisation système vivant avec indicateur de complexité */}
           <div className="flex justify-center gap-2">
-            {[...Array(5)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="w-1 bg-gray-700 rounded-full"
-                animate={{
-                  height: [20, 40 + Math.random() * 30, 20],
-                  opacity: [0.3, 0.7, 0.3]
-                }}
-                transition={{
-                  duration: 2 + i * 0.5,
-                  repeat: Infinity,
-                  delay: i * 0.2,
-                  ease: "easeInOut"
-                }}
-              />
-            ))}
+            {[...Array(5)].map((_, i) => {
+              const isActive = i < complexityLevel;
+              const learningIntensity = learningState === 'evolving' ? 1.5 : learningState === 'integrating' ? 1.2 : 1;
+              
+              return (
+                <motion.div
+                  key={i}
+                  className={`w-1 rounded-full transition-colors duration-1000 ${
+                    isActive ? 'bg-gray-600' : 'bg-gray-800'
+                  }`}
+                  animate={{
+                    height: [20, (40 + Math.random() * 30) * learningIntensity, 20],
+                    opacity: isActive ? [0.4, 0.8, 0.4] : [0.1, 0.2, 0.1]
+                  }}
+                  transition={{
+                    duration: (2 + i * 0.5) / learningIntensity,
+                    repeat: Infinity,
+                    delay: i * 0.2,
+                    ease: "easeInOut"
+                  }}
+                />
+              );
+            })}
           </div>
 
           {/* Point d'ancrage humain */}
