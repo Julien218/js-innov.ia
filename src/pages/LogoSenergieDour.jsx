@@ -213,7 +213,7 @@ export default function LogoSenergieDour() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl p-8 border-2 border-blue-300 text-left hover:shadow-3xl transition-shadow duration-300"
+            className="bg-white/80 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 lg:p-8 border-2 border-blue-300 text-left hover:shadow-3xl transition-shadow duration-300"
           >
             <p className="text-gray-700 leading-relaxed mb-4">
               <strong className="text-blue-600">Senergie Dour</strong> est une asbl qui a pour objectif de rassembler
