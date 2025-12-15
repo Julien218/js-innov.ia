@@ -204,10 +204,19 @@ export default function ExperimentalHome() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [phase]);
 
-  // Compteur temps sur page
+  // Compteur temps sur page avec apprentissage
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeOnPage(t => t + 1);
+      setTimeOnPage(t => {
+        const newTime = t + 1;
+        // Augmenter engagement score pour temps prolongé
+        if (newTime > 0 && newTime % 30 === 0) {
+          interactionData.current.engagementScore = (interactionData.current.engagementScore || 0) + 0.5;
+          setLearningState('evolving');
+          setTimeout(() => setLearningState('observing'), 2000);
+        }
+        return newTime;
+      });
     }, 1000);
     return () => clearInterval(timer);
   }, []);
