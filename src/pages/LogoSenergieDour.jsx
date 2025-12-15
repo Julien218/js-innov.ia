@@ -235,7 +235,7 @@ export default function LogoSenergieDour() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           onSubmit={handleSubmit}
-          className="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 lg:p-12 border-2 border-purple-200 space-y-12 relative overflow-hidden"
+          className="bg-white/90 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 lg:p-12 border-2 border-purple-200 space-y-8 sm:space-y-12 relative overflow-hidden"
         >
           {/* Progress indicator */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-yellow-500" />
