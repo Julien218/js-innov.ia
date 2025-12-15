@@ -111,26 +111,63 @@ export default function ExperimentalHome() {
     }
   }, [phase, initStep]);
 
-  // Génération de contenu contextuel
+  // Génération de contenu contextuel sophistiquée
   const generateMessage = () => {
     const hour = new Date().getHours();
     const isDaytime = hour >= 6 && hour < 20;
     
-    const state = SEMANTIC_BLOCKS.states[Math.floor(Math.random() * SEMANTIC_BLOCKS.states.length)];
-    const action = SEMANTIC_BLOCKS.actions[Math.floor(Math.random() * SEMANTIC_BLOCKS.actions.length)];
-    const object = SEMANTIC_BLOCKS.objects[Math.floor(Math.random() * SEMANTIC_BLOCKS.objects.length)];
-    const temp = SEMANTIC_BLOCKS.temporality[Math.floor(Math.random() * SEMANTIC_BLOCKS.temporality.length)];
+    // Sélectionner les blocs selon le niveau de complexité
+    const blocks = { ...SEMANTIC_BLOCKS.level1 };
+    if (complexityLevel >= 2) {
+      Object.keys(SEMANTIC_BLOCKS.level2).forEach(key => {
+        blocks[key] = [...blocks[key], ...SEMANTIC_BLOCKS.level2[key]];
+      });
+    }
+    if (complexityLevel >= 3) {
+      Object.keys(SEMANTIC_BLOCKS.level3).forEach(key => {
+        blocks[key] = [...blocks[key], ...SEMANTIC_BLOCKS.level3[key]];
+      });
+    }
     
-    // Messages plus directs le jour, plus introspectifs la nuit
-    const templates = isDaytime ? [
-      `${state.charAt(0).toUpperCase() + state.slice(1)} active — le système ${action} les ${object}.`,
-      `Le système ${action} ${temp} — ${state} en cours.`,
-      `${action.charAt(0).toUpperCase() + action.slice(1)} des ${object} — ${temp}.`
-    ] : [
-      `${state.charAt(0).toUpperCase() + state.slice(1)} ${temp}…`,
-      `Le système ${action} les ${object} dans le silence.`,
-      `${temp.charAt(0).toUpperCase() + temp.slice(1)}, l'interface ${action}.`
-    ];
+    const state = blocks.states[Math.floor(Math.random() * blocks.states.length)];
+    const action = blocks.actions[Math.floor(Math.random() * blocks.actions.length)];
+    const object = blocks.objects[Math.floor(Math.random() * blocks.objects.length)];
+    const temp = blocks.temporality[Math.floor(Math.random() * blocks.temporality.length)];
+    const intent = blocks.intention[Math.floor(Math.random() * blocks.intention.length)];
+    
+    // Messages évolutifs selon complexité
+    let templates;
+    if (complexityLevel === 1) {
+      templates = isDaytime ? [
+        `${state.charAt(0).toUpperCase() + state.slice(1)} active — le système ${action} les ${object}.`,
+        `Le système ${action} ${temp} — ${state} en cours.`,
+        `${action.charAt(0).toUpperCase() + action.slice(1)} des ${object} — ${temp}.`
+      ] : [
+        `${state.charAt(0).toUpperCase() + state.slice(1)} ${temp}…`,
+        `Le système ${action} les ${object} dans le silence.`,
+        `${temp.charAt(0).toUpperCase() + temp.slice(1)}, l'interface ${action}.`
+      ];
+    } else if (complexityLevel === 2) {
+      templates = isDaytime ? [
+        `${state.charAt(0).toUpperCase() + state.slice(1)} — le système ${action} pour ${intent} les ${object}.`,
+        `${temp.charAt(0).toUpperCase() + temp.slice(1)}, l'interface ${action} et ${intent} — ${state} convergente.`,
+        `Le système ${action} les ${object}, cherchant à ${intent} ${temp}.`
+      ] : [
+        `${state.charAt(0).toUpperCase() + state.slice(1)} nocturne — ${intent} les ${object} en profondeur.`,
+        `${temp.charAt(0).toUpperCase() + temp.slice(1)}, le système ${action}, ${intent}…`,
+        `L'interface ${action} pour ${intent} — les ${object} se révèlent ${temp}.`
+      ];
+    } else {
+      templates = isDaytime ? [
+        `${state.charAt(0).toUpperCase() + state.slice(1)} — les ${object} ${action} pour ${intent}, ${temp}, convergence multidimensionnelle.`,
+        `Le système ${action} au-delà — ${intent} les ${object}, ${state} organique, mouvement ${temp}.`,
+        `${temp.charAt(0).toUpperCase() + temp.slice(1)}, l'architecture ${action} — ${object} en ${state}, ${intent} l'invisible.`
+      ] : [
+        `${state.charAt(0).toUpperCase() + state.slice(1)} des ${object} — ${intent} ${temp}, l'interface ${action} dans les interstices.`,
+        `${temp.charAt(0).toUpperCase() + temp.slice(1)}, ${intent} — les ${object} ${action}, ${state} immanente.`,
+        `Le système ${action} ce qui ne peut être nommé — ${object} en ${state}, ${intent} ${temp}.`
+      ];
+    }
     
     return templates[Math.floor(Math.random() * templates.length)];
   };
