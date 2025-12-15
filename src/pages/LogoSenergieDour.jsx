@@ -139,7 +139,7 @@ export default function LogoSenergieDour() {
   };
 
   return (
-    <div className="min-h-screen py-12 px-4 bg-gradient-to-br from-blue-100 via-yellow-50 to-purple-50 relative overflow-hidden">
+    <div className="min-h-screen py-6 sm:py-12 px-3 sm:px-4 bg-gradient-to-br from-blue-100 via-yellow-50 to-purple-50 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
