@@ -172,7 +172,7 @@ export default function ExperimentalHome() {
     return templates[Math.floor(Math.random() * templates.length)];
   };
 
-  // Détection comportement scroll
+  // Détection comportement scroll avec apprentissage
   useEffect(() => {
     if (phase !== 'active') return;
 
@@ -181,10 +181,20 @@ export default function ExperimentalHome() {
       const delta = Math.abs(currentScrollY - lastScrollY.current);
       scrollSpeed.current = delta;
       
+      // Enregistrer le pattern de scroll
+      interactionData.current.scrollPatterns = [
+        ...(interactionData.current.scrollPatterns || []).slice(-20),
+        { speed: delta, timestamp: Date.now() }
+      ];
+      
       if (delta > 50) {
         setScrollBehavior('fast');
+        setLearningState('observing');
       } else if (delta > 0 && delta <= 20) {
         setScrollBehavior('slow');
+        setLearningState('integrating');
+        // Augmenter le score d'engagement pour scroll lent (attention)
+        interactionData.current.engagementScore = (interactionData.current.engagementScore || 0) + 0.1;
       }
       
       lastScrollY.current = currentScrollY;
