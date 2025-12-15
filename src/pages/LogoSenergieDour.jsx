@@ -248,17 +248,17 @@ export default function LogoSenergieDour() {
             viewport={{ once: true }}
             className="space-y-4"
           >
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
               <motion.div
                 whileHover={{ rotate: 360, scale: 1.1 }}
                 transition={{ duration: 0.5 }}
-                className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg"
+                className="p-2 sm:p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl sm:rounded-2xl shadow-lg"
               >
-                <Users className="w-6 h-6 text-white" />
+                <Users className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </motion.div>
               <div>
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Votre profil</h3>
-                <p className="text-sm text-gray-500">Étape 1/7</p>
+                <h3 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Votre profil</h3>
+                <p className="text-xs sm:text-sm text-gray-500">Étape 1/7</p>
               </div>
             </div>
 
