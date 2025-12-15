@@ -138,7 +138,7 @@ export default function LogoSenergieDour() {
             Construisons ensemble le logo de Senergie Dour
           </h1>
           
-          <p className="text-2xl text-gray-800 mb-6 flex items-center justify-center gap-2">
+          <p className="text-2xl text-gray-800 font-semibold mb-6 flex items-center justify-center gap-2">
             Habitants et commerçants de Dour, votre avis compte 
             <Heart className="w-6 h-6 text-blue-600 fill-blue-600" />
             <span className="text-yellow-500">💛</span>
