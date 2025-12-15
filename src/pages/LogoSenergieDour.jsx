@@ -197,7 +197,7 @@ export default function LogoSenergieDour() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="text-xl lg:text-2xl text-gray-700 font-medium mb-8 flex items-center justify-center gap-3 flex-wrap"
+            className="text-base sm:text-xl lg:text-2xl text-gray-700 font-medium mb-6 sm:mb-8 flex items-center justify-center gap-2 sm:gap-3 flex-wrap px-2"
           >
             Habitants et commerçants de Dour, votre avis compte 
             <motion.div
