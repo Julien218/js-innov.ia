@@ -480,18 +480,21 @@ export default function ExperimentalHome() {
         </div>
       </div>
 
-      {/* Particles organiques */}
-      {[...Array(15)].map((_, i) => (
+      {/* Particles organiques avec densité variable selon complexité */}
+      {[...Array(complexityLevel * 5)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-1 h-1 bg-gray-700 rounded-full"
+          className="absolute rounded-full"
           style={{
             left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`
+            top: `${Math.random() * 100}%`,
+            width: complexityLevel >= 3 ? '2px' : '1px',
+            height: complexityLevel >= 3 ? '2px' : '1px',
+            backgroundColor: complexityLevel >= 3 ? '#4b5563' : '#374151'
           }}
           animate={{
-            y: [0, -20, 0],
-            opacity: [0, 0.5, 0],
+            y: [0, -20 * (complexityLevel / 2), 0],
+            opacity: [0, 0.3 + (complexityLevel * 0.1), 0],
             scale: [1, 1.5, 1]
           }}
           transition={{
@@ -502,6 +505,21 @@ export default function ExperimentalHome() {
           }}
         />
       ))}
+      
+      {/* Indicateur de learning state (très subtil) */}
+      <motion.div
+        className="absolute top-4 right-4 w-2 h-2 rounded-full"
+        animate={{
+          backgroundColor: learningState === 'evolving' ? '#3b82f6' : learningState === 'integrating' ? '#10b981' : '#6b7280',
+          scale: learningState === 'evolving' ? [1, 1.3, 1] : 1,
+          opacity: [0.2, 0.4, 0.2]
+        }}
+        transition={{
+          duration: learningState === 'evolving' ? 1 : 3,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
     </div>
   );
 }
