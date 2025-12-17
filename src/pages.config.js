@@ -26,6 +26,8 @@ import BlogPost from './pages/BlogPost';
 import BlogAdmin from './pages/BlogAdmin';
 import LogoSenergieDour from './pages/LogoSenergieDour';
 import ExperimentalHome from './pages/ExperimentalHome';
+import DevisWebsite from './pages/DevisWebsite';
+import QuoteDashboard from './pages/QuoteDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -58,6 +60,8 @@ export const PAGES = {
     "BlogAdmin": BlogAdmin,
     "LogoSenergieDour": LogoSenergieDour,
     "ExperimentalHome": ExperimentalHome,
+    "DevisWebsite": DevisWebsite,
+    "QuoteDashboard": QuoteDashboard,
 }
 
 export const pagesConfig = {
