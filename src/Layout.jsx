@@ -373,32 +373,35 @@ function LayoutContent({ children, currentPageName }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h3 className="font-semibold text-white mb-3">Navigation</h3>
+              <h3 className="font-semibold text-white mb-3">Services</h3>
               <div className="space-y-2">
-                {navItems.slice(1).map((item) => (
-                  <Link
-                    key={item.path}
-                    to={createPageUrl(item.path)}
-                    className="block text-gray-400 text-sm hover:text-pink-400 transition-colors"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+                <Link to={createPageUrl('Applications')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Intelligence Artificielle</Link>
+                <Link to={createPageUrl('Automations')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Automatisations</Link>
+                <Link to={createPageUrl('SEOAudit')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Audit SEO</Link>
+                <Link to={createPageUrl('DevisWebsite')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Création de sites</Link>
               </div>
             </div>
             <div>
-              <h3 className="font-semibold text-white mb-3">Suivez-nous</h3>
+              <h3 className="font-semibold text-white mb-3">Ressources</h3>
+              <div className="space-y-2">
+                <Link to={createPageUrl('Blog')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Blog</Link>
+                <Link to={createPageUrl('News')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Veille IA</Link>
+                <Link to={createPageUrl('Showcase')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Portfolio</Link>
+                <Link to={createPageUrl('Contact')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Contact</Link>
+              </div>
+            </div>
+            <div>
+              <h3 className="font-semibold text-white mb-3">Commencer un projet</h3>
               <p className="text-gray-400 text-sm mb-4">
-                Restez connecté pour découvrir nos dernières innovations IA.
+                Transformez vos idées en réalité avec l'IA.
               </p>
               <Link
-                to={createPageUrl('Contact')}
+                to={createPageUrl('DevisWebsite')}
                 className="inline-block px-6 py-2 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white text-sm font-medium hover:shadow-lg hover:shadow-pink-500/50 transition-all"
               >
-                Nous contacter
+                Demander un devis
               </Link>
             </div>
-            <div></div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
             <p>© 2024 JS-INNOV.IA - Tous droits réservés</p>
