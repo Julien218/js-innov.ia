@@ -297,21 +297,66 @@ function LayoutContent({ children, currentPageName }) {
               exit={{ opacity: 0, height: 0 }}
               className="lg:hidden bg-black/95 backdrop-blur-xl border-t border-purple-900/30"
             >
-              <div className="px-4 py-4 space-y-2">
+              <div className="px-4 py-4 space-y-2 max-h-[80vh] overflow-y-auto">
                 {navItems.map((item) => (
-                  <Link
-                    key={item.path}
-                    to={createPageUrl(item.path)}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${
-                      currentPageName === item.path
-                        ? 'bg-gradient-to-r from-pink-600/20 to-purple-600/20 text-pink-400'
-                        : 'text-gray-300 hover:bg-purple-900/20'
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
+                  item.submenu ? (
+                    <div key={item.name}>
+                      <button
+                        onClick={() => setOpenSubmenu(openSubmenu === item.name ? null : item.name)}
+                        className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:bg-purple-900/20 flex items-center justify-between"
+                      >
+                        {item.name}
+                        <ChevronDown className={`w-4 h-4 transition-transform ${openSubmenu === item.name ? 'rotate-180' : ''}`} />
+                      </button>
+                      {openSubmenu === item.name && (
+                        <div className="ml-4 mt-1 space-y-1">
+                          {item.submenu.map((subitem) => (
+                            <Link
+                              key={subitem.path}
+                              to={createPageUrl(subitem.path)}
+                              onClick={() => setMobileMenuOpen(false)}
+                              className="block px-4 py-2 rounded-lg text-sm text-gray-400 hover:bg-purple-900/20 hover:text-gray-300"
+                            >
+                              {subitem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <Link
+                      key={item.path}
+                      to={createPageUrl(item.path)}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                        item.highlight
+                          ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white'
+                          : currentPageName === item.path
+                          ? 'bg-gradient-to-r from-pink-600/20 to-purple-600/20 text-pink-400'
+                          : 'text-gray-300 hover:bg-purple-900/20'
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  )
                 ))}
+
+                {adminItems.length > 0 && (
+                  <>
+                    <div className="border-t border-gray-800 my-2"></div>
+                    <div className="text-xs text-gray-500 px-4 py-2">Administration</div>
+                    {adminItems.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={createPageUrl(item.path)}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block px-4 py-3 rounded-lg text-sm text-purple-400 hover:bg-purple-900/20"
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </>
+                )}
               </div>
             </motion.div>
           )}
