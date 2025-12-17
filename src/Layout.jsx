@@ -34,27 +34,45 @@ function LayoutContent({ children, currentPageName }) {
   // Les meta tags SEO sont maintenant gérés par le composant SEOMetaTags
 
   const navItems = [
-        { name: 'Accueil', path: 'Home' },
-        { name: 'Actualités IA', path: 'News' },
-        { name: 'Blog', path: 'Blog' },
-        { name: 'Innovations', path: 'Innovations' },
-        { name: 'Portfolio', path: 'Showcase' },
-        { name: 'Audit SEO', path: 'SEOAudit' },
-        { name: 'Musiques', path: 'MusicShop' },
-        { name: 'Templates', path: 'Templates' },
-        { name: 'Automatisations', path: 'Automations' },
-        { name: 'Applications', path: 'Applications' },
-        { name: 'Partenaires', path: 'Partners' },
-        { name: 'Contact', path: 'Contact' },
-        ...(isAdmin ? [
-          { name: 'Admin', path: 'Admin' },
-              { name: 'Studio Contenu', path: 'ContentStudio' },
-              { name: 'SEO Dashboard', path: 'SEODashboard' },
-              { name: 'Blog Admin', path: 'BlogAdmin' },
-              { name: 'Formulaires', path: 'FormBuilder' },
-              { name: 'CRM', path: 'CRM' }
-            ] : [])
+    { name: 'Accueil', path: 'Home' },
+    { 
+      name: 'Services', 
+      submenu: [
+        { name: 'Intelligence Artificielle', path: 'Applications', desc: 'Solutions IA sur mesure' },
+        { name: 'Automatisations', path: 'Automations', desc: 'Gagnez du temps' },
+        { name: 'Audit & Stratégie SEO', path: 'SEOAudit', desc: 'Boostez votre visibilité' },
+        { name: 'Création de sites web', path: 'DevisWebsite', desc: 'Devis personnalisé' }
+      ]
+    },
+    { 
+      name: 'Solutions', 
+      submenu: [
+        { name: 'Templates vidéo', path: 'Templates', desc: 'Prêts à l\'emploi' },
+        { name: 'Musiques commerciales', path: 'MusicShop', desc: 'Sans droits SABAM' },
+        { name: 'Studio de contenu', path: 'ContentStudio', desc: 'Création assistée par IA' }
+      ]
+    },
+    { 
+      name: 'Ressources', 
+      submenu: [
+        { name: 'Blog', path: 'Blog', desc: 'Actualités & conseils' },
+        { name: 'Veille IA', path: 'News', desc: 'Dernières innovations' },
+        { name: 'Portfolio', path: 'Showcase', desc: 'Nos réalisations' },
+        { name: 'Innovations', path: 'Innovations', desc: 'Projets R&D' }
+      ]
+    },
+    { name: 'Demander un devis', path: 'DevisWebsite', highlight: true },
+    { name: 'Contact', path: 'Contact' }
   ];
+
+  const adminItems = isAdmin ? [
+    { name: 'Tableau de bord', path: 'Admin' },
+    { name: 'CRM', path: 'CRM' },
+    { name: 'Gestion devis', path: 'QuoteDashboard' },
+    { name: 'Gestion contenu', path: 'BlogAdmin' },
+    { name: 'SEO Dashboard', path: 'SEODashboard' },
+    { name: 'Formulaires', path: 'FormBuilder' }
+  ] : [];
 
   // Si c'est une page standalone, ne pas afficher la navigation
   if (isStandalonePage) {
