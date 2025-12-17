@@ -173,7 +173,7 @@ export default function DevisWebsite() {
           </p>
           <div className="p-6 bg-gradient-to-br from-white/5 to-white/[0.02] border border-purple-500/20 rounded-2xl">
             <p className="text-gray-400">
-              Vous recevrez votre devis personnalisé par email sous environ <strong className="text-pink-400">40 minutes</strong>.
+              Vous recevrez votre devis personnalisé par email.
             </p>
           </div>
         </motion.div>
@@ -204,7 +204,7 @@ export default function DevisWebsite() {
             </p>
             
             <p className="text-lg text-gray-400 mb-12">
-              Après analyse de votre demande, vous recevrez une estimation personnalisée par email sous environ <strong className="text-pink-400">40 minutes</strong>.
+              Après analyse de votre demande, vous recevrez une estimation personnalisée par email.
             </p>
             
             <Button
@@ -603,7 +603,7 @@ export default function DevisWebsite() {
                         <div>
                           <h3 className="text-white font-semibold mb-2">Dernière étape !</h3>
                           <p className="text-gray-300 text-sm">
-                            Validez votre demande pour recevoir votre devis personnalisé sous environ 40 minutes.
+                            Validez votre demande pour recevoir votre devis personnalisé.
                           </p>
                         </div>
                       </div>
