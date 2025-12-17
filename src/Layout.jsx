@@ -13,6 +13,7 @@ import { base44 } from '@/api/base44Client';
 function LayoutContent({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [openSubmenu, setOpenSubmenu] = useState(null);
   const { getCartCount } = useCart();
 
   // Page standalone sans navigation
