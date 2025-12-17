@@ -170,34 +170,97 @@ function LayoutContent({ children, currentPageName }) {
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center gap-3">
               {navItems.map((item, index) => (
-                <motion.div
-                  key={item.path}
-                  animate={{ 
-                    y: [0, -5, 0],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: index * 0.2
-                  }}
-                  style={{ 
-                    marginTop: index % 2 === 0 ? '0' : '16px',
-                    marginBottom: index % 2 === 0 ? '16px' : '0'
-                  }}
-                >
+                item.submenu ? (
+                  <div
+                    key={item.name}
+                    className="relative"
+                    onMouseEnter={() => setOpenSubmenu(item.name)}
+                    onMouseLeave={() => setOpenSubmenu(null)}
+                  >
+                    <button
+                      className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                        openSubmenu === item.name
+                          ? 'bg-white/10 text-yellow-100'
+                          : 'bg-white/5 text-yellow-200/90 hover:bg-white/10 hover:text-yellow-100'
+                      }`}
+                    >
+                      {item.name}
+                      <ChevronDown className="w-3 h-3" />
+                    </button>
+
+                    {openSubmenu === item.name && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="absolute top-full left-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl border border-purple-500/30 rounded-2xl shadow-2xl overflow-hidden z-50"
+                      >
+                        {item.submenu.map((subitem) => (
+                          <Link
+                            key={subitem.path}
+                            to={createPageUrl(subitem.path)}
+                            className="block px-4 py-3 hover:bg-white/10 transition-colors border-b border-gray-800/50 last:border-0"
+                          >
+                            <div className="font-semibold text-white text-sm">{subitem.name}</div>
+                            <div className="text-xs text-gray-400 mt-1">{subitem.desc}</div>
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </div>
+                ) : (
                   <Link
+                    key={item.path}
                     to={createPageUrl(item.path)}
-                    className={`block px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 text-center ${
-                      currentPageName === item.path
+                    className={`block px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                      item.highlight
+                        ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg shadow-pink-500/50 hover:shadow-pink-500/70'
+                        : currentPageName === item.path
                         ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-gray-900 shadow-lg shadow-amber-400/50'
-                        : 'bg-white/5 text-yellow-200/90 hover:bg-white/10 hover:text-yellow-100 hover:shadow-lg hover:shadow-amber-400/30'
+                        : 'bg-white/5 text-yellow-200/90 hover:bg-white/10 hover:text-yellow-100'
                     }`}
                   >
                     {item.name}
                   </Link>
-                </motion.div>
+                )
               ))}
+
+              {/* Admin menu if admin */}
+              {adminItems.length > 0 && (
+                <div
+                  className="relative ml-2 border-l border-gray-700 pl-3"
+                  onMouseEnter={() => setOpenSubmenu('admin')}
+                  onMouseLeave={() => setOpenSubmenu(null)}
+                >
+                  <button
+                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                      openSubmenu === 'admin'
+                        ? 'bg-purple-600/30 text-purple-300'
+                        : 'bg-purple-600/20 text-purple-400 hover:bg-purple-600/30'
+                    }`}
+                  >
+                    Admin
+                    <ChevronDown className="w-3 h-3" />
+                  </button>
+
+                  {openSubmenu === 'admin' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="absolute top-full right-0 mt-2 w-56 bg-gray-900/95 backdrop-blur-xl border border-purple-500/30 rounded-2xl shadow-2xl overflow-hidden z-50"
+                    >
+                      {adminItems.map((item) => (
+                        <Link
+                          key={item.path}
+                          to={createPageUrl(item.path)}
+                          className="block px-4 py-3 hover:bg-purple-600/20 transition-colors border-b border-gray-800/50 last:border-0 text-purple-300 hover:text-purple-200 text-sm"
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </div>
+              )}
               </div>
 
               {/* Cart Icon */}
