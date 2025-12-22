@@ -110,7 +110,7 @@ export default function LogoSenergieDour() {
           </p>
           <div className="p-6 bg-white rounded-2xl shadow-xl border border-blue-200">
             <p className="text-gray-600 italic">
-              Le logo de Senergie Dour sera créé à partir des avis des habitants et des commerçants.
+              Le logo de Synergie Dour sera créé à partir des avis des habitants et des commerçants.
               <br />
               <strong className="text-blue-600">Un logo collectif, pour une énergie locale.</strong>
             </p>
@@ -180,7 +180,7 @@ export default function LogoSenergieDour() {
             >
               <Palette className="w-6 h-6 text-blue-600" />
             </motion.div>
-            <span className="text-blue-600 font-bold text-lg">Senergie Dour</span>
+            <span className="text-blue-600 font-bold text-lg">Synergie Dour</span>
             <Sparkles className="w-4 h-4 text-yellow-500" />
           </motion.div>
           
@@ -190,7 +190,7 @@ export default function LogoSenergieDour() {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="text-2xl sm:text-3xl lg:text-6xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-yellow-500 bg-clip-text text-transparent px-2"
           >
-            Construisons ensemble le logo de Senergie Dour
+            Construisons ensemble le logo de Synergie Dour
           </motion.h1>
           
           <motion.p 
@@ -216,7 +216,7 @@ export default function LogoSenergieDour() {
             className="bg-white/80 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 lg:p-8 border-2 border-blue-300 text-left hover:shadow-3xl transition-shadow duration-300"
           >
             <p className="text-gray-700 leading-relaxed mb-4">
-              <strong className="text-blue-600">Senergie Dour</strong> est une asbl qui a pour objectif de rassembler
+              <strong className="text-blue-600">Synergie Dour</strong> est une asbl qui a pour objectif de rassembler
               les habitants et les commerçants autour du <strong>commerce local</strong>, du <strong>bien-être</strong> et du <strong>vivre ensemble</strong>.
             </p>
             <p className="text-gray-700 leading-relaxed mb-4">
@@ -501,7 +501,7 @@ export default function LogoSenergieDour() {
             </div>
             <div className="flex items-center gap-2 p-3 bg-purple-50 rounded-lg border border-purple-200">
               <Palette className="w-4 h-4 text-purple-600" />
-              <p className="text-sm text-purple-700 font-medium">Quelles couleurs représentent Senergie Dour ? *</p>
+              <p className="text-sm text-purple-700 font-medium">Quelles couleurs représentent Synergie Dour ? *</p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
@@ -712,7 +712,7 @@ export default function LogoSenergieDour() {
             <Heart className="w-12 h-12 text-red-500 fill-red-500" />
           </motion.div>
           <p className="text-gray-800 italic text-sm sm:text-base lg:text-lg leading-relaxed px-2">
-            Le logo de Senergie Dour sera créé à partir des avis des habitants et des commerçants.
+            Le logo de Synergie Dour sera créé à partir des avis des habitants et des commerçants.
             <br />
             <strong className="text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-base sm:text-lg lg:text-xl">
               Un logo collectif, pour une énergie locale.

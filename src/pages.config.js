@@ -1,67 +1,67 @@
-import Home from './pages/Home';
-import Innovations from './pages/Innovations';
-import Templates from './pages/Templates';
-import Automations from './pages/Automations';
+import AIMusic from './pages/AIMusic';
+import Admin from './pages/Admin';
 import Applications from './pages/Applications';
-import Contact from './pages/Contact';
-import PaymentSuccess from './pages/PaymentSuccess';
-import PaymentCancel from './pages/PaymentCancel';
-import News from './pages/News';
-import Showcase from './pages/Showcase';
-import MusicShop from './pages/MusicShop';
+import Automations from './pages/Automations';
+import Blog from './pages/Blog';
+import BlogAdmin from './pages/BlogAdmin';
+import BlogPost from './pages/BlogPost';
+import CRM from './pages/CRM';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
-import OrderConfirmation from './pages/OrderConfirmation';
-import Admin from './pages/Admin';
-import FormBuilder from './pages/FormBuilder';
-import PublicForm from './pages/PublicForm';
-import CRM from './pages/CRM';
-import AIMusic from './pages/AIMusic';
-import Partners from './pages/Partners';
+import Contact from './pages/Contact';
 import ContentStudio from './pages/ContentStudio';
+import DevisWebsite from './pages/DevisWebsite';
+import ExperimentalHome from './pages/ExperimentalHome';
+import FormBuilder from './pages/FormBuilder';
+import Home from './pages/Home';
+import Innovations from './pages/Innovations';
+import LogoSenergieDour from './pages/LogoSenergieDour';
+import MusicShop from './pages/MusicShop';
+import News from './pages/News';
+import OrderConfirmation from './pages/OrderConfirmation';
+import Partners from './pages/Partners';
+import PaymentCancel from './pages/PaymentCancel';
+import PaymentSuccess from './pages/PaymentSuccess';
+import PublicForm from './pages/PublicForm';
+import QuoteDashboard from './pages/QuoteDashboard';
 import SEOAudit from './pages/SEOAudit';
 import SEODashboard from './pages/SEODashboard';
-import Blog from './pages/Blog';
-import BlogPost from './pages/BlogPost';
-import BlogAdmin from './pages/BlogAdmin';
-import LogoSenergieDour from './pages/LogoSenergieDour';
-import ExperimentalHome from './pages/ExperimentalHome';
-import DevisWebsite from './pages/DevisWebsite';
-import QuoteDashboard from './pages/QuoteDashboard';
+import Showcase from './pages/Showcase';
+import Templates from './pages/Templates';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "Home": Home,
-    "Innovations": Innovations,
-    "Templates": Templates,
-    "Automations": Automations,
+    "AIMusic": AIMusic,
+    "Admin": Admin,
     "Applications": Applications,
-    "Contact": Contact,
-    "PaymentSuccess": PaymentSuccess,
-    "PaymentCancel": PaymentCancel,
-    "News": News,
-    "Showcase": Showcase,
-    "MusicShop": MusicShop,
+    "Automations": Automations,
+    "Blog": Blog,
+    "BlogAdmin": BlogAdmin,
+    "BlogPost": BlogPost,
+    "CRM": CRM,
     "Cart": Cart,
     "Checkout": Checkout,
-    "OrderConfirmation": OrderConfirmation,
-    "Admin": Admin,
-    "FormBuilder": FormBuilder,
-    "PublicForm": PublicForm,
-    "CRM": CRM,
-    "AIMusic": AIMusic,
-    "Partners": Partners,
+    "Contact": Contact,
     "ContentStudio": ContentStudio,
+    "DevisWebsite": DevisWebsite,
+    "ExperimentalHome": ExperimentalHome,
+    "FormBuilder": FormBuilder,
+    "Home": Home,
+    "Innovations": Innovations,
+    "LogoSenergieDour": LogoSenergieDour,
+    "MusicShop": MusicShop,
+    "News": News,
+    "OrderConfirmation": OrderConfirmation,
+    "Partners": Partners,
+    "PaymentCancel": PaymentCancel,
+    "PaymentSuccess": PaymentSuccess,
+    "PublicForm": PublicForm,
+    "QuoteDashboard": QuoteDashboard,
     "SEOAudit": SEOAudit,
     "SEODashboard": SEODashboard,
-    "Blog": Blog,
-    "BlogPost": BlogPost,
-    "BlogAdmin": BlogAdmin,
-    "LogoSenergieDour": LogoSenergieDour,
-    "ExperimentalHome": ExperimentalHome,
-    "DevisWebsite": DevisWebsite,
-    "QuoteDashboard": QuoteDashboard,
+    "Showcase": Showcase,
+    "Templates": Templates,
 }
 
 export const pagesConfig = {
