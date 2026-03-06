@@ -406,6 +406,8 @@ function LayoutContent({ children, currentPageName }) {
 
       {/* AI Chatbot */}
       <AIChatbot />
+      {/* Sales Agent */}
+      <SalesAgent />
       </div>
       );
       }
