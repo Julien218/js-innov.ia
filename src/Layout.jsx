@@ -36,34 +36,28 @@ function LayoutContent({ children, currentPageName }) {
 
   const navItems = [
     { name: 'Accueil', path: 'Home' },
-    { 
-      name: 'Services', 
+    {
+      name: 'Outils IA',
       submenu: [
-        { name: 'Intelligence Artificielle', path: 'Applications', desc: 'Solutions IA sur mesure' },
-        { name: 'Automatisations', path: 'Automations', desc: 'Gagnez du temps' },
-        { name: 'Audit & Stratégie SEO', path: 'SEOAudit', desc: 'Boostez votre visibilité' },
-        { name: 'Création de sites web', path: 'DevisWebsite', desc: 'Devis personnalisé' }
+        { name: 'AI SEO Analyzer', path: 'SEOAudit', desc: 'Analysez votre site web' },
+        { name: 'Content Studio', path: 'ContentStudio', desc: 'Générez du contenu IA' },
+        { name: 'AI Music Generator', path: 'AIMusic', desc: 'Musiques sans droits SABAM' },
+        { name: 'Automation Agents', path: 'Automations', desc: 'Automatisez votre business' },
+        { name: 'Applications IA', path: 'Applications', desc: 'Solutions sur mesure' },
       ]
     },
-    { 
-      name: 'Solutions', 
+    {
+      name: 'Ressources',
       submenu: [
-        { name: 'Templates vidéo', path: 'Templates', desc: 'Prêts à l\'emploi' },
-        { name: 'Musiques commerciales', path: 'MusicShop', desc: 'Sans droits SABAM' },
-        { name: 'Studio de contenu', path: 'ContentStudio', desc: 'Création assistée par IA' }
-      ]
-    },
-    { 
-      name: 'Ressources', 
-      submenu: [
-        { name: 'Blog', path: 'Blog', desc: 'Actualités & conseils' },
+        { name: 'Blog', path: 'Blog', desc: 'Actualités & conseils IA' },
         { name: 'Veille IA', path: 'News', desc: 'Dernières innovations' },
         { name: 'Portfolio', path: 'Showcase', desc: 'Nos réalisations' },
-        { name: 'Innovations', path: 'Innovations', desc: 'Projets R&D' }
+        { name: 'Templates vidéo', path: 'Templates', desc: 'Prêts à l\'emploi' },
       ]
     },
-    { name: 'Demander un devis', path: 'DevisWebsite', highlight: true },
-    { name: 'Contact', path: 'Contact' }
+    { name: 'Tarifs', path: 'Pricing' },
+    { name: 'Contact', path: 'Contact' },
+    { name: 'Commencer', path: 'Pricing', highlight: true },
   ];
 
   const adminItems = isAdmin ? [
