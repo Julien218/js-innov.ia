@@ -4,6 +4,7 @@ import { createPageUrl } from './utils';
 import { Menu, X, Sparkles, ShoppingCart, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AIChatbot from './components/chatbot/AIChatbot';
+import SalesAgent from './components/agent/SalesAgent';
 import PowerWord from './components/shared/PowerWord';
 import SEOMetaTags from './components/seo/SEOMetaTags';
 
