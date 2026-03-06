@@ -31,7 +31,7 @@ export default function AIMusicRequestModal({ isOpen, onClose }) {
         email: data.email,
         phone: data.phone,
         company: data.businessName,
-        subject: 'Musique Par IA',
+        subject: 'Autre',
         message: `Type de commerce: ${data.businessType}
 Style musical: ${data.musicStyle}
 Avec paroles: ${data.withLyrics}
@@ -40,8 +40,7 @@ ${data.adsContent ? `Contenu pubs: ${data.adsContent}` : ''}
 Budget: ${data.budget}
 
 Message:
-${data.message}`,
-        budget: data.budget
+${data.message}`
       });
     },
     onSuccess: () => {
