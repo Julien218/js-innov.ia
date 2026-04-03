@@ -78,6 +78,8 @@ import SEODashboard from './pages/SEODashboard';
 import Showcase from './pages/Showcase';
 import Templates from './pages/Templates';
 import Pricing from './pages/Pricing';
+import PageManager from './pages/PageManager';
+import DynamicPageView from './pages/DynamicPageView';
 import __Layout from './Layout.jsx';
 
 
@@ -113,6 +115,7 @@ export const PAGES = {
     "Showcase": Showcase,
     "Templates": Templates,
     "Pricing": Pricing,
+    "PageManager": PageManager,
 }
 
 export const pagesConfig = {

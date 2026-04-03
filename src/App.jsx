@@ -6,6 +6,8 @@ import VisualEditAgent from '@/lib/VisualEditAgent'
 import NavigationTracker from '@/lib/NavigationTracker'
 import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import DynamicPageView from './pages/DynamicPageView';
+import __Layout from './Layout.jsx';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
@@ -60,6 +62,11 @@ const AuthenticatedApp = () => {
           }
         />
       ))}
+      <Route path="/page/:slug" element={
+        <__Layout currentPageName="DynamicPageView">
+          <DynamicPageView />
+        </__Layout>
+      } />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

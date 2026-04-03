@@ -15,6 +15,7 @@ function LayoutContent({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState(null);
+  const [dynNavPages, setDynNavPages] = useState([]);
   const { getCartCount } = useCart();
 
   // Page standalone sans navigation
@@ -31,6 +32,12 @@ function LayoutContent({ children, currentPageName }) {
       }
     };
     checkAdmin();
+  }, []);
+
+  useEffect(() => {
+    base44.entities.DynamicPage.filter({ show_in_nav: true, status: 'publiée' })
+      .then(setDynNavPages)
+      .catch(() => {});
   }, []);
 
   // Les meta tags SEO sont maintenant gérés par le composant SEOMetaTags
@@ -58,6 +65,7 @@ function LayoutContent({ children, currentPageName }) {
     },
     { name: 'Tarifs', path: 'Pricing' },
     { name: 'Contact', path: 'Contact' },
+    ...dynNavPages.map(p => ({ name: p.nav_label || p.title, dynamicSlug: p.slug })),
     { name: 'Commencer', path: 'Pricing', highlight: true },
   ];
 
@@ -67,7 +75,8 @@ function LayoutContent({ children, currentPageName }) {
     { name: 'Gestion devis', path: 'QuoteDashboard' },
     { name: 'Gestion contenu', path: 'BlogAdmin' },
     { name: 'SEO Dashboard', path: 'SEODashboard' },
-    { name: 'Formulaires', path: 'FormBuilder' }
+    { name: 'Formulaires', path: 'FormBuilder' },
+    { name: 'Gestion des pages', path: 'PageManager' }
   ] : [];
 
   // Si c'est une page standalone, ne pas afficher la navigation
@@ -204,8 +213,8 @@ function LayoutContent({ children, currentPageName }) {
                   </div>
                 ) : (
                   <Link
-                    key={item.path}
-                    to={createPageUrl(item.path)}
+                    key={item.dynamicSlug || item.path}
+                    to={item.dynamicSlug ? `/page/${item.dynamicSlug}` : createPageUrl(item.path)}
                     className={`block px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
                       item.highlight
                         ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg shadow-pink-500/50 hover:shadow-pink-500/70'
@@ -320,8 +329,8 @@ function LayoutContent({ children, currentPageName }) {
                     </div>
                   ) : (
                     <Link
-                      key={item.path}
-                      to={createPageUrl(item.path)}
+                      key={item.dynamicSlug || item.path}
+                      to={item.dynamicSlug ? `/page/${item.dynamicSlug}` : createPageUrl(item.path)}
                       onClick={() => setMobileMenuOpen(false)}
                       className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${
                         item.highlight
