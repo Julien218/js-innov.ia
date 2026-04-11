@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from './utils';
-import { Menu, X, Sparkles, ShoppingCart, ChevronDown } from 'lucide-react';
+import { Menu, X, ShoppingCart, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AIChatbot from './components/chatbot/AIChatbot';
 import SalesAgent from './components/agent/SalesAgent';
-import PowerWord from './components/shared/PowerWord';
 import SEOMetaTags from './components/seo/SEOMetaTags';
-
 import { CartProvider, useCart } from './components/cart/CartContext';
 import { base44 } from '@/api/base44Client';
+
+const GOLD = '#D4AF37';
+const GOLD_L = '#F5CF41';
+const PURPLE = '#8B5CF6';
+const CYAN = '#06B6D4';
 
 function LayoutContent({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -18,29 +21,16 @@ function LayoutContent({ children, currentPageName }) {
   const [dynNavPages, setDynNavPages] = useState([]);
   const { getCartCount } = useCart();
 
-  // Page standalone sans navigation
   const isStandalonePage = currentPageName === 'LogoSenergieDour';
 
-  // Check if user is admin
   useEffect(() => {
-    const checkAdmin = async () => {
-      try {
-        const user = await base44.auth.me();
-        setIsAdmin(user?.role === 'admin');
-      } catch {
-        setIsAdmin(false);
-      }
-    };
-    checkAdmin();
+    base44.auth.me().then(u => setIsAdmin(u?.role === 'admin')).catch(() => {});
   }, []);
 
   useEffect(() => {
     base44.entities.DynamicPage.filter({ show_in_nav: true, status: 'publiée' })
-      .then(setDynNavPages)
-      .catch(() => {});
+      .then(setDynNavPages).catch(() => {});
   }, []);
-
-  // Les meta tags SEO sont maintenant gérés par le composant SEOMetaTags
 
   const navItems = [
     { name: 'Accueil', path: 'Home' },
@@ -60,7 +50,7 @@ function LayoutContent({ children, currentPageName }) {
         { name: 'Blog', path: 'Blog', desc: 'Actualités & conseils IA' },
         { name: 'Veille IA', path: 'News', desc: 'Dernières innovations' },
         { name: 'Portfolio', path: 'Showcase', desc: 'Nos réalisations' },
-        { name: 'Templates vidéo', path: 'Templates', desc: 'Prêts à l\'emploi' },
+        { name: 'Templates vidéo', path: 'Templates', desc: "Prêts à l'emploi" },
       ]
     },
     { name: 'Tarifs', path: 'Pricing' },
@@ -76,10 +66,9 @@ function LayoutContent({ children, currentPageName }) {
     { name: 'Gestion contenu', path: 'BlogAdmin' },
     { name: 'SEO Dashboard', path: 'SEODashboard' },
     { name: 'Formulaires', path: 'FormBuilder' },
-    { name: 'Gestion des pages', path: 'PageManager' }
+    { name: 'Gestion des pages', path: 'PageManager' },
   ] : [];
 
-  // Si c'est une page standalone, ne pas afficher la navigation
   if (isStandalonePage) {
     return (
       <div className="min-h-screen">
@@ -89,273 +78,198 @@ function LayoutContent({ children, currentPageName }) {
     );
   }
 
+  const navLinkStyle = (item) => {
+    if (item.highlight) return { background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, color: '#080808', fontWeight: 800, boxShadow: `0 0 25px rgba(212,175,55,0.4)` };
+    if (currentPageName === item.path) return { background: 'rgba(212,175,55,0.12)', color: GOLD, border: `1px solid rgba(212,175,55,0.35)` };
+    return { background: 'rgba(212,175,55,0.05)', color: 'rgba(212,175,55,0.7)', border: `1px solid rgba(212,175,55,0.12)` };
+  };
+
+  const submenuStyle = { background: 'rgba(6,6,18,0.98)', border: `1px solid rgba(212,175,55,0.2)`, boxShadow: '0 20px 60px rgba(0,0,0,0.9), 0 0 40px rgba(212,175,55,0.06)' };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white">
+    <div className="min-h-screen text-white" style={{ background: 'linear-gradient(135deg, #080808 0%, #0d0a1a 50%, #080808 100%)' }}>
       <SEOMetaTags pageName={currentPageName} />
       <style>{`
-        :root {
-          --neon-pink: #ff006e;
-          --neon-purple: #8338ec;
-          --neon-cyan: #06ffa5;
-          --neon-gold: #ffb703;
-        }
-
-        .glow-text {
-          text-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
-        }
-
-        .glow-box {
-          box-shadow: 0 0 30px rgba(131, 56, 236, 0.3);
-        }
-
-        .gradient-border {
-          background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple), var(--neon-cyan));
-          padding: 2px;
-          border-radius: 12px;
-        }
-
-        .gradient-text {
-          background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple), var(--neon-cyan), var(--neon-gold));
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        @keyframes power-pulse {
-          0%, 100% {
-            text-shadow: 0 0 8px rgba(255, 0, 110, 0.3),
-                         0 0 12px rgba(131, 56, 236, 0.2);
-            filter: brightness(1);
-          }
-          50% {
-            text-shadow: 0 0 12px rgba(255, 0, 110, 0.5),
-                         0 0 18px rgba(131, 56, 236, 0.3);
-            filter: brightness(1.1);
-          }
-        }
-
+        :root { --gold: #D4AF37; --gold-light: #F5CF41; --purple: #8B5CF6; --cyan: #06B6D4; }
         .power-word {
-          background: linear-gradient(135deg, #ff006e, #8338ec, #06ffa5);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          animation: power-pulse 4s ease-in-out infinite;
-          font-weight: 600;
-          display: inline-block;
+          background: linear-gradient(135deg, #D4AF37, #F5CF41, #8B5CF6);
+          -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+          font-weight: 700; display: inline-block;
+        }
+        .gradient-text {
+          background: linear-gradient(135deg, #D4AF37, #F5CF41, #8B5CF6, #06B6D4);
+          -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
       `}</style>
 
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-purple-900/30">
+      {/* Gold gradient line */}
+      <div className="fixed top-0 left-0 right-0 h-px z-[60]"
+        style={{ background: `linear-gradient(90deg, transparent, ${GOLD}, ${PURPLE}, ${CYAN}, transparent)` }} />
+
+      {/* NAV */}
+      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-2xl border-b"
+        style={{ background: 'rgba(6,6,18,0.94)', borderColor: 'rgba(212,175,55,0.15)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-28">
+
             {/* Logo */}
-            <Link to={createPageUrl('Home')} className="group">
-              <motion.div 
-                className="relative w-24 h-24 mt-20"
-                animate={{ 
-                  y: [0, -10, 0],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                <img 
+            <Link to={createPageUrl('Home')} className="group flex-shrink-0">
+              <motion.div className="relative w-24 h-24 mt-20"
+                animate={{ y: [0, -8, 0] }} transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}>
+                <img
                   src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png"
-                  alt="JS-INNOV.IA - Intelligence Artificielle et Automatisations"
+                  alt="JS-INNOV.IA"
                   className="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform"
                 />
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-500 blur-xl opacity-30 group-hover:opacity-50 transition-opacity -z-10"></div>
+                <div className="absolute inset-0 rounded-full blur-xl opacity-25 group-hover:opacity-45 transition-opacity -z-10"
+                  style={{ background: `radial-gradient(circle, ${GOLD}, ${PURPLE})` }} />
               </motion.div>
             </Link>
 
-            {/* Desktop Menu */}
-            <div className="hidden lg:flex items-center gap-3">
-              {navItems.map((item, index) => (
+            {/* Desktop nav */}
+            <div className="hidden lg:flex items-center gap-2">
+              {navItems.map((item) =>
                 item.submenu ? (
-                  <div
-                    key={item.name}
-                    className="relative"
+                  <div key={item.name} className="relative"
                     onMouseEnter={() => setOpenSubmenu(item.name)}
-                    onMouseLeave={() => setOpenSubmenu(null)}
-                  >
+                    onMouseLeave={() => setOpenSubmenu(null)}>
                     <button
-                      className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                        openSubmenu === item.name
-                          ? 'bg-white/10 text-yellow-100'
-                          : 'bg-white/5 text-yellow-200/90 hover:bg-white/10 hover:text-yellow-100'
-                      }`}
-                    >
+                      className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200"
+                      style={openSubmenu === item.name
+                        ? { background: 'rgba(212,175,55,0.12)', color: GOLD, border: `1px solid rgba(212,175,55,0.3)` }
+                        : { background: 'rgba(212,175,55,0.05)', color: 'rgba(212,175,55,0.65)', border: `1px solid rgba(212,175,55,0.12)` }}>
                       {item.name}
                       <ChevronDown className="w-3 h-3" />
                     </button>
+                    <AnimatePresence>
+                      {openSubmenu === item.name && (
+                        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}
+                          className="absolute top-full left-0 mt-2 w-64 rounded-2xl overflow-hidden z-50"
+                          style={submenuStyle}>
+                          {item.submenu.map((sub) => (
+                            <Link key={sub.path} to={createPageUrl(sub.path)}
+                              className="block px-4 py-3 border-b last:border-0 transition-colors"
+                              style={{ borderColor: 'rgba(212,175,55,0.08)' }}
+                              onMouseEnter={e => e.currentTarget.style.background = 'rgba(212,175,55,0.06)'}
+                              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                              <div className="text-sm font-semibold" style={{ color: 'rgba(212,175,55,0.85)' }}>{sub.name}</div>
+                              <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.32)' }}>{sub.desc}</div>
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Link key={item.dynamicSlug || item.path}
+                    to={item.dynamicSlug ? `/page/${item.dynamicSlug}` : createPageUrl(item.path)}
+                    className="block px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200"
+                    style={navLinkStyle(item)}>
+                    {item.name}
+                  </Link>
+                )
+              )}
 
-                    {openSubmenu === item.name && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="absolute top-full left-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl border border-purple-500/30 rounded-2xl shadow-2xl overflow-hidden z-50"
-                      >
-                        {item.submenu.map((subitem) => (
-                          <Link
-                            key={subitem.path}
-                            to={createPageUrl(subitem.path)}
-                            className="block px-4 py-3 hover:bg-white/10 transition-colors border-b border-gray-800/50 last:border-0"
-                          >
-                            <div className="font-semibold text-white text-sm">{subitem.name}</div>
-                            <div className="text-xs text-gray-400 mt-1">{subitem.desc}</div>
+              {/* Admin dropdown */}
+              {adminItems.length > 0 && (
+                <div className="relative ml-1 pl-2" style={{ borderLeft: `1px solid rgba(139,92,246,0.2)` }}
+                  onMouseEnter={() => setOpenSubmenu('admin')}
+                  onMouseLeave={() => setOpenSubmenu(null)}>
+                  <button className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold transition-all"
+                    style={{ background: 'rgba(139,92,246,0.1)', color: PURPLE, border: `1px solid rgba(139,92,246,0.2)` }}>
+                    Admin <ChevronDown className="w-3 h-3" />
+                  </button>
+                  <AnimatePresence>
+                    {openSubmenu === 'admin' && (
+                      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}
+                        className="absolute top-full right-0 mt-2 w-56 rounded-2xl overflow-hidden z-50"
+                        style={{ background: 'rgba(6,6,18,0.98)', border: `1px solid rgba(139,92,246,0.22)`, boxShadow: '0 20px 60px rgba(0,0,0,0.9)' }}>
+                        {adminItems.map((item) => (
+                          <Link key={item.path} to={createPageUrl(item.path)}
+                            className="block px-4 py-3 text-sm border-b last:border-0 transition-colors"
+                            style={{ color: 'rgba(139,92,246,0.8)', borderColor: 'rgba(139,92,246,0.1)' }}
+                            onMouseEnter={e => e.currentTarget.style.background = 'rgba(139,92,246,0.1)'}
+                            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                            {item.name}
                           </Link>
                         ))}
                       </motion.div>
                     )}
-                  </div>
-                ) : (
-                  <Link
-                    key={item.dynamicSlug || item.path}
-                    to={item.dynamicSlug ? `/page/${item.dynamicSlug}` : createPageUrl(item.path)}
-                    className={`block px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                      item.highlight
-                        ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg shadow-pink-500/50 hover:shadow-pink-500/70'
-                        : currentPageName === item.path
-                        ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-gray-900 shadow-lg shadow-amber-400/50'
-                        : 'bg-white/5 text-yellow-200/90 hover:bg-white/10 hover:text-yellow-100'
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                )
-              ))}
-
-              {/* Admin menu if admin */}
-              {adminItems.length > 0 && (
-                <div
-                  className="relative ml-2 border-l border-gray-700 pl-3"
-                  onMouseEnter={() => setOpenSubmenu('admin')}
-                  onMouseLeave={() => setOpenSubmenu(null)}
-                >
-                  <button
-                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                      openSubmenu === 'admin'
-                        ? 'bg-purple-600/30 text-purple-300'
-                        : 'bg-purple-600/20 text-purple-400 hover:bg-purple-600/30'
-                    }`}
-                  >
-                    Admin
-                    <ChevronDown className="w-3 h-3" />
-                  </button>
-
-                  {openSubmenu === 'admin' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="absolute top-full right-0 mt-2 w-56 bg-gray-900/95 backdrop-blur-xl border border-purple-500/30 rounded-2xl shadow-2xl overflow-hidden z-50"
-                    >
-                      {adminItems.map((item) => (
-                        <Link
-                          key={item.path}
-                          to={createPageUrl(item.path)}
-                          className="block px-4 py-3 hover:bg-purple-600/20 transition-colors border-b border-gray-800/50 last:border-0 text-purple-300 hover:text-purple-200 text-sm"
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
+                  </AnimatePresence>
                 </div>
               )}
-              </div>
+            </div>
 
-              {/* Cart Icon */}
-              <Link 
-              to={createPageUrl('Cart')} 
-              className="relative hidden lg:block"
-              >
-              <div className="p-2 rounded-lg hover:bg-white/5 transition-colors">
-                <ShoppingCart className="w-6 h-6 text-gray-300 hover:text-pink-400 transition-colors" />
+            {/* Cart + burger */}
+            <div className="flex items-center gap-2">
+              <Link to={createPageUrl('Cart')} className="relative hidden lg:block p-2 rounded-lg transition-all"
+                style={{ color: 'rgba(212,175,55,0.6)' }}
+                onMouseEnter={e => e.currentTarget.style.color = GOLD}
+                onMouseLeave={e => e.currentTarget.style.color = 'rgba(212,175,55,0.6)'}>
+                <ShoppingCart className="w-6 h-6" />
                 {getCartCount() > 0 && (
-                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-pink-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
-                    {getCartCount()}
-                  </div>
+                  <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-black"
+                    style={{ background: GOLD }}>{getCartCount()}</div>
                 )}
-              </div>
               </Link>
-
-              {/* Mobile Menu Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-gray-300 hover:text-white"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+              <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="lg:hidden p-2 rounded-lg transition-all"
+                style={{ color: 'rgba(212,175,55,0.7)' }}>
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile menu */}
         <AnimatePresence>
           {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-black/95 backdrop-blur-xl border-t border-purple-900/30"
-            >
-              <div className="px-4 py-4 space-y-2 max-h-[80vh] overflow-y-auto">
-                {navItems.map((item) => (
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
+              className="lg:hidden border-t" style={{ background: 'rgba(4,4,14,0.98)', borderColor: 'rgba(212,175,55,0.12)' }}>
+              <div className="px-4 py-4 space-y-1 max-h-[80vh] overflow-y-auto">
+                {navItems.map((item) =>
                   item.submenu ? (
                     <div key={item.name}>
-                      <button
-                        onClick={() => setOpenSubmenu(openSubmenu === item.name ? null : item.name)}
-                        className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:bg-purple-900/20 flex items-center justify-between"
-                      >
+                      <button onClick={() => setOpenSubmenu(openSubmenu === item.name ? null : item.name)}
+                        className="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex items-center justify-between transition-all"
+                        style={{ color: 'rgba(212,175,55,0.7)', background: 'rgba(212,175,55,0.04)' }}>
                         {item.name}
                         <ChevronDown className={`w-4 h-4 transition-transform ${openSubmenu === item.name ? 'rotate-180' : ''}`} />
                       </button>
                       {openSubmenu === item.name && (
-                        <div className="ml-4 mt-1 space-y-1">
-                          {item.submenu.map((subitem) => (
-                            <Link
-                              key={subitem.path}
-                              to={createPageUrl(subitem.path)}
-                              onClick={() => setMobileMenuOpen(false)}
-                              className="block px-4 py-2 rounded-lg text-sm text-gray-400 hover:bg-purple-900/20 hover:text-gray-300"
-                            >
-                              {subitem.name}
+                        <div className="ml-4 mt-1 space-y-0.5">
+                          {item.submenu.map(sub => (
+                            <Link key={sub.path} to={createPageUrl(sub.path)} onClick={() => setMobileMenuOpen(false)}
+                              className="block px-4 py-2.5 rounded-lg text-sm transition-all"
+                              style={{ color: 'rgba(212,175,55,0.55)' }}
+                              onMouseEnter={e => e.currentTarget.style.color = GOLD}
+                              onMouseLeave={e => e.currentTarget.style.color = 'rgba(212,175,55,0.55)'}>
+                              {sub.name}
                             </Link>
                           ))}
                         </div>
                       )}
                     </div>
                   ) : (
-                    <Link
-                      key={item.dynamicSlug || item.path}
+                    <Link key={item.dynamicSlug || item.path}
                       to={item.dynamicSlug ? `/page/${item.dynamicSlug}` : createPageUrl(item.path)}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${
-                        item.highlight
-                          ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white'
-                          : currentPageName === item.path
-                          ? 'bg-gradient-to-r from-pink-600/20 to-purple-600/20 text-pink-400'
-                          : 'text-gray-300 hover:bg-purple-900/20'
-                      }`}
-                    >
+                      className="block px-4 py-3 rounded-xl text-sm font-semibold transition-all"
+                      style={item.highlight
+                        ? { background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, color: '#080808', fontWeight: 800 }
+                        : { color: 'rgba(212,175,55,0.7)', background: 'rgba(212,175,55,0.04)' }}>
                       {item.name}
                     </Link>
                   )
-                ))}
-
+                )}
                 {adminItems.length > 0 && (
                   <>
-                    <div className="border-t border-gray-800 my-2"></div>
-                    <div className="text-xs text-gray-500 px-4 py-2">Administration</div>
-                    {adminItems.map((item) => (
-                      <Link
-                        key={item.path}
-                        to={createPageUrl(item.path)}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="block px-4 py-3 rounded-lg text-sm text-purple-400 hover:bg-purple-900/20"
-                      >
+                    <div className="border-t my-2" style={{ borderColor: 'rgba(139,92,246,0.15)' }} />
+                    <div className="text-xs px-4 py-1" style={{ color: 'rgba(139,92,246,0.5)' }}>Administration</div>
+                    {adminItems.map(item => (
+                      <Link key={item.path} to={createPageUrl(item.path)} onClick={() => setMobileMenuOpen(false)}
+                        className="block px-4 py-2.5 rounded-lg text-sm transition-all"
+                        style={{ color: 'rgba(139,92,246,0.7)', background: 'rgba(139,92,246,0.04)' }}>
                         {item.name}
                       </Link>
                     ))}
@@ -367,64 +281,76 @@ function LayoutContent({ children, currentPageName }) {
         </AnimatePresence>
       </nav>
 
-      {/* Main Content */}
-      <main className="pt-28">
-        {children}
-      </main>
+      {/* Main */}
+      <main className="pt-28">{children}</main>
 
       {/* Footer */}
-      <footer className="bg-black/50 backdrop-blur-xl border-t border-purple-900/30 mt-20">
+      <footer className="mt-20 border-t" style={{ background: 'rgba(4,4,12,0.99)', borderColor: 'rgba(212,175,55,0.12)' }}>
+        <div className="h-px" style={{ background: `linear-gradient(90deg, transparent, ${GOLD}, ${PURPLE}, transparent)` }} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h3 className="font-semibold text-white mb-3">Services</h3>
-              <div className="space-y-2">
-                <Link to={createPageUrl('Applications')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Intelligence Artificielle</Link>
-                <Link to={createPageUrl('Automations')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Automatisations</Link>
-                <Link to={createPageUrl('SEOAudit')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Audit SEO</Link>
-                <Link to={createPageUrl('DevisWebsite')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Création de sites</Link>
+              <h3 className="font-bold mb-4 text-sm tracking-wider uppercase" style={{ color: GOLD }}>Services</h3>
+              <div className="space-y-2.5">
+                {[
+                  { label: 'Intelligence Artificielle', path: 'Applications' },
+                  { label: 'Automatisations', path: 'Automations' },
+                  { label: 'Audit SEO', path: 'SEOAudit' },
+                  { label: 'Création de sites', path: 'DevisWebsite' },
+                ].map(l => (
+                  <Link key={l.path} to={createPageUrl(l.path)} className="block text-sm transition-colors"
+                    style={{ color: 'rgba(255,255,255,0.35)' }}
+                    onMouseEnter={e => e.target.style.color = GOLD}
+                    onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.35)'}>{l.label}</Link>
+                ))}
               </div>
             </div>
             <div>
-              <h3 className="font-semibold text-white mb-3">Ressources</h3>
-              <div className="space-y-2">
-                <Link to={createPageUrl('Blog')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Blog</Link>
-                <Link to={createPageUrl('News')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Veille IA</Link>
-                <Link to={createPageUrl('Showcase')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Portfolio</Link>
-                <Link to={createPageUrl('Contact')} className="block text-gray-400 text-sm hover:text-pink-400 transition-colors">Contact</Link>
+              <h3 className="font-bold mb-4 text-sm tracking-wider uppercase" style={{ color: GOLD }}>Ressources</h3>
+              <div className="space-y-2.5">
+                {[
+                  { label: 'Blog', path: 'Blog' },
+                  { label: 'Veille IA', path: 'News' },
+                  { label: 'Portfolio', path: 'Showcase' },
+                  { label: 'Contact', path: 'Contact' },
+                ].map(l => (
+                  <Link key={l.path} to={createPageUrl(l.path)} className="block text-sm transition-colors"
+                    style={{ color: 'rgba(255,255,255,0.35)' }}
+                    onMouseEnter={e => e.target.style.color = GOLD}
+                    onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.35)'}>{l.label}</Link>
+                ))}
               </div>
             </div>
             <div>
-              <h3 className="font-semibold text-white mb-3">Commencer un projet</h3>
-              <p className="text-gray-400 text-sm mb-4">
-                Transformez vos idées en réalité avec l'IA.
-              </p>
-              <Link
-                to={createPageUrl('DevisWebsite')}
-                className="inline-block px-6 py-2 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white text-sm font-medium hover:shadow-lg hover:shadow-pink-500/50 transition-all"
-              >
-                Demander un devis
+              <h3 className="font-bold mb-4 text-sm tracking-wider uppercase" style={{ color: GOLD }}>Commencer un projet</h3>
+              <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.35)' }}>Transformez vos idées en réalité avec l'IA.</p>
+              <Link to={createPageUrl('DevisWebsite')}>
+                <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+                  className="px-6 py-2.5 rounded-lg text-sm font-bold text-black"
+                  style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, boxShadow: '0 0 20px rgba(212,175,55,0.25)' }}>
+                  Demander un devis →
+                </motion.button>
               </Link>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
-            <p>© 2024 JS-INNOV.IA - Tous droits réservés</p>
+          <div className="border-t mt-10 pt-6 flex flex-col md:flex-row items-center justify-between gap-2 text-xs"
+            style={{ borderColor: 'rgba(212,175,55,0.08)', color: 'rgba(255,255,255,0.2)' }}>
+            <p>© 2024 JS-INNOV.IA · Julien Pagin · Tous droits réservés</p>
+            <p style={{ color: 'rgba(212,175,55,0.35)' }}>www.jsinnovia.com · 0494/11.90.90</p>
           </div>
         </div>
       </footer>
 
-      {/* AI Chatbot */}
       <AIChatbot />
-      {/* Sales Agent */}
       <SalesAgent />
-      </div>
-      );
-      }
+    </div>
+  );
+}
 
-      export default function Layout({ children, currentPageName }) {
-      return (
-      <CartProvider>
+export default function Layout({ children, currentPageName }) {
+  return (
+    <CartProvider>
       <LayoutContent children={children} currentPageName={currentPageName} />
-      </CartProvider>
-      );
-      }
+    </CartProvider>
+  );
+}

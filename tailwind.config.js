@@ -12,6 +12,18 @@ module.exports = {
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
+  			gold: {
+  				'50': '#fdf8e1',
+  				'100': '#fbedb3',
+  				'200': '#f8de7a',
+  				'300': '#f5cf41',
+  				'400': '#f2c018',
+  				'500': '#D4AF37',
+  				'600': '#C9A427',
+  				'700': '#a07c1a',
+  				'800': '#7d5f10',
+  				'900': '#5a420a',
+  			},
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
@@ -63,20 +75,12 @@ module.exports = {
   		},
   		keyframes: {
   			'accordion-down': {
-  				from: {
-  					height: '0'
-  				},
-  				to: {
-  					height: 'var(--radix-accordion-content-height)'
-  				}
+  				from: { height: '0' },
+  				to: { height: 'var(--radix-accordion-content-height)' }
   			},
   			'accordion-up': {
-  				from: {
-  					height: 'var(--radix-accordion-content-height)'
-  				},
-  				to: {
-  					height: '0'
-  				}
+  				from: { height: 'var(--radix-accordion-content-height)' },
+  				to: { height: '0' }
   			}
   		},
   		animation: {
