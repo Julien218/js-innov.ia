@@ -7,6 +7,7 @@ import NavigationTracker from '@/lib/NavigationTracker'
 import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import DynamicPageView from './pages/DynamicPageView';
+import Visuels from './pages/Visuels';
 import __Layout from './Layout.jsx';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
@@ -62,6 +63,11 @@ const AuthenticatedApp = () => {
           }
         />
       ))}
+      <Route path="/Visuels" element={
+        <__Layout currentPageName="Visuels">
+          <Visuels />
+        </__Layout>
+      } />
       <Route path="/page/:slug" element={
         <__Layout currentPageName="DynamicPageView">
           <DynamicPageView />

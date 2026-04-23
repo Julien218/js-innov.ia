@@ -54,6 +54,7 @@ function LayoutContent({ children, currentPageName }) {
       ]
     },
     { name: 'Tarifs', path: 'Pricing' },
+    { name: 'Visuels Pub', path: 'Visuels' },
     { name: 'Contact', path: 'Contact' },
     ...dynNavPages.map(p => ({ name: p.nav_label || p.title, dynamicSlug: p.slug })),
     { name: 'Commencer', path: 'Pricing', highlight: true },
