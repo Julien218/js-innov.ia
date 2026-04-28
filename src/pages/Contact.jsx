@@ -103,7 +103,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <div className="text-sm text-gray-500 mb-1">Téléphone</div>
-                    <div className="text-white font-medium">+33 X XX XX XX XX</div>
+                    <div className="text-white font-medium">+32 494 11 90 90</div>
                   </div>
                 </div>
 
@@ -113,7 +113,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <div className="text-sm text-gray-500 mb-1">Localisation</div>
-                    <div className="text-white font-medium">Paris, France</div>
+                    <div className="text-white font-medium">Dour, Belgique</div>
                   </div>
                 </div>
               </div>
@@ -127,7 +127,11 @@ export default function Contact() {
                   <span className="text-white">9h - 18h</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Sam - Dim</span>
+                  <span>Sam</span>
+                  <span className="text-white">Sur rendez-vous</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Dim</span>
                   <span className="text-gray-500">Fermé</span>
                 </div>
               </div>

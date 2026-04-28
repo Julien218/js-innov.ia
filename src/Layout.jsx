@@ -337,7 +337,7 @@ function LayoutContent({ children, currentPageName }) {
           <div className="border-t mt-10 pt-6 flex flex-col md:flex-row items-center justify-between gap-2 text-xs"
             style={{ borderColor: 'rgba(212,175,55,0.08)', color: 'rgba(255,255,255,0.2)' }}>
             <p>© 2024 JS-INNOV.IA · Julien Pagin · Tous droits réservés</p>
-            <p style={{ color: 'rgba(212,175,55,0.35)' }}>www.jsinnovia.com · 0494/11.90.90</p>
+            <p style={{ color: 'rgba(212,175,55,0.35)' }}>contact@js-innov.ia · +32 494 11 90 90 · Dour, Belgique</p>
           </div>
         </div>
       </footer>
