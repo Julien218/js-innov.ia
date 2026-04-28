@@ -8,6 +8,7 @@ import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import DynamicPageView from './pages/DynamicPageView';
 import Visuels from './pages/Visuels';
+import Maintenance from './pages/Maintenance';
 import __Layout from './Layout.jsx';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
@@ -47,11 +48,7 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      <Route path="/" element={
-        <LayoutWrapper currentPageName={mainPageKey}>
-          <MainPage />
-        </LayoutWrapper>
-      } />
+      <Route path="/" element={<Maintenance />} />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
