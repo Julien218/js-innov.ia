@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Wrench, Mail, Phone, Instagram, Facebook, Zap } from 'lucide-react';
 
 const GOLD = '#D4AF37';
@@ -213,9 +214,20 @@ export default function Maintenance() {
           ))}
         </motion.div>
 
+        {/* Admin access */}
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}
+          className="mt-8">
+          <Link to="/webos" className="text-xs underline transition-colors"
+            style={{ color: 'rgba(212,175,55,0.3)' }}
+            onMouseEnter={e => e.target.style.color = 'rgba(212,175,55,0.7)'}
+            onMouseLeave={e => e.target.style.color = 'rgba(212,175,55,0.3)'}>
+            Accès plateforme →
+          </Link>
+        </motion.div>
+
         {/* Footer */}
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
-          className="text-xs mt-10" style={{ color: 'rgba(255,255,255,0.2)' }}>
+          className="text-xs mt-4" style={{ color: 'rgba(255,255,255,0.2)' }}>
           © 2025 JS-INNOV.IA · Julien Pagin · Dour, Belgique
         </motion.p>
       </div>

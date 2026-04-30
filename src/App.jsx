@@ -9,6 +9,14 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import DynamicPageView from './pages/DynamicPageView';
 import Visuels from './pages/Visuels';
 import Maintenance from './pages/Maintenance';
+import WebOSHome from './pages/WebOSHome';
+import WebOSPortfolio from './pages/WebOSPortfolio';
+import WebOSServices from './pages/WebOSServices';
+import WebOSOffre from './pages/WebOSOffre';
+import WebOSContact from './pages/WebOSContact';
+import WebOSAdmin from './pages/WebOSAdmin';
+import WebOSMentions from './pages/WebOSMentions';
+import WebOSLayout from './components/webos/WebOSLayout';
 import __Layout from './Layout.jsx';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
@@ -70,6 +78,14 @@ const AuthenticatedApp = () => {
           <DynamicPageView />
         </__Layout>
       } />
+      {/* WebOS Routes */}
+      <Route path="/webos" element={<WebOSLayout><WebOSHome /></WebOSLayout>} />
+      <Route path="/webos-portfolio" element={<WebOSLayout><WebOSPortfolio /></WebOSLayout>} />
+      <Route path="/webos-services" element={<WebOSLayout><WebOSServices /></WebOSLayout>} />
+      <Route path="/webos-offre" element={<WebOSLayout><WebOSOffre /></WebOSLayout>} />
+      <Route path="/webos-contact" element={<WebOSLayout><WebOSContact /></WebOSLayout>} />
+      <Route path="/webos-admin" element={<WebOSLayout><WebOSAdmin /></WebOSLayout>} />
+      <Route path="/webos-mentions" element={<WebOSLayout><WebOSMentions /></WebOSLayout>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

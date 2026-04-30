@@ -1,0 +1,71 @@
+{
+  "name": "Client",
+  "type": "object",
+  "properties": {
+    "company_name": {
+      "type": "string",
+      "description": "Nom de l'entreprise"
+    },
+    "owner_email": {
+      "type": "string",
+      "description": "Email du propri\u00e9taire"
+    },
+    "plan": {
+      "type": "string",
+      "enum": [
+        "Starter",
+        "Pro",
+        "Premium"
+      ],
+      "default": "Starter"
+    },
+    "ai_credits": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "actif",
+        "suspendu",
+        "en attente"
+      ],
+      "default": "en attente"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "notes_internes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "company_name",
+    "owner_email"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

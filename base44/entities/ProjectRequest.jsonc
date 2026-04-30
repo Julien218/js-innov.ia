@@ -1,0 +1,113 @@
+{
+  "name": "ProjectRequest",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nom complet"
+    },
+    "prenom": {
+      "type": "string",
+      "description": "Pr\u00e9nom"
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "company": {
+      "type": "string"
+    },
+    "project_type": {
+      "type": "string",
+      "enum": [
+        "Site vitrine",
+        "Vitrine de vente",
+        "Boutique en ligne",
+        "Dashboard admin",
+        "Automatisation IA",
+        "Support client",
+        "Autre"
+      ]
+    },
+    "budget": {
+      "type": "string",
+      "enum": [
+        "< 500\u20ac",
+        "500\u20ac - 1500\u20ac",
+        "1500\u20ac - 3000\u20ac",
+        "3000\u20ac - 6000\u20ac",
+        "> 6000\u20ac"
+      ]
+    },
+    "message": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "nouveau",
+        "en analyse",
+        "en cours",
+        "termin\u00e9",
+        "refus\u00e9"
+      ],
+      "default": "nouveau"
+    },
+    "lead_score": {
+      "type": "number",
+      "default": 0
+    },
+    "lead_category": {
+      "type": "string",
+      "enum": [
+        "froid",
+        "ti\u00e8de",
+        "chaud",
+        "tr\u00e8s chaud"
+      ],
+      "default": "froid"
+    },
+    "notes_internes": {
+      "type": "string"
+    },
+    "email_sequence_step": {
+      "type": "number",
+      "default": 0
+    },
+    "email_sequence_enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "delay_minutes": {
+      "type": "number",
+      "default": 45
+    }
+  },
+  "required": [
+    "name",
+    "email",
+    "project_type",
+    "message"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
