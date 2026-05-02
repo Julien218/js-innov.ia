@@ -77,6 +77,8 @@ module.exports = {
   			cinzel: ['Cinzel', 'serif'],
   			playfair: ['Playfair Display', 'serif'],
   			inter: ['Inter', 'sans-serif'],
+  			montserrat: ['Montserrat', 'sans-serif'],
+  			poppins: ['Poppins', 'sans-serif'],
   		},
   		keyframes: {
   			'accordion-down': {

@@ -6,9 +6,12 @@ import { base44 } from '@/api/base44Client';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
-const PURPLE = '#8B5CF6';
+const PURPLE = '#7C3AED';
+const PURPLE_S = '#8B5CF6';
 const CYAN = '#06B6D4';
-const BLUE = '#3B82F6';
+const MAGENTA = '#FF1B47';
+const NOIR = '#0B0B0F';
+const BLEU_NUIT = '#0F172A';
 const WA_LINK = 'https://wa.me/32494119090?text=Bonjour%20Julien%2C%20je%20viens%20du%20site%20Js-Innov.IA%20et%20je%20souhaite%20parler%20de%20mon%20projet.';
 
 function PhoenixLogo({ size = 36 }) {
@@ -48,19 +51,20 @@ export default function SaasLayout({ children }) {
   const path = location.pathname;
 
   return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(160deg, #0e0e1c 0%, #131325 40%, #0e0e1c 100%)', color: 'white' }}>
+    <div className="min-h-screen bg-adn" style={{ color: 'white' }}>
       {/* Ambient bg */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-        <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full blur-[160px] opacity-15" style={{ background: `radial-gradient(circle, ${PURPLE}, transparent)` }} />
-        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full blur-[140px] opacity-10" style={{ background: `radial-gradient(circle, ${CYAN}, transparent)` }} />
+        <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full blur-[160px] opacity-12" style={{ background: `radial-gradient(circle, ${PURPLE}, transparent)` }} />
+        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full blur-[140px] opacity-08" style={{ background: `radial-gradient(circle, ${CYAN}, transparent)` }} />
+        <div className="absolute top-1/2 left-3/4 w-64 h-64 rounded-full blur-[120px] opacity-06" style={{ background: `radial-gradient(circle, ${GOLD}, transparent)` }} />
       </div>
 
-      {/* Top line */}
-      <div className="fixed top-0 left-0 right-0 h-[2px] z-50" style={{ background: `linear-gradient(90deg, transparent, ${GOLD}, ${PURPLE}, ${CYAN}, transparent)` }} />
+      {/* Top line ADN */}
+      <div className="fixed top-0 left-0 right-0 h-[2px] z-50 energy-flow" />
 
       {/* NAV */}
       <nav className="fixed top-[2px] left-0 right-0 z-40 transition-all duration-300"
-        style={{ background: scrolled ? 'rgba(12,12,24,0.98)' : 'rgba(12,12,24,0.88)', backdropFilter: 'blur(28px)', borderBottom: `1px solid rgba(212,175,55,${scrolled ? '0.22' : '0.1'})` }}>
+        style={{ background: scrolled ? 'rgba(11,11,15,0.98)' : 'rgba(11,11,15,0.88)', backdropFilter: 'blur(28px)', borderBottom: `1px solid rgba(212,175,55,${scrolled ? '0.25' : '0.1'})`, fontFamily: "'Poppins', sans-serif" }}>
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/saas" className="flex items-center gap-3 group">
             <PhoenixLogo size={36} />
@@ -68,7 +72,7 @@ export default function SaasLayout({ children }) {
               <span className="font-cinzel font-bold text-base tracking-wide block leading-none text-gold-gradient">
                 Js-Innov.IA
               </span>
-              <span className="text-[9px] tracking-[0.2em] uppercase block mt-0.5 font-inter" style={{ color: 'rgba(212,175,55,0.45)' }}>Solutions Premium</span>
+              <span className="text-[8px] tracking-[0.15em] uppercase block mt-0.5 font-poppins" style={{ color: 'rgba(212,175,55,0.45)' }}>Automatisation · IA · Humain</span>
             </div>
           </Link>
 
@@ -94,8 +98,7 @@ export default function SaasLayout({ children }) {
               <MessageCircle className="w-3.5 h-3.5" /> WhatsApp
             </a>
             <Link to="/saas-landing#formulaire"
-              className="ml-2 px-4 py-2 rounded-full text-xs font-black text-black"
-              style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, boxShadow: `0 0 20px rgba(212,175,55,0.3)` }}>
+              className="ml-2 btn-primary-gold px-4 py-2 text-xs">
               Créer mon projet →
             </Link>
           </div>
@@ -124,10 +127,9 @@ export default function SaasLayout({ children }) {
                 style={{ color: '#25D366', background: 'rgba(37,211,102,0.08)' }}>
                 <MessageCircle className="w-4 h-4" /> WhatsApp
               </a>
-              <Link to="/saas-analyse" onClick={() => setMenuOpen(false)}
-                className="block px-4 py-3.5 rounded-xl text-sm font-black text-black text-center"
-                style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>
-                Analyser mon projet →
+              <Link to="/saas-landing#formulaire" onClick={() => setMenuOpen(false)}
+                className="btn-primary-gold block px-4 py-3.5 text-sm text-center">
+                Créer mon projet →
               </Link>
             </motion.div>
           )}
@@ -137,8 +139,8 @@ export default function SaasLayout({ children }) {
       <main className="pt-16 relative z-10">{children}</main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t mt-16 py-12 px-4" style={{ background: 'rgba(3,3,12,0.99)', borderColor: 'rgba(212,175,55,0.12)' }}>
-        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${GOLD}, ${PURPLE}, ${CYAN}, transparent)` }} />
+      <footer className="relative z-10 border-t mt-16 py-12 px-4" style={{ background: NOIR, borderColor: 'rgba(212,175,55,0.12)', fontFamily: "'Poppins', sans-serif" }}>
+        <div className="absolute top-0 left-0 right-0 h-[2px] energy-flow" />
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-10">
             <div className="col-span-2">

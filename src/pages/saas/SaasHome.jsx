@@ -9,9 +9,12 @@ import {
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
-const PURPLE = '#8B5CF6';
+const PURPLE = '#7C3AED';
+const PURPLE_S = '#8B5CF6';
 const CYAN = '#06B6D4';
+const MAGENTA = '#FF1B47';
 const BLUE = '#3B82F6';
+const NOIR = '#0B0B0F';
 const WA_LINK = 'https://wa.me/32494119090?text=Bonjour%20Julien%2C%20je%20viens%20du%20site%20Js-Innov.IA%20et%20je%20souhaite%20parler%20de%20mon%20projet.';
 
 function Reveal({ children, delay = 0, y = 30 }) {
@@ -133,39 +136,38 @@ export default function SaasHome() {
           </motion.div>
 
           <motion.h1 initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.9 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-[1.08]">
-            <span className="block text-white font-inter">Votre problème devient</span>
-            <span className="block font-cinzel text-gold-shimmer">
+            className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-[1.08] font-cinzel">
+            <span className="block text-white">Votre problème devient</span>
+            <span className="block text-gold-shimmer">
               notre point de départ.
             </span>
-            <span className="block text-white mt-1 text-3xl md:text-4xl font-light font-inter" style={{ color: 'rgba(255,255,255,0.7)' }}>Votre solution devient notre création.</span>
+            <span className="block mt-2 font-poppins font-light" style={{ fontSize: '0.65em', color: 'rgba(255,255,255,0.65)', letterSpacing: '0.05em' }}>
+              AUTOMATISATION INTELLIGENTE, AMPLIFIÉE PAR L'HUMAIN
+            </span>
           </motion.h1>
 
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-            className="text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            className="text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed font-poppins" style={{ color: 'rgba(255,255,255,0.5)', fontWeight: 400 }}>
             Sites web nouvelle génération, chatbots métier, applications mobiles, automatisation, agents IA — tout sous validation humaine de Julien.
           </motion.p>
 
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
             className="flex flex-wrap justify-center gap-3 mb-14">
             <Link to="/saas-analyse">
-              <motion.button whileHover={{ scale: 1.05, boxShadow: '0 0 50px rgba(212,175,55,0.5)' }} whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-2 px-7 py-4 rounded-2xl font-black text-black text-sm"
-                style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, boxShadow: `0 0 30px rgba(212,175,55,0.35)` }}>
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
+                className="btn-primary-gold gold-glow-pulse flex items-center gap-2 px-7 py-4 text-sm">
                 <Sparkles className="w-4 h-4" /> Analyser mon projet
               </motion.button>
             </Link>
             <Link to="/saas-packs">
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-2 px-7 py-4 rounded-2xl font-semibold border text-sm"
-                style={{ borderColor: 'rgba(212,175,55,0.35)', color: GOLD, background: 'rgba(212,175,55,0.06)' }}>
+                className="btn-secondary flex items-center gap-2 px-7 py-4 text-sm">
                 Voir les packs <ArrowRight className="w-4 h-4" />
               </motion.button>
             </Link>
             <Link to="/saas-contact">
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-2 px-7 py-4 rounded-2xl font-semibold border text-sm"
-                style={{ borderColor: 'rgba(139,92,246,0.35)', color: PURPLE, background: 'rgba(139,92,246,0.06)' }}>
+                className="btn-accent-violet violet-glow-pulse flex items-center gap-2 px-7 py-4 text-sm">
                 Contacter Julien
               </motion.button>
             </Link>

@@ -10,9 +10,13 @@ import { base44 } from '@/api/base44Client';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
-const PURPLE = '#8B5CF6';
+const PURPLE = '#7C3AED';
+const PURPLE_S = '#8B5CF6';
 const CYAN = '#06B6D4';
+const MAGENTA = '#FF1B47';
 const GREEN = '#22c55e';
+const NOIR = '#0B0B0F';
+const BLEU_NUIT = '#0F172A';
 const WA = 'https://wa.me/32494119090?text=Bonjour%20Julien%2C%20je%20souhaite%20créer%20mon%20projet.';
 
 function Reveal({ children, delay = 0, y = 28 }) {
@@ -396,33 +400,29 @@ export default function SaasLanding() {
             </motion.div>
 
             <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.8 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.08] mb-5">
+              className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] mb-5 font-cinzel">
               <span className="block text-white">Automatisez votre business</span>
-              <span className="block" style={{
-                background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L}, ${PURPLE})`,
-                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-              }}>et recevez votre identité</span>
-              <span className="block text-white">en 48h.</span>
+              <span className="block text-gold-shimmer">et recevez votre identité</span>
+              <span className="block font-poppins font-light mt-1" style={{ fontSize: '0.7em', color: 'rgba(255,255,255,0.7)', letterSpacing: '0.02em' }}>en 48h.</span>
             </motion.h1>
 
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
-              className="text-lg mb-8 leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              className="text-lg mb-8 leading-relaxed font-poppins" style={{ color: 'rgba(255,255,255,0.55)', fontWeight: 400 }}>
               JS-Innov.IA crée, automatise et livre votre branding, site web et contenus marketing — sans complexité.
             </motion.p>
 
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
               className="flex flex-wrap gap-3 mb-8">
               <a href="#formulaire">
-                <motion.button whileHover={{ scale: 1.05, boxShadow: '0 0 50px rgba(212,175,55,0.5)' }} whileTap={{ scale: 0.97 }}
-                  className="flex items-center gap-2 px-7 py-4 rounded-2xl font-black text-black text-sm"
-                  style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, boxShadow: `0 0 30px rgba(212,175,55,0.35)` }}>
+                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
+                  className="btn-primary-gold gold-glow-pulse flex items-center gap-2 px-7 py-4 text-sm">
                   <Sparkles className="w-4 h-4" /> Créer mon projet
                 </motion.button>
               </a>
               <a href={WA} target="_blank" rel="noopener noreferrer">
                 <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
-                  className="flex items-center gap-2 px-7 py-4 rounded-2xl font-semibold border text-sm"
-                  style={{ borderColor: 'rgba(37,211,102,0.35)', color: '#25D366', background: 'rgba(37,211,102,0.06)' }}>
+                  className="flex items-center gap-2 px-7 py-4 rounded-xl font-semibold text-sm font-poppins"
+                  style={{ borderColor: 'rgba(37,211,102,0.35)', border: '1px solid rgba(37,211,102,0.35)', color: '#25D366', background: 'rgba(37,211,102,0.06)' }}>
                   <MessageCircle className="w-4 h-4" /> WhatsApp
                 </motion.button>
               </a>
@@ -795,9 +795,8 @@ export default function SaasLanding() {
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <a href="#formulaire">
-                    <motion.button whileHover={{ scale: 1.06, boxShadow: '0 0 70px rgba(212,175,55,0.55)' }} whileTap={{ scale: 0.97 }}
-                      className="flex items-center gap-2 px-10 py-5 rounded-2xl font-black text-black text-base"
-                      style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, boxShadow: `0 0 35px rgba(212,175,55,0.35)` }}>
+                    <motion.button whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.97 }}
+                      className="btn-primary-gold gold-glow-pulse flex items-center gap-2 px-10 py-5 text-base">
                       <Sparkles className="w-5 h-5" /> Créer mon projet
                     </motion.button>
                   </a>

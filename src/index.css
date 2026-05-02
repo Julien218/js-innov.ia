@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ── Fonts ── */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 
 
 /* :root {
@@ -122,12 +122,20 @@ button:focus-visible {
     /* ── Custom brand tokens ── */
     --font-cinzel: 'Cinzel', serif;
     --font-inter: 'Inter', sans-serif;
+    --font-montserrat: 'Montserrat', sans-serif;
+    --font-poppins: 'Poppins', sans-serif;
+    /* ADN JS-Innov.IA — Palette officielle */
     --gold: #D4AF37;
     --gold-light: #F5CF41;
-    --purple: #8B5CF6;
+    --gold-rose: #FFC4B9;
+    --purple: #7C3AED;
+    --purple-soft: #8B5CF6;
     --cyan: #06B6D4;
-    --bg-main: #10101a;
-    --bg-card: #16162a;
+    --magenta: #FF1B47;
+    --bleu-nuit: #0F172A;
+    --noir-profond: #0B0B0F;
+    --bg-main: #0B0B0F;
+    --bg-card: #0F172A;
   }
   .dark {
     --background: 240 17% 8%;
@@ -173,8 +181,8 @@ button:focus-visible {
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
-    background-color: #10101a;
+    font-family: 'Poppins', 'Inter', sans-serif;
+    background-color: #0B0B0F;
   }
 }
 
@@ -229,6 +237,112 @@ button:focus-visible {
 .border-gold-glow {
   border: 1px solid rgba(212,175,55,0.35);
   box-shadow: 0 0 20px rgba(212,175,55,0.08), inset 0 0 20px rgba(212,175,55,0.03);
+}
+
+/* ── Montserrat/Poppins utilities ── */
+.font-montserrat { font-family: 'Montserrat', sans-serif; }
+.font-poppins { font-family: 'Poppins', sans-serif; }
+
+/* ── ADN JS-Innov.IA — Bouton Principal (Or) ── */
+.btn-primary-gold {
+  background: linear-gradient(135deg, #D4AF37 0%, #F5CF41 50%, #D4AF37 100%);
+  color: #0B0B0F;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(212,175,55,0.35), 0 4px 20px rgba(212,175,55,0.2);
+  transition: all 0.3s ease;
+}
+.btn-primary-gold:hover {
+  box-shadow: 0 0 50px rgba(212,175,55,0.6), 0 8px 30px rgba(212,175,55,0.3);
+  transform: translateY(-1px);
+}
+
+/* ── ADN JS-Innov.IA — Bouton Secondaire (contour or) ── */
+.btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.4);
+  color: #D4AF37;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+.btn-secondary:hover {
+  background: rgba(212,175,55,0.08);
+  border-color: rgba(212,175,55,0.7);
+}
+
+/* ── ADN JS-Innov.IA — Bouton Accent (violet électrique) ── */
+.btn-accent-violet {
+  background: linear-gradient(135deg, #7C3AED, #8B5CF6);
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(124,58,237,0.35);
+  transition: all 0.3s ease;
+}
+.btn-accent-violet:hover {
+  box-shadow: 0 0 40px rgba(124,58,237,0.55);
+  transform: translateY(-1px);
+}
+
+/* ── Flux énergétique (energy flow) ── */
+@keyframes energy-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.energy-flow {
+  background: linear-gradient(270deg, #D4AF37, #7C3AED, #06B6D4, #FF1B47, #D4AF37);
+  background-size: 400% 400%;
+  animation: energy-flow 6s ease infinite;
+}
+
+/* ── Lueur dorée pulsée ── */
+@keyframes gold-pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(212,175,55,0.25), 0 0 40px rgba(212,175,55,0.1); }
+  50% { box-shadow: 0 0 40px rgba(212,175,55,0.5), 0 0 80px rgba(212,175,55,0.2); }
+}
+.gold-glow-pulse { animation: gold-pulse-glow 3s ease-in-out infinite; }
+
+/* ── Lueur violette ── */
+@keyframes violet-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(124,58,237,0.25); }
+  50% { box-shadow: 0 0 40px rgba(124,58,237,0.5), 0 0 80px rgba(124,58,237,0.15); }
+}
+.violet-glow-pulse { animation: violet-pulse 4s ease-in-out infinite; }
+
+/* ── Dégradé de fond ADN ── */
+.bg-adn {
+  background: #0B0B0F;
+  background-image:
+    radial-gradient(ellipse at 15% 15%, rgba(124,58,237,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 80%, rgba(212,175,55,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(6,182,212,0.04) 0%, transparent 60%);
+}
+
+/* ── Ligne décorative Or → Violet → Cyan ── */
+.line-adn {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #D4AF37 20%, #7C3AED 50%, #06B6D4 80%, transparent);
+}
+
+/* ── Card ADN ── */
+.card-adn {
+  background: linear-gradient(135deg, #0F172A 0%, #0B0B0F 100%);
+  border: 1px solid rgba(212,175,55,0.15);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.card-adn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,175,55,0.4), transparent);
 }
 
 /* Page background — deep anthracite with subtle texture */
