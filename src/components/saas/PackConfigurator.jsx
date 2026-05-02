@@ -4,6 +4,7 @@ import {
   Globe, TrendingUp, Zap, Cpu, Check, Plus, Minus, ChevronRight,
   Sparkles, Info, ToggleLeft, ToggleRight
 } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -70,7 +71,7 @@ export default function PackConfigurator({ onComplete }) {
   const activeOptions = OPTIONS.filter(o => selectedOptions[o.id]);
   const hasCustom = activeOptions.some(o => !o.price) || selectedPackData?.basePrice === null;
 
-  const handleValidate = () => {
+  const handleValidate = async () => {
     if (!selectedPack) return;
     const summary = {
       pack: selectedPackData.name,
@@ -78,6 +79,26 @@ export default function PackConfigurator({ onComplete }) {
       estimatedPrice: hasCustom ? 'Sur devis' : `À partir de ${totalPrice()}€`,
       extraPages: selectedOptions['extra_page'] ? extraPages : 0,
     };
+
+    const contentBody = `**Pack sélectionné :** ${summary.pack}\n**Options :** ${summary.options.length > 0 ? summary.options.join(', ') : 'Aucune'}\n**Estimation :** ${summary.estimatedPrice}`;
+
+    // Notification dashboard (Validation entity) + email admin — en parallèle
+    await Promise.all([
+      base44.entities.Validation.create({
+        type: 'autre',
+        title: `🛒 Nouvelle configuration pack — ${summary.pack}`,
+        content: contentBody,
+        status: 'en attente',
+        urgency: 'normale',
+        agentName: 'PackConfigurator',
+      }),
+      base44.integrations.Core.SendEmail({
+        to: 'contact@js-innov.ia',
+        subject: `🛒 Nouveau pack configuré — ${summary.pack}`,
+        body: `Un client vient de finaliser sa configuration.\n\n${contentBody.replace(/\*\*/g, '')}\n\nConnectez-vous au dashboard pour le traiter.`,
+      }),
+    ]).catch(() => {}); // silently ignore if not authenticated
+
     onComplete(summary);
   };
 
