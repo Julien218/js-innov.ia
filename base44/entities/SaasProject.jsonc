@@ -1,0 +1,102 @@
+{
+  "name": "SaasProject",
+  "type": "object",
+  "properties": {
+    "clientId": {
+      "type": "string"
+    },
+    "clientEmail": {
+      "type": "string"
+    },
+    "clientName": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "pack": {
+      "type": "string",
+      "enum": [
+        "Pack Starter",
+        "Pack Business",
+        "Pack Automation",
+        "Pack IA Premium"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "objectives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Nouveau",
+        "Analyse en cours",
+        "Proposition envoy\u00e9e",
+        "En attente validation",
+        "En production",
+        "En test",
+        "Livr\u00e9",
+        "Maintenance"
+      ],
+      "default": "Nouveau"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "Basse",
+        "Normale",
+        "Haute",
+        "Urgente"
+      ],
+      "default": "Normale"
+    },
+    "deadline": {
+      "type": "string",
+      "format": "date"
+    },
+    "budget": {
+      "type": "number"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "pack"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

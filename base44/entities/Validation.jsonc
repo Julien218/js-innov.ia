@@ -1,0 +1,77 @@
+{
+  "name": "Validation",
+  "type": "object",
+  "properties": {
+    "projectId": {
+      "type": "string"
+    },
+    "clientName": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "devis",
+        "contenu",
+        "email",
+        "publication",
+        "automatisation",
+        "r\u00e9ponse client",
+        "autre"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "en attente",
+        "valid\u00e9",
+        "modifi\u00e9",
+        "refus\u00e9"
+      ],
+      "default": "en attente"
+    },
+    "urgency": {
+      "type": "string",
+      "enum": [
+        "normale",
+        "urgente"
+      ],
+      "default": "normale"
+    },
+    "adminComment": {
+      "type": "string"
+    },
+    "agentName": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "title",
+    "content"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -217,11 +217,11 @@ export default function Maintenance() {
         {/* Admin access */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}
           className="mt-8">
-          <Link to="/webos" className="text-xs underline transition-colors"
+          <Link to="/saas" className="text-xs underline transition-colors"
             style={{ color: 'rgba(212,175,55,0.3)' }}
             onMouseEnter={e => e.target.style.color = 'rgba(212,175,55,0.7)'}
             onMouseLeave={e => e.target.style.color = 'rgba(212,175,55,0.3)'}>
-            Accès plateforme →
+            Accéder à la plateforme →
           </Link>
         </motion.div>
 

@@ -1,0 +1,126 @@
+{
+  "name": "Lead",
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "company": {
+      "type": "string"
+    },
+    "typeClient": {
+      "type": "string",
+      "enum": [
+        "Ind\u00e9pendant",
+        "Entreprise",
+        "ASBL",
+        "Commerce",
+        "Autre"
+      ]
+    },
+    "need": {
+      "type": "string"
+    },
+    "problem": {
+      "type": "string"
+    },
+    "currentSetup": {
+      "type": "string"
+    },
+    "goal": {
+      "type": "string"
+    },
+    "deadline": {
+      "type": "string"
+    },
+    "budget": {
+      "type": "string"
+    },
+    "recommendedPack": {
+      "type": "string",
+      "enum": [
+        "Pack Starter",
+        "Pack Business",
+        "Pack Automation",
+        "Pack IA Premium"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "chatbot",
+        "formulaire",
+        "WhatsApp",
+        "direct"
+      ]
+    },
+    "consentRgpd": {
+      "type": "boolean",
+      "default": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "nouveau",
+        "contact\u00e9",
+        "qualifi\u00e9",
+        "devis envoy\u00e9",
+        "gagn\u00e9",
+        "perdu"
+      ],
+      "default": "nouveau"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "sector": {
+      "type": "string"
+    },
+    "logo_url": {
+      "type": "string"
+    },
+    "existing_site": {
+      "type": "string"
+    },
+    "social_networks": {
+      "type": "string"
+    },
+    "colors": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "email"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

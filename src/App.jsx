@@ -17,6 +17,15 @@ import WebOSContact from './pages/WebOSContact';
 import WebOSAdmin from './pages/WebOSAdmin';
 import WebOSMentions from './pages/WebOSMentions';
 import WebOSLayout from './components/webos/WebOSLayout';
+import SaasLayout from './components/saas/SaasLayout';
+import SaasHome from './pages/saas/SaasHome';
+import SaasPacks from './pages/saas/SaasPacks';
+import SaasAnalyse from './pages/saas/SaasAnalyse';
+import SaasAdmin from './pages/saas/SaasAdmin';
+import SaasAgents from './pages/saas/SaasAgents';
+import SaasContact from './pages/saas/SaasContact';
+import SaasLegal from './pages/saas/SaasLegal';
+import SaasChatbot from './pages/saas/SaasChatbot';
 import __Layout from './Layout.jsx';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
@@ -86,6 +95,16 @@ const AuthenticatedApp = () => {
       <Route path="/webos-contact" element={<WebOSLayout><WebOSContact /></WebOSLayout>} />
       <Route path="/webos-admin" element={<WebOSLayout><WebOSAdmin /></WebOSLayout>} />
       <Route path="/webos-mentions" element={<WebOSLayout><WebOSMentions /></WebOSLayout>} />
+      {/* SaaS Routes */}
+      <Route path="/saas" element={<SaasLayout><SaasHome /><SaasChatbot /></SaasLayout>} />
+      <Route path="/saas-packs" element={<SaasLayout><SaasPacks /><SaasChatbot /></SaasLayout>} />
+      <Route path="/saas-analyse" element={<SaasLayout><SaasAnalyse /></SaasLayout>} />
+      <Route path="/saas-admin" element={<SaasLayout><SaasAdmin /></SaasLayout>} />
+      <Route path="/saas-agents" element={<SaasLayout><SaasAgents /><SaasChatbot /></SaasLayout>} />
+      <Route path="/saas-contact" element={<SaasLayout><SaasContact /></SaasLayout>} />
+      <Route path="/saas-mentions" element={<SaasLayout><SaasLegal type="mentions" /></SaasLayout>} />
+      <Route path="/saas-confidentialite" element={<SaasLayout><SaasLegal type="confidentialite" /></SaasLayout>} />
+      <Route path="/saas-cgv" element={<SaasLayout><SaasLegal type="cgv" /></SaasLayout>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
