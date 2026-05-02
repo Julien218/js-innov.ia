@@ -148,7 +148,7 @@ export default function SaasLayout({ children }) {
                 <PhoenixLogo size={40} />
                 <div>
                   <div className="font-cinzel font-bold text-lg text-gold-gradient">Js-Innov.IA</div>
-                  <div className="text-xs" style={{ color: 'rgba(212,175,55,0.35)' }}>Julien Pagin · Solutions Premium</div>
+                  <div className="text-xs" style={{ color: 'rgba(212,175,55,0.35)' }}>Solutions Premium</div>
                 </div>
               </div>
               <p className="text-xs leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>

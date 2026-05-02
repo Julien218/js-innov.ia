@@ -24,7 +24,7 @@ const PACK_COLORS = { 'Pack Starter': CYAN, 'Pack Business': GOLD, 'Pack Automat
 
 const FLOW = [
   {
-    id: 'welcome', bot: 'Bonjour 👋 Bienvenue chez Js-Innov.IA ! Je suis l\'assistant de Julien. Pour vous aider au mieux, vous êtes :',
+    id: 'welcome', bot: 'Bonjour 👋 Bienvenue chez Js-Innov.IA ! Je suis l\'assistant virtuel. Pour vous aider au mieux, vous êtes :',
     type: 'choice', field: 'typeClient',
     choices: ['Indépendant', 'Entreprise', 'ASBL', 'Commerce', 'Autre']
   },
