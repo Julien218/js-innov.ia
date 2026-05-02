@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Check, Globe, TrendingUp, Zap, Cpu, ArrowRight, Sparkles, MessageCircle } from 'lucide-react';
+import { Check, Globe, TrendingUp, Zap, Cpu, ArrowRight, Sparkles, MessageCircle, CreditCard } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -52,6 +54,28 @@ const packs = [
 ];
 
 export default function SaasPacks() {
+  const [loadingPack, setLoadingPack] = useState(null);
+
+  const handlePayment = async (packName) => {
+    setLoadingPack(packName);
+    try {
+      const response = await base44.functions.invoke('createStripeSession', {
+        pack: packName,
+        email: '',
+        firstName: '',
+        lastName: '',
+      });
+      if (response.data?.url) {
+        window.location.href = response.data.url;
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+      alert('Erreur lors de la création de la session de paiement');
+    } finally {
+      setLoadingPack(null);
+    }
+  };
+
   return (
     <div className="min-h-screen px-4 pt-10 pb-24">
       {/* Header */}
@@ -116,21 +140,46 @@ export default function SaasPacks() {
                         </div>
                       ))}
                     </div>
-                    <div className="flex gap-2">
-                      <Link to={`/saas-analyse`} className="flex-1">
-                        <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
-                          className="w-full py-3 rounded-2xl font-black text-sm"
+                    <div className="space-y-2">
+                      {pack.name !== 'Pack IA Premium' && (
+                        <motion.button 
+                          whileHover={{ scale: 1.04 }} 
+                          whileTap={{ scale: 0.97 }}
+                          onClick={() => handlePayment(pack.name)}
+                          disabled={loadingPack === pack.name}
+                          className="w-full py-3 rounded-2xl font-black text-sm flex items-center justify-center gap-2 disabled:opacity-60"
                           style={pack.popular
                             ? { background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, color: '#000' }
                             : { background: `${pack.color}15`, color: pack.color, border: `1px solid ${pack.color}28` }}>
-                          Demander ce pack
+                          {loadingPack === pack.name ? (
+                            <>
+                              <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}>
+                                <Sparkles className="w-4 h-4" />
+                              </motion.div>
+                              Chargement…
+                            </>
+                          ) : (
+                            <>
+                              <CreditCard className="w-4 h-4" />
+                              Payer maintenant
+                            </>
+                          )}
                         </motion.button>
-                      </Link>
-                      <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
-                        className="w-12 h-12 rounded-2xl flex items-center justify-center"
-                        style={{ background: 'rgba(37,211,102,0.12)', border: '1px solid rgba(37,211,102,0.25)', color: '#25D366' }}>
-                        <MessageCircle className="w-5 h-5" />
-                      </a>
+                      )}
+                      <div className="flex gap-2">
+                        <Link to={`/saas-analyse`} className="flex-1">
+                          <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+                            className="w-full py-3 rounded-2xl font-black text-sm"
+                            style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                            Analyser mon projet
+                          </motion.button>
+                        </Link>
+                        <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
+                          className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                          style={{ background: 'rgba(37,211,102,0.12)', border: '1px solid rgba(37,211,102,0.25)', color: '#25D366' }}>
+                          <MessageCircle className="w-5 h-5" />
+                        </a>
+                      </div>
                     </div>
                   </div>
 
