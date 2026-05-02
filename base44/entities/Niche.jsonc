@@ -1,0 +1,115 @@
+{
+  "name": "Niche",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nom de la niche"
+    },
+    "bio": {
+      "type": "string",
+      "description": "Description courte de la niche"
+    },
+    "targetAudience": {
+      "type": "string",
+      "description": "Audience cible"
+    },
+    "tone": {
+      "type": "string",
+      "description": "Ton de communication"
+    },
+    "goal": {
+      "type": "string",
+      "description": "Objectif principal"
+    },
+    "platform": {
+      "type": "string",
+      "default": "TikTok",
+      "description": "Plateforme cible"
+    },
+    "visualIdentityMode": {
+      "type": "string",
+      "enum": [
+        "locked",
+        "generated"
+      ],
+      "default": "generated",
+      "description": "locked = identit\u00e9 fixe (JS-Innov.IA), generated = identit\u00e9 IA"
+    },
+    "colors": {
+      "type": "string",
+      "description": "Palette de couleurs"
+    },
+    "fonts": {
+      "type": "string",
+      "description": "Typographies"
+    },
+    "style": {
+      "type": "string",
+      "description": "Style visuel global"
+    },
+    "subtitleStyle": {
+      "type": "string",
+      "description": "Style des sous-titres"
+    },
+    "videoStyle": {
+      "type": "string",
+      "description": "Style vid\u00e9o (montage, transitions, etc.)"
+    },
+    "rules": {
+      "type": "string",
+      "description": "R\u00e8gles \u00e0 respecter"
+    },
+    "keywords": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Mots-cl\u00e9s principaux"
+    },
+    "bannedWords": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Mots interdits"
+    },
+    "ctaStyle": {
+      "type": "string",
+      "description": "Style des CTA"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "paused"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

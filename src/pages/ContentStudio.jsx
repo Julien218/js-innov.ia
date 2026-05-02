@@ -1,99 +1,112 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { FileText, Zap, Target, TrendingUp } from 'lucide-react';
-import SectionHeader from '../components/shared/SectionHeader';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FileText, Bot, CheckSquare, TrendingUp, Zap, Target, Sparkles } from 'lucide-react';
 import ContentGenerator from '../components/seo/ContentGenerator';
-import PowerWord from '../components/shared/PowerWord';
+import NicheTab from '../components/studio/NicheTab';
+import GenerationTab from '../components/studio/GenerationTab';
+import ValidationTab from '../components/studio/ValidationTab';
+import PerformanceTab from '../components/studio/PerformanceTab';
+
+const GOLD = '#D4AF37';
+const GOLD_L = '#F5CF41';
+const PURPLE = '#8B5CF6';
+const CYAN = '#06B6D4';
+
+const TABS = [
+  { id: 'niches',     icon: Bot,         label: 'Niches',           color: CYAN },
+  { id: 'generation', icon: Sparkles,     label: 'Génération IA',    color: GOLD },
+  { id: 'validation', icon: CheckSquare,  label: 'À valider',        color: '#F59E0B' },
+  { id: 'perf',       icon: TrendingUp,   label: 'Performances',     color: PURPLE },
+  { id: 'classique',  icon: FileText,     label: 'Studio classique', color: 'rgba(255,255,255,0.4)' },
+];
 
 export default function ContentStudio() {
-  const handleContentGenerated = (content) => {
-    console.log('Contenu généré:', content);
+  const [activeTab, setActiveTab] = useState('niches');
+  const [preselectedNiche, setPreselectedNiche] = useState(null);
+
+  const handleGenerateContent = (niche) => {
+    setPreselectedNiche(niche);
+    setActiveTab('generation');
   };
 
-  const features = [
-    {
-      icon: Zap,
-      title: 'Génération instantanée',
-      description: 'Créez du contenu de qualité en quelques secondes'
-    },
-    {
-      icon: Target,
-      title: 'Optimisé SEO',
-      description: 'Contenu structuré et optimisé pour les moteurs de recherche'
-    },
-    {
-      icon: TrendingUp,
-      title: 'Ton personnalisable',
-      description: 'Choisissez entre formel, amical ou technique'
-    },
-    {
-      icon: FileText,
-      title: 'Formats variés',
-      description: 'Pages complètes, sections, descriptions ou articles'
-    }
-  ];
-
   return (
-    <div className="min-h-screen py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          icon={FileText}
-          title="Studio de Création de Contenu IA"
-          subtitle={
-            <span>
-              Générez du contenu <PowerWord>optimisé</PowerWord> et <PowerWord>professionnel</PowerWord> en quelques clics
-            </span>
-          }
-        />
+    <div className="min-h-screen pt-8 pb-24 px-4">
+      <div className="max-w-7xl mx-auto">
 
-        {/* Features */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-purple-500/20"
-            >
-              <div className="p-3 rounded-xl bg-gradient-to-br from-pink-600/20 to-purple-600/20 inline-flex mb-4">
-                <feature.icon className="w-6 h-6 text-pink-400" />
-              </div>
-              <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
-              <p className="text-sm text-gray-400">{feature.description}</p>
-            </motion.div>
+        {/* Header */}
+        <div className="text-center mb-10">
+          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full mb-4 text-xs font-bold tracking-widest uppercase"
+            style={{ background: 'rgba(212,175,55,0.08)', border: `1px solid rgba(212,175,55,0.28)`, color: GOLD }}>
+            <Sparkles className="w-3.5 h-3.5" /> Content Studio IA
+          </motion.div>
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            className="text-3xl md:text-4xl font-black text-white mb-2 font-cinzel">
+            Gestionnaire de contenus{' '}
+            <span style={{ background: `linear-gradient(135deg, ${GOLD}, ${PURPLE}, ${CYAN})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              TikTok multi-niches
+            </span>
+          </motion.h1>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>
+            Créez des niches, générez hooks & scripts, validez et analysez les performances
+          </p>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex flex-wrap gap-2 mb-8 justify-center">
+          {TABS.map(tab => (
+            <motion.button key={tab.id} whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+              onClick={() => setActiveTab(tab.id)}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"
+              style={{
+                background: activeTab === tab.id ? `${tab.color}15` : 'rgba(255,255,255,0.03)',
+                border: `1px solid ${activeTab === tab.id ? tab.color + '45' : 'rgba(255,255,255,0.07)'}`,
+                color: activeTab === tab.id ? tab.color : 'rgba(255,255,255,0.45)',
+                boxShadow: activeTab === tab.id ? `0 0 20px ${tab.color}18` : 'none',
+              }}>
+              <tab.icon className="w-4 h-4" />
+              {tab.label}
+            </motion.button>
           ))}
         </div>
 
-        {/* Content Generator */}
-        <ContentGenerator onContentGenerated={handleContentGenerated} />
+        {/* Tab divider */}
+        <div className="h-px mb-8" style={{ background: `linear-gradient(90deg, transparent, rgba(212,175,55,0.2), transparent)` }} />
 
-        {/* Info Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="mt-12 p-8 rounded-3xl bg-gradient-to-br from-pink-600/10 via-purple-600/10 to-cyan-600/10 border border-purple-500/20"
-        >
-          <h3 className="text-2xl font-bold text-white mb-4">Comment ça marche ?</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-gray-300">
-            <div>
-              <div className="text-3xl font-bold text-pink-400 mb-2">1</div>
-              <h4 className="font-semibold text-white mb-2">Définissez vos besoins</h4>
-              <p className="text-sm">Saisissez vos mots-clés, le ton souhaité et le type de contenu</p>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-purple-400 mb-2">2</div>
-              <h4 className="font-semibold text-white mb-2">L'IA génère</h4>
-              <p className="text-sm">Notre IA crée un contenu optimisé SEO et aligné avec votre style</p>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-cyan-400 mb-2">3</div>
-              <h4 className="font-semibold text-white mb-2">Utilisez directement</h4>
-              <p className="text-sm">Copiez le contenu généré et intégrez-le à votre site</p>
-            </div>
-          </div>
-        </motion.div>
+        {/* Tab content */}
+        <AnimatePresence mode="wait">
+          <motion.div key={activeTab} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}>
+            {activeTab === 'niches' && <NicheTab onGenerateContent={handleGenerateContent} />}
+            {activeTab === 'generation' && <GenerationTab preselectedNiche={preselectedNiche} />}
+            {activeTab === 'validation' && <ValidationTab />}
+            {activeTab === 'perf' && <PerformanceTab />}
+            {activeTab === 'classique' && (
+              <div>
+                <div className="mb-8 grid grid-cols-1 md:grid-cols-4 gap-4">
+                  {[
+                    { icon: Zap,      title: 'Génération instantanée', desc: 'Créez du contenu de qualité en quelques secondes',           color: GOLD },
+                    { icon: Target,   title: 'Optimisé SEO',           desc: 'Contenu structuré et optimisé pour les moteurs de recherche', color: CYAN },
+                    { icon: TrendingUp, title: 'Ton personnalisable',  desc: 'Choisissez entre formel, amical ou technique',               color: PURPLE },
+                    { icon: FileText, title: 'Formats variés',         desc: 'Pages complètes, sections, descriptions ou articles',        color: '#EC4899' },
+                  ].map((f, i) => (
+                    <motion.div key={i} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
+                      className="p-5 rounded-2xl"
+                      style={{ background: 'rgba(10,8,22,0.85)', border: `1px solid ${f.color}18` }}>
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
+                        style={{ background: `${f.color}12`, border: `1px solid ${f.color}25` }}>
+                        <f.icon className="w-5 h-5" style={{ color: f.color }} />
+                      </div>
+                      <h3 className="font-bold text-white text-sm mb-1">{f.title}</h3>
+                      <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{f.desc}</p>
+                    </motion.div>
+                  ))}
+                </div>
+                <ContentGenerator onContentGenerated={(c) => console.log('Contenu généré:', c)} />
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

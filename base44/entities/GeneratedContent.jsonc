@@ -1,0 +1,102 @@
+{
+  "name": "GeneratedContent",
+  "type": "object",
+  "properties": {
+    "nicheId": {
+      "type": "string",
+      "description": "ID de la niche associ\u00e9e"
+    },
+    "nicheName": {
+      "type": "string",
+      "description": "Nom de la niche (d\u00e9normalis\u00e9)"
+    },
+    "hook": {
+      "type": "string",
+      "description": "Accroche TikTok"
+    },
+    "script": {
+      "type": "string",
+      "description": "Script court 15-30 secondes"
+    },
+    "cta": {
+      "type": "string",
+      "description": "Appel \u00e0 l'action"
+    },
+    "visualSuggestions": {
+      "type": "string",
+      "description": "Suggestions visuelles et montage"
+    },
+    "hashtags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Hashtags"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "to_review",
+        "approved",
+        "rejected",
+        "scheduled",
+        "published"
+      ],
+      "default": "draft"
+    },
+    "views": {
+      "type": "number",
+      "default": 0
+    },
+    "likes": {
+      "type": "number",
+      "default": 0
+    },
+    "comments": {
+      "type": "number",
+      "default": 0
+    },
+    "shares": {
+      "type": "number",
+      "default": 0
+    },
+    "scheduledDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "publishedDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "nicheId",
+    "hook"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
