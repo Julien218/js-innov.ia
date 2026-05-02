@@ -12,14 +12,26 @@ const WA_LINK = 'https://wa.me/32494119090?text=Bonjour%20Julien%2C%20je%20viens
 const inputStyle = { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,175,55,0.18)', color: 'white', outline: 'none' };
 
 export default function SaasContact() {
-  const [step, setStep] = useState('configure'); // 'configure' | 'form'
-  const [packSummary, setPackSummary] = useState(null);
-  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '', company: '', message: '', consentRgpd: false });
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-
   const urlParams = new URLSearchParams(window.location.search);
   const packParam = urlParams.get('pack');
+
+  // Pre-fill from landing page form data passed via query params
+  const prefillRaw = urlParams.get('prefill');
+  const prefill = prefillRaw ? JSON.parse(decodeURIComponent(prefillRaw)) : null;
+
+  const [step, setStep] = useState('configure'); // 'configure' | 'form'
+  const [packSummary, setPackSummary] = useState(null);
+  const [form, setForm] = useState({
+    firstName: prefill?.name?.split(' ')[0] || '',
+    lastName: prefill?.name?.split(' ').slice(1).join(' ') || '',
+    email: prefill?.email || '',
+    phone: prefill?.phone || '',
+    company: prefill?.activity || '',
+    message: prefill?.message || '',
+    consentRgpd: false
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleConfiguratorComplete = (summary) => {
     setPackSummary(summary);
@@ -75,6 +87,20 @@ export default function SaasContact() {
   return (
     <div className="min-h-screen px-4 pt-10 pb-24">
       <div className="max-w-2xl mx-auto">
+
+        {/* Welcome banner if coming from landing */}
+        {prefill && (
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-3 p-4 rounded-2xl mb-6"
+            style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.25)' }}>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+              style={{ background: 'rgba(34,197,94,0.15)' }}>✅</div>
+            <div>
+              <p className="text-sm font-black text-white">Votre projet a bien été reçu{prefill.name ? `, ${prefill.name.split(' ')[0]}` : ''} !</p>
+              <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.45)' }}>Configurez maintenant votre pack — vos infos sont déjà pré-remplies.</p>
+            </div>
+          </motion.div>
+        )}
 
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">

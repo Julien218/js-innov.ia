@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   ArrowRight, Sparkles, Globe, Palette, Zap, Users, CheckCircle,
   Star, ChevronRight, MessageCircle, QrCode, Ticket, Image,
@@ -179,9 +179,17 @@ function ProjectForm({ onSuccess }) {
   const handleSubmit = async () => {
     if (!form.email) return;
     setLoading(true);
-    const res = await base44.functions.invoke('submitClientProject', form);
+    await base44.functions.invoke('submitClientProject', form);
     setLoading(false);
-    onSuccess(res.data);
+    // Redirect to contact page with pre-filled data → PackConfigurator
+    const prefill = encodeURIComponent(JSON.stringify({
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      activity: form.activity,
+      message: form.message,
+    }));
+    onSuccess({ prefill });
   };
 
   const inputStyle = {
@@ -379,6 +387,15 @@ export default function SaasLanding() {
   const [formSuccess, setFormSuccess] = useState(null);
   const [showExitPopup, setShowExitPopup] = useState(false);
   const exitIntentFired = useRef(false);
+  const navigate = useNavigate();
+
+  const handleFormSuccess = (data) => {
+    setFormSuccess(data);
+    // Auto-redirect after 1.5s to the PackConfigurator with pre-filled data
+    setTimeout(() => {
+      navigate(`/saas-contact?prefill=${data.prefill}`);
+    }, 1500);
+  };
 
   useEffect(() => {
     const handleMouseLeave = (e) => {
@@ -612,29 +629,22 @@ export default function SaasLanding() {
                 {formSuccess ? (
                   <motion.div key="success" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
                     className="text-center py-8">
-                    <div className="w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center text-2xl"
-                      style={{ background: `${GREEN}15`, border: `1px solid ${GREEN}30` }}>✅</div>
-                    <h3 className="text-xl font-black text-white mb-2">Projet créé avec succès !</h3>
-                    <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                      Un email de confirmation vous a été envoyé. Julien vous contacte sous 24h avec votre offre personnalisée.
+                    <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 0.6, repeat: 2 }}
+                      className="w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center text-2xl"
+                      style={{ background: `${GREEN}15`, border: `1px solid ${GREEN}30` }}>✅</motion.div>
+                    <h3 className="text-xl font-black text-white mb-2">Projet reçu !</h3>
+                    <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                      Parfait ! On vous redirige vers le configurateur de pack…
                     </p>
-                    {formSuccess.offer && (
-                      <div className="p-4 rounded-2xl text-left mb-5" style={{ background: 'rgba(212,175,55,0.06)', border: `1px solid rgba(212,175,55,0.2)` }}>
-                        <p className="text-xs font-bold mb-2" style={{ color: GOLD }}>Votre offre générée :</p>
-                        <p className="text-xs leading-relaxed whitespace-pre-wrap" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                          {typeof formSuccess.offer === 'string' ? formSuccess.offer : JSON.stringify(formSuccess.offer)}
-                        </p>
-                      </div>
-                    )}
-                    <a href={WA} target="_blank" rel="noopener noreferrer">
-                      <button className="px-6 py-3 rounded-2xl font-black text-black text-sm"
-                        style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>
-                        Contacter Julien sur WhatsApp →
-                      </button>
-                    </a>
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                        className="w-5 h-5 rounded-full border-2 border-t-transparent"
+                        style={{ borderColor: `${GOLD}60`, borderTopColor: GOLD }} />
+                      <span className="text-xs font-semibold" style={{ color: GOLD }}>Chargement du configurateur…</span>
+                    </div>
                   </motion.div>
                 ) : (
-                  <ProjectForm onSuccess={setFormSuccess} />
+                  <ProjectForm onSuccess={handleFormSuccess} />
                 )}
               </AnimatePresence>
             </div>
