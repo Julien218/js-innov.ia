@@ -26,8 +26,8 @@ import SaasAgents from './pages/saas/SaasAgents';
 import SaasContact from './pages/saas/SaasContact';
 import SaasDevis from './pages/saas/SaasDevis';
 import SaasLanding from './pages/saas/SaasLanding';
-import SaasProjet from './pages/saas/SaasProjet';
 import SaasClientDashboard from './pages/saas/SaasClientDashboard';
+import SaasEvents from './pages/saas/SaasEvents';
 import SaasLegal from './pages/saas/SaasLegal';
 import SaasChatbot from './pages/saas/SaasChatbot';
 import __Layout from './Layout.jsx';
@@ -111,8 +111,8 @@ const AuthenticatedApp = () => {
       <Route path="/saas-cgv" element={<SaasLayout><SaasLegal type="cgv" /></SaasLayout>} />
       <Route path="/saas-devis" element={<SaasLayout><SaasDevis /></SaasLayout>} />
       <Route path="/saas-landing" element={<SaasLayout><SaasLanding /></SaasLayout>} />
-      <Route path="/saas-projet" element={<SaasLayout><SaasProjet /></SaasLayout>} />
       <Route path="/saas-client" element={<SaasLayout><SaasClientDashboard /></SaasLayout>} />
+      <Route path="/saas-events" element={<SaasLayout><SaasEvents /></SaasLayout>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

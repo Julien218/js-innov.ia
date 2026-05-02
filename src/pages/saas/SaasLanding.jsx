@@ -1,36 +1,35 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, Sparkles, Globe, Palette, Zap, Users, CheckCircle,
-  Star, ChevronRight, MessageCircle, Play, Shield, BarChart3,
-  Cpu, Clock, Target, TrendingUp, QrCode, Ticket, Image, FileText,
-  Instagram, Youtube, Check, Monitor, Smartphone
+  Star, ChevronRight, MessageCircle, QrCode, Ticket, Image,
+  FileText, Smartphone, BarChart3, Play, Check
 } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
 const PURPLE = '#8B5CF6';
 const CYAN = '#06B6D4';
-const PINK = '#EC4899';
 const GREEN = '#22c55e';
-const WA_LINK = 'https://wa.me/32494119090?text=Bonjour%20Julien%2C%20je%20souhaite%20créer%20mon%20projet.';
+const WA = 'https://wa.me/32494119090?text=Bonjour%20Julien%2C%20je%20souhaite%20créer%20mon%20projet.';
 
 function Reveal({ children, delay = 0, y = 28 }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
   return (
     <motion.div ref={ref} initial={{ opacity: 0, y }} animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}>
+      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}>
       {children}
     </motion.div>
   );
 }
 
 function NeuralBg() {
-  const canvasRef = useRef(null);
+  const ref = useRef(null);
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const canvas = ref.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
@@ -39,8 +38,8 @@ function NeuralBg() {
     const nodes = Array.from({ length: 40 }, () => ({
       x: Math.random() * canvas.width, y: Math.random() * canvas.height,
       vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
-      r: Math.random() * 1.5 + 0.5,
-      color: [GOLD, PURPLE, CYAN][Math.floor(Math.random() * 3)],
+      r: Math.random() * 1.5 + 0.4,
+      c: [GOLD, PURPLE, CYAN][Math.floor(Math.random() * 3)],
     }));
     let raf;
     const draw = () => {
@@ -53,14 +52,14 @@ function NeuralBg() {
           const d = Math.hypot(n.x - m.x, n.y - m.y);
           if (d < 110) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(212,175,55,${0.04 * (1 - d / 110)})`;
-            ctx.lineWidth = 0.5;
+            ctx.strokeStyle = `rgba(212,175,55,${0.045 * (1 - d / 110)})`;
+            ctx.lineWidth = 0.4;
             ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y); ctx.stroke();
           }
         });
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fillStyle = n.color + '44';
+        ctx.fillStyle = n.c + '55';
         ctx.fill();
       });
       raf = requestAnimationFrame(draw);
@@ -68,587 +67,752 @@ function NeuralBg() {
     draw();
     return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };
   }, []);
-  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none opacity-40" />;
+  return <canvas ref={ref} className="absolute inset-0 pointer-events-none opacity-40" />;
 }
 
-// ── Before/After mockup ───────────────────────────────────────────────────────
-function BeforeAfterDemo() {
-  const [pos, setPos] = useState(50);
+// ── Before/After Branding Demo ──────────────────────────────────────────────
+function BrandingDemo() {
+  const [showAfter, setShowAfter] = useState(false);
+  useEffect(() => {
+    const t = setInterval(() => setShowAfter(p => !p), 3000);
+    return () => clearInterval(t);
+  }, []);
+
   return (
-    <div className="relative w-full max-w-xl mx-auto rounded-3xl overflow-hidden select-none"
-      style={{ height: 280, border: '1px solid rgba(212,175,55,0.25)', boxShadow: '0 0 60px rgba(212,175,55,0.08)' }}>
-      {/* AFTER */}
-      <div className="absolute inset-0 flex items-center justify-center"
-        style={{ background: 'linear-gradient(135deg, #0a0818 0%, #12102a 100%)' }}>
-        <div className="text-center px-8">
-          <div className="w-16 h-16 rounded-2xl mx-auto mb-3 flex items-center justify-center"
-            style={{ background: `linear-gradient(135deg, ${GOLD}, ${PURPLE})` }}>
-            <Sparkles className="w-8 h-8 text-black" />
-          </div>
-          <div className="font-black text-white text-lg mb-1">NOVA CAFÉ</div>
-          <div className="text-xs mb-3" style={{ color: GOLD }}>Identité visuelle premium</div>
-          <div className="flex gap-2 justify-center">
-            {['#D4AF37', '#8B5CF6', '#06B6D4'].map(c => (
-              <div key={c} className="w-6 h-6 rounded-full" style={{ background: c }} />
-            ))}
-          </div>
-          <div className="mt-3 text-xs font-bold" style={{ color: GREEN }}>✓ Livré en 48h</div>
-        </div>
-        <div className="absolute top-3 right-3 text-xs font-black px-3 py-1 rounded-full"
-          style={{ background: GREEN, color: '#000' }}>APRÈS</div>
-      </div>
-
-      {/* BEFORE — clipped */}
-      <div className="absolute inset-0 overflow-hidden" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-        <div className="absolute inset-0 flex items-center justify-center"
-          style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)' }}>
-          <div className="text-center px-8">
-            <div className="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center bg-gray-700">
-              <span className="text-2xl">☕</span>
+    <div className="relative w-full max-w-xl mx-auto">
+      <AnimatePresence mode="wait">
+        {!showAfter ? (
+          <motion.div key="before" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="p-6 rounded-2xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="text-xs font-bold tracking-widest uppercase mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>⛔ AVANT</div>
+            <div className="space-y-3">
+              <div className="h-8 rounded bg-gray-700/40 w-3/4" />
+              <div className="h-24 rounded bg-gray-700/30 w-full" />
+              <div className="flex gap-2">
+                <div className="h-8 rounded bg-gray-700/40 w-1/3" />
+                <div className="h-8 rounded bg-gray-700/30 w-1/4" />
+              </div>
+              <div className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>Site basique · Pas de cohérence · Zéro conversion</div>
             </div>
-            <div className="font-bold text-gray-400 text-base mb-1">nova café</div>
-            <div className="text-xs text-gray-600">logo fait maison</div>
-            <div className="flex gap-2 justify-center mt-3">
-              {['#666', '#888', '#aaa'].map(c => (
-                <div key={c} className="w-6 h-6 rounded-full" style={{ background: c }} />
-              ))}
+          </motion.div>
+        ) : (
+          <motion.div key="after" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="p-6 rounded-2xl relative overflow-hidden"
+            style={{ background: `linear-gradient(135deg, rgba(212,175,55,0.08), rgba(139,92,246,0.08))`, border: `1px solid rgba(212,175,55,0.3)` }}>
+            <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
+            <div className="text-xs font-bold tracking-widest uppercase mb-4" style={{ color: GOLD }}>✅ APRÈS — 48H</div>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-black text-xs"
+                  style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>JS</div>
+                <div>
+                  <div className="text-white font-black text-sm">JS-Luxe Boutique</div>
+                  <div className="text-xs" style={{ color: GOLD }}>Identité premium · 100% sur mesure</div>
+                </div>
+              </div>
+              <div className="h-20 rounded-xl w-full flex items-center justify-center"
+                style={{ background: `linear-gradient(135deg, ${GOLD}15, ${PURPLE}15)`, border: `1px solid ${GOLD}20` }}>
+                <span className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.5)' }}>Site web · Branding · Contenus</span>
+              </div>
+              <div className="flex gap-2">
+                <div className="flex-1 h-7 rounded-lg flex items-center justify-center text-xs font-black text-black"
+                  style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>Découvrir</div>
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center"
+                  style={{ background: `${PURPLE}20`, border: `1px solid ${PURPLE}30` }}>
+                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: GREEN }} />
+                </div>
+              </div>
+              <div className="text-xs font-semibold" style={{ color: GREEN }}>
+                ✓ Branding · ✓ Site · ✓ Réseaux · ✓ Automatisation
+              </div>
             </div>
-            <div className="mt-3 text-xs text-gray-600">sans cohérence</div>
-          </div>
-          <div className="absolute top-3 left-3 text-xs font-black px-3 py-1 rounded-full bg-gray-600 text-gray-300">AVANT</div>
-        </div>
-      </div>
-
-      {/* Slider */}
-      <div className="absolute inset-y-0 flex items-center" style={{ left: `${pos}%`, transform: 'translateX(-50%)' }}>
-        <div className="w-0.5 h-full" style={{ background: GOLD }} />
-        <div className="absolute w-8 h-8 rounded-full border-2 flex items-center justify-center cursor-ew-resize z-10"
-          style={{ background: '#0a0818', borderColor: GOLD }}
-          onMouseDown={() => {
-            const move = (e) => {
-              const rect = e.currentTarget?.closest?.('.relative')?.getBoundingClientRect?.() ||
-                document.querySelector('.relative')?.getBoundingClientRect();
-              if (!rect) return;
-              const newPos = Math.max(10, Math.min(90, ((e.clientX - rect.left) / rect.width) * 100));
-              setPos(newPos);
-            };
-            const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
-            window.addEventListener('mousemove', move);
-            window.addEventListener('mouseup', up);
-          }}>
-          <ChevronRight className="w-3 h-3 absolute -right-1" style={{ color: GOLD }} />
-          <ChevronRight className="w-3 h-3 absolute -left-1 rotate-180" style={{ color: GOLD }} />
-        </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <div className="flex justify-center gap-2 mt-3">
+        {[false, true].map((s) => (
+          <button key={String(s)} onClick={() => setShowAfter(s)}
+            className="w-2 h-2 rounded-full transition-all"
+            style={{ background: showAfter === s ? GOLD : 'rgba(255,255,255,0.2)' }} />
+        ))}
       </div>
     </div>
   );
 }
 
-const steps = [
-  { n: '01', icon: FileText, title: 'Vous décrivez votre projet', desc: 'Activité, style, couleurs, besoins. 3 minutes suffisent.', color: CYAN },
-  { n: '02', icon: Palette, title: 'On génère votre identité visuelle', desc: 'Logo, charte couleurs, typographies — livrés pour validation.', color: GOLD },
-  { n: '03', icon: CheckCircle, title: 'Vous recevez une offre personnalisée', desc: 'Visuels + devis clair + lien paiement acompte.', color: PURPLE },
-  { n: '04', icon: Shield, title: 'Vous validez avec un acompte', desc: 'Paiement sécurisé Stripe. Production démarrée immédiatement.', color: PINK },
-  { n: '05', icon: Globe, title: 'Votre projet est livré rapidement', desc: 'Site, contenus, automatisations — dans votre espace client.', color: GREEN },
-];
+// ── Smart Project Form ──────────────────────────────────────────────────────
+function ProjectForm({ onSuccess }) {
+  const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    name: '', email: '', phone: '', activity: '',
+    needs: [], visual_style: '', colors: '', budget: '', message: '',
+  });
 
-const services = [
-  { icon: Palette, color: GOLD, title: 'Branding & Design', desc: 'Logo, charte graphique, carte de visite, affiches, bâches.', tag: 'À partir de 149€' },
-  { icon: Globe, color: CYAN, title: 'Création de site web', desc: 'Sites vitrines, landing pages, boutiques e-commerce ultra-modernes.', tag: 'À partir de 490€' },
-  { icon: Zap, color: PURPLE, title: 'Automatisation business', desc: 'Workflows intelligents, CRM, emails automatiques, relances.', tag: 'À partir de 1490€' },
-  { icon: Instagram, color: PINK, title: 'Contenu réseaux sociaux', desc: 'Posts, stories, reels, visuels Facebook — générés et planifiés.', tag: 'À partir de 99€/mois' },
-  { icon: QrCode, color: GREEN, title: 'Billetterie & événements', desc: 'Vente de tickets, QR codes, scan entrée, gestion participants.', tag: 'Sur devis' },
-];
+  const NEEDS = [
+    { id: 'site_web', label: 'Site web', icon: Globe },
+    { id: 'carte_visite', label: 'Carte de visite', icon: FileText },
+    { id: 'affiches', label: 'Affiches / Bâches', icon: Image },
+    { id: 'reseaux', label: 'Réseaux sociaux', icon: Smartphone },
+    { id: 'automatisation', label: 'Automatisation business', icon: Zap },
+    { id: 'billetterie', label: 'Billetterie (QR code)', icon: Ticket },
+  ];
+  const STYLES = [
+    { id: 'moderne', label: 'Moderne', desc: 'Épuré, tech, minimaliste' },
+    { id: 'luxe', label: 'Luxe', desc: 'Raffiné, premium, élégant' },
+    { id: 'fun', label: 'Fun', desc: 'Coloré, dynamique, créatif' },
+    { id: 'corporate', label: 'Corporate', desc: 'Professionnel, sérieux' },
+  ];
+  const BUDGETS = ['< 500€', '500€ - 1500€', '1500€ - 3000€', '3000€ - 6000€', '> 6000€'];
 
-const contentExamples = [
-  { icon: Instagram, platform: 'Instagram', color: PINK, example: 'Post produit', size: '1080×1080', bg: 'from-pink-900/20 to-purple-900/20' },
-  { icon: Youtube, platform: 'YouTube Shorts', color: '#FF0000', example: 'Vidéo 60s', size: '1080×1920', bg: 'from-red-900/20 to-red-900/5' },
-  { icon: Monitor, platform: 'Facebook', color: '#1877F2', example: 'Visuel pub', size: '1200×628', bg: 'from-blue-900/20 to-blue-900/5' },
-  { icon: Smartphone, platform: 'TikTok', color: '#69C9D0', example: 'Script vidéo', size: 'Script + sous-titres', bg: 'from-cyan-900/20 to-cyan-900/5' },
-];
+  const toggleNeed = (id) => {
+    setForm(p => ({
+      ...p,
+      needs: p.needs.includes(id) ? p.needs.filter(n => n !== id) : [...p.needs, id],
+    }));
+  };
 
-const pricing = [
-  {
-    name: 'Starter', price: '149€', period: 'une fois', color: CYAN,
-    features: ['Carte de visite pro', '3 visuels réseaux sociaux', 'Logo simplifié', 'Livraison 48h'],
-    cta: 'Commencer'
-  },
-  {
-    name: 'Pro', price: '399€', period: 'une fois', color: GOLD, popular: true,
-    features: ['Branding complet', '10 visuels réseaux', 'Mini-site vitrine', 'Charte graphique', 'Livraison 5 jours'],
-    cta: 'Choisir Pro'
-  },
-  {
-    name: 'Business', price: '899€', period: 'une fois', color: PURPLE,
-    features: ['Branding complet', 'Site web complet', 'Contenus réseaux', 'Automatisation email', 'Support 1 mois'],
-    cta: 'Lancer mon business'
-  },
-];
+  const handleSubmit = async () => {
+    if (!form.email) return;
+    setLoading(true);
+    const res = await base44.functions.invoke('submitClientProject', form);
+    setLoading(false);
+    onSuccess(res.data);
+  };
 
-const subscriptions = [
-  { name: 'Essentiel', price: '29€', color: CYAN, desc: '4 posts/mois + maintenance' },
-  { name: 'Croissance', price: '59€', color: GOLD, desc: '12 posts + SEO + email' },
-  { name: 'Scale', price: '99€', color: PURPLE, desc: 'Contenu illimité + auto. + CRM' },
-];
+  const inputStyle = {
+    background: 'rgba(255,255,255,0.05)',
+    border: '1px solid rgba(255,255,255,0.1)',
+    borderRadius: 12,
+    color: 'white',
+    padding: '12px 16px',
+    fontSize: 14,
+    width: '100%',
+    outline: 'none',
+  };
 
-export default function SaasLanding() {
   return (
-    <div className="min-h-screen overflow-x-hidden text-white">
+    <div>
+      {/* Progress */}
+      <div className="flex gap-2 mb-6">
+        {[1, 2, 3].map(s => (
+          <div key={s} className="flex-1 h-1 rounded-full transition-all"
+            style={{ background: s <= step ? `linear-gradient(90deg, ${GOLD}, ${GOLD_L})` : 'rgba(255,255,255,0.1)' }} />
+        ))}
+      </div>
 
-      {/* ══ HERO ══ */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-5 pb-16 pt-24">
+      <AnimatePresence mode="wait">
+        {step === 1 && (
+          <motion.div key="s1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+            className="space-y-4">
+            <h3 className="font-black text-white text-lg">Parlez-nous de vous</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <input placeholder="Votre prénom / nom" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
+                style={inputStyle} />
+              <input placeholder="Email *" type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
+                style={inputStyle} />
+            </div>
+            <input placeholder="Téléphone (optionnel)" value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
+              style={inputStyle} />
+            <input placeholder="Votre activité (ex: coiffure, restaurant, e-commerce…) *" value={form.activity}
+              onChange={e => setForm(p => ({ ...p, activity: e.target.value }))} style={inputStyle} />
+            <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+              onClick={() => form.email && form.activity && setStep(2)}
+              disabled={!form.email || !form.activity}
+              className="w-full py-3.5 rounded-2xl font-black text-black text-sm flex items-center justify-center gap-2 disabled:opacity-40"
+              style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>
+              Continuer <ArrowRight className="w-4 h-4" />
+            </motion.button>
+          </motion.div>
+        )}
+
+        {step === 2 && (
+          <motion.div key="s2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+            className="space-y-5">
+            <h3 className="font-black text-white text-lg">Vos besoins & style</h3>
+            <div>
+              <p className="text-xs font-semibold mb-3" style={{ color: 'rgba(255,255,255,0.5)' }}>De quoi avez-vous besoin ?</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {NEEDS.map(n => (
+                  <button key={n.id} onClick={() => toggleNeed(n.id)}
+                    className="p-3 rounded-xl text-left transition-all flex items-center gap-2"
+                    style={{
+                      background: form.needs.includes(n.id) ? `${GOLD}12` : 'rgba(255,255,255,0.03)',
+                      border: `1px solid ${form.needs.includes(n.id) ? GOLD + '40' : 'rgba(255,255,255,0.07)'}`,
+                    }}>
+                    <n.icon className="w-4 h-4 flex-shrink-0" style={{ color: form.needs.includes(n.id) ? GOLD : 'rgba(255,255,255,0.4)' }} />
+                    <span className="text-xs font-semibold" style={{ color: form.needs.includes(n.id) ? GOLD : 'rgba(255,255,255,0.6)' }}>
+                      {n.label}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-xs font-semibold mb-3" style={{ color: 'rgba(255,255,255,0.5)' }}>Style visuel souhaité</p>
+              <div className="grid grid-cols-2 gap-2">
+                {STYLES.map(s => (
+                  <button key={s.id} onClick={() => setForm(p => ({ ...p, visual_style: s.id }))}
+                    className="p-3 rounded-xl text-left transition-all"
+                    style={{
+                      background: form.visual_style === s.id ? `${PURPLE}15` : 'rgba(255,255,255,0.03)',
+                      border: `1px solid ${form.visual_style === s.id ? PURPLE + '50' : 'rgba(255,255,255,0.07)'}`,
+                    }}>
+                    <div className="text-sm font-black text-white">{s.label}</div>
+                    <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>{s.desc}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <input placeholder="Couleurs souhaitées (ex: noir et or, bleu marine…)" value={form.colors}
+              onChange={e => setForm(p => ({ ...p, colors: e.target.value }))} style={inputStyle} />
+            <div className="flex gap-2">
+              <button onClick={() => setStep(1)} className="px-5 py-3 rounded-2xl text-sm font-semibold"
+                style={{ border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>← Retour</button>
+              <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                onClick={() => setStep(3)}
+                className="flex-1 py-3 rounded-2xl font-black text-black text-sm flex items-center justify-center gap-2"
+                style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>
+                Continuer <ArrowRight className="w-4 h-4" />
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+
+        {step === 3 && (
+          <motion.div key="s3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+            className="space-y-4">
+            <h3 className="font-black text-white text-lg">Budget & détails</h3>
+            <div>
+              <p className="text-xs font-semibold mb-3" style={{ color: 'rgba(255,255,255,0.5)' }}>Budget estimé</p>
+              <div className="flex flex-wrap gap-2">
+                {BUDGETS.map(b => (
+                  <button key={b} onClick={() => setForm(p => ({ ...p, budget: b }))}
+                    className="px-4 py-2 rounded-xl text-xs font-semibold transition-all"
+                    style={{
+                      background: form.budget === b ? `${CYAN}15` : 'rgba(255,255,255,0.04)',
+                      border: `1px solid ${form.budget === b ? CYAN + '50' : 'rgba(255,255,255,0.08)'}`,
+                      color: form.budget === b ? CYAN : 'rgba(255,255,255,0.55)',
+                    }}>{b}</button>
+                ))}
+              </div>
+            </div>
+            <textarea placeholder="Décrivez votre projet en quelques mots (optionnel)" value={form.message}
+              onChange={e => setForm(p => ({ ...p, message: e.target.value }))} rows={3}
+              style={{ ...inputStyle, resize: 'none' }} />
+            <div className="flex gap-2">
+              <button onClick={() => setStep(2)} className="px-5 py-3 rounded-2xl text-sm font-semibold"
+                style={{ border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>← Retour</button>
+              <motion.button whileHover={{ scale: 1.02, boxShadow: '0 0 40px rgba(212,175,55,0.4)' }} whileTap={{ scale: 0.98 }}
+                onClick={handleSubmit} disabled={loading}
+                className="flex-1 py-3.5 rounded-2xl font-black text-black text-sm flex items-center justify-center gap-2 disabled:opacity-60"
+                style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, boxShadow: `0 0 25px rgba(212,175,55,0.3)` }}>
+                {loading ? (
+                  <>
+                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}>
+                      <Sparkles className="w-4 h-4" />
+                    </motion.div>
+                    Génération en cours…
+                  </>
+                ) : (
+                  <><Sparkles className="w-4 h-4" /> Créer mon projet</>
+                )}
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ── Main Page ────────────────────────────────────────────────────────────────
+export default function SaasLanding() {
+  const [formSuccess, setFormSuccess] = useState(null);
+
+  const services = [
+    { icon: Palette, color: GOLD, title: 'Branding & Design', desc: 'Logo, charte graphique, identité visuelle complète livrée en 48h.' },
+    { icon: Globe, color: CYAN, title: 'Création de site web', desc: 'Sites vitrines, landing pages et e-commerce performants.' },
+    { icon: Zap, color: PURPLE, title: 'Automatisation business', desc: 'Workflows intelligents qui tournent 24/7 sans intervention.' },
+    { icon: Smartphone, color: '#EC4899', title: 'Contenus réseaux sociaux', desc: 'Posts, stories, vidéos générés et planifiés automatiquement.' },
+    { icon: QrCode, color: '#F59E0B', title: 'Billetterie & Événements', desc: 'Vente de tickets, QR codes, gestion des entrées en temps réel.' },
+  ];
+
+  const steps = [
+    { n: '01', title: 'Vous décrivez votre projet', desc: 'Remplissez le formulaire intelligent. 3 minutes suffisent.', color: CYAN },
+    { n: '02', title: 'Nous générons votre identité', desc: 'Notre équipe crée vos premiers visuels et mockups.', color: GOLD },
+    { n: '03', title: 'Vous recevez une offre', desc: 'Offre personnalisée avec visuels et prix clairs.', color: PURPLE },
+    { n: '04', title: 'Vous validez avec un acompte', desc: 'Paiement sécurisé via Stripe. Simple et rapide.', color: '#EC4899' },
+    { n: '05', title: 'Livraison en 48h à 7 jours', desc: 'Votre projet complet livré dans l\'espace client.', color: GREEN },
+  ];
+
+  const contentExamples = [
+    { platform: 'Instagram', icon: '📸', color: '#E1306C', example: 'Post carré · Story animée · Carrousel produit' },
+    { platform: 'TikTok', icon: '🎵', color: '#010101', example: 'Script vidéo · Sous-titres auto · Hook accrocheur' },
+    { platform: 'Facebook', icon: '📘', color: '#1877F2', example: 'Visuel événement · Post sponsorisé · Cover' },
+    { platform: 'YouTube', icon: '▶️', color: '#FF0000', example: 'Thumbnail · Shorts 60s · Description SEO' },
+  ];
+
+  const pricingPlans = [
+    {
+      name: 'Starter', price: '149€', color: CYAN, badge: null,
+      desc: 'Idéal pour débuter avec une image pro',
+      features: ['Carte de visite recto/verso', '3 visuels réseaux sociaux', '2 formats (carré + story)', 'Livraison 48h', '1 modification incluse'],
+    },
+    {
+      name: 'Pro', price: '399€', color: GOLD, badge: '⭐ Populaire',
+      desc: 'Branding complet + présence digitale',
+      features: ['Branding complet (logo + charte)', '10 visuels réseaux sociaux', 'Mini site vitrine (3 pages)', 'Carte de visite incluse', '3 modifications', 'Livraison 72h'],
+    },
+    {
+      name: 'Business', price: '899€', color: PURPLE, badge: null,
+      desc: 'La solution complète pour scaler',
+      features: ['Tout le pack Pro', 'Site web complet (6 pages)', 'Contenus réseaux (1 mois)', 'Automatisation email/WhatsApp', 'Dashboard de suivi', 'Support prioritaire 1 mois'],
+    },
+  ];
+
+  return (
+    <div className="min-h-screen overflow-x-hidden" style={{ color: 'white' }}>
+
+      {/* ══ HERO ══════════════════════════════════════════════════════════ */}
+      <section className="relative min-h-screen flex items-center overflow-hidden px-5 pt-20 pb-16">
         <NeuralBg />
         <div className="absolute inset-0 pointer-events-none">
-          <motion.div animate={{ scale: [1, 1.1, 1], opacity: [0.12, 0.2, 0.12] }} transition={{ duration: 9, repeat: Infinity }}
-            className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full blur-[150px]"
-            style={{ background: `radial-gradient(circle, ${GOLD}28, transparent 70%)` }} />
-          <motion.div animate={{ scale: [1, 1.08, 1], opacity: [0.1, 0.16, 0.1] }} transition={{ duration: 11, repeat: Infinity, delay: 3 }}
-            className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-[120px]"
+          <motion.div animate={{ scale: [1, 1.1, 1], opacity: [0.12, 0.2, 0.12] }} transition={{ duration: 8, repeat: Infinity }}
+            className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full blur-[160px]"
+            style={{ background: `radial-gradient(circle, ${GOLD}25, transparent 70%)` }} />
+          <motion.div animate={{ scale: [1, 1.08, 1], opacity: [0.08, 0.14, 0.08] }} transition={{ duration: 10, repeat: Infinity, delay: 3 }}
+            className="absolute top-1/2 right-1/4 w-80 h-80 rounded-full blur-[120px]"
             style={{ background: `radial-gradient(circle, ${PURPLE}35, transparent 70%)` }} />
         </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }}
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 text-xs font-bold tracking-widest uppercase"
-                style={{ background: 'rgba(212,175,55,0.08)', border: `1px solid rgba(212,175,55,0.3)`, color: GOLD }}>
-                <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                Plateforme · Branding · Automatisation
-              </motion.div>
+        <div className="relative z-10 max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-14 items-center">
+          <div>
+            <motion.div initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 text-xs font-bold tracking-widest uppercase"
+              style={{ background: 'rgba(212,175,55,0.08)', border: `1px solid rgba(212,175,55,0.3)`, color: GOLD }}>
+              <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+              Livraison express · 48h garanties
+            </motion.div>
 
-              <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.9 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-[1.08]">
-                <span className="block text-white">Automatisez votre business</span>
-                <span className="block" style={{
-                  background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L}, ${PURPLE})`,
-                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'
-                }}>et recevez votre identité</span>
-                <span className="block text-white">visuelle en 48h.</span>
-              </motion.h1>
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.8 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.08] mb-5">
+              <span className="block text-white">Automatisez votre business</span>
+              <span className="block" style={{
+                background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L}, ${PURPLE})`,
+                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+              }}>et recevez votre identité</span>
+              <span className="block text-white">en 48h.</span>
+            </motion.h1>
 
-              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-                className="text-lg mb-8 leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                JS-Innov.IA crée, automatise et livre vos outils digitaux — site web, branding, contenus et workflows — sans complexité ni délai.
-              </motion.p>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+              className="text-lg mb-8 leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              JS-Innov.IA crée, automatise et livre votre branding, site web et contenus marketing — sans complexité.
+            </motion.p>
 
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
-                className="flex flex-wrap gap-3 mb-10">
-                <Link to="/saas-projet">
-                  <motion.button whileHover={{ scale: 1.05, boxShadow: '0 0 50px rgba(212,175,55,0.5)' }} whileTap={{ scale: 0.97 }}
-                    className="flex items-center gap-2 px-7 py-4 rounded-2xl font-black text-black text-sm"
-                    style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, boxShadow: `0 0 30px rgba(212,175,55,0.3)` }}>
-                    <Sparkles className="w-4 h-4" /> Créer mon projet
-                  </motion.button>
-                </Link>
-                <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
-                  <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
-                    className="flex items-center gap-2 px-7 py-4 rounded-2xl font-semibold border text-sm"
-                    style={{ borderColor: 'rgba(37,211,102,0.35)', color: '#25D366', background: 'rgba(37,211,102,0.06)' }}>
-                    <MessageCircle className="w-4 h-4" /> Parler à Julien
-                  </motion.button>
-                </a>
-              </motion.div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+              className="flex flex-wrap gap-3 mb-8">
+              <a href="#formulaire">
+                <motion.button whileHover={{ scale: 1.05, boxShadow: '0 0 50px rgba(212,175,55,0.5)' }} whileTap={{ scale: 0.97 }}
+                  className="flex items-center gap-2 px-7 py-4 rounded-2xl font-black text-black text-sm"
+                  style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, boxShadow: `0 0 30px rgba(212,175,55,0.35)` }}>
+                  <Sparkles className="w-4 h-4" /> Créer mon projet
+                </motion.button>
+              </a>
+              <a href={WA} target="_blank" rel="noopener noreferrer">
+                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
+                  className="flex items-center gap-2 px-7 py-4 rounded-2xl font-semibold border text-sm"
+                  style={{ borderColor: 'rgba(37,211,102,0.35)', color: '#25D366', background: 'rgba(37,211,102,0.06)' }}>
+                  <MessageCircle className="w-4 h-4" /> WhatsApp
+                </motion.button>
+              </a>
+            </motion.div>
 
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
-                className="flex flex-wrap gap-6">
-                {[
-                  { v: '48h', l: 'Livraison' }, { v: '100%', l: 'Validation humaine' },
-                  { v: '5★', l: 'Satisfaction' }, { v: 'RGPD', l: 'Conforme' }
-                ].map(s => (
-                  <div key={s.l} className="text-center">
-                    <div className="text-xl font-black" style={{ color: GOLD }}>{s.v}</div>
-                    <div className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>{s.l}</div>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-
-            {/* Before/After */}
-            <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5, duration: 0.8 }}>
-              <div className="text-center mb-3">
-                <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'rgba(212,175,55,0.5)' }}>
-                  Glissez pour voir la transformation →
-                </span>
-              </div>
-              <BeforeAfterDemo />
-              <div className="flex justify-center gap-6 mt-4">
-                <div className="flex items-center gap-1.5 text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
-                  <div className="w-2 h-2 rounded-full bg-gray-600" /> Avant
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}
+              className="flex flex-wrap gap-6">
+              {[{ v: '48h', l: 'Livraison express' }, { v: '100%', l: 'Sur mesure' }, { v: '5★', l: 'Satisfaction' }, { v: 'RGPD', l: 'Conforme' }].map(s => (
+                <div key={s.l} className="text-center">
+                  <div className="text-2xl font-black" style={{ color: GOLD }}>{s.v}</div>
+                  <div className="text-xs mt-0.5 tracking-wider" style={{ color: 'rgba(255,255,255,0.3)' }}>{s.l}</div>
                 </div>
-                <div className="flex items-center gap-1.5 text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
-                  <div className="w-2 h-2 rounded-full" style={{ background: GREEN }} /> Après JS-Innov.IA
-                </div>
-              </div>
+              ))}
             </motion.div>
           </div>
+
+          <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.8 }}>
+            <BrandingDemo />
+          </motion.div>
         </div>
       </section>
 
-      {/* ══ COMMENT ÇA MARCHE ══ */}
-      <section className="py-24 px-5 relative">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(6,182,212,0.05) 0%, transparent 60%)' }} />
-        <div className="max-w-5xl mx-auto">
-          <Reveal>
-            <div className="text-center mb-14">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-bold tracking-widest uppercase"
-                style={{ background: 'rgba(6,182,212,0.08)', border: `1px solid rgba(6,182,212,0.22)`, color: CYAN }}>
-                <Target className="w-3 h-3" /> Processus
-              </div>
-              <h2 className="text-3xl md:text-4xl font-black text-white mb-3">Comment ça marche ?</h2>
-              <p className="text-base max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.4)' }}>5 étapes, de votre idée à la livraison complète.</p>
-            </div>
-          </Reveal>
-          <div className="space-y-4">
-            {steps.map((s, i) => (
-              <Reveal key={s.n} delay={i * 0.08}>
-                <motion.div whileHover={{ x: 6 }} className="flex items-start gap-5 p-5 rounded-2xl relative"
-                  style={{ background: 'rgba(10,8,22,0.8)', border: `1px solid ${s.color}18` }}>
-                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
-                    style={{ background: `${s.color}12`, border: `1px solid ${s.color}28` }}>
-                    <s.icon className="w-5 h-5" style={{ color: s.color }} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-1">
-                      <span className="text-xs font-black px-2 py-0.5 rounded-full" style={{ background: `${s.color}15`, color: s.color }}>{s.n}</span>
-                      <h3 className="font-black text-white text-sm">{s.title}</h3>
-                    </div>
-                    <p className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>{s.desc}</p>
-                  </div>
-                  {i < steps.length - 1 && (
-                    <div className="absolute -bottom-2 left-8 w-0.5 h-4 rounded-full" style={{ background: `${s.color}30` }} />
-                  )}
-                </motion.div>
-              </Reveal>
-            ))}
-          </div>
-          <Reveal delay={0.4}>
-            <div className="text-center mt-10">
-              <Link to="/saas-projet">
-                <motion.button whileHover={{ scale: 1.05, boxShadow: '0 0 50px rgba(212,175,55,0.45)' }} whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-black text-black text-sm"
-                  style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>
-                  <Sparkles className="w-4 h-4" /> Créer mon projet maintenant
-                </motion.button>
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ══ SERVICES ══ */}
+      {/* ══ SERVICES ══════════════════════════════════════════════════════ */}
       <section className="py-24 px-5">
         <div className="max-w-6xl mx-auto">
           <Reveal>
-            <div className="text-center mb-14">
+            <div className="text-center mb-12">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-bold tracking-widest uppercase"
                 style={{ background: 'rgba(212,175,55,0.08)', border: `1px solid rgba(212,175,55,0.2)`, color: GOLD }}>
                 <Sparkles className="w-3 h-3" /> Nos services
               </div>
-              <h2 className="text-3xl md:text-4xl font-black text-white mb-3">Tout ce dont vous avez besoin</h2>
-              <p className="text-base max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.4)' }}>Une plateforme unique pour créer, automatiser et développer votre présence digitale.</p>
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-3">Tout pour votre présence digitale</h2>
+              <p className="text-base max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                De l'identité visuelle à l'automatisation complète, nous livrons vite et bien.
+              </p>
             </div>
           </Reveal>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {services.map((s, i) => (
               <Reveal key={s.title} delay={i * 0.07}>
-                <motion.div whileHover={{ y: -8 }} className="group p-6 rounded-2xl h-full relative overflow-hidden"
-                  style={{ background: 'rgba(10,8,22,0.85)', border: `1px solid ${s.color}18` }}>
+                <motion.div whileHover={{ y: -6, scale: 1.01 }} className="group p-6 rounded-2xl relative overflow-hidden h-full"
+                  style={{ background: 'rgba(10,8,22,0.8)', border: `1px solid ${s.color}15` }}>
                   <div className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity"
                     style={{ background: `linear-gradient(90deg, transparent, ${s.color}70, transparent)` }} />
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: `${s.color}12`, border: `1px solid ${s.color}28` }}>
+                    style={{ background: `${s.color}12`, border: `1px solid ${s.color}25` }}>
                     <s.icon className="w-6 h-6" style={{ color: s.color }} />
                   </div>
                   <h3 className="font-black text-white text-base mb-2">{s.title}</h3>
-                  <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.42)' }}>{s.desc}</p>
-                  <div className="inline-flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
-                    style={{ background: `${s.color}12`, color: s.color, border: `1px solid ${s.color}25` }}>
-                    {s.tag}
-                  </div>
+                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.42)' }}>{s.desc}</p>
                 </motion.div>
               </Reveal>
             ))}
+            <Reveal delay={0.35}>
+              <motion.div whileHover={{ y: -6 }} className="p-6 rounded-2xl flex flex-col items-center justify-center text-center h-full"
+                style={{ background: `linear-gradient(135deg, ${GOLD}06, ${PURPLE}06)`, border: `1px solid rgba(212,175,55,0.2)`, minHeight: 180 }}>
+                <div className="text-2xl mb-2">🚀</div>
+                <p className="text-sm font-bold text-white mb-3">Prêt à vous lancer ?</p>
+                <a href="#formulaire">
+                  <button className="px-5 py-2.5 rounded-xl text-xs font-black text-black"
+                    style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>
+                    Créer mon projet →
+                  </button>
+                </a>
+              </motion.div>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* ══ MODULE ÉVÉNEMENT ══ */}
-      <section className="py-24 px-5 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 50%, rgba(34,197,94,0.06) 0%, transparent 60%)' }} />
-        <div className="max-w-5xl mx-auto">
-          <Reveal>
-            <div className="p-10 md:p-14 rounded-3xl relative overflow-hidden"
-              style={{ background: 'rgba(10,8,22,0.92)', border: `1px solid ${GREEN}25`, boxShadow: `0 0 60px ${GREEN}08` }}>
-              <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${GREEN}70, transparent)` }} />
-              <div className="grid md:grid-cols-2 gap-10 items-center">
-                <div>
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-5 text-xs font-bold tracking-widest uppercase"
-                    style={{ background: `${GREEN}12`, border: `1px solid ${GREEN}28`, color: GREEN }}>
-                    <QrCode className="w-3 h-3" /> Billetterie & Événements
-                  </div>
-                  <h2 className="text-3xl font-black text-white mb-4">
-                    Créez et gérez vos événements{' '}
-                    <span style={{ color: GREEN }}>facilement.</span>
-                  </h2>
-                  <p className="text-base leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.48)' }}>
-                    De la billetterie en ligne à la gestion des entrées avec QR code — tout en un, sans complexité.
-                  </p>
-                  <div className="space-y-3 mb-8">
-                    {[
-                      { icon: Ticket, text: 'Vente de tickets en ligne sécurisée' },
-                      { icon: QrCode, text: 'QR codes générés automatiquement' },
-                      { icon: Smartphone, text: 'Scan à l\'entrée via mobile' },
-                      { icon: Users, text: 'Gestion des participants en temps réel' },
-                    ].map(item => (
-                      <div key={item.text} className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                          style={{ background: `${GREEN}15`, border: `1px solid ${GREEN}28` }}>
-                          <item.icon className="w-4 h-4" style={{ color: GREEN }} />
-                        </div>
-                        <span className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.text}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <Link to="/saas-projet">
-                    <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
-                      className="flex items-center gap-2 px-7 py-3.5 rounded-2xl font-black text-black text-sm"
-                      style={{ background: GREEN, boxShadow: `0 0 25px ${GREEN}35` }}>
-                      <Ticket className="w-4 h-4" /> Créer mon événement
-                    </motion.button>
-                  </Link>
-                </div>
-                {/* Visual mockup */}
-                <div className="space-y-3">
-                  <div className="p-4 rounded-2xl" style={{ background: 'rgba(34,197,94,0.05)', border: `1px solid ${GREEN}20` }}>
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-sm font-black text-white">Festival Été 2025</span>
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: `${GREEN}20`, color: GREEN }}>En vente</span>
-                    </div>
-                    <div className="grid grid-cols-3 gap-2 mb-3">
-                      {[{ l: 'Tickets vendus', v: '347' }, { l: 'Restants', v: '53' }, { l: 'Revenus', v: '2 435€' }].map(s => (
-                        <div key={s.l} className="text-center p-2 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)' }}>
-                          <div className="text-base font-black" style={{ color: GREEN }}>{s.v}</div>
-                          <div className="text-[10px]" style={{ color: 'rgba(255,255,255,0.35)' }}>{s.l}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-2 p-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                      <QrCode className="w-8 h-8 p-1.5 rounded-lg" style={{ background: 'white', color: '#000' }} />
-                      <div>
-                        <div className="text-xs font-bold text-white">QR Code unique</div>
-                        <div className="text-[10px]" style={{ color: 'rgba(255,255,255,0.35)' }}>Ticket #4721 · Entrée VIP</div>
-                      </div>
-                      <div className="ml-auto w-5 h-5 rounded-full flex items-center justify-center" style={{ background: GREEN }}>
-                        <Check className="w-3 h-3 text-black" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ══ CONTENU AUTOMATISÉ ══ */}
-      <section className="py-24 px-5">
-        <div className="max-w-5xl mx-auto">
-          <Reveal>
-            <div className="text-center mb-14">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-bold tracking-widest uppercase"
-                style={{ background: `${PINK}12`, border: `1px solid ${PINK}25`, color: PINK }}>
-                <Image className="w-3 h-3" /> Contenu automatisé
-              </div>
-              <h2 className="text-3xl md:text-4xl font-black text-white mb-3">Vos contenus, générés pour vous</h2>
-              <p className="text-base max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.4)' }}>Posts Instagram, TikTok, Facebook, YouTube — créés et planifiés automatiquement.</p>
-            </div>
-          </Reveal>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {contentExamples.map((c, i) => (
-              <Reveal key={c.platform} delay={i * 0.08}>
-                <motion.div whileHover={{ y: -6, scale: 1.03 }}
-                  className={`p-5 rounded-2xl bg-gradient-to-br ${c.bg} flex flex-col items-center text-center`}
-                  style={{ border: `1px solid ${c.color}20` }}>
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3"
-                    style={{ background: `${c.color}15`, border: `1px solid ${c.color}25` }}>
-                    <c.icon className="w-6 h-6" style={{ color: c.color }} />
-                  </div>
-                  <div className="font-black text-white text-sm mb-1">{c.platform}</div>
-                  <div className="text-xs font-bold mb-1" style={{ color: c.color }}>{c.example}</div>
-                  <div className="text-[10px] mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>{c.size}</div>
-                </motion.div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══ PORTFOLIO ══ */}
+      {/* ══ COMMENT ÇA MARCHE ═════════════════════════════════════════════ */}
       <section className="py-24 px-5 relative">
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 50%, rgba(139,92,246,0.05) 0%, transparent 60%)' }} />
         <div className="max-w-5xl mx-auto">
           <Reveal>
-            <div className="text-center mb-10">
+            <div className="text-center mb-14">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-bold tracking-widest uppercase"
-                style={{ background: `${PURPLE}12`, border: `1px solid ${PURPLE}25`, color: PURPLE }}>
-                <Palette className="w-3 h-3" /> Portfolio
+                style={{ background: 'rgba(6,182,212,0.08)', border: `1px solid rgba(6,182,212,0.2)`, color: CYAN }}>
+                Comment ça marche
               </div>
-              <h2 className="text-3xl md:text-4xl font-black text-white mb-3">Nos dernières réalisations</h2>
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-3">Simple, rapide, efficace</h2>
+              <p className="text-base max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.4)' }}>5 étapes pour passer de zéro à une présence digitale complète.</p>
             </div>
           </Reveal>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {[
-              { title: 'Branding Nova Café', cat: 'Logo & Charte', color: GOLD, bg: 'from-yellow-900/20 to-yellow-900/5' },
-              { title: 'Site TechPro Mons', cat: 'Site vitrine', color: CYAN, bg: 'from-cyan-900/20 to-cyan-900/5' },
-              { title: 'Affiche Festival Dour', cat: 'Design print', color: PINK, bg: 'from-pink-900/20 to-pink-900/5' },
-              { title: 'Auto. Boutique Mode', cat: 'Workflow', color: PURPLE, bg: 'from-purple-900/20 to-purple-900/5' },
-              { title: 'Carte LUXE Resto', cat: 'Carte de visite', color: GOLD, bg: 'from-yellow-900/15 to-yellow-900/5' },
-              { title: 'Réseaux BodyFit', cat: 'Contenus sociaux', color: GREEN, bg: 'from-green-900/20 to-green-900/5' },
-            ].map((p, i) => (
-              <Reveal key={p.title} delay={i * 0.06}>
-                <motion.div whileHover={{ scale: 1.04, y: -4 }}
-                  className={`aspect-square rounded-2xl bg-gradient-to-br ${p.bg} flex flex-col items-center justify-center relative overflow-hidden`}
-                  style={{ border: `1px solid ${p.color}18` }}>
-                  <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${p.color}50, transparent)` }} />
-                  <Palette className="w-10 h-10 mb-3 opacity-50" style={{ color: p.color }} />
-                  <div className="font-black text-white text-sm text-center px-3">{p.title}</div>
-                  <div className="text-xs mt-1 px-3 py-1 rounded-full" style={{ background: `${p.color}15`, color: p.color }}>{p.cat}</div>
-                </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            {steps.map((s, i) => (
+              <Reveal key={s.n} delay={i * 0.09}>
+                <div className="relative text-center">
+                  {i < steps.length - 1 && (
+                    <div className="hidden md:block absolute top-8 left-full w-full h-px z-0" style={{ background: `linear-gradient(90deg, ${s.color}40, transparent)` }} />
+                  )}
+                  <div className="relative z-10 p-5 rounded-2xl h-full" style={{ background: 'rgba(10,8,22,0.7)', border: `1px solid ${s.color}15` }}>
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3"
+                      style={{ background: `${s.color}12`, border: `1px solid ${s.color}28` }}>
+                      <span className="text-base font-black" style={{ color: s.color }}>{s.n}</span>
+                    </div>
+                    <h3 className="font-black text-white text-xs mb-1.5">{s.title}</h3>
+                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.38)' }}>{s.desc}</p>
+                  </div>
+                </div>
               </Reveal>
             ))}
           </div>
-          <Reveal delay={0.3}>
-            <div className="text-center mt-8">
-              <Link to="/saas">
-                <button className="px-6 py-3 rounded-2xl text-sm font-bold border transition-all"
-                  style={{ borderColor: 'rgba(212,175,55,0.25)', color: GOLD, background: 'rgba(212,175,55,0.05)' }}>
-                  Voir tout le portfolio →
-                </button>
-              </Link>
+        </div>
+      </section>
+
+      {/* ══ FORMULAIRE INTELLIGENT ════════════════════════════════════════ */}
+      <section id="formulaire" className="py-24 px-5">
+        <div className="max-w-2xl mx-auto">
+          <Reveal>
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-bold tracking-widest uppercase"
+                style={{ background: `rgba(212,175,55,0.08)`, border: `1px solid rgba(212,175,55,0.25)`, color: GOLD }}>
+                <Sparkles className="w-3 h-3" /> Créer mon projet
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-3">Décrivez votre projet</h2>
+              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                3 minutes · Offre personnalisée générée · Email de confirmation immédiat
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="p-8 rounded-3xl relative overflow-hidden"
+              style={{ background: 'rgba(10,8,22,0.9)', border: `1px solid rgba(212,175,55,0.22)`, boxShadow: '0 0 60px rgba(212,175,55,0.06)' }}>
+              <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
+              <AnimatePresence mode="wait">
+                {formSuccess ? (
+                  <motion.div key="success" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+                    className="text-center py-8">
+                    <div className="w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center text-2xl"
+                      style={{ background: `${GREEN}15`, border: `1px solid ${GREEN}30` }}>✅</div>
+                    <h3 className="text-xl font-black text-white mb-2">Projet créé avec succès !</h3>
+                    <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                      Un email de confirmation vous a été envoyé. Julien vous contacte sous 24h avec votre offre personnalisée.
+                    </p>
+                    {formSuccess.offer && (
+                      <div className="p-4 rounded-2xl text-left mb-5" style={{ background: 'rgba(212,175,55,0.06)', border: `1px solid rgba(212,175,55,0.2)` }}>
+                        <p className="text-xs font-bold mb-2" style={{ color: GOLD }}>Votre offre générée :</p>
+                        <p className="text-xs leading-relaxed whitespace-pre-wrap" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                          {typeof formSuccess.offer === 'string' ? formSuccess.offer : JSON.stringify(formSuccess.offer)}
+                        </p>
+                      </div>
+                    )}
+                    <a href={WA} target="_blank" rel="noopener noreferrer">
+                      <button className="px-6 py-3 rounded-2xl font-black text-black text-sm"
+                        style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>
+                        Contacter Julien sur WhatsApp →
+                      </button>
+                    </a>
+                  </motion.div>
+                ) : (
+                  <ProjectForm onSuccess={setFormSuccess} />
+                )}
+              </AnimatePresence>
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* ══ PRICING ══ */}
+      {/* ══ CONTENU AUTOMATISÉ ════════════════════════════════════════════ */}
       <section className="py-24 px-5 relative">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.05) 0%, transparent 60%)' }} />
-        <div className="max-w-5xl mx-auto">
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.04) 0%, transparent 60%)' }} />
+        <div className="max-w-6xl mx-auto">
           <Reveal>
-            <div className="text-center mb-14">
+            <div className="text-center mb-12">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-bold tracking-widest uppercase"
-                style={{ background: 'rgba(212,175,55,0.08)', border: `1px solid rgba(212,175,55,0.2)`, color: GOLD }}>
-                <TrendingUp className="w-3 h-3" /> Tarifs
+                style={{ background: 'rgba(139,92,246,0.08)', border: `1px solid rgba(139,92,246,0.2)`, color: PURPLE }}>
+                Contenus automatisés
               </div>
-              <h2 className="text-3xl md:text-4xl font-black text-white mb-3">Offres claires, sans surprise</h2>
-              <p className="text-base max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.4)' }}>Démarrez au bon niveau. Évoluez à votre rythme.</p>
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-3">Vos contenus, partout, en continu</h2>
+              <p className="text-base max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                Posts, vidéos, stories — créés et planifiés automatiquement selon votre identité.
+              </p>
             </div>
           </Reveal>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {contentExamples.map((c, i) => (
+              <Reveal key={c.platform} delay={i * 0.08}>
+                <motion.div whileHover={{ y: -6 }} className="p-5 rounded-2xl text-center"
+                  style={{ background: 'rgba(10,8,22,0.85)', border: `1px solid ${c.color}18` }}>
+                  <div className="text-3xl mb-3">{c.icon}</div>
+                  <div className="font-black text-white text-sm mb-1">{c.platform}</div>
+                  <div className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.38)' }}>{c.example}</div>
+                  <div className="mt-3 w-2 h-2 rounded-full mx-auto animate-pulse" style={{ background: GREEN }} />
+                </motion.div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          {/* One-time */}
-          <div className="grid md:grid-cols-3 gap-5 mb-10">
-            {pricing.map((p, i) => (
-              <Reveal key={p.name} delay={i * 0.1}>
-                <motion.div whileHover={{ y: -8 }}
-                  className="relative p-7 rounded-3xl flex flex-col h-full overflow-hidden"
-                  style={{
-                    background: p.popular ? 'rgba(212,175,55,0.06)' : 'rgba(10,8,22,0.85)',
-                    border: p.popular ? `1px solid rgba(212,175,55,0.35)` : `1px solid ${p.color}20`,
-                    boxShadow: p.popular ? `0 0 50px rgba(212,175,55,0.08)` : 'none'
-                  }}>
-                  <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${p.color}70, transparent)` }} />
-                  {p.popular && (
-                    <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-black text-black"
-                      style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>⭐ Populaire</div>
-                  )}
-                  <div className="mb-5">
-                    <h3 className="text-xl font-black text-white mb-1">{p.name}</h3>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-3xl font-black" style={{ color: p.color }}>{p.price}</span>
-                      <span className="text-sm" style={{ color: 'rgba(255,255,255,0.35)' }}>{p.period}</span>
+      {/* ══ EVENTS ════════════════════════════════════════════════════════ */}
+      <section className="py-24 px-5">
+        <div className="max-w-5xl mx-auto">
+          <Reveal>
+            <div className="relative p-10 md:p-14 rounded-3xl overflow-hidden"
+              style={{ background: 'rgba(10,8,22,0.95)', border: `1px solid rgba(245,158,11,0.25)` }}>
+              <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, #F59E0B, transparent)` }} />
+              <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full blur-3xl" style={{ background: 'rgba(245,158,11,0.08)' }} />
+              <div className="grid lg:grid-cols-2 gap-10 items-center relative z-10">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-5 text-xs font-bold tracking-widest uppercase"
+                    style={{ background: 'rgba(245,158,11,0.1)', border: `1px solid rgba(245,158,11,0.25)`, color: '#F59E0B' }}>
+                    <Ticket className="w-3 h-3" /> Module Événements
+                  </div>
+                  <h2 className="text-3xl font-black text-white mb-4">
+                    Créez et gérez vos événements <span style={{ color: '#F59E0B' }}>facilement</span>
+                  </h2>
+                  <p className="text-base leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.48)' }}>
+                    Vente de tickets en ligne, génération de QR codes uniques, scan à l'entrée et gestion des participants en temps réel.
+                  </p>
+                  {[
+                    { icon: Ticket, text: 'Vente de tickets en ligne (Stripe)' },
+                    { icon: QrCode, text: 'QR code unique par participant' },
+                    { icon: Users, text: 'Gestion & scan des entrées' },
+                    { icon: BarChart3, text: 'Tableau de bord participants' },
+                  ].map(f => (
+                    <div key={f.text} className="flex items-center gap-3 mb-3">
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center"
+                        style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)' }}>
+                        <f.icon className="w-4 h-4" style={{ color: '#F59E0B' }} />
+                      </div>
+                      <span className="text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>{f.text}</span>
+                    </div>
+                  ))}
+                  <Link to="/saas-events">
+                    <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+                      className="mt-4 flex items-center gap-2 px-7 py-3.5 rounded-2xl font-black text-black text-sm"
+                      style={{ background: 'linear-gradient(135deg, #F59E0B, #FCD34D)' }}>
+                      <Ticket className="w-4 h-4" /> Créer mon événement
+                    </motion.button>
+                  </Link>
+                </div>
+                <div className="space-y-3">
+                  <div className="p-4 rounded-2xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(245,158,11,0.1)' }}>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-sm font-black text-white">Soirée Networking Pro</span>
+                      <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e' }}>En ligne</span>
+                    </div>
+                    <div className="flex items-center gap-4 text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                      <span>📅 15 juin 2026</span>
+                      <span>🎟 42 / 80 tickets</span>
+                    </div>
+                    <div className="mt-3 h-2 rounded-full bg-gray-800 overflow-hidden">
+                      <div className="h-full rounded-full" style={{ width: '52%', background: '#F59E0B' }} />
                     </div>
                   </div>
-                  <div className="space-y-2 flex-1 mb-6">
-                    {p.features.map(f => (
-                      <div key={f} className="flex items-center gap-2">
-                        <Check className="w-3.5 h-3.5 flex-shrink-0" style={{ color: p.color }} />
-                        <span className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{f}</span>
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { label: 'Tickets vendus', val: '42', color: '#F59E0B' },
+                      { label: 'Revenus', val: '2 100€', color: GREEN },
+                      { label: 'Scannés', val: '0', color: CYAN },
+                      { label: 'Restants', val: '38', color: PURPLE },
+                    ].map(s => (
+                      <div key={s.label} className="p-3 rounded-xl text-center"
+                        style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${s.color}18` }}>
+                        <div className="text-lg font-black" style={{ color: s.color }}>{s.val}</div>
+                        <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>{s.label}</div>
                       </div>
                     ))}
                   </div>
-                  <Link to="/saas-projet">
-                    <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
-                      className="w-full py-3 rounded-2xl font-black text-sm"
-                      style={p.popular
-                        ? { background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, color: '#000' }
-                        : { background: `${p.color}15`, color: p.color, border: `1px solid ${p.color}28` }}>
-                      {p.cta} →
-                    </motion.button>
-                  </Link>
-                </motion.div>
-              </Reveal>
-            ))}
-          </div>
-
-          {/* Subscriptions */}
-          <Reveal delay={0.3}>
-            <div className="p-6 rounded-2xl" style={{ background: 'rgba(10,8,22,0.8)', border: '1px solid rgba(255,255,255,0.07)' }}>
-              <div className="text-center mb-5">
-                <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>Ou abonnez-vous</span>
-              </div>
-              <div className="grid md:grid-cols-3 gap-4">
-                {subscriptions.map((s, i) => (
-                  <div key={s.name} className="p-4 rounded-2xl text-center" style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${s.color}18` }}>
-                    <div className="font-black text-white mb-1">{s.name}</div>
-                    <div className="text-2xl font-black mb-1" style={{ color: s.color }}>{s.price}<span className="text-xs font-normal text-gray-500">/mois</span></div>
-                    <div className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{s.desc}</div>
-                  </div>
-                ))}
+                </div>
               </div>
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* ══ CTA FINAL ══ */}
+      {/* ══ PRICING ═══════════════════════════════════════════════════════ */}
+      <section className="py-24 px-5 relative">
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.06) 0%, transparent 60%)' }} />
+        <div className="max-w-5xl mx-auto">
+          <Reveal>
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-bold tracking-widest uppercase"
+                style={{ background: 'rgba(212,175,55,0.08)', border: `1px solid rgba(212,175,55,0.2)`, color: GOLD }}>
+                Tarifs clairs
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-3">Prix transparents, résultats garantis</h2>
+              <p className="text-base max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.4)' }}>Pas de surprise. Pas de frais cachés.</p>
+            </div>
+          </Reveal>
+          <div className="grid md:grid-cols-3 gap-5 mb-10">
+            {pricingPlans.map((p, i) => (
+              <Reveal key={p.name} delay={i * 0.1}>
+                <motion.div whileHover={{ y: -8, scale: 1.02 }} className="relative p-7 rounded-3xl flex flex-col h-full"
+                  style={{
+                    background: p.badge ? `rgba(212,175,55,0.06)` : 'rgba(10,8,22,0.85)',
+                    border: p.badge ? `1px solid rgba(212,175,55,0.3)` : `1px solid ${p.color}20`,
+                    boxShadow: p.badge ? `0 0 50px rgba(212,175,55,0.08)` : 'none',
+                  }}>
+                  <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${p.color}60, transparent)` }} />
+                  {p.badge && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-black text-black"
+                      style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>{p.badge}</div>
+                  )}
+                  <div className="mb-5">
+                    <div className="text-3xl font-black" style={{ color: p.color }}>{p.price}</div>
+                    <div className="font-black text-white text-lg mt-1">{p.name}</div>
+                    <div className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.4)' }}>{p.desc}</div>
+                  </div>
+                  <div className="space-y-2 flex-1 mb-6">
+                    {p.features.map(f => (
+                      <div key={f} className="flex items-start gap-2">
+                        <Check className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: p.color }} />
+                        <span className="text-xs" style={{ color: 'rgba(255,255,255,0.58)' }}>{f}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <a href="#formulaire">
+                    <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                      className="w-full py-3 rounded-2xl font-black text-sm transition-all"
+                      style={p.badge
+                        ? { background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, color: '#000' }
+                        : { background: `${p.color}15`, color: p.color, border: `1px solid ${p.color}28` }}>
+                      Choisir ce pack →
+                    </motion.button>
+                  </a>
+                </motion.div>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Subscription */}
+          <Reveal delay={0.3}>
+            <div className="p-7 rounded-2xl text-center" style={{ background: 'rgba(10,8,22,0.8)', border: `1px solid rgba(6,182,212,0.2)` }}>
+              <div className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: CYAN }}>Abonnements mensuels</div>
+              <div className="flex flex-wrap justify-center gap-5 mb-4">
+                {[
+                  { label: 'Maintenance', price: '29€/mois', desc: 'Mises à jour + support' },
+                  { label: 'Contenus', price: '59€/mois', desc: '8 posts réseaux / mois' },
+                  { label: 'Full service', price: '99€/mois', desc: 'Contenus + maintenance + rapport' },
+                ].map(s => (
+                  <div key={s.label} className="text-center">
+                    <div className="text-xl font-black" style={{ color: CYAN }}>{s.price}</div>
+                    <div className="text-sm font-bold text-white">{s.label}</div>
+                    <div className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>{s.desc}</div>
+                  </div>
+                ))}
+              </div>
+              <a href="#formulaire">
+                <button className="px-6 py-2.5 rounded-xl text-xs font-black text-black"
+                  style={{ background: `linear-gradient(135deg, ${CYAN}, #22D3EE)` }}>
+                  Démarrer un abonnement →
+                </button>
+              </a>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ══ CTA FINAL ════════════════════════════════════════════════════ */}
       <section className="py-24 px-5">
         <div className="max-w-3xl mx-auto">
           <Reveal>
-            <div className="relative p-12 md:p-16 rounded-3xl text-center overflow-hidden"
+            <div className="relative p-14 md:p-20 rounded-3xl text-center overflow-hidden"
               style={{ background: 'rgba(10,8,22,0.98)', border: `1px solid rgba(212,175,55,0.25)`, boxShadow: '0 0 80px rgba(212,175,55,0.07)' }}>
               <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${GOLD}, ${PURPLE}, transparent)` }} />
-              <div className="absolute top-0 left-0 w-32 h-32" style={{ background: `radial-gradient(circle, ${GOLD}15, transparent 70%)` }} />
-              <div className="absolute bottom-0 right-0 w-32 h-32" style={{ background: `radial-gradient(circle, ${PURPLE}15, transparent 70%)` }} />
+              <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${CYAN}, ${GOLD}, transparent)` }} />
               <div className="relative z-10">
-                <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                  className="w-16 h-16 rounded-full border mx-auto mb-6 flex items-center justify-center"
-                  style={{ borderColor: `${GOLD}40`, borderTopColor: GOLD }}>
-                </motion.div>
-                <h2 className="text-3xl md:text-4xl font-black text-white mb-4">Lancez votre projet maintenant</h2>
-                <p className="text-base mb-8" style={{ color: 'rgba(255,255,255,0.45)' }}>
-                  Décrivez votre projet en 3 minutes. Recevez une offre personnalisée avec visuels.
+                <div className="text-4xl mb-5">🚀</div>
+                <h2 className="text-3xl md:text-5xl font-black text-white mb-4 leading-tight">
+                  Lancez votre projet<br />
+                  <span style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L}, ${PURPLE})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                    maintenant
+                  </span>
+                </h2>
+                <p className="text-lg mb-10" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                  Décrivez votre projet en 3 minutes. Recevez votre offre. Démarrez dès aujourd'hui.
                 </p>
-                <div className="flex flex-wrap justify-center gap-3">
-                  <Link to="/saas-projet">
-                    <motion.button whileHover={{ scale: 1.06, boxShadow: '0 0 60px rgba(212,175,55,0.5)' }} whileTap={{ scale: 0.97 }}
-                      className="flex items-center gap-2 px-8 py-4 rounded-2xl font-black text-black text-sm"
-                      style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, boxShadow: `0 0 30px rgba(212,175,55,0.35)` }}>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <a href="#formulaire">
+                    <motion.button whileHover={{ scale: 1.06, boxShadow: '0 0 70px rgba(212,175,55,0.55)' }} whileTap={{ scale: 0.97 }}
+                      className="flex items-center gap-2 px-10 py-5 rounded-2xl font-black text-black text-base"
+                      style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, boxShadow: `0 0 35px rgba(212,175,55,0.35)` }}>
                       <Sparkles className="w-5 h-5" /> Créer mon projet
                     </motion.button>
-                  </Link>
-                  <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
+                  </a>
+                  <a href={WA} target="_blank" rel="noopener noreferrer">
                     <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
-                      className="flex items-center gap-2 px-8 py-4 rounded-2xl font-semibold border text-sm"
+                      className="flex items-center gap-2 px-10 py-5 rounded-2xl font-semibold border text-base"
                       style={{ borderColor: 'rgba(37,211,102,0.35)', color: '#25D366', background: 'rgba(37,211,102,0.06)' }}>
-                      <MessageCircle className="w-4 h-4" /> WhatsApp
+                      <MessageCircle className="w-5 h-5" /> WhatsApp direct
                     </motion.button>
                   </a>
                 </div>
-                <div className="flex flex-wrap justify-center gap-6 mt-8 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                  {['Acompte sécurisé Stripe', 'Offre personnalisée', 'Livraison 48h', 'Satisfaction garantie'].map(t => (
+                <div className="flex flex-wrap justify-center gap-5 mt-8 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                  {['Sans engagement', 'Réponse sous 24h', 'Paiement sécurisé Stripe', 'RGPD conforme'].map(t => (
                     <div key={t} className="flex items-center gap-1.5">
-                      <Check className="w-3 h-3" style={{ color: `${GOLD}70` }} /> {t}
+                      <CheckCircle className="w-3.5 h-3.5" style={{ color: 'rgba(212,175,55,0.5)' }} /> {t}
                     </div>
                   ))}
                 </div>
