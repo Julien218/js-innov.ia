@@ -331,8 +331,65 @@ function ProjectForm({ onSuccess }) {
 }
 
 // ── Main Page ────────────────────────────────────────────────────────────────
+// ── Exit-Intent Popup ────────────────────────────────────────────────────────
+function ExitIntentPopup({ onClose }) {
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center px-4"
+      style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}
+      onClick={onClose}>
+      <motion.div initial={{ scale: 0.85, y: 30 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.85, y: 30 }}
+        onClick={e => e.stopPropagation()}
+        className="relative w-full max-w-md rounded-3xl p-8 text-center overflow-hidden"
+        style={{ background: 'rgba(10,8,22,0.98)', border: `1px solid rgba(212,175,55,0.3)`, boxShadow: '0 0 80px rgba(212,175,55,0.12)' }}>
+        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${GOLD}, ${PURPLE}, transparent)` }} />
+        <button onClick={onClose} className="absolute top-4 right-4 text-white/30 hover:text-white/70 text-xl leading-none">✕</button>
+
+        <div className="text-4xl mb-4">⚡</div>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-4 text-xs font-bold tracking-widest uppercase"
+          style={{ background: 'rgba(212,175,55,0.1)', border: `1px solid rgba(212,175,55,0.3)`, color: GOLD }}>
+          Offre spéciale · 10% de réduction
+        </div>
+        <h3 className="text-2xl font-black text-white mb-2 leading-tight">
+          Attendez ! Votre projet mérite mieux.
+        </h3>
+        <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
+          Configurez votre pack en 2 minutes et obtenez <span style={{ color: GOLD }}>-10% sur votre premier projet</span> si vous commandez aujourd'hui.
+        </p>
+        <div className="flex flex-col gap-3">
+          <Link to="/saas-contact" onClick={onClose}>
+            <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+              className="w-full py-4 rounded-2xl font-black text-black text-sm flex items-center justify-center gap-2"
+              style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, boxShadow: `0 0 30px rgba(212,175,55,0.35)` }}>
+              <Sparkles className="w-4 h-4" /> Configurer mon pack maintenant
+            </motion.button>
+          </Link>
+          <button onClick={onClose} className="text-xs py-2 transition-colors" style={{ color: 'rgba(255,255,255,0.28)' }}
+            onMouseEnter={e => e.target.style.color = 'rgba(255,255,255,0.55)'}
+            onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.28)'}>
+            Non merci, je reviendrai plus tard
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function SaasLanding() {
   const [formSuccess, setFormSuccess] = useState(null);
+  const [showExitPopup, setShowExitPopup] = useState(false);
+  const exitIntentFired = useRef(false);
+
+  useEffect(() => {
+    const handleMouseLeave = (e) => {
+      if (e.clientY <= 10 && !exitIntentFired.current) {
+        exitIntentFired.current = true;
+        setShowExitPopup(true);
+      }
+    };
+    document.addEventListener('mouseleave', handleMouseLeave);
+    return () => document.removeEventListener('mouseleave', handleMouseLeave);
+  }, []);
 
   const services = [
     { icon: Palette, color: GOLD, title: 'Branding & Design', desc: 'Logo, charte graphique, identité visuelle complète livrée en 48h.' },
@@ -377,6 +434,9 @@ export default function SaasLanding() {
 
   return (
     <div className="min-h-screen overflow-x-hidden" style={{ color: 'white' }}>
+      <AnimatePresence>
+        {showExitPopup && <ExitIntentPopup onClose={() => setShowExitPopup(false)} />}
+      </AnimatePresence>
 
       {/* ══ HERO ══════════════════════════════════════════════════════════ */}
       <section className="relative min-h-screen flex items-center overflow-hidden px-5 pt-20 pb-16">
@@ -732,7 +792,7 @@ export default function SaasLanding() {
                       </div>
                     ))}
                   </div>
-                  <a href="#formulaire">
+                  <Link to={`/saas-contact?pack=${encodeURIComponent(p.name)}`}>
                     <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
                       className="w-full py-3 rounded-2xl font-black text-sm transition-all"
                       style={p.badge
@@ -740,7 +800,7 @@ export default function SaasLanding() {
                         : { background: `${p.color}15`, color: p.color, border: `1px solid ${p.color}28` }}>
                       Choisir ce pack →
                     </motion.button>
-                  </a>
+                  </Link>
                 </motion.div>
               </Reveal>
             ))}
