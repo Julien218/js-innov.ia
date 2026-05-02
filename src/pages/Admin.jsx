@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Plus, Edit, Trash2, Music } from 'lucide-react';
+import { Shield, Plus, Edit, Trash2, Music, BarChart2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import SectionHeader from '../components/shared/SectionHeader';
 import MusicProductForm from '../components/admin/MusicProductForm';
+import SocialAnalytics from '../components/admin/SocialAnalytics';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 
@@ -15,6 +16,7 @@ export default function Admin() {
   const [user, setUser] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [activeSection, setActiveSection] = useState('analytics');
 
   // Check admin access
   useEffect(() => {
@@ -102,8 +104,36 @@ export default function Admin() {
         <SectionHeader
           icon={Shield}
           title="Administration"
-          subtitle="Gestion des produits musicaux"
+          subtitle="Gestion des produits musicaux & analytics"
         />
+
+        {/* Section tabs */}
+        <div className="flex gap-3 mb-8">
+          {[
+            { id: 'analytics', icon: BarChart2, label: 'Analytics Social' },
+            { id: 'music', icon: Music, label: 'Produits musicaux' },
+          ].map(s => (
+            <button key={s.id} onClick={() => setActiveSection(s.id)}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all"
+              style={{
+                background: activeSection === s.id ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
+                border: `1px solid ${activeSection === s.id ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.08)'}`,
+                color: activeSection === s.id ? '#D4AF37' : 'rgba(255,255,255,0.45)',
+              }}>
+              <s.icon className="w-4 h-4" />{s.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Analytics section */}
+        {activeSection === 'analytics' && (
+          <div className="mb-10 p-6 rounded-3xl" style={{ background: 'rgba(10,8,22,0.85)', border: '1px solid rgba(212,175,55,0.15)' }}>
+            <SocialAnalytics />
+          </div>
+        )}
+
+        {/* Music section */}
+        {activeSection === 'music' && (<>
 
         {/* Add Button */}
         {!showForm && (
@@ -233,6 +263,7 @@ export default function Admin() {
             )}
           </div>
         )}
+        </>)}
       </div>
     </div>
   );
