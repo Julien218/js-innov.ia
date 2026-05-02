@@ -24,6 +24,7 @@ import SaasAnalyse from './pages/saas/SaasAnalyse';
 import SaasAdmin from './pages/saas/SaasAdmin';
 import SaasAgents from './pages/saas/SaasAgents';
 import SaasContact from './pages/saas/SaasContact';
+import SaasDevis from './pages/saas/SaasDevis';
 import SaasLegal from './pages/saas/SaasLegal';
 import SaasChatbot from './pages/saas/SaasChatbot';
 import __Layout from './Layout.jsx';
@@ -105,6 +106,7 @@ const AuthenticatedApp = () => {
       <Route path="/saas-mentions" element={<SaasLayout><SaasLegal type="mentions" /></SaasLayout>} />
       <Route path="/saas-confidentialite" element={<SaasLayout><SaasLegal type="confidentialite" /></SaasLayout>} />
       <Route path="/saas-cgv" element={<SaasLayout><SaasLegal type="cgv" /></SaasLayout>} />
+      <Route path="/saas-devis" element={<SaasLayout><SaasDevis /></SaasLayout>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
