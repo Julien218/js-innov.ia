@@ -134,11 +134,11 @@ export default function SaasHome() {
 
           <motion.h1 initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.9 }}
             className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-[1.08]">
-            <span className="block text-white">Votre problème devient</span>
-            <span className="block" style={{ background: `linear-gradient(135deg, ${GOLD} 0%, ${GOLD_L} 30%, ${PURPLE} 65%, ${CYAN} 100%)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            <span className="block text-white font-inter">Votre problème devient</span>
+            <span className="block font-cinzel text-gold-shimmer">
               notre point de départ.
             </span>
-            <span className="block text-white mt-1 text-3xl md:text-4xl font-light">Votre solution devient notre création.</span>
+            <span className="block text-white mt-1 text-3xl md:text-4xl font-light font-inter" style={{ color: 'rgba(255,255,255,0.7)' }}>Votre solution devient notre création.</span>
           </motion.h1>
 
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}

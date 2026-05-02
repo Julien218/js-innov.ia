@@ -88,7 +88,7 @@ function LayoutContent({ children, currentPageName }) {
   const submenuStyle = { background: 'rgba(6,6,18,0.98)', border: `1px solid rgba(212,175,55,0.2)`, boxShadow: '0 20px 60px rgba(0,0,0,0.9), 0 0 40px rgba(212,175,55,0.06)' };
 
   return (
-    <div className="min-h-screen text-white" style={{ background: 'linear-gradient(135deg, #080808 0%, #0d0a1a 50%, #080808 100%)' }}>
+    <div className="min-h-screen text-white bg-brand" style={{ background: 'linear-gradient(135deg, #10101a 0%, #14102a 40%, #10101a 100%)' }}>
       <SEOMetaTags pageName={currentPageName} />
       <style>{`
         :root { --gold: #D4AF37; --gold-light: #F5CF41; --purple: #8B5CF6; --cyan: #06B6D4; }
@@ -115,15 +115,15 @@ function LayoutContent({ children, currentPageName }) {
 
             {/* Logo */}
             <Link to={createPageUrl('Home')} className="group flex-shrink-0">
-              <motion.div className="relative w-24 h-24 mt-20"
+              <motion.div className="relative w-24 h-24 mt-20 phoenix-glow"
                 animate={{ y: [0, -8, 0] }} transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}>
                 <img
                   src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png"
                   alt="JS-INNOV.IA"
                   className="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform"
                 />
-                <div className="absolute inset-0 rounded-full blur-xl opacity-25 group-hover:opacity-45 transition-opacity -z-10"
-                  style={{ background: `radial-gradient(circle, ${GOLD}, ${PURPLE})` }} />
+                <div className="absolute inset-0 rounded-full blur-2xl opacity-30 group-hover:opacity-55 transition-opacity -z-10"
+                  style={{ background: `radial-gradient(circle, ${GOLD}, ${PURPLE}, ${CYAN})` }} />
               </motion.div>
             </Link>
 

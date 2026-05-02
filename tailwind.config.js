@@ -73,6 +73,11 @@ module.exports = {
   				ring: 'hsl(var(--sidebar-ring))'
   			}
   		},
+  		fontFamily: {
+  			cinzel: ['Cinzel', 'serif'],
+  			playfair: ['Playfair Display', 'serif'],
+  			inter: ['Inter', 'sans-serif'],
+  		},
   		keyframes: {
   			'accordion-down': {
   				from: { height: '0' },

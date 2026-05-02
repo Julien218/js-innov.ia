@@ -69,7 +69,7 @@ export default function WebOSLayout({ children }) {
   const path = location.pathname;
 
   return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(160deg, #0a0a14 0%, #0d0a1a 40%, #080810 100%)', color: 'white' }}>
+    <div className="min-h-screen" style={{ background: 'linear-gradient(160deg, #0e0e1c 0%, #131325 40%, #0e0e1c 100%)', color: 'white' }}>
 
       {/* Ambient background particles */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>

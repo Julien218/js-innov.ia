@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
 
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -76,73 +79,89 @@ button:focus-visible {
 
 @layer base {
   :root {
-    --background: 0 0% 5%;
-    --foreground: 45 60% 85%;
-    --card: 0 0% 8%;
-    --card-foreground: 45 60% 85%;
-    --popover: 0 0% 8%;
-    --popover-foreground: 45 60% 85%;
-    --primary: 45 80% 55%;
-    --primary-foreground: 0 0% 5%;
-    --secondary: 270 60% 40%;
-    --secondary-foreground: 45 60% 85%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 55%;
-    --accent: 195 100% 50%;
-    --accent-foreground: 0 0% 5%;
-    --destructive: 0 84.2% 60.2%;
+    /* ── Palette carte de visite Js-Innov.IA ── */
+    /* Fond : anthracite profond #1a1a24 ≈ hsl(240 17% 12%) */
+    --background: 240 17% 8%;
+    --foreground: 45 55% 88%;
+    /* Card : légèrement plus clair */
+    --card: 240 15% 11%;
+    --card-foreground: 45 55% 88%;
+    --popover: 240 15% 11%;
+    --popover-foreground: 45 55% 88%;
+    /* Primary : or métallique #D4AF37 ≈ hsl(45 67% 52%) */
+    --primary: 45 67% 52%;
+    --primary-foreground: 240 17% 8%;
+    /* Secondary : violet profond #7B3FC4 ≈ hsl(270 53% 50%) */
+    --secondary: 270 53% 50%;
+    --secondary-foreground: 45 55% 88%;
+    --muted: 240 12% 15%;
+    --muted-foreground: 240 10% 55%;
+    /* Accent : cyan électrique #06B6D4 ≈ hsl(191 90% 43%) */
+    --accent: 191 90% 43%;
+    --accent-foreground: 240 17% 8%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 45 30% 20%;
-    --input: 0 0% 15%;
-    --ring: 45 80% 55%;
-    --chart-1: 45 80% 55%;
-    --chart-2: 270 60% 55%;
-    --chart-3: 195 100% 50%;
-    --chart-4: 45 60% 70%;
-    --chart-5: 270 40% 65%;
+    /* Border : fil or discret */
+    --border: 45 40% 22%;
+    --input: 240 15% 14%;
+    --ring: 45 67% 52%;
+    --chart-1: 45 67% 52%;
+    --chart-2: 270 53% 55%;
+    --chart-3: 191 90% 43%;
+    --chart-4: 45 50% 70%;
+    --chart-5: 270 40% 68%;
     --radius: 0.75rem;
-    --sidebar-background: 0 0% 7%;
-    --sidebar-foreground: 45 60% 85%;
-    --sidebar-primary: 45 80% 55%;
-    --sidebar-primary-foreground: 0 0% 5%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 45 60% 85%;
-    --sidebar-border: 45 30% 15%;
-    --sidebar-ring: 45 80% 55%;
+    --sidebar-background: 240 17% 7%;
+    --sidebar-foreground: 45 55% 88%;
+    --sidebar-primary: 45 67% 52%;
+    --sidebar-primary-foreground: 240 17% 8%;
+    --sidebar-accent: 240 15% 14%;
+    --sidebar-accent-foreground: 45 55% 88%;
+    --sidebar-border: 45 30% 18%;
+    --sidebar-ring: 45 67% 52%;
+    /* ── Custom brand tokens ── */
+    --font-cinzel: 'Cinzel', serif;
+    --font-inter: 'Inter', sans-serif;
+    --gold: #D4AF37;
+    --gold-light: #F5CF41;
+    --purple: #8B5CF6;
+    --cyan: #06B6D4;
+    --bg-main: #10101a;
+    --bg-card: #16162a;
   }
   .dark {
-    --background: 0 0% 5%;
-    --foreground: 45 60% 85%;
-    --card: 0 0% 8%;
-    --card-foreground: 45 60% 85%;
-    --popover: 0 0% 8%;
-    --popover-foreground: 45 60% 85%;
-    --primary: 45 80% 55%;
-    --primary-foreground: 0 0% 5%;
-    --secondary: 270 60% 40%;
-    --secondary-foreground: 45 60% 85%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 55%;
-    --accent: 195 100% 50%;
-    --accent-foreground: 0 0% 5%;
+    --background: 240 17% 8%;
+    --foreground: 45 55% 88%;
+    --card: 240 15% 11%;
+    --card-foreground: 45 55% 88%;
+    --popover: 240 15% 11%;
+    --popover-foreground: 45 55% 88%;
+    --primary: 45 67% 52%;
+    --primary-foreground: 240 17% 8%;
+    --secondary: 270 53% 50%;
+    --secondary-foreground: 45 55% 88%;
+    --muted: 240 12% 15%;
+    --muted-foreground: 240 10% 55%;
+    --accent: 191 90% 43%;
+    --accent-foreground: 240 17% 8%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 45 30% 20%;
-    --input: 0 0% 15%;
-    --ring: 45 80% 55%;
-    --chart-1: 45 80% 55%;
-    --chart-2: 270 60% 55%;
-    --chart-3: 195 100% 50%;
-    --chart-4: 45 60% 70%;
-    --chart-5: 270 40% 65%;
-    --sidebar-background: 0 0% 7%;
-    --sidebar-foreground: 45 60% 85%;
-    --sidebar-primary: 45 80% 55%;
-    --sidebar-primary-foreground: 0 0% 5%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 45 60% 85%;
-    --sidebar-border: 45 30% 15%;
-    --sidebar-ring: 45 80% 55%;
+    --border: 45 40% 22%;
+    --input: 240 15% 14%;
+    --ring: 45 67% 52%;
+    --chart-1: 45 67% 52%;
+    --chart-2: 270 53% 55%;
+    --chart-3: 191 90% 43%;
+    --chart-4: 45 50% 70%;
+    --chart-5: 270 40% 68%;
+    --sidebar-background: 240 17% 7%;
+    --sidebar-foreground: 45 55% 88%;
+    --sidebar-primary: 45 67% 52%;
+    --sidebar-primary-foreground: 240 17% 8%;
+    --sidebar-accent: 240 15% 14%;
+    --sidebar-accent-foreground: 45 55% 88%;
+    --sidebar-border: 45 30% 18%;
+    --sidebar-ring: 45 67% 52%;
   }
 }
 
@@ -154,5 +173,69 @@ button:focus-visible {
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    background-color: #10101a;
   }
+}
+
+/* ── Brand utilities ── */
+.font-cinzel { font-family: 'Cinzel', serif; }
+.font-playfair { font-family: 'Playfair Display', serif; }
+
+/* Gold gradient text — used for brand name */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #C9A227 0%, #D4AF37 30%, #F5CF41 55%, #D4AF37 80%, #C9A227 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Triple gradient (gold → purple → cyan) like the phoenix wings */
+.text-brand-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #F5CF41 25%, #8B5CF6 60%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Metallic gold shimmer animation */
+@keyframes gold-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.text-gold-shimmer {
+  background: linear-gradient(90deg, #C9A227 0%, #F5CF41 40%, #fff8d4 50%, #F5CF41 60%, #C9A227 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gold-shimmer 4s linear infinite;
+}
+
+/* Phoenix glow pulse */
+@keyframes phoenix-glow {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(212,175,55,0.5)) drop-shadow(0 0 20px rgba(139,92,246,0.3)); }
+  50%       { filter: drop-shadow(0 0 18px rgba(212,175,55,0.8)) drop-shadow(0 0 40px rgba(139,92,246,0.5)); }
+}
+.phoenix-glow { animation: phoenix-glow 3s ease-in-out infinite; }
+
+/* Anthracite card texture */
+.card-anthracite {
+  background: linear-gradient(135deg, #16162a 0%, #1a1a2e 50%, #14141f 100%);
+  border: 1px solid rgba(212,175,55,0.18);
+}
+
+/* Gold border glow */
+.border-gold-glow {
+  border: 1px solid rgba(212,175,55,0.35);
+  box-shadow: 0 0 20px rgba(212,175,55,0.08), inset 0 0 20px rgba(212,175,55,0.03);
+}
+
+/* Page background — deep anthracite with subtle texture */
+.bg-brand {
+  background: #10101a;
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(139,92,246,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(212,175,55,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(6,182,212,0.03) 0%, transparent 60%);
 }

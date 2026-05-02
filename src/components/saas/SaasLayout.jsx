@@ -63,7 +63,7 @@ export default function SaasLayout({ children }) {
   const path = location.pathname;
 
   return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(160deg, #050510 0%, #0a0818 50%, #060610 100%)', color: 'white' }}>
+    <div className="min-h-screen" style={{ background: 'linear-gradient(160deg, #0e0e1c 0%, #131325 40%, #0e0e1c 100%)', color: 'white' }}>
       {/* Ambient bg */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
         <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full blur-[160px] opacity-15" style={{ background: `radial-gradient(circle, ${PURPLE}, transparent)` }} />
@@ -75,16 +75,15 @@ export default function SaasLayout({ children }) {
 
       {/* NAV */}
       <nav className="fixed top-[2px] left-0 right-0 z-40 transition-all duration-300"
-        style={{ background: scrolled ? 'rgba(5,5,16,0.98)' : 'rgba(5,5,16,0.9)', backdropFilter: 'blur(24px)', borderBottom: `1px solid rgba(212,175,55,${scrolled ? '0.18' : '0.08'})` }}>
+        style={{ background: scrolled ? 'rgba(12,12,24,0.98)' : 'rgba(12,12,24,0.88)', backdropFilter: 'blur(28px)', borderBottom: `1px solid rgba(212,175,55,${scrolled ? '0.22' : '0.1'})` }}>
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/saas" className="flex items-center gap-3 group">
             <PhoenixLogo size={36} />
             <div>
-              <span className="font-black text-base tracking-tight block leading-none"
-                style={{ background: `linear-gradient(135deg, ${GOLD_L}, ${GOLD}, ${PURPLE})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              <span className="font-cinzel font-bold text-base tracking-wide block leading-none text-gold-gradient">
                 Js-Innov.IA
               </span>
-              <span className="text-[9px] tracking-[0.18em] uppercase block mt-0.5" style={{ color: 'rgba(212,175,55,0.4)' }}>Solutions Premium</span>
+              <span className="text-[9px] tracking-[0.2em] uppercase block mt-0.5 font-inter" style={{ color: 'rgba(212,175,55,0.45)' }}>Solutions Premium</span>
             </div>
           </Link>
 
@@ -161,7 +160,7 @@ export default function SaasLayout({ children }) {
               <div className="flex items-center gap-3 mb-4">
                 <PhoenixLogo size={40} />
                 <div>
-                  <div className="font-black text-lg" style={{ background: `linear-gradient(135deg, ${GOLD_L}, ${GOLD}, ${PURPLE})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Js-Innov.IA</div>
+                  <div className="font-cinzel font-bold text-lg text-gold-gradient">Js-Innov.IA</div>
                   <div className="text-xs" style={{ color: 'rgba(212,175,55,0.35)' }}>Julien Pagin · Solutions Premium</div>
                 </div>
               </div>

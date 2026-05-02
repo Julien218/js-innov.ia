@@ -104,7 +104,7 @@ export default function Maintenance() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden" style={{ background: '#060610' }}>
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0e0e1c 0%, #131325 50%, #0e0e1c 100%)' }}>
       <NeuralBackground />
 
       {/* Ambient orbs */}
@@ -137,12 +137,9 @@ export default function Maintenance() {
 
         {/* Title */}
         <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.8 }}
-          className="text-4xl md:text-6xl font-black mb-4 leading-tight">
+          className="text-4xl md:text-6xl font-black mb-4 leading-tight font-cinzel">
           <span className="text-white">Nous revenons</span><br />
-          <span style={{
-            background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L}, ${PURPLE})`,
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'
-          }}>très bientôt ✨</span>
+          <span className="text-gold-shimmer">très bientôt ✨</span>
         </motion.h1>
 
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}
