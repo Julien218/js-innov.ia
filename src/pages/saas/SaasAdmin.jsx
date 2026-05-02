@@ -6,6 +6,7 @@ import {
   Eye, Check, X, MessageSquare, Clock, TrendingUp, Star, AlertTriangle,
   ChevronRight, Filter, Search, Edit, Trash2, Plus, Mail, Phone
 } from 'lucide-react';
+import TikTokStats from '../../components/admin/TikTokStats';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -152,6 +153,11 @@ export default function SaasAdmin() {
               <StatCard icon={Briefcase} label="Projets actifs" value={activeProjects} color={GOLD} />
               <StatCard icon={CheckSquare} label="Validations en attente" value={pendingValidations} color={pendingValidations > 0 ? '#F59E0B' : GREEN} sub={pendingValidations > 0 ? 'Urgent' : 'OK'} />
               <StatCard icon={FileText} label="Contenus créés" value={contents.length} color={PURPLE} />
+            </div>
+
+            {/* TikTok Stats */}
+            <div className="mb-6">
+            <TikTokStats />
             </div>
 
             {/* Recent leads */}
