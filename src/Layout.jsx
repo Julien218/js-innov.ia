@@ -121,7 +121,8 @@ function LayoutContent({ children, currentPageName }) {
                 <img
                   src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png"
                   alt="JS-INNOV.IA"
-                  className="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform"
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                  style={{ filter: 'drop-shadow(0 0 12px rgba(212,175,55,0.6)) drop-shadow(0 0 24px rgba(139,92,246,0.3))' }}
                 />
                 <div className="absolute inset-0 rounded-full blur-2xl opacity-30 group-hover:opacity-55 transition-opacity -z-10"
                   style={{ background: `radial-gradient(circle, ${GOLD}, ${PURPLE}, ${CYAN})` }} />

@@ -9,36 +9,15 @@ const GOLD_L = '#F5CF41';
 const PURPLE = '#8B5CF6';
 const CYAN = '#06B6D4';
 
-// Phoenix SVG logo
 function PhoenixLogo({ size = 36 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 80 80" fill="none">
-      <defs>
-        <radialGradient id="pg1" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#F5CF41" />
-          <stop offset="60%" stopColor="#D4AF37" />
-          <stop offset="100%" stopColor="#8B5CF6" />
-        </radialGradient>
-        <radialGradient id="pg2" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#06B6D4" />
-          <stop offset="100%" stopColor="#8B5CF6" />
-        </radialGradient>
-      </defs>
-      {/* Circle ring */}
-      <circle cx="40" cy="40" r="36" stroke="url(#pg1)" strokeWidth="2" fill="none" opacity="0.7"/>
-      {/* Wings left */}
-      <path d="M40 52 Q18 44 14 28 Q22 36 40 40" fill="url(#pg1)" opacity="0.9"/>
-      <path d="M40 52 Q20 48 10 38 Q20 42 40 44" fill="url(#pg2)" opacity="0.7"/>
-      {/* Wings right */}
-      <path d="M40 52 Q62 44 66 28 Q58 36 40 40" fill="url(#pg1)" opacity="0.9"/>
-      <path d="M40 52 Q60 48 70 38 Q60 42 40 44" fill="url(#pg2)" opacity="0.7"/>
-      {/* Body */}
-      <path d="M40 20 Q46 32 44 44 Q40 50 36 44 Q34 32 40 20" fill="url(#pg1)"/>
-      {/* Head */}
-      <circle cx="40" cy="22" r="5" fill="#F5CF41"/>
-      {/* Glow */}
-      <circle cx="40" cy="40" r="12" fill="#D4AF37" opacity="0.08"/>
-    </svg>
+    <div style={{ width: size, height: size, position: 'relative', flexShrink: 0 }}>
+      <img
+        src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png"
+        alt="Js-Innov.IA Phoenix"
+        style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'drop-shadow(0 0 8px rgba(212,175,55,0.5))' }}
+      />
+    </div>
   );
 }
 
@@ -101,12 +80,12 @@ export default function WebOSLayout({ children }) {
               <PhoenixLogo size={38} />
             </motion.div>
             <div>
-              <span className="font-black text-base tracking-tight block leading-none"
-                style={{ background: `linear-gradient(135deg, ${GOLD_L}, ${GOLD}, ${PURPLE})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              <span className="font-cinzel font-bold text-base tracking-wide block leading-none"
+                style={{ background: `linear-gradient(135deg, #C9A227, ${GOLD}, ${GOLD_L}, ${GOLD})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 Js-Innov.IA
               </span>
-              <span className="text-[9px] tracking-[0.2em] uppercase block mt-0.5" style={{ color: 'rgba(212,175,55,0.45)' }}>
-                Solutions Premium
+              <span className="text-[9px] tracking-[0.22em] uppercase block mt-0.5 font-inter" style={{ color: 'rgba(212,175,55,0.45)' }}>
+                Julien Pagin
               </span>
             </div>
           </Link>
@@ -192,12 +171,12 @@ export default function WebOSLayout({ children }) {
           {/* Logo + tagline */}
           <div className="flex flex-col items-center mb-10">
             <PhoenixLogo size={52} />
-            <span className="mt-3 font-black text-xl tracking-tight"
-              style={{ background: `linear-gradient(135deg, ${GOLD_L}, ${GOLD}, ${PURPLE})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            <span className="mt-3 font-cinzel font-bold text-xl tracking-wide"
+              style={{ background: `linear-gradient(135deg, #C9A227, ${GOLD}, ${GOLD_L})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
               Js-Innov.IA
             </span>
-            <span className="text-xs tracking-[0.25em] uppercase mt-1" style={{ color: 'rgba(212,175,55,0.35)' }}>
-              Julien Pagin · Solutions Premium
+            <span className="text-xs tracking-[0.25em] uppercase mt-1 font-inter" style={{ color: 'rgba(212,175,55,0.35)', fontStyle: 'italic' }}>
+              Julien Pagin
             </span>
           </div>
 

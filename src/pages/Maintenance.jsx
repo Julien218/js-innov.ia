@@ -124,7 +124,8 @@ export default function Maintenance() {
         {/* Logo */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="mb-10">
           <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png"
-            alt="JS-INNOV.IA" className="w-24 h-24 object-contain mx-auto rounded-2xl" />
+            alt="JS-INNOV.IA" className="w-28 h-28 object-contain mx-auto"
+            style={{ filter: 'drop-shadow(0 0 16px rgba(212,175,55,0.7)) drop-shadow(0 0 32px rgba(139,92,246,0.4))' }} />
         </motion.div>
 
         {/* Badge */}
@@ -137,9 +138,9 @@ export default function Maintenance() {
 
         {/* Title */}
         <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.8 }}
-          className="text-4xl md:text-6xl font-black mb-4 leading-tight font-cinzel">
+          className="text-4xl md:text-6xl font-black mb-4 leading-tight font-cinzel tracking-wide">
           <span className="text-white">Nous revenons</span><br />
-          <span className="text-gold-shimmer">très bientôt ✨</span>
+          <span className="font-cinzel" style={{ background: 'linear-gradient(135deg, #C9A227, #D4AF37, #F5CF41, #D4AF37)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', filter: 'drop-shadow(0 2px 8px rgba(212,175,55,0.4))' }}>très bientôt ✨</span>
         </motion.h1>
 
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}

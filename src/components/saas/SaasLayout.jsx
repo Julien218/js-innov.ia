@@ -13,26 +13,13 @@ const WA_LINK = 'https://wa.me/32494119090?text=Bonjour%20Julien%2C%20je%20viens
 
 function PhoenixLogo({ size = 36 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 80 80" fill="none">
-      <defs>
-        <radialGradient id="sl1" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#F5CF41" />
-          <stop offset="60%" stopColor="#D4AF37" />
-          <stop offset="100%" stopColor="#8B5CF6" />
-        </radialGradient>
-        <radialGradient id="sl2" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#06B6D4" />
-          <stop offset="100%" stopColor="#8B5CF6" />
-        </radialGradient>
-      </defs>
-      <circle cx="40" cy="40" r="36" stroke="url(#sl1)" strokeWidth="2" fill="none" opacity="0.7"/>
-      <path d="M40 52 Q18 44 14 28 Q22 36 40 40" fill="url(#sl1)" opacity="0.9"/>
-      <path d="M40 52 Q20 48 10 38 Q20 42 40 44" fill="url(#sl2)" opacity="0.7"/>
-      <path d="M40 52 Q62 44 66 28 Q58 36 40 40" fill="url(#sl1)" opacity="0.9"/>
-      <path d="M40 52 Q60 48 70 38 Q60 42 40 44" fill="url(#sl2)" opacity="0.7"/>
-      <path d="M40 20 Q46 32 44 44 Q40 50 36 44 Q34 32 40 20" fill="url(#sl1)"/>
-      <circle cx="40" cy="22" r="5" fill="#F5CF41"/>
-    </svg>
+    <div style={{ width: size, height: size, position: 'relative', flexShrink: 0 }}>
+      <img
+        src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png"
+        alt="Js-Innov.IA Phoenix"
+        style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'drop-shadow(0 0 8px rgba(212,175,55,0.5))' }}
+      />
+    </div>
   );
 }
 
