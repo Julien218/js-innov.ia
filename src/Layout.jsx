@@ -284,7 +284,7 @@ function LayoutContent({ children, currentPageName }) {
       </nav>
 
       {/* Main */}
-      <main className="pt-28">
+      <main className="pt-28 relative" style={{ zIndex: 1 }}>
         <PageTransition>{children}</PageTransition>
       </main>
 

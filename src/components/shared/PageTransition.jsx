@@ -1,87 +1,147 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 
 const GOLD = '#D4AF37';
+const GOLD_L = '#F5CF41';
 const PURPLE = '#8B5CF6';
 const CYAN = '#06B6D4';
+const PINK = '#EC4899';
+const GREEN = '#22c55e';
 
-// Unique ambient per route
 const PAGE_THEMES = {
-  '/': { orb1: GOLD, orb2: PURPLE, label: 'Accueil', icon: '🏠' },
-  '/Pricing': { orb1: GOLD, orb2: CYAN, label: 'Tarifs', icon: '💎' },
-  '/Blog': { orb1: PURPLE, orb2: CYAN, label: 'Blog', icon: '✍️' },
-  '/Contact': { orb1: CYAN, orb2: GOLD, label: 'Contact', icon: '💬' },
-  '/Applications': { orb1: '#EC4899', orb2: PURPLE, label: 'Applications', icon: '🤖' },
-  '/SEOAudit': { orb1: CYAN, orb2: GOLD, label: 'SEO Audit', icon: '📊' },
-  '/ContentStudio': { orb1: GOLD, orb2: '#EC4899', label: 'Content Studio', icon: '✨' },
-  '/Automations': { orb1: PURPLE, orb2: CYAN, label: 'Automatisation', icon: '⚡' },
-  '/News': { orb1: CYAN, orb2: '#22c55e', label: 'Veille IA', icon: '📡' },
-  '/Blog': { orb1: PURPLE, orb2: GOLD, label: 'Blog', icon: '📖' },
-  '/Showcase': { orb1: GOLD, orb2: CYAN, label: 'Portfolio', icon: '🎨' },
+  '/Home':          { c1: GOLD,   c2: PURPLE, c3: CYAN },
+  '/':              { c1: GOLD,   c2: PURPLE, c3: CYAN },
+  '/Pricing':       { c1: GOLD,   c2: CYAN,   c3: PURPLE },
+  '/Blog':          { c1: PURPLE, c2: GOLD,   c3: CYAN },
+  '/BlogPost':      { c1: PURPLE, c2: GOLD,   c3: CYAN },
+  '/Contact':       { c1: CYAN,   c2: GOLD,   c3: PURPLE },
+  '/Applications':  { c1: PINK,   c2: PURPLE, c3: GOLD },
+  '/SEOAudit':      { c1: CYAN,   c2: GOLD,   c3: GREEN },
+  '/ContentStudio': { c1: GOLD,   c2: PINK,   c3: PURPLE },
+  '/Automations':   { c1: PURPLE, c2: CYAN,   c3: GOLD },
+  '/News':          { c1: CYAN,   c2: GREEN,  c3: PURPLE },
+  '/Showcase':      { c1: GOLD,   c2: CYAN,   c3: PURPLE },
+  '/Templates':     { c1: PURPLE, c2: PINK,   c3: GOLD },
+  '/AIMusic':       { c1: PINK,   c2: PURPLE, c3: CYAN },
+  '/Visuels':       { c1: GOLD,   c2: PINK,   c3: CYAN },
+  '/Innovations':   { c1: CYAN,   c2: PURPLE, c3: GOLD },
 };
 
-const variants = {
-  initial: { opacity: 0, y: 24, scale: 0.99 },
-  animate: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
-  exit: { opacity: 0, y: -16, scale: 0.99, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
-};
+function getTheme(pathname) {
+  // Match exact or prefix (e.g. /BlogPost?slug=xxx)
+  const base = '/' + pathname.replace(/^\//, '').split('?')[0];
+  return PAGE_THEMES[base] || PAGE_THEMES[pathname] || { c1: GOLD, c2: PURPLE, c3: CYAN };
+}
 
 export default function PageTransition({ children }) {
   const location = useLocation();
-  const theme = PAGE_THEMES[location.pathname] || { orb1: GOLD, orb2: PURPLE };
+  const theme = getTheme(location.pathname);
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div key={location.pathname} variants={variants} initial="initial" animate="animate" exit="exit"
-        className="relative min-h-screen" style={{ overflow: 'hidden' }}>
-
-        {/* Unique ambient orbs per page — appear on entry */}
+    <>
+      {/* ── Fixed ambient background orbs (change per page) ─────────────────── */}
+      <AnimatePresence mode="sync">
         <motion.div
-          key={`orb1-${location.pathname}`}
-          initial={{ opacity: 0, scale: 0.6 }}
-          animate={{ opacity: 0.12, scale: 1 }}
-          transition={{ duration: 1.2, ease: 'easeOut' }}
-          className="fixed top-0 right-0 w-[700px] h-[700px] rounded-full pointer-events-none"
-          style={{
-            background: `radial-gradient(circle, ${theme.orb1}50, transparent 70%)`,
-            filter: 'blur(100px)',
-            zIndex: 0,
-            transform: 'translate(30%, -30%)',
-          }}
-        />
-        <motion.div
-          key={`orb2-${location.pathname}`}
-          initial={{ opacity: 0, scale: 0.6 }}
-          animate={{ opacity: 0.09, scale: 1 }}
-          transition={{ duration: 1.5, delay: 0.2, ease: 'easeOut' }}
-          className="fixed bottom-0 left-0 w-[600px] h-[600px] rounded-full pointer-events-none"
-          style={{
-            background: `radial-gradient(circle, ${theme.orb2}50, transparent 70%)`,
-            filter: 'blur(120px)',
-            zIndex: 0,
-            transform: 'translate(-30%, 30%)',
-          }}
-        />
+          key={`bg-${location.pathname}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8 }}
+          className="fixed inset-0 pointer-events-none"
+          style={{ zIndex: 0 }}
+        >
+          {/* Top-right orb */}
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 0.11 }}
+            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: 'absolute', top: '-10%', right: '-10%',
+              width: 700, height: 700, borderRadius: '50%',
+              background: `radial-gradient(circle, ${theme.c1}60 0%, transparent 70%)`,
+              filter: 'blur(80px)',
+            }}
+          />
+          {/* Bottom-left orb */}
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 0.09 }}
+            transition={{ duration: 1.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: 'absolute', bottom: '-10%', left: '-10%',
+              width: 600, height: 600, borderRadius: '50%',
+              background: `radial-gradient(circle, ${theme.c2}55 0%, transparent 70%)`,
+              filter: 'blur(100px)',
+            }}
+          />
+          {/* Center subtle */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.05 }}
+            transition={{ duration: 2, delay: 0.3 }}
+            style={{
+              position: 'absolute', top: '40%', left: '40%',
+              width: 400, height: 400, borderRadius: '50%',
+              background: `radial-gradient(circle, ${theme.c3}40 0%, transparent 70%)`,
+              filter: 'blur(80px)',
+              transform: 'translate(-50%, -50%)',
+            }}
+          />
+        </motion.div>
+      </AnimatePresence>
 
-        {/* Page flash — thin sweep line on entry */}
+      {/* ── Sweep line on every page transition ─────────────────────────────── */}
+      <AnimatePresence>
         <motion.div
           key={`sweep-${location.pathname}`}
           initial={{ scaleX: 0, opacity: 1 }}
-          animate={{ scaleX: 1, opacity: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed top-0 left-0 right-0 h-[2px] pointer-events-none"
+          animate={{ scaleX: 1, opacity: [1, 1, 0] }}
+          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], times: [0, 0.7, 1] }}
           style={{
-            background: `linear-gradient(90deg, transparent, ${theme.orb1}, ${theme.orb2}, transparent)`,
+            position: 'fixed', top: 0, left: 0, right: 0, height: 2,
+            background: `linear-gradient(90deg, transparent 0%, ${theme.c1} 30%, ${theme.c2} 60%, ${theme.c3} 80%, transparent 100%)`,
             transformOrigin: 'left',
             zIndex: 9999,
+            pointerEvents: 'none',
           }}
         />
+      </AnimatePresence>
 
-        <div className="relative" style={{ zIndex: 1 }}>
+      {/* ── Corner flare sparks ──────────────────────────────────────────────── */}
+      <AnimatePresence>
+        <motion.div
+          key={`spark-${location.pathname}`}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: [0, 0.6, 0], scale: [0, 1.2, 0] }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          style={{
+            position: 'fixed', top: 0, left: 0,
+            width: 200, height: 200,
+            background: `radial-gradient(circle at top left, ${theme.c1}40 0%, transparent 60%)`,
+            pointerEvents: 'none',
+            zIndex: 9998,
+          }}
+        />
+      </AnimatePresence>
+
+      {/* ── Page content with slide+fade ─────────────────────────────────────── */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, y: 20, filter: 'blur(4px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, y: -12, filter: 'blur(2px)' }}
+          transition={{
+            duration: 0.5,
+            ease: [0.22, 1, 0.36, 1],
+            filter: { duration: 0.3 },
+          }}
+          style={{ position: 'relative', zIndex: 1 }}
+        >
           {children}
-        </div>
-      </motion.div>
-    </AnimatePresence>
+        </motion.div>
+      </AnimatePresence>
+    </>
   );
 }
