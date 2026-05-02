@@ -1,0 +1,59 @@
+{
+  "name": "EventTicket",
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "event_title": {
+      "type": "string"
+    },
+    "attendee_name": {
+      "type": "string"
+    },
+    "attendee_email": {
+      "type": "string"
+    },
+    "qr_code": {
+      "type": "string"
+    },
+    "scanned": {
+      "type": "boolean",
+      "default": false
+    },
+    "scanned_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "amount_paid": {
+      "type": "number",
+      "default": 0
+    },
+    "stripe_session_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "event_id",
+    "attendee_email",
+    "attendee_name"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

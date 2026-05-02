@@ -28,9 +28,10 @@ const navItems = [
   { label: 'Services', path: '/saas-services' },
   { label: 'Packs', path: '/saas-packs' },
   { label: 'Réalisations', path: '/saas-portfolio' },
-  { label: 'Processus', path: '/saas-processus' },
+  { label: 'Services', path: '/saas-landing' },
+  { label: 'Packs', path: '/saas-packs' },
   { label: 'Agents IA', path: '/saas-agents' },
-  { label: 'Blog', path: '/saas-blog' },
+  { label: 'Mon espace', path: '/saas-client' },
   { label: 'Contact', path: '/saas-contact' },
 ];
 
@@ -95,10 +96,10 @@ export default function SaasLayout({ children }) {
               style={{ background: 'rgba(37,211,102,0.12)', color: '#25D366', border: '1px solid rgba(37,211,102,0.25)' }}>
               <MessageCircle className="w-3.5 h-3.5" /> WhatsApp
             </a>
-            <Link to="/saas-analyse"
+            <Link to="/saas-projet"
               className="ml-2 px-4 py-2 rounded-full text-xs font-black text-black"
               style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, boxShadow: `0 0 20px rgba(212,175,55,0.3)` }}>
-              Analyser mon projet →
+              Créer mon projet →
             </Link>
           </div>
 
@@ -126,10 +127,10 @@ export default function SaasLayout({ children }) {
                 style={{ color: '#25D366', background: 'rgba(37,211,102,0.08)' }}>
                 <MessageCircle className="w-4 h-4" /> WhatsApp
               </a>
-              <Link to="/saas-analyse" onClick={() => setMenuOpen(false)}
+              <Link to="/saas-projet" onClick={() => setMenuOpen(false)}
                 className="block px-4 py-3.5 rounded-xl text-sm font-black text-black text-center"
                 style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>
-                Analyser mon projet →
+                Créer mon projet →
               </Link>
             </motion.div>
           )}

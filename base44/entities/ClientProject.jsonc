@@ -1,0 +1,112 @@
+{
+  "name": "ClientProject",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "name": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "activity": {
+      "type": "string",
+      "description": "Activit\u00e9 du client"
+    },
+    "needs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Besoins s\u00e9lectionn\u00e9s"
+    },
+    "visual_style": {
+      "type": "string",
+      "enum": [
+        "moderne",
+        "luxe",
+        "fun",
+        "corporate"
+      ]
+    },
+    "colors": {
+      "type": "string"
+    },
+    "budget": {
+      "type": "string",
+      "enum": [
+        "< 500\u20ac",
+        "500\u20ac - 1500\u20ac",
+        "1500\u20ac - 3000\u20ac",
+        "3000\u20ac - 6000\u20ac",
+        "> 6000\u20ac"
+      ]
+    },
+    "message": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "nouveau",
+        "offre_envoy\u00e9e",
+        "acompte_pay\u00e9",
+        "en_production",
+        "livr\u00e9",
+        "archiv\u00e9"
+      ],
+      "default": "nouveau"
+    },
+    "offer_text": {
+      "type": "string",
+      "description": "Offre personnalis\u00e9e g\u00e9n\u00e9r\u00e9e"
+    },
+    "offer_price": {
+      "type": "number"
+    },
+    "stripe_payment_link": {
+      "type": "string"
+    },
+    "stripe_session_id": {
+      "type": "string"
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs des livrables"
+    },
+    "notes_admin": {
+      "type": "string"
+    },
+    "pack_selected": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "email",
+    "activity"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
