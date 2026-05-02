@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Bot, CheckSquare, TrendingUp, Zap, Target, Sparkles } from 'lucide-react';
+import { FileText, Bot, CheckSquare, TrendingUp, Zap, Target, Sparkles, Search } from 'lucide-react';
 import ContentGenerator from '../components/seo/ContentGenerator';
 import NicheTab from '../components/studio/NicheTab';
 import GenerationTab from '../components/studio/GenerationTab';
 import ValidationTab from '../components/studio/ValidationTab';
 import PerformanceTab from '../components/studio/PerformanceTab';
+import SEOScoreDashboard from '../components/studio/SEOScoreDashboard';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -17,6 +18,7 @@ const TABS = [
   { id: 'generation', icon: Sparkles,     label: 'Génération IA',    color: GOLD },
   { id: 'validation', icon: CheckSquare,  label: 'À valider',        color: '#F59E0B' },
   { id: 'perf',       icon: TrendingUp,   label: 'Performances',     color: PURPLE },
+  { id: 'seo',        icon: Search,       label: 'Scores SEO',       color: '#22c55e' },
   { id: 'classique',  icon: FileText,     label: 'Studio classique', color: 'rgba(255,255,255,0.4)' },
 ];
 
@@ -81,6 +83,7 @@ export default function ContentStudio() {
             {activeTab === 'generation' && <GenerationTab preselectedNiche={preselectedNiche} />}
             {activeTab === 'validation' && <ValidationTab />}
             {activeTab === 'perf' && <PerformanceTab />}
+            {activeTab === 'seo' && <SEOScoreDashboard />}
             {activeTab === 'classique' && (
               <div>
                 <div className="mb-8 grid grid-cols-1 md:grid-cols-4 gap-4">
