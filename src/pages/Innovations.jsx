@@ -5,14 +5,21 @@ import SectionHeader from '../components/shared/SectionHeader';
 import RecommendationsSection from '../components/recommendations/RecommendationsSection';
 import ProductSEOWrapper from '../components/seo/ProductSEOWrapper';
 import { useNavigationTracking } from '../components/recommendations/useRecommendations';
-import { motion } from 'framer-motion';
-import { Lightbulb, Calendar, Tag, ExternalLink } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Lightbulb, Calendar, Tag, ExternalLink, Instagram } from 'lucide-react';
+import InstagramCarouselPublisher from '../components/innovations/InstagramCarouselPublisher';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 export default function Innovations() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [viewedInnovation, setViewedInnovation] = useState(null);
+  const [showIgPublisher, setShowIgPublisher] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    base44.auth.me().then(u => setIsAdmin(u?.role === 'admin')).catch(() => {});
+  }, []);
   const { trackView } = useNavigationTracking();
 
   const handleInnovationClick = (innovation) => {
@@ -45,11 +52,24 @@ export default function Innovations() {
     <ProductSEOWrapper product={viewedInnovation} type="innovation">
       <div className="min-h-screen py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          icon={Lightbulb}
-          title="Innovations & Idées"
-          subtitle="Explorez nos dernières découvertes et visions pour le futur de l'intelligence artificielle"
-        />
+        <div className="flex items-start justify-between mb-2 flex-wrap gap-4">
+          <SectionHeader
+            icon={Lightbulb}
+            title="Innovations & Idées"
+            subtitle="Explorez nos dernières découvertes et visions pour le futur de l'intelligence artificielle"
+          />
+          {isAdmin && innovations.filter(i => i.image_url).length >= 2 && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              onClick={() => setShowIgPublisher(true)}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white flex-shrink-0 transition-all hover:scale-105"
+              style={{ background: 'linear-gradient(135deg, #E1306C, #833AB4)', boxShadow: '0 0 25px rgba(225,48,108,0.3)' }}>
+              <Instagram className="w-4 h-4" />
+              Publier sur Instagram
+            </motion.button>
+          )}
+        </div>
 
         {/* Category Filter */}
         <div className="mb-16">
@@ -188,6 +208,14 @@ export default function Innovations() {
         )}
       </div>
     </div>
+    <AnimatePresence>
+      {showIgPublisher && (
+        <InstagramCarouselPublisher
+          innovations={innovations}
+          onClose={() => setShowIgPublisher(false)}
+        />
+      )}
+    </AnimatePresence>
     </ProductSEOWrapper>
   );
 }
