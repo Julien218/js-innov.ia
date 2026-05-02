@@ -8,6 +8,7 @@ import SalesAgent from './components/agent/SalesAgent';
 import SEOMetaTags from './components/seo/SEOMetaTags';
 import { CartProvider, useCart } from './components/cart/CartContext';
 import { base44 } from '@/api/base44Client';
+import PageTransition from './components/shared/PageTransition';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -283,7 +284,9 @@ function LayoutContent({ children, currentPageName }) {
       </nav>
 
       {/* Main */}
-      <main className="pt-28">{children}</main>
+      <main className="pt-28">
+        <PageTransition>{children}</PageTransition>
+      </main>
 
       {/* Footer */}
       <footer className="mt-20 border-t" style={{ background: 'rgba(4,4,12,0.99)', borderColor: 'rgba(212,175,55,0.12)' }}>
