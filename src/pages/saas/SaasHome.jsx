@@ -148,7 +148,7 @@ export default function SaasHome() {
 
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
             className="text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed font-poppins" style={{ color: 'rgba(255,255,255,0.5)', fontWeight: 400 }}>
-            Sites web nouvelle génération, chatbots métier, applications mobiles, automatisation, agents IA — tout sous validation humaine de Julien.
+            Sites web nouvelle génération, chatbots métier, applications mobiles, automatisation et agents IA — livrés vite, pensés pour durer.
           </motion.p>
 
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
