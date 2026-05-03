@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Check, Globe, TrendingUp, Zap, Cpu, ArrowRight, Sparkles, MessageCircle, CreditCard } from 'lucide-react';
