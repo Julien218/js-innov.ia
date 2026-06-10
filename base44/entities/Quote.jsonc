@@ -1,0 +1,78 @@
+{
+  "name": "Quote",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "description": "ID du projet"
+    },
+    "customer_id": {
+      "type": "string",
+      "description": "ID du client"
+    },
+    "fourchette_basse": {
+      "type": "number",
+      "description": "Fourchette basse du devis"
+    },
+    "fourchette_haute": {
+      "type": "number",
+      "description": "Fourchette haute du devis"
+    },
+    "statut": {
+      "type": "string",
+      "enum": [
+        "\u00c0 valider",
+        "Valid\u00e9",
+        "Refus\u00e9",
+        "Devis envoy\u00e9"
+      ],
+      "default": "\u00c0 valider",
+      "description": "Statut du devis"
+    },
+    "date_soumission": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date de soumission"
+    },
+    "date_envoi": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date d'envoi du devis"
+    },
+    "resume_demande": {
+      "type": "string",
+      "description": "R\u00e9sum\u00e9 de la demande"
+    },
+    "notes_internes": {
+      "type": "string",
+      "description": "Notes internes de l'administrateur"
+    }
+  },
+  "required": [
+    "project_id",
+    "customer_id",
+    "fourchette_basse",
+    "fourchette_haute",
+    "statut",
+    "date_soumission",
+    "resume_demande"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

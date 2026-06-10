@@ -1,0 +1,109 @@
+{
+  "name": "Project",
+  "type": "object",
+  "properties": {
+    "customer_id": {
+      "type": "string",
+      "description": "ID du client"
+    },
+    "type_projet": {
+      "type": "string",
+      "enum": [
+        "Cr\u00e9ation de site Internet",
+        "R\u00e9novation de site existant",
+        "Ajout de fonctionnalit\u00e9s / innovation"
+      ],
+      "description": "Type de projet"
+    },
+    "url_site_existant": {
+      "type": "string",
+      "description": "URL du site existant (si r\u00e9novation)"
+    },
+    "problemes_site": {
+      "type": "string",
+      "description": "Probl\u00e8mes rencontr\u00e9s avec le site actuel"
+    },
+    "ameliorations_site": {
+      "type": "string",
+      "description": "Ce qui doit \u00eatre am\u00e9lior\u00e9"
+    },
+    "objectifs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Objectifs du site"
+    },
+    "fonctionnalites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Fonctionnalit\u00e9s souhait\u00e9es"
+    },
+    "style_souhaite": {
+      "type": "string",
+      "enum": [
+        "Moderne",
+        "Minimaliste",
+        "Luxe",
+        "Corporate",
+        "Cr\u00e9atif"
+      ],
+      "description": "Style souhait\u00e9"
+    },
+    "liens_reference": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Liens de sites de r\u00e9f\u00e9rence"
+    },
+    "budget_indicatif": {
+      "type": "string",
+      "enum": [
+        "Moins de 1 000 \u20ac",
+        "1 000 \u2013 3 000 \u20ac",
+        "3 000 \u2013 6 000 \u20ac",
+        "Plus de 6 000 \u20ac"
+      ],
+      "description": "Budget indicatif"
+    },
+    "delai": {
+      "type": "string",
+      "enum": [
+        "Urgent",
+        "Standard",
+        "Flexible"
+      ],
+      "description": "D\u00e9lai souhait\u00e9"
+    }
+  },
+  "required": [
+    "customer_id",
+    "type_projet",
+    "objectifs",
+    "fonctionnalites",
+    "style_souhaite",
+    "budget_indicatif",
+    "delai"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

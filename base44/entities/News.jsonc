@@ -1,0 +1,66 @@
+{
+  "name": "News",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Titre de l'actualit\u00e9"
+    },
+    "summary": {
+      "type": "string",
+      "description": "R\u00e9sum\u00e9 g\u00e9n\u00e9r\u00e9 par IA"
+    },
+    "content": {
+      "type": "string",
+      "description": "Contenu complet"
+    },
+    "source": {
+      "type": "string",
+      "description": "Source de l'actualit\u00e9 (OpenAI, Google, etc.)"
+    },
+    "source_url": {
+      "type": "string",
+      "description": "URL de la source originale"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Image de l'article"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Mod\u00e8les de langage",
+        "Vision par ordinateur",
+        "Robotique",
+        "IA G\u00e9n\u00e9rative",
+        "Recherche",
+        "Entreprise",
+        "R\u00e9glementation",
+        "Autre"
+      ],
+      "default": "Autre"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags de l'actualit\u00e9"
+    },
+    "is_scoop": {
+      "type": "boolean",
+      "default": false,
+      "description": "Marqu\u00e9 comme scoop par l'agent"
+    },
+    "published_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date de publication originale"
+    }
+  },
+  "required": [
+    "title",
+    "summary",
+    "source"
+  ]
+}

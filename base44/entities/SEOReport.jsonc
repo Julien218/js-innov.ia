@@ -1,0 +1,92 @@
+{
+  "name": "SEOReport",
+  "type": "object",
+  "properties": {
+    "report_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date du rapport"
+    },
+    "global_score": {
+      "type": "number",
+      "description": "Score SEO global (0-100)"
+    },
+    "scores": {
+      "type": "object",
+      "description": "Scores d\u00e9taill\u00e9s par cat\u00e9gorie"
+    },
+    "actions_performed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Actions r\u00e9alis\u00e9es lors de cette analyse"
+    },
+    "issues_found": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Probl\u00e8mes d\u00e9tect\u00e9s"
+    },
+    "issues_resolved": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Probl\u00e8mes r\u00e9solus"
+    },
+    "weak_pages": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Pages faibles identifi\u00e9es"
+    },
+    "suggestions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Suggestions pour la prochaine it\u00e9ration"
+    },
+    "keywords_density": {
+      "type": "object",
+      "description": "Densit\u00e9 des mots-cl\u00e9s analys\u00e9e"
+    },
+    "accessibility_score": {
+      "type": "number",
+      "description": "Score accessibilit\u00e9 (0-100)"
+    },
+    "performance_score": {
+      "type": "number",
+      "description": "Score performance (0-100)"
+    }
+  },
+  "required": [
+    "report_date",
+    "global_score"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

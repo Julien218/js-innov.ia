@@ -1,0 +1,82 @@
+{
+  "name": "Contact",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nom complet"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Email"
+    },
+    "phone": {
+      "type": "string",
+      "description": "T\u00e9l\u00e9phone"
+    },
+    "company": {
+      "type": "string",
+      "description": "Entreprise"
+    },
+    "subject": {
+      "type": "string",
+      "enum": [
+        "Automatisation",
+        "Template",
+        "Application",
+        "Consultation",
+        "Autre"
+      ],
+      "description": "Sujet de la demande"
+    },
+    "message": {
+      "type": "string",
+      "description": "Message"
+    },
+    "budget": {
+      "type": "string",
+      "enum": [
+        "< 1000\u20ac",
+        "1000\u20ac - 5000\u20ac",
+        "5000\u20ac - 10000\u20ac",
+        "> 10000\u20ac"
+      ],
+      "description": "Budget estim\u00e9"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Nouveau",
+        "En cours",
+        "Trait\u00e9",
+        "Ferm\u00e9"
+      ],
+      "default": "Nouveau"
+    }
+  },
+  "required": [
+    "name",
+    "email",
+    "subject",
+    "message"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -8,16 +8,12 @@
     "category": {
       "type": "string",
       "enum": [
+        "Fashionist4Art",
+        "Miss et Mister Dour",
         "Site vitrine",
-        "Evenement",
-        "ASBL",
         "Dashboard admin",
         "Automatisation IA",
-        "Creation visuelle",
-        "Landing page",
-        "Coiffeur",
-        "Horeca",
-        "Artisan"
+        "Cr\u00e9ation visuelle"
       ]
     },
     "description": {
@@ -33,9 +29,6 @@
       }
     },
     "project_url": {
-      "type": "string"
-    },
-    "client_name": {
       "type": "string"
     },
     "featured": {

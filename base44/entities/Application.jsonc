@@ -1,0 +1,92 @@
+{
+  "name": "Application",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nom de l'application"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description de l'application"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "IA G\u00e9n\u00e9rative",
+        "Assistant IA",
+        "Analyse de donn\u00e9es",
+        "Cr\u00e9ation de contenu",
+        "CRM",
+        "Autre"
+      ],
+      "default": "IA G\u00e9n\u00e9rative"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Capture d'\u00e9cran"
+    },
+    "demo_url": {
+      "type": "string",
+      "description": "Lien vers la d\u00e9mo"
+    },
+    "technologies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Technologies utilis\u00e9es"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "En d\u00e9veloppement",
+        "Disponible",
+        "Bient\u00f4t"
+      ],
+      "default": "Disponible"
+    },
+    "price": {
+      "type": "number",
+      "description": "Prix en euros"
+    },
+    "stripe_price_id": {
+      "type": "string",
+      "description": "ID du prix Stripe"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Fonctionnalit\u00e9s principales"
+    },
+    "for_sale": {
+      "type": "boolean",
+      "default": false,
+      "description": "Application \u00e0 vendre"
+    }
+  },
+  "required": [
+    "name",
+    "description"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
