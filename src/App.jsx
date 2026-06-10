@@ -70,7 +70,7 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      <Route path="/" element={<Maintenance />} />
+      <Route path="/" element={<SaasLayout><SaasLanding /><SaasChatbot /></SaasLayout>} />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
