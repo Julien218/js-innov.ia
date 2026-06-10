@@ -8,7 +8,6 @@ import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import DynamicPageView from './pages/DynamicPageView';
 import Visuels from './pages/Visuels';
-import Maintenance from './pages/Maintenance';
 import WebOSHome from './pages/WebOSHome';
 import WebOSPortfolio from './pages/WebOSPortfolio';
 import WebOSServices from './pages/WebOSServices';
