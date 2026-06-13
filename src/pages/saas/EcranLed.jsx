@@ -234,7 +234,7 @@ export default function EcranLed() {
                     background: 'linear-gradient(135deg,#D4AF37,#F5CF41)', color: '#06090F',
                     fontSize: '0.58rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.16em',
                     padding: '4px 14px', borderRadius: 20 }}>
-                    ⭐ Recommandé
+                    TOP
                   </div>
                 )}
                 <div style={{ display: 'inline-flex', padding: '8px 12px', background: 'rgba(0,180,216,0.10)',
@@ -263,7 +263,7 @@ export default function EcranLed() {
                   borderRadius: 10, fontSize: '0.72rem', fontWeight: 800,
                   color: pack.id === selected ? C.cyan : C.muted,
                   textTransform: 'uppercase', letterSpacing: '0.10em', transition: 'all 0.2s' }}>
-                  {pack.id === selected ? '✓ Sélectionné' : 'Choisir ce forfait'}
+                  {pack.id === selected ? 'Sélectionné' : 'Choisir ce forfait'}
                 </div>
               </motion.div>
             ))}
@@ -340,7 +340,7 @@ export default function EcranLed() {
                     Vous recevrez votre devis par email
                   </p>
                   <p style={{ fontSize: '1.2rem', fontWeight: 900, color: C.gold, marginBottom: 14 }}>
-                    sous <span style={{ color: C.cyan }}>24 minutes</span> ⏱️
+                    sous <span style={{ color: C.cyan }}>24 minutes</span> 
                   </p>
                   <p style={{ fontSize: '0.68rem', color: C.muted, margin: 0 }}>
                     Vérifiez vos spams — info@jsinnovia.com
@@ -351,7 +351,7 @@ export default function EcranLed() {
                   background: C.card, border: '1px solid rgba(0,180,216,0.22)', borderRadius: 18,
                   padding: 'clamp(22px,4vw,32px) clamp(18px,3.5vw,28px)' }}>
                   <h3 style={{ fontSize: '0.80rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: C.cyan, margin: '0 0 4px' }}>
-                    📧 Formulaire de demande
+                    Formulaire de demande
                   </h3>
 
                   {/* Sélecteur forfait inline */}
