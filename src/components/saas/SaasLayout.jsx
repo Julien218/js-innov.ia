@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, MessageCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import VoiceButton from '@/components/voice/VoiceButton';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -199,6 +200,9 @@ export default function SaasLayout({ children }) {
           </div>
         </div>
       </footer>
+
+      {/* Voice Assistant */}
+      <VoiceButton />
 
       {/* WhatsApp floating button */}
       <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
