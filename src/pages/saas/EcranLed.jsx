@@ -352,11 +352,8 @@ export default function EcranLed() {
                   <h3 style={{ fontSize: 'clamp(1rem,3vw,1.2rem)', fontWeight: 900, color: C.cyan, textTransform: 'uppercase', marginBottom: 10 }}>
                     Demande envoyée !
                   </h3>
-                  <p style={{ fontSize: '0.85rem', color: C.white, fontWeight: 700, marginBottom: 6 }}>
+                  <p style={{ fontSize: '0.85rem', color: C.white, fontWeight: 700, marginBottom: 14 }}>
                     Vous recevrez votre devis par email
-                  </p>
-                  <p style={{ fontSize: '1.2rem', fontWeight: 900, color: C.gold, marginBottom: 14 }}>
-                    sous <span style={{ color: C.cyan }}>24 minutes</span> 
                   </p>
                   <p style={{ fontSize: '0.68rem', color: C.muted, margin: 0 }}>
                     Vérifiez vos spams — info@jsinnovia.com
@@ -437,10 +434,10 @@ export default function EcranLed() {
                       color: '#fff', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.80rem',
                       borderRadius: 50, border: 'none', cursor: sending ? 'wait' : 'pointer',
                       boxShadow: sending ? 'none' : '0 6px 24px rgba(0,180,216,0.50)' }}>
-                    {sending ? 'Envoi en cours…' : <><Send size={14} style={{ display: 'inline', marginRight: 8 }} />Recevoir mon devis sous 24 min</>}
+                    {sending ? 'Envoi en cours…' : <><Send size={14} style={{ display: 'inline', marginRight: 8 }} />Recevoir mon devis</>}
                   </button>
                   <p style={{ fontSize: '0.60rem', color: C.muted, textAlign: 'center', margin: 0 }}>
-                    Gratuit · Sans engagement · Réponse sous 24 min
+                    Gratuit · Sans engagement
                   </p>
                 </form>
               )}
