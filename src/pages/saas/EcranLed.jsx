@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import {
-  Monitor, Zap, Calendar, Star, CheckCircle, Send,
+  Monitor, Zap, Calendar, Star, CheckCircle, Send, Sparkles,
   Phone, Mail, MapPin, AlertTriangle, ArrowRight, Clock,
   BarChart2, Eye, Repeat
 } from 'lucide-react';
@@ -94,7 +94,7 @@ const fadeUp = {
 
 export default function EcranLed() {
   const [selected, setSelected] = useState('mensuel');
-  const [form, setForm] = useState({ prenom: '', nom: '', entreprise: '', email: '', telephone: '', message: '', rgpd: false });
+  const [form, setForm] = useState({ prenom: '', nom: '', entreprise: '', email: '', telephone: '', message: '', rgpd: false, creationVisuelle: false });
   const [sent, setSent]       = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError]     = useState('');
@@ -113,7 +113,7 @@ export default function EcranLed() {
         email:     form.email,
         phone:     form.telephone,
         company:   form.entreprise,
-        message:   `[ÉCRAN LED — ${pack.label} @ ${pack.price}€${pack.unit}]\n\n${form.message}`,
+        message:   `[ÉCRAN LED — ${pack.label} @ ${pack.price}€${pack.unit}]${form.creationVisuelle ? '\n\n✅ Création Visuelle Animée — 1\u00a0390\u00a0€ HTVA (paiement unique)' : ''}\n\n${form.message}`,
         source:    'ecran-led',
         status:    'nouveau',
         consentRgpd: true,
@@ -287,6 +287,98 @@ export default function EcranLed() {
         </motion.div>
       </section>
 
+      {/* ══ CREATION VISUELLE ══ */}
+      <section style={{ padding: 'clamp(52px,8vw,80px) 5%', borderBottom: '1px solid rgba(255,255,255,0.05)',
+        background: 'linear-gradient(180deg, rgba(0,180,216,0.04) 0%, rgba(212,175,55,0.02) 40%, rgba(6,9,15,0) 100%)' }}>
+        <motion.div {...fadeUp} style={{ maxWidth: 860, margin: '0 auto' }}>
+          <p style={{ fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase', color: C.gold, marginBottom: 10 }}>
+            Pour aller plus loin
+          </p>
+          <h2 style={{ fontSize: 'clamp(1.3rem,3.5vw,2rem)', fontWeight: 900, textTransform: 'uppercase', marginBottom: 8 }}>
+            Apportez un véritable <span style={{ color: C.cyan }}>impact visuel</span> à votre campagne
+          </h2>
+          <p style={{ fontSize: 'clamp(0.82rem,2vw,0.95rem)', color: C.silver, lineHeight: 1.7, marginBottom: 'clamp(24px,4vw,36px)', maxWidth: 620 }}>
+            Nos créatifs conçoivent votre animation optimisée pour grand écran — qualité 4K, Full HD, percutante et mémorable.
+          </p>
+
+          {/* Bloc premium */}
+          <div style={{
+            background: 'linear-gradient(145deg, rgba(0,180,216,0.08), rgba(212,175,55,0.05))',
+            border: '1px solid rgba(0,180,216,0.22)',
+            borderRadius: 20,
+            padding: 'clamp(24px,4vw,36px) clamp(22px,3.5vw,32px)',
+            position: 'relative',
+            overflow: 'hidden',
+          }}>
+            {/* Ambiance top line */}
+            <div style={{
+              position: 'absolute', top: 0, left: 0, right: 0, height: 2,
+              background: 'linear-gradient(90deg, transparent, #D4AF37, #00B4D8, #D4AF37, transparent)',
+            }} />
+
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 18, flexWrap: 'wrap' }}>
+              {/* Icône */}
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                width: 52, height: 52, borderRadius: 14, flexShrink: 0,
+                background: 'linear-gradient(135deg, rgba(212,175,55,0.18), rgba(0,180,216,0.18))',
+                border: '1px solid rgba(212,175,55,0.30)',
+              }}>
+                <Sparkles size={26} color={C.gold} />
+              </div>
+
+              {/* Texte */}
+              <div style={{ flex: 1, minWidth: 260 }}>
+                <h3 style={{ fontSize: 'clamp(1rem,2.5vw,1.15rem)', fontWeight: 900, textTransform: 'uppercase', color: C.white, margin: '0 0 4px' }}>
+                  Création Visuelle Animée — Impact 4K
+                </h3>
+                <p style={{ fontSize: '0.82rem', color: C.silver, lineHeight: 1.65, margin: '0 0 16px' }}>
+                  Motion design professionnel pensé pour l'écran LED 4m × 2m. Formats optimisés grand écran, rendu Full HD / 4K, animation fluide et percutante. Votre marque sous son meilleur jour.
+                </p>
+
+                {/* Bullets */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: '6px 16px', marginBottom: 18 }}>
+                  {[
+                    'Motion design sur mesure',
+                    'Optimisé écran LED grand format',
+                    'Rendu Full HD / 4K',
+                    'Livraison sous 5 jours ouvrables',
+                  ].map(b => (
+                    <div key={b} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <div style={{ width: 5, height: 5, borderRadius: '50%', background: C.cyan, flexShrink: 0 }} />
+                      <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.62)', lineHeight: 1.5 }}>{b}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Prix + CTA */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+                  <div>
+                    <div style={{ fontSize: '1.8rem', fontWeight: 900, color: C.gold, lineHeight: 1 }}>1 390 €</div>
+                    <div style={{ fontSize: '0.68rem', color: C.muted }}>HTVA · paiement unique</div>
+                  </div>
+                  <a
+                    href="#devis"
+                    onClick={(e) => { e.preventDefault(); setForm(f => ({ ...f, creationVisuelle: true })); document.getElementById('devis')?.scrollIntoView({ behavior: 'smooth' }); }}
+                    style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 8,
+                      padding: '12px 22px', background: 'rgba(212,175,55,0.12)',
+                      border: '1px solid rgba(212,175,55,0.35)',
+                      borderRadius: 50, textDecoration: 'none',
+                      fontSize: '0.78rem', fontWeight: 800, color: C.gold,
+                      textTransform: 'uppercase', letterSpacing: '0.06em',
+                      transition: 'all 0.3s',
+                    }}>
+                    <Sparkles size={14} />
+                    Ajouter la création visuelle à ma demande
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
       {/* ══ DEVIS ══ */}
       <section id="devis" style={{ padding: 'clamp(52px,8vw,80px) 5%' }}>
         <motion.div {...fadeUp} style={{ maxWidth: 860, margin: '0 auto' }}>
@@ -415,6 +507,19 @@ export default function EcranLed() {
                       onFocus={e => e.target.style.borderColor = C.cyan}
                       onBlur={e => e.target.style.borderColor  = 'rgba(0,180,216,0.18)'} />
                   </div>
+
+                  {/* Checkbox création visuelle */}
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer',
+                    background: form.creationVisuelle ? 'rgba(212,175,55,0.07)' : 'transparent',
+                    border: form.creationVisuelle ? '1px solid rgba(212,175,55,0.25)' : '1px solid transparent',
+                    borderRadius: 10, padding: '10px 12px', transition: 'all 0.3s' }}>
+                    <input type="checkbox" checked={form.creationVisuelle}
+                      onChange={e => setForm({ ...form, creationVisuelle: e.target.checked })}
+                      style={{ marginTop: 2, accentColor: C.gold, flexShrink: 0, width: 15, height: 15 }} />
+                    <span style={{ fontSize: '0.72rem', color: form.creationVisuelle ? C.gold : C.muted, lineHeight: 1.5, transition: 'color 0.3s' }}>
+                      Je souhaite également une création visuelle animée <strong>(+1 390 € HTVA)</strong>
+                    </span>
+                  </label>
 
                   <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer' }}>
                     <input type="checkbox" required checked={form.rgpd}
