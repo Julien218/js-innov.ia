@@ -256,15 +256,31 @@ export default function EcranLed() {
                     </li>
                   ))}
                 </ul>
-                {/* Badge sélection */}
-                <div style={{ marginTop: 18, padding: '9px', textAlign: 'center',
-                  background: pack.id === selected ? 'rgba(0,180,216,0.18)' : 'rgba(255,255,255,0.04)',
-                  border: `1px solid ${pack.id === selected ? C.cyan : 'rgba(255,255,255,0.08)'}`,
-                  borderRadius: 10, fontSize: '0.72rem', fontWeight: 800,
-                  color: pack.id === selected ? C.cyan : C.muted,
-                  textTransform: 'uppercase', letterSpacing: '0.10em', transition: 'all 0.2s' }}>
-                  {pack.id === selected ? 'Sélectionné' : 'Choisir ce forfait'}
-                </div>
+                {/* CTA button */}
+                <a
+                  href="#devis"
+                  onClick={(e) => { e.preventDefault(); setSelected(pack.id); document.getElementById('devis')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  style={{
+                    marginTop: 18,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                    padding: '12px 16px', textAlign: 'center',
+                    background: pack.id === selected
+                      ? 'linear-gradient(135deg, #007FA0, #00B4D8)'
+                      : 'rgba(0,180,216,0.25)',
+                    border: `1px solid ${pack.id === selected ? C.cyan : 'rgba(0,180,216,0.35)'}`,
+                    borderRadius: 50,
+                    fontSize: '0.78rem', fontWeight: 800,
+                    color: '#fff',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    textDecoration: 'none',
+                    transition: 'all 0.3s',
+                    boxShadow: pack.id === selected ? '0 6px 22px rgba(0,180,216,0.50)' : 'none',
+                    cursor: 'pointer',
+                  }}>
+                  <ArrowRight size={14} />
+                  {pack.id === selected ? 'Devis pour ce forfait' : 'Je choisis ce forfait'}
+                </a>
               </motion.div>
             ))}
           </div>
