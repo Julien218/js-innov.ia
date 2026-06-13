@@ -23,8 +23,8 @@ const PACKS = [
     id: 'mensuel',
     icon: <Calendar size={28} />,
     label: 'Mensuel',
-    price: '450',
-    unit: '€ HTVA / mois',
+    price: '',
+    unit: '',
     tag: 'Flexibilité',
     highlight: false,
     desc: 'Idéal pour tester ou lancer une campagne courte. Renouvelable chaque mois.',
@@ -41,8 +41,8 @@ const PACKS = [
     id: 'annuel',
     icon: <Star size={28} />,
     label: 'Annuel',
-    price: '4 500',
-    unit: '€ HTVA / an',
+    price: '',
+    unit: '',
     tag: 'Meilleur tarif',
     highlight: true,
     desc: 'Le meilleur rapport qualité-prix. Visibilité continue toute l\'année.',
@@ -52,7 +52,6 @@ const PACKS = [
       '+300 passages/jour — Espace C, Dour',
       'Visuel fourni par le client (JPEG/MP4)',
       'Priorité de programmation',
-      'Économie de 900€ vs mensuel × 12',
     ],
     note: null,
   },
@@ -60,8 +59,8 @@ const PACKS = [
     id: 'festival',
     icon: <Zap size={28} />,
     label: 'Semaine Festival',
-    price: '500',
-    unit: '€ HTVA / semaine',
+    price: '',
+    unit: '',
     tag: 'Événementiel',
     highlight: false,
     desc: 'Visibilité maximale lors des grands événements à Dour (festivals, marchés, salons).',
@@ -113,7 +112,7 @@ export default function EcranLed() {
         email:     form.email,
         phone:     form.telephone,
         company:   form.entreprise,
-        message:   `[ÉCRAN LED — ${pack.label} @ ${pack.price}€${pack.unit}]${form.creationVisuelle ? '\n\n✅ Création Visuelle Animée — 1\u00a0390\u00a0€ HTVA (paiement unique)' : ''}\n\n${form.message}`,
+        message:   `[ÉCRAN LED — ${pack.label}]${form.creationVisuelle ? '\n\n✅ Création Visuelle Animée demandée' : ''}\n\n${form.message}`,
         source:    'ecran-led',
         status:    'nouveau',
         consentRgpd: true,
@@ -123,7 +122,7 @@ export default function EcranLed() {
       // Fallback mailto si Supabase KO
       const subject = encodeURIComponent(`Demande écran LED — Forfait ${pack.label}`);
       const body = encodeURIComponent(
-        `Forfait : ${pack.label} — ${pack.price}€${pack.unit}\n` +
+        `Forfait : ${pack.label}\n` +
         `Prénom : ${form.prenom}\nNom : ${form.nom}\n` +
         `Entreprise : ${form.entreprise || '—'}\n` +
         `Email : ${form.email}\nTél : ${form.telephone}\n` +
@@ -241,10 +240,7 @@ export default function EcranLed() {
                   border: '1px solid rgba(0,180,216,0.22)', borderRadius: 10, color: C.cyan, marginBottom: 14 }}>
                   {pack.icon}
                 </div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 6 }}>
-                  <span style={{ fontSize: 'clamp(2.2rem,5vw,2.8rem)', fontWeight: 900, color: C.white, lineHeight: 1 }}>{pack.price}<span style={{fontSize:'1.4rem'}}>€</span></span>
-                  <span style={{ fontSize: '0.72rem', color: C.gold, fontWeight: 700, letterSpacing:'0.04em' }}>{pack.unit}</span>
-                </div>
+
                 <h3 style={{ fontSize: 'clamp(0.95rem,2.5vw,1.05rem)', fontWeight: 900, textTransform: 'uppercase', color: C.white, margin: '0 0 6px' }}>{pack.label}</h3>
                 <p style={{ fontSize: '0.78rem', color: C.silver, lineHeight: 1.6, margin: '0 0 16px' }}>{pack.desc}</p>
                 <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', margin: '0 0 14px' }} />
@@ -351,12 +347,8 @@ export default function EcranLed() {
                   ))}
                 </div>
 
-                {/* Prix + CTA */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
-                  <div>
-                    <div style={{ fontSize: '1.8rem', fontWeight: 900, color: C.gold, lineHeight: 1 }}>1 390 €</div>
-                    <div style={{ fontSize: '0.68rem', color: C.muted }}>HTVA · paiement unique</div>
-                  </div>
+                {/* CTA */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 16, flexWrap: 'wrap' }}>
                   <a
                     href="#devis"
                     onClick={(e) => { e.preventDefault(); setForm(f => ({ ...f, creationVisuelle: true })); document.getElementById('devis')?.scrollIntoView({ behavior: 'smooth' }); }}
@@ -400,10 +392,7 @@ export default function EcranLed() {
                       <div style={{ fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: C.gold }}>{p.tag}</div>
                       <div style={{ fontSize: '1rem', fontWeight: 900, color: C.white }}>{p.label}</div>
                     </div>
-                    <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
-                      <span style={{ fontSize: '1.5rem', fontWeight: 900, color: C.cyan }}>{p.price}€</span>
-                      <span style={{ fontSize: '0.70rem', color: C.muted, display: 'block' }}>{p.unit}</span>
-                    </div>
+
                   </div>
                   <p style={{ fontSize: '0.75rem', color: C.silver, margin: 0, lineHeight: 1.6 }}>{p.desc}</p>
                 </div>
@@ -470,8 +459,7 @@ export default function EcranLed() {
                             border: `1px solid ${selected === p.id ? C.cyan : 'rgba(0,180,216,0.18)'}`,
                             borderRadius: 8, color: selected === p.id ? C.cyan : C.muted,
                             fontSize: '0.68rem', fontWeight: 800, cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                          {p.label}<br />
-                          <span style={{ fontSize: '0.78rem', color: selected === p.id ? C.gold : 'rgba(255,255,255,0.3)', fontWeight: 900 }}>{p.price}€</span>
+                          {p.label}
                         </button>
                       ))}
                     </div>
@@ -517,7 +505,7 @@ export default function EcranLed() {
                       onChange={e => setForm({ ...form, creationVisuelle: e.target.checked })}
                       style={{ marginTop: 2, accentColor: C.gold, flexShrink: 0, width: 15, height: 15 }} />
                     <span style={{ fontSize: '0.72rem', color: form.creationVisuelle ? C.gold : C.muted, lineHeight: 1.5, transition: 'color 0.3s' }}>
-                      Je souhaite également une création visuelle animée <strong>(+1 390 € HTVA)</strong>
+                      Je souhaite également une création visuelle animée
                     </span>
                   </label>
 
