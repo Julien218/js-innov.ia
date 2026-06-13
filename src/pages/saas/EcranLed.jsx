@@ -24,7 +24,7 @@ const PACKS = [
     icon: <Calendar size={28} />,
     label: 'Mensuel',
     price: '450',
-    unit: '/ mois',
+    unit: '€ HTVA / mois',
     tag: 'Flexibilité',
     highlight: false,
     desc: 'Idéal pour tester ou lancer une campagne courte. Renouvelable chaque mois.',
@@ -42,7 +42,7 @@ const PACKS = [
     icon: <Star size={28} />,
     label: 'Annuel',
     price: '4 500',
-    unit: '/ an',
+    unit: '€ HTVA / an',
     tag: 'Meilleur tarif',
     highlight: true,
     desc: 'Le meilleur rapport qualité-prix. Visibilité continue toute l\'année.',
@@ -61,7 +61,7 @@ const PACKS = [
     icon: <Zap size={28} />,
     label: 'Semaine Festival',
     price: '500',
-    unit: '/ semaine',
+    unit: '€ HTVA / semaine',
     tag: 'Événementiel',
     highlight: false,
     desc: 'Visibilité maximale lors des grands événements à Dour (festivals, marchés, salons).',
@@ -242,8 +242,8 @@ export default function EcranLed() {
                   {pack.icon}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 6 }}>
-                  <span style={{ fontSize: 'clamp(2.2rem,5vw,2.8rem)', fontWeight: 900, color: C.white, lineHeight: 1 }}>{pack.price}€</span>
-                  <span style={{ fontSize: '0.78rem', color: C.muted, fontWeight: 600 }}>{pack.unit}</span>
+                  <span style={{ fontSize: 'clamp(2.2rem,5vw,2.8rem)', fontWeight: 900, color: C.white, lineHeight: 1 }}>{pack.price}<span style={{fontSize:'1.4rem'}}>€</span></span>
+                  <span style={{ fontSize: '0.72rem', color: C.gold, fontWeight: 700, letterSpacing:'0.04em' }}>{pack.unit}</span>
                 </div>
                 <h3 style={{ fontSize: 'clamp(0.95rem,2.5vw,1.05rem)', fontWeight: 900, textTransform: 'uppercase', color: C.white, margin: '0 0 6px' }}>{pack.label}</h3>
                 <p style={{ fontSize: '0.78rem', color: C.silver, lineHeight: 1.6, margin: '0 0 16px' }}>{pack.desc}</p>
