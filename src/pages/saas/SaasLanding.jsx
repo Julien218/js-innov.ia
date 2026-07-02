@@ -71,7 +71,7 @@ function NeuralBg() {
     draw();
     return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };
   }, []);
-  return <canvas ref={ref} className="absolute inset-0 pointer-events-none opacity-40" />;
+  return <canvas ref={ref} className="absolute inset-0 pointer-events-none opacity-40" style={{ zIndex: 2 }} />;
 }
 
 // ── Before/After Branding Demo ──────────────────────────────────────────────
@@ -457,8 +457,24 @@ export default function SaasLanding() {
 
       {/* ══ HERO ══════════════════════════════════════════════════════════ */}
       <section className="relative min-h-screen flex items-center overflow-hidden px-5 pt-20 pb-16">
+        {/* ══ VIDEO HERO — promo JS-Innov.IA (muted/playsInline/autoPlay/loop pour compat mobile) ══ */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ zIndex: 0 }}
+        >
+          <source src="https://base44.app/api/apps/6a1845e17cc526d1e44965bc/files/mp/public/6a1845e17cc526d1e44965bc/27927ee4f_promo_video.mp4" type="video/mp4" />
+        </video>
+        {/* Voile navy pour garder le thème actuel et la lisibilité du texte */}
+        <div className="absolute inset-0" style={{ zIndex: 1, background: `linear-gradient(180deg, ${NOIR}CC 0%, ${NOIR}99 35%, ${NOIR}E8 100%)` }} />
+
         <NeuralBg />
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 3 }}>
           <motion.div animate={{ scale: [1, 1.1, 1], opacity: [0.12, 0.2, 0.12] }} transition={{ duration: 8, repeat: Infinity }}
             className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full blur-[160px]"
             style={{ background: `radial-gradient(circle, ${GOLD}25, transparent 70%)` }} />
