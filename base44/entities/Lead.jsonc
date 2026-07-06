@@ -57,12 +57,7 @@
     },
     "source": {
       "type": "string",
-      "enum": [
-        "chatbot",
-        "formulaire",
-        "WhatsApp",
-        "direct"
-      ]
+      "description": "Origine du lead (contact_form, chatbot, devis_form, ecran-led, landing_form...)"
     },
     "consentRgpd": {
       "type": "boolean",
