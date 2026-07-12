@@ -29,6 +29,7 @@
  *   import Home from './pages/Home';
  *   import Settings from './pages/Settings';
  *   import Commande from './pages/Commande';
+import Fidelite from './pages/Fidelite';
 import __Layout from './Layout.jsx';
  *
  *   export const PAGES = {
@@ -82,6 +83,7 @@ import Pricing from './pages/Pricing';
 import PageManager from './pages/PageManager';
 import DynamicPageView from './pages/DynamicPageView';
 import Commande from './pages/Commande';
+import Fidelite from './pages/Fidelite';
 import __Layout from './Layout.jsx';
 
 
@@ -119,6 +121,7 @@ export const PAGES = {
     "Pricing": Pricing,
     "PageManager": PageManager,
     "Commande": Commande,
+    "Fidelite": Fidelite,
 }
 
 export const pagesConfig = {
