@@ -17,8 +17,9 @@ Deno.serve(async (req) => {
     let localLead;
     try {
       localLead = await base44.entities.Lead.create({
-        firstName, lastName, email, phone, company,
-        need, message, source, status: "nouveau",
+        ...body,
+        source,
+        status: "nouveau",
       });
     } catch (e) {
       console.error("Erreur sauvegarde locale Lead:", e);

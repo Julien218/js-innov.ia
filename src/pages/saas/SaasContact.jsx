@@ -42,15 +42,14 @@ export default function SaasContact() {
     e.preventDefault();
     if (!form.consentRgpd) return alert('Consentement RGPD obligatoire.');
     setLoading(true);
-    await base44.entities.Lead.create({
+    await base44.functions.invoke('receiveLead', {
       ...form,
       name: `${form.firstName} ${form.lastName}`,
       recommendedPack: packSummary?.pack || packParam || '',
       need: packSummary?.options?.join(', ') || '',
       budget: packSummary?.estimatedPrice || '',
       message: `${form.message}\n\n--- Configuration choisie ---\nPack : ${packSummary?.pack || '—'}\nOptions : ${packSummary?.options?.join(', ') || 'Aucune'}\nEstimation : ${packSummary?.estimatedPrice || '—'}`,
-      source: 'formulaire',
-      status: 'nouveau',
+      source: 'contact_form',
       consentRgpd: true,
     });
     setSubmitted(true);

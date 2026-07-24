@@ -107,14 +107,15 @@ export default function EcranLed() {
     const pack = PACKS.find(p => p.id === selected);
 
     try {
-      await base44.entities.Lead.create({
-        name:      `${form.prenom} ${form.nom}`.trim(),
+      await base44.functions.invoke('receiveLead', {
+        firstName: form.prenom,
+        lastName:  form.nom,
         email:     form.email,
         phone:     form.telephone,
         company:   form.entreprise,
+        need:      pack.label,
         message:   `[ÉCRAN LED — ${pack.label}]${form.creationVisuelle ? '\n\n✅ Création Visuelle Animée demandée' : ''}\n\n${form.message}`,
         source:    'ecran-led',
-        status:    'nouveau',
         consentRgpd: true,
       });
       setSent(true);

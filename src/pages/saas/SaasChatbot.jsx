@@ -144,12 +144,12 @@ export default function SaasChatbot() {
     setLoading(true);
     const recommended = PACK_LOGIC(data);
     setPack(recommended);
-    await base44.entities.Lead.create({
+    await base44.functions.invoke('receiveLead', {
       ...data,
       recommendedPack: recommended,
       source: 'chatbot',
-      status: 'nouveau',
       consentRgpd: true,
+      message: [data.problem, data.currentSetup, data.goal, data.deadline, data.budget].filter(Boolean).join(' — '),
     });
     addUserMessage("J'accepte que mes données soient utilisées pour être recontacté.");
     setTimeout(() => {
