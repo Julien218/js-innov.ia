@@ -30,7 +30,6 @@ function PhoenixLogo({ size = 36 }) {
 const navItems = [
   { label: 'Accueil', path: '/' },
   { label: 'Packs', path: '/saas-packs' },
-  { label: 'Événements', path: '/saas-events' },
   { label: 'Agents IA', path: '/saas-agents' },
   { label: 'Contact', path: '/saas-contact' },
   { label: 'Mon espace', path: '/saas-client' },
