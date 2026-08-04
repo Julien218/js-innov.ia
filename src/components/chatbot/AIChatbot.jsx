@@ -15,6 +15,7 @@ export default function AIChatbot() {
   const [input, setInput] = useState('');
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
+  const [lastInput, setLastInput] = useState('');
   const inputRef = useRef(null);
   const endRef = useRef(null);
 
@@ -34,13 +35,14 @@ export default function AIChatbot() {
     const nextMessages = [...messages, { role: 'user', content }];
     setMessages(nextMessages);
     setInput('');
+    setLastInput(content);
     setError('');
     setStatus('loading');
 
     try {
-      const response = await base44.functions.invoke('publicChat', {
+      const response = await Promise.race([base44.functions.invoke('publicChat', {
         messages: nextMessages.slice(-10).map(({ role, content: text }) => ({ role, content: text }))
-      });
+      }), new Promise((_, reject) => window.setTimeout(() => reject(new Error('timeout')), 25_000))]);
       const answer = response?.data?.message;
       if (!answer) throw new Error('Réponse vide');
       setMessages((current) => [...current, { role: 'assistant', content: answer }]);
@@ -88,7 +90,7 @@ export default function AIChatbot() {
                 </div>
               ))}
               {status === 'loading' && <p className="flex items-center gap-2 text-sm text-slate-300"><Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Le compagnon réfléchit…</p>}
-              {error && <p className="flex items-start gap-2 rounded-xl border border-red-400/30 bg-red-500/10 p-3 text-sm text-red-100" role="alert"><AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{error}</p>}
+              {error && <div className="rounded-xl border border-red-400/30 bg-red-500/10 p-3 text-sm text-red-100" role="alert"><p className="flex items-start gap-2"><AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{error}</p><button type="button" onClick={() => { setInput(lastInput); setStatus('idle'); setError(''); inputRef.current?.focus(); }} className="mt-2 font-semibold underline underline-offset-2">Réessayer</button></div>}
               <div ref={endRef} />
             </div>
 
@@ -100,7 +102,7 @@ export default function AIChatbot() {
                   <Send className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
-              <p className="mt-2 text-center text-[11px] text-slate-500">Ne partagez pas d’informations sensibles.</p>
+              <p className="mt-2 text-center text-[11px] text-slate-500">Ne partagez pas d’informations sensibles. Vos messages sont transmis à notre service IA pour générer la réponse.</p>
             </form>
           </motion.section>
         )}
