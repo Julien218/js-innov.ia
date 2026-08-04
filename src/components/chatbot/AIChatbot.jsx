@@ -1,424 +1,108 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, Loader2, Mic, MicOff, Settings, Download } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Slider } from '@/components/ui/slider';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { AlertCircle, Loader2, Send, X } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import AIAvatar from './AIAvatar';
 
+const WELCOME = {
+  role: 'assistant',
+  content: 'Bonjour ! Je suis votre compagnon JS-Innov.IA. Je peux vous guider parmi nos services, répondre à vos questions et vous aider à concrétiser votre projet.'
+};
+
 export default function AIChatbot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(true);
-  const [showSettings, setShowSettings] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      role: 'assistant',
-      content: 'Bonjour ! 👋 Je suis l\'assistant de JS-INNOV.IA, votre partenaire en intelligence artificielle.\n\n🎯 **Nos Services:**\n\n✨ **Innovations IA** - Découvrez nos idées révolutionnaires\n🎬 **Templates Vidéo** - Créations professionnelles\n⚡ **Automatisations** - Solutions clé en main\n🚀 **Applications IA** - Développement sur mesure\n🎵 **Musiques** - Économisez sur la SABAM\n\nComment puis-je vous aider à transformer votre projet ?'
-    }
-  ]);
+  const [messages, setMessages] = useState([WELCOME]);
   const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isListening, setIsListening] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  
-  // Paramètres de personnalisation
-  const [settings, setSettings] = useState(() => {
-    const saved = localStorage.getItem('chatbotSettings');
-    return saved ? JSON.parse(saved) : {
-      tone: 'amical',
-      speechRate: 1.0,
-      messageTypes: {
-        proverbes: true,
-        conseils: true,
-        services: true
-      }
-    };
-  });
-
-  const messagesEndRef = useRef(null);
-  const recognitionRef = useRef(null);
-  const synthRef = useRef(null);
-
-  // Sauvegarder les paramètres
-  useEffect(() => {
-    localStorage.setItem('chatbotSettings', JSON.stringify(settings));
-  }, [settings]);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const [status, setStatus] = useState('idle');
+  const [error, setError] = useState('');
+  const inputRef = useRef(null);
+  const endRef = useRef(null);
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    if (isOpen) window.setTimeout(() => inputRef.current?.focus(), 150);
+  }, [isOpen]);
 
-  // Initialize speech synthesis and recognition
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      synthRef.current = window.speechSynthesis;
+    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, status]);
 
-      // Initialize speech recognition
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (SpeechRecognition) {
-        recognitionRef.current = new SpeechRecognition();
-        recognitionRef.current.continuous = false;
-        recognitionRef.current.interimResults = false;
-        recognitionRef.current.lang = 'fr-FR';
+  async function sendMessage(event) {
+    event?.preventDefault();
+    const content = input.trim();
+    if (!content || status === 'loading') return;
 
-        recognitionRef.current.onresult = (event) => {
-          const transcript = event.results[0][0].transcript;
-          setInput(transcript);
-          setIsListening(false);
-        };
-
-        recognitionRef.current.onerror = () => {
-          setIsListening(false);
-        };
-
-        recognitionRef.current.onend = () => {
-          setIsListening(false);
-        };
-      }
-    }
-
-    return () => {
-      if (synthRef.current) {
-        synthRef.current.cancel();
-      }
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
-      }
-    };
-  }, []);
-
-  const speakText = (text) => {
-    if (synthRef.current) {
-      synthRef.current.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'fr-FR';
-      utterance.rate = settings.speechRate;
-      utterance.pitch = 1.1;
-      
-      utterance.onstart = () => setIsSpeaking(true);
-      utterance.onend = () => setIsSpeaking(false);
-      utterance.onerror = () => setIsSpeaking(false);
-
-      synthRef.current.speak(utterance);
-    }
-  };
-
-  const saveConversation = () => {
-    const conversationData = JSON.stringify(messages, null, 2);
-    const blob = new Blob([conversationData], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `conversation-${new Date().toISOString().slice(0,10)}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  const toggleListening = () => {
-    if (!recognitionRef.current) {
-      alert('La reconnaissance vocale n\'est pas supportée par votre navigateur');
-      return;
-    }
-
-    if (isListening) {
-      recognitionRef.current.stop();
-      setIsListening(false);
-    } else {
-      recognitionRef.current.start();
-      setIsListening(true);
-    }
-  };
-
-  const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
-
-    const userMessage = input.trim();
+    const nextMessages = [...messages, { role: 'user', content }];
+    setMessages(nextMessages);
     setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
-    setIsLoading(true);
+    setError('');
+    setStatus('loading');
 
     try {
-      const toneInstructions = {
-        formel: 'Utilise un ton professionnel, courtois et précis. Vouvoie le client. Sois concis et direct.',
-        amical: 'Utilise un ton chaleureux, accessible et enthousiaste. Tutoie le client. Sois convivial et engageant.',
-        technique: 'Utilise un ton expert et détaillé. Mets l\'accent sur les spécifications techniques, les technologies IA utilisées et les bénéfices techniques.'
-      };
-
-      const context = `Tu es l'assistant virtuel commercial de JS-INNOV.IA. Ton rôle est de présenter nos services et convaincre le client d'acheter.
-
-      🎯 SERVICES À PROMOUVOIR:
-
-      1. **Innovations IA** (page Innovations)
-         - Solutions révolutionnaires et idées futuristes
-         - Transforme les entreprises avec l'IA
-
-      2. **Templates Vidéo** (page Templates)
-         - Vidéos marketing professionnelles générées par IA
-         - Gain de temps et qualité studio
-
-      3. **Automatisations** (page Automations)
-         - Solutions clé en main pour optimiser processus
-         - Marketing, productivité, e-commerce
-
-      4. **Applications IA** (page Applications)
-         - Développement sur mesure d'apps intelligentes
-         - Assistants IA, analyse de données, CRM
-
-      5. **Musiques pour Commerces** (page MusicShop)
-         - ARGUMENT FORT: Économisez 100-300€/an de frais SABAM
-         - Bandes sonores libres de droits, paiement unique
-         - Idéal pour boutiques, restaurants, salons, spas
-         - Aussi: créations musicales sur mesure
-
-      🎯 TON STYLE DE COMMUNICATION:
-      ${toneInstructions[settings.tone]}
-
-      🎯 TON APPROCHE:
-      - Être ${settings.tone === 'formel' ? 'professionnel' : settings.tone === 'amical' ? 'enthousiaste' : 'précis et technique'}
-      - Mettre en avant les bénéfices concrets et économies
-      - Orienter vers la page Contact pour devis/commande
-      - Pour les musiques, insister sur l'économie SABAM
-      - Toujours finir en suggérant une action (visiter une page, nous contacter)
-
-      Réponds de manière ${settings.tone === 'formel' ? 'professionnelle et courtoise' : settings.tone === 'amical' ? 'chaleureuse et persuasive' : 'technique et détaillée'}. Mets en avant les avantages économiques et la valeur ajoutée.`;
-
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `${context}\n\nQuestion du client: ${userMessage}`,
-        add_context_from_internet: false
+      const response = await base44.functions.invoke('publicChat', {
+        messages: nextMessages.slice(-10).map(({ role, content: text }) => ({ role, content: text }))
       });
-
-      const assistantMessage = typeof response.data === 'string' 
-        ? response.data 
-        : (response.data?.response || response.data?.content || 'Je suis ravi de vous aider ! Pouvez-vous me donner plus de détails sur ce que vous recherchez ?');
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: assistantMessage
-      }]);
-
-      // Speak the response
-      speakText(assistantMessage);
-    } catch (error) {
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: 'Désolé, une erreur s\'est produite. Veuillez réessayer.' 
-      }]);
-    } finally {
-      setIsLoading(false);
+      const answer = response?.data?.message;
+      if (!answer) throw new Error('Réponse vide');
+      setMessages((current) => [...current, { role: 'assistant', content: answer }]);
+      setStatus('idle');
+    } catch {
+      setError('Le compagnon est momentanément indisponible. Réessayez dans un instant.');
+      setStatus('error');
     }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
+  }
 
   return (
     <>
-      {/* AI Avatar Button */}
-      {!isOpen && (
-        <AIAvatar 
-          onClick={() => {
-            setIsOpen(true);
-            setShowWelcome(false);
-          }} 
-          showWelcome={showWelcome}
-          isSpeaking={isSpeaking}
-          messageTypes={settings.messageTypes}
-        />
-      )}
-
-      {/* Chat Window */}
+      {!isOpen && <AIAvatar onClick={() => setIsOpen(true)} showWelcome={messages.length === 1} />}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 100, scale: 0.8 }}
+          <motion.section
+            initial={{ opacity: 0, y: 24, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 100, scale: 0.8 }}
-            className="fixed bottom-6 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] h-[600px] max-h-[calc(100vh-3rem)] rounded-3xl bg-gray-900 border border-purple-500/30 shadow-2xl flex flex-col overflow-hidden"
+            exit={{ opacity: 0, y: 24, scale: 0.97 }}
+            className="fixed inset-3 z-[80] flex flex-col overflow-hidden rounded-3xl border border-amber-300/30 bg-slate-950 shadow-2xl sm:inset-auto sm:bottom-6 sm:right-6 sm:h-[min(680px,calc(100vh-3rem))] sm:w-[min(420px,calc(100vw-3rem))]"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="companion-title"
           >
-            {/* Header */}
-            <div className="p-4 bg-gradient-to-r from-pink-600 to-purple-600 flex items-center justify-between">
+            <header className="flex items-center justify-between border-b border-white/10 bg-gradient-to-r from-amber-500/25 via-purple-600/25 to-cyan-500/20 p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
-                  <Bot className="w-5 h-5 text-white" />
-                </div>
+                <img src="/jsinnovia-companion.png" alt="" className="h-12 w-12 object-contain" />
                 <div>
-                  <h3 className="font-semibold text-white">Assistant IA</h3>
-                  <p className="text-xs text-pink-100">Ton {settings.tone}</p>
+                  <h2 id="companion-title" className="font-semibold text-white">Compagnon JS-Innov.IA</h2>
+                  <p className="text-xs text-emerald-300">Assistant public</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={saveConversation}
-                  className="p-2 hover:bg-white/20 rounded-lg transition-colors"
-                  title="Sauvegarder la conversation"
-                >
-                  <Download className="w-5 h-5 text-white" />
-                </button>
-                <button
-                  onClick={() => setShowSettings(!showSettings)}
-                  className="p-2 hover:bg-white/20 rounded-lg transition-colors"
-                  title="Paramètres"
-                >
-                  <Settings className="w-5 h-5 text-white" />
-                </button>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="p-2 hover:bg-white/20 rounded-lg transition-colors"
-                >
-                  <X className="w-5 h-5 text-white" />
-                </button>
-              </div>
-            </div>
+              <button type="button" onClick={() => setIsOpen(false)} className="rounded-lg p-2 text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300" aria-label="Fermer le chat">
+                <X aria-hidden="true" />
+              </button>
+            </header>
 
-            {/* Settings Panel */}
-            <AnimatePresence>
-              {showSettings && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  className="bg-gray-800 border-b border-gray-700 overflow-hidden"
-                >
-                  <div className="p-4 space-y-4">
-                    <div>
-                      <label className="text-xs text-gray-400 mb-2 block">Ton de l'assistant</label>
-                      <Select value={settings.tone} onValueChange={(value) => setSettings({...settings, tone: value})}>
-                        <SelectTrigger className="bg-gray-900 border-gray-700 text-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="formel">Formel</SelectItem>
-                          <SelectItem value="amical">Amical</SelectItem>
-                          <SelectItem value="technique">Technique</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <label className="text-xs text-gray-400 mb-2 block">Vitesse de parole: {settings.speechRate.toFixed(1)}x</label>
-                      <Slider
-                        value={[settings.speechRate]}
-                        onValueChange={([value]) => setSettings({...settings, speechRate: value})}
-                        min={0.5}
-                        max={2.0}
-                        step={0.1}
-                        className="w-full"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs text-gray-400 mb-2 block">Types de messages de l'avatar</label>
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <Checkbox
-                            checked={settings.messageTypes.proverbes}
-                            onCheckedChange={(checked) => setSettings({
-                              ...settings,
-                              messageTypes: {...settings.messageTypes, proverbes: checked}
-                            })}
-                          />
-                          <span className="text-sm text-gray-300">Proverbes IA</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Checkbox
-                            checked={settings.messageTypes.conseils}
-                            onCheckedChange={(checked) => setSettings({
-                              ...settings,
-                              messageTypes: {...settings.messageTypes, conseils: checked}
-                            })}
-                          />
-                          <span className="text-sm text-gray-300">Conseils</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Checkbox
-                            checked={settings.messageTypes.services}
-                            onCheckedChange={(checked) => setSettings({
-                              ...settings,
-                              messageTypes: {...settings.messageTypes, services: checked}
-                            })}
-                          />
-                          <span className="text-sm text-gray-300">Info services</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-950">
+            <div className="flex-1 space-y-4 overflow-y-auto p-4" aria-live="polite" aria-busy={status === 'loading'}>
               {messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`max-w-[80%] p-3 rounded-2xl ${
-                      message.role === 'user'
-                        ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white'
-                        : 'bg-gray-800 text-gray-100'
-                    }`}
-                  >
-                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                  </div>
+                <div key={`${message.role}-${index}`} className={`flex gap-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  {message.role === 'assistant' && <img src="/jsinnovia-companion.png" alt="" className="h-8 w-8 shrink-0 object-contain" />}
+                  <p className={`max-w-[82%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === 'user' ? 'bg-purple-600 text-white' : 'bg-white/10 text-slate-100'}`}>
+                    {message.content}
+                  </p>
                 </div>
               ))}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-gray-800 text-gray-100 p-3 rounded-2xl flex items-center gap-2">
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span className="text-sm">Réflexion en cours...</span>
-                  </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
+              {status === 'loading' && <p className="flex items-center gap-2 text-sm text-slate-300"><Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Le compagnon réfléchit…</p>}
+              {error && <p className="flex items-start gap-2 rounded-xl border border-red-400/30 bg-red-500/10 p-3 text-sm text-red-100" role="alert"><AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />{error}</p>}
+              <div ref={endRef} />
             </div>
 
-            {/* Input */}
-            <div className="p-4 bg-gray-900 border-t border-gray-800">
+            <form onSubmit={sendMessage} className="border-t border-white/10 bg-slate-900 p-4">
+              <label htmlFor="companion-message" className="sr-only">Votre message</label>
               <div className="flex gap-2">
-                <Button
-                  onClick={toggleListening}
-                  disabled={isLoading}
-                  className={`${
-                    isListening 
-                      ? 'bg-red-600 hover:bg-red-700' 
-                      : 'bg-gray-700 hover:bg-gray-600'
-                  }`}
-                >
-                  {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-                </Button>
-                <Input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder={isListening ? "En écoute..." : "Posez votre question..."}
-                  className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
-                  disabled={isLoading || isListening}
-                />
-                <Button
-                  onClick={handleSend}
-                  disabled={isLoading || !input.trim()}
-                  className="bg-gradient-to-r from-pink-600 to-purple-600 hover:shadow-lg hover:shadow-pink-500/50"
-                >
-                  <Send className="w-4 h-4" />
-                </Button>
+                <textarea id="companion-message" ref={inputRef} value={input} onChange={(event) => setInput(event.target.value.slice(0, 1000))} onKeyDown={(event) => { if (event.key === 'Enter' && !event.shiftKey) sendMessage(event); }} rows={1} disabled={status === 'loading'} placeholder="Écrivez votre message…" className="min-h-11 flex-1 resize-none rounded-xl border border-white/15 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-300 disabled:opacity-60" />
+                <button type="submit" disabled={!input.trim() || status === 'loading'} className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-amber-400 to-purple-600 text-slate-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-200 disabled:cursor-not-allowed disabled:opacity-50" aria-label="Envoyer le message">
+                  <Send className="h-4 w-4" aria-hidden="true" />
+                </button>
               </div>
-            </div>
-          </motion.div>
+              <p className="mt-2 text-center text-[11px] text-slate-500">Ne partagez pas d’informations sensibles.</p>
+            </form>
+          </motion.section>
         )}
       </AnimatePresence>
     </>
