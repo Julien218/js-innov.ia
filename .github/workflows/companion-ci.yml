@@ -1,0 +1,56 @@
+name: Companion CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches:
+      - agent/finish-public-companion
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: companion-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Test, lint, typecheck and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run companion tests
+        run: npm test
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run TypeScript checks
+        run: npm run typecheck
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Upload production bundle
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jsinnovia-companion-dist
+          path: dist
+          if-no-files-found: error
+          retention-days: 7
