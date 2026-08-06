@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
@@ -173,8 +173,8 @@ export default function Automations() {
         {/* Recommendations */}
         {viewedAutomation && (
           <div className="mt-20">
-            <RecommendationsSection 
-              currentType="automation" 
+            <RecommendationsSection
+              currentType="automation"
               currentItem={viewedAutomation}
               compact={true}
             />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
@@ -85,7 +85,7 @@ export default function Contact() {
           >
             <div>
               <h3 className="text-2xl font-bold text-white mb-6">Informations</h3>
-              
+
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="p-3 rounded-xl bg-gradient-to-br from-pink-600/20 to-purple-600/20 border border-pink-500/30">

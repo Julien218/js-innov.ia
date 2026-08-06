@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Calendar, Clock, Award } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';

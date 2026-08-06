@@ -2,7 +2,7 @@
  * VoiceButton — Bouton flottant pour activer l'assistant vocal
  * À insérer dans le Layout principal du Cockpit / jsinnovia.com
  */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Mic } from 'lucide-react';
 import VoiceAssistant from './VoiceAssistant';
 
@@ -24,7 +24,6 @@ export default function VoiceButton() {
           width: 52,
           height: 52,
           borderRadius: '50%',
-          border: 'none',
           cursor: 'pointer',
           background: open
             ? 'rgba(255,77,77,0.3)'

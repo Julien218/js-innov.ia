@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
@@ -47,8 +47,8 @@ export default function CRM() {
     }
   });
 
-  const filteredSubmissions = statusFilter === 'all' 
-    ? submissions 
+  const filteredSubmissions = statusFilter === 'all'
+    ? submissions
     : submissions.filter(s => s.status === statusFilter);
 
   const statusColors = {
@@ -59,27 +59,27 @@ export default function CRM() {
   };
 
   const stats = [
-    { 
-      icon: TrendingUp, 
-      label: 'Total Leads', 
+    {
+      icon: TrendingUp,
+      label: 'Total Leads',
       value: submissions.length,
       color: 'from-pink-600 to-purple-600'
     },
-    { 
-      icon: Clock, 
-      label: 'En attente', 
+    {
+      icon: Clock,
+      label: 'En attente',
       value: submissions.filter(s => s.status === 'Nouveau').length,
       color: 'from-blue-600 to-cyan-600'
     },
-    { 
-      icon: Zap, 
-      label: 'En cours', 
+    {
+      icon: Zap,
+      label: 'En cours',
       value: submissions.filter(s => s.status === 'En cours').length,
       color: 'from-yellow-600 to-orange-600'
     },
-    { 
-      icon: CheckCircle2, 
-      label: 'Traités', 
+    {
+      icon: CheckCircle2,
+      label: 'Traités',
       value: submissions.filter(s => s.status === 'Traité').length,
       color: 'from-green-600 to-emerald-600'
     }
@@ -189,8 +189,8 @@ export default function CRM() {
                   transition={{ delay: index * 0.05 }}
                   onClick={() => setSelectedSubmission(submission)}
                   className={`bg-gradient-to-br from-white/5 to-white/[0.02] border rounded-2xl p-6 cursor-pointer transition-all ${
-                    selectedSubmission?.id === submission.id 
-                      ? 'border-pink-500/50 shadow-lg shadow-pink-500/20' 
+                    selectedSubmission?.id === submission.id
+                      ? 'border-pink-500/50 shadow-lg shadow-pink-500/20'
                       : 'border-purple-500/20 hover:border-purple-500/40'
                   }`}
                 >

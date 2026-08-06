@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import { Sparkles, Zap, Copy, Check, ChevronDown } from 'lucide-react';
+import { Sparkles, Zap, Copy, Check } from 'lucide-react';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';

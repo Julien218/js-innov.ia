@@ -1,4 +1,3 @@
-import React from 'react';
 import { useCart } from '../components/cart/CartContext';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../utils';
@@ -76,7 +75,7 @@ export default function Cart() {
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
                     <p className="text-sm text-gray-400 mb-3">{item.license_type}</p>
-                    
+
                     <div className="flex items-center justify-between">
                       {/* Quantity Controls */}
                       <div className="flex items-center gap-3">
@@ -125,7 +124,7 @@ export default function Cart() {
               className="bg-gradient-to-br from-white/5 to-white/[0.02] border border-purple-500/20 rounded-2xl p-6 sticky top-24"
             >
               <h3 className="text-xl font-bold text-white mb-6">Récapitulatif</h3>
-              
+
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between text-gray-400">
                   <span>Sous-total</span>

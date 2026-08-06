@@ -1,10 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import ReactMarkdown from 'react-markdown';
 import {
-  Zap, Send, Copy, Check, RotateCcw, ChevronDown, Code, Gamepad2,
-  Sparkles, Clock, Terminal, Trash2, MessageSquare, X
+  Zap, Send, Copy, Check, RotateCcw, Code, Gamepad2, Clock, Terminal, MessageSquare, X
 } from 'lucide-react';
 
 /* ── Design tokens ── */

@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
-import { ShoppingCart, Loader2, CreditCard } from 'lucide-react';
+import { Loader2, CreditCard } from 'lucide-react';
 import { toast } from 'sonner';
 
-export default function CheckoutButton({ 
-  productType, 
-  productId, 
-  productName, 
+export default function CheckoutButton({
+  productType,
+  productId,
+  productName,
   price,
   className = "",
   variant = "default",
@@ -17,7 +17,7 @@ export default function CheckoutButton({
 
   const handleCheckout = async (e) => {
     e.stopPropagation();
-    
+
     if (!price || price <= 0) {
       toast.error('Prix non disponible. Contactez-nous pour un devis.');
       return;

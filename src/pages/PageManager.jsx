@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Edit, Trash2, Eye, EyeOff, Globe, FileText, X, Save, ExternalLink } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Plus, Edit, Trash2, Eye, Globe, FileText, X, Save, ExternalLink } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import ReactMarkdown from 'react-markdown';

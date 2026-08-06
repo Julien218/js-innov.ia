@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { Send, CheckCircle, Sparkles, User, Mail, Phone, Building2, MessageSquare } from 'lucide-react';

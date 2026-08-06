@@ -1,0 +1,85 @@
+name: Companion CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches:
+      - agent/finish-public-companion
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: companion-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  production-gate:
+    name: Companion production gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run companion security and integration tests
+        run: npm test
+
+      - name: Validate companion source without warnings
+        run: npm exec -- eslint src/components/chatbot/AIAvatar.jsx src/components/chatbot/AIChatbot.jsx --max-warnings=0
+
+      - name: Run repository ESLint
+        run: npm run lint
+
+      - name: Verify patch integrity
+        run: git diff --check
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Upload production bundle
+        uses: actions/upload-artifact@v5
+        with:
+          name: jsinnovia-companion-dist
+          path: dist
+          if-no-files-found: error
+          retention-days: 7
+
+  repository-health:
+    name: Repository health advisory
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    continue-on-error: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Report legacy TypeScript debt
+        continue-on-error: true
+        run: npm run typecheck
+
+      - name: Audit production dependencies
+        continue-on-error: true
+        run: npm audit --omit=dev --audit-level=critical

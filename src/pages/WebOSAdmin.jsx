@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-  Users, FileText, Ticket, BarChart3, Zap, ChevronRight, Clock,
-  TrendingUp, AlertTriangle, CheckCircle, Eye, MessageCircle, Settings, Mail
+import { FileText, Ticket,
+  TrendingUp, AlertTriangle, MessageCircle
 } from 'lucide-react';
 
 const GOLD = '#D4AF37';

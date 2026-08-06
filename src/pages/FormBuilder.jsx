@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { FileText, Plus, Edit, Trash2, ExternalLink, Copy } from 'lucide-react';
+import { FileText, Plus, Edit, Trash2, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -244,7 +244,7 @@ export default function FormBuilder() {
               {/* Field Builder */}
               <div className="border-t border-gray-700 pt-6">
                 <h4 className="text-lg font-semibold text-white mb-4">Champs du formulaire</h4>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
                   <Input
                     placeholder="Label du champ"

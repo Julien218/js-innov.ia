@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wand2, Copy, CheckCircle, Loader2, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -64,7 +64,7 @@ Génère un contenu complet, prêt à être publié, en HTML avec balises.`,
       });
 
       const content = typeof response.data === 'string' ? response.data : response.data?.content || '';
-      
+
       setGeneratedContent({
         html: content,
         wordCount: content.split(/\s+/).length,
@@ -226,7 +226,7 @@ Génère un contenu complet, prêt à être publié, en HTML avec balises.`,
             </div>
 
             <div className="bg-black/40 rounded-xl p-6 max-h-[500px] overflow-y-auto">
-              <div 
+              <div
                 className="prose prose-invert max-w-none"
                 dangerouslySetInnerHTML={{ __html: generatedContent.html }}
               />

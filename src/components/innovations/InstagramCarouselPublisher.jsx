@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Instagram, Send, CheckCircle2, AlertCircle, X, ImageOff, Loader2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 

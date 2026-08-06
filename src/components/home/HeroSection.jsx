@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, Zap, Cpu } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -7,10 +6,10 @@ import PowerWord from '../shared/PowerWord';
 
 export default function HeroSection() {
   return (
-    <header 
-      className="relative overflow-hidden" 
+    <header
+      className="relative overflow-hidden"
       role="banner"
-      itemScope 
+      itemScope
       itemType="https://schema.org/WPHeader"
     >
       {/* Animated Background */}
@@ -54,8 +53,8 @@ export default function HeroSection() {
             className="text-xl text-gray-400 mb-12 max-w-3xl mx-auto"
             itemProp="description"
           >
-            <strong>JS-INNOV.IA</strong> : expert en <PowerWord>automatisation</PowerWord> et <PowerWord>intelligence artificielle</PowerWord> pour 
-            <strong> indépendants</strong>, <strong>courtiers</strong> et <strong>PME</strong> en <strong>Hainaut</strong>. 
+            <strong>JS-INNOV.IA</strong> : expert en <PowerWord>automatisation</PowerWord> et <PowerWord>intelligence artificielle</PowerWord> pour
+            <strong> indépendants</strong>, <strong>courtiers</strong> et <strong>PME</strong> en <strong>Hainaut</strong>.
             Solutions <PowerWord>IA sur mesure</PowerWord> pour <PowerWord>booster</PowerWord> votre productivité.
           </motion.p>
 

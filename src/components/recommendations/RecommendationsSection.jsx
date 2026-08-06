@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../../utils';
@@ -72,7 +71,7 @@ export default function RecommendationsSection({ currentType = null, currentItem
           {recommendations.map((item, index) => {
             const config = typeConfig[item.type];
             const Icon = config.icon;
-            
+
             return (
               <motion.div
                 key={`${item.type}-${item.id}`}

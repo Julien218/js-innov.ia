@@ -1,4 +1,3 @@
-import React from 'react';
 import LandingHero from '@/components/landing/LandingHero';
 import LandingDifferentiator from '@/components/landing/LandingDifferentiator';
 import LandingServices from '@/components/landing/LandingServices';

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Image, Play, Filter, X, ExternalLink, Instagram, Facebook, Calendar, Zap, Star, ChevronRight, Download } from 'lucide-react';
+import { Image, Filter, X, ExternalLink, Calendar, Zap, Star, ChevronRight } from 'lucide-react';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';

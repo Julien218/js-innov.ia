@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
@@ -82,7 +82,7 @@ export default function MusicShop() {
                 Solution pour commerçants : Musique sans frais mensuels
               </h3>
               <p className="text-gray-300 text-sm">
-                Face à la vie coûteuse et aux charges croissantes, nous proposons des musiques d'ambiance à prix unique, 
+                Face à la vie coûteuse et aux charges croissantes, nous proposons des musiques d'ambiance à prix unique,
                 sans abonnement SABAM ni frais récurrents. <PowerWord>Soutenez votre commerce</PowerWord> avec des économies durables.
               </p>
             </div>

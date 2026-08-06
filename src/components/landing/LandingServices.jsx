@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Globe, Zap, Bot, Cpu, Clapperboard, Code2 } from 'lucide-react';
 

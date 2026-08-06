@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "brand": "JS-Innov.IA",
+  "assistant": "Compagnon JS-Innov.IA",
+  "primaryAvatar": "/brand/companion/companion-avatar-256.webp",
+  "launcher": "/brand/companion/companion-launcher-256.webp",
+  "colors": {
+    "navy": "#080B1F",
+    "indigo": "#121A2E",
+    "gold": "#D4AF37",
+    "goldLight": "#F5CF41",
+    "purple": "#6A00FF",
+    "cyan": "#00B4FF",
+    "white": "#F5F7FA"
+  },
+  "usage": {
+    "launcherMinPx": 56,
+    "avatarMinPx": 32,
+    "preferredBackground": "dark"
+  },
+  "generatedAt": "2026-08-05"
+}

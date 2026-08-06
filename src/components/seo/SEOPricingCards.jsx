@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, Zap, Crown, Rocket, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -109,8 +108,8 @@ export default function SEOPricingCards({ onSelectPlan }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
             className={`relative rounded-2xl p-6 ${
-              plan.popular 
-                ? 'bg-gradient-to-br from-purple-600/20 to-pink-600/20 border-2 border-purple-500/50 scale-105 z-10' 
+              plan.popular
+                ? 'bg-gradient-to-br from-purple-600/20 to-pink-600/20 border-2 border-purple-500/50 scale-105 z-10'
                 : `bg-gradient-to-br from-white/5 to-white/[0.02] border ${plan.borderColor}`
             }`}
           >
@@ -147,8 +146,8 @@ export default function SEOPricingCards({ onSelectPlan }) {
               <Button
                 onClick={() => onSelectPlan && onSelectPlan(plan)}
                 className={`w-full ${
-                  plan.popular 
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:shadow-lg hover:shadow-pink-500/50' 
+                  plan.popular
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:shadow-lg hover:shadow-pink-500/50'
                     : 'bg-white/10 hover:bg-white/20'
                 }`}
               >
@@ -158,8 +157,8 @@ export default function SEOPricingCards({ onSelectPlan }) {
               <Link to={createPageUrl('Contact')}>
                 <Button
                   className={`w-full ${
-                    plan.popular 
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:shadow-lg hover:shadow-pink-500/50' 
+                    plan.popular
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:shadow-lg hover:shadow-pink-500/50'
                       : 'bg-white/10 hover:bg-white/20'
                   }`}
                 >

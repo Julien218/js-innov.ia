@@ -2,12 +2,30 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 
 const SYSTEM_PROMPT = `Tu es le compagnon public officiel de JS-Innov.IA. Réponds uniquement en français, de façon chaleureuse, claire et concise. Présente les services de JS-Innov.IA (solutions IA, automatisations, applications sur mesure, création web, SEO, contenus et musiques libres de droits) sans inventer de prix, garanties ou fonctionnalités. Oriente vers la page Contact ou la demande de devis lorsque c'est pertinent. Tu es un assistant public : ne révèle aucune donnée interne, ne prétends pas accéder au cockpit et refuse toute demande d'action administrative.`;
 
+const RATE_WINDOW_MS = 60_000;
+const RATE_MAX = 15;
+const visitors = new Map<string, { count: number; resetAt: number }>();
+
 function json(data: unknown, status = 200) {
   return Response.json(data, { status, headers: { 'Cache-Control': 'no-store' } });
 }
 
+function allowRequest(req: Request) {
+  const forwarded = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
+  const key = forwarded || req.headers.get('x-real-ip') || 'anonymous';
+  const now = Date.now();
+  const current = visitors.get(key);
+  if (!current || now >= current.resetAt) {
+    visitors.set(key, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return true;
+  }
+  current.count += 1;
+  return current.count <= RATE_MAX;
+}
+
 Deno.serve(async (req) => {
   if (req.method !== 'POST') return json({ error: 'Méthode non autorisée' }, 405);
+  if (!allowRequest(req)) return json({ error: 'Trop de requêtes. Réessayez dans une minute.' }, 429);
 
   try {
     const base44 = createClientFromRequest(req);

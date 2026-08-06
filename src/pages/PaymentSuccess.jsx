@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle, ArrowRight, Download, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -74,7 +74,7 @@ export default function PaymentSuccess() {
               className="bg-gradient-to-br from-white/5 to-white/[0.02] border border-green-500/20 rounded-2xl p-8 mb-8 text-left"
             >
               <h2 className="text-xl font-semibold text-white mb-4">Détails de la commande</h2>
-              
+
               <div className="space-y-3">
                 {paymentInfo.metadata?.product_type && (
                   <div className="flex justify-between py-2 border-b border-gray-800">
@@ -84,7 +84,7 @@ export default function PaymentSuccess() {
                     </span>
                   </div>
                 )}
-                
+
                 <div className="flex justify-between py-2 border-b border-gray-800">
                   <span className="text-gray-400">Email</span>
                   <span className="text-white">{paymentInfo.customerEmail}</span>

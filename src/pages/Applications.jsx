@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
@@ -102,7 +102,7 @@ export default function Applications() {
                       <Rocket className="w-16 h-16 text-amber-400" />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
-                    
+
                     {/* Status Badge */}
                     <div className="absolute top-4 right-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${statusColors[app.status] || statusColors['Bientôt']}`}>
@@ -236,8 +236,8 @@ export default function Applications() {
         {/* Recommendations */}
         {viewedApplication && (
           <div className="mt-20">
-            <RecommendationsSection 
-              currentType="application" 
+            <RecommendationsSection
+              currentType="application"
               currentItem={viewedApplication}
               compact={true}
             />

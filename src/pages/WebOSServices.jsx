@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Globe, ShoppingBag, Layers, BarChart3, Headphones, Bot, Search, Share2, MapPin, MessageCircle, Shield, Check, ArrowRight, Sparkles } from 'lucide-react';

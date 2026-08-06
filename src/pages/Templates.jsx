@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
@@ -95,7 +95,7 @@ export default function Templates() {
                       <Play className="w-16 h-16 text-purple-400" />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
-                    
+
                     {/* Play Button Overlay */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                       <div className="p-4 rounded-full bg-white/90 backdrop-blur-sm">
@@ -167,8 +167,8 @@ export default function Templates() {
         {/* Recommendations */}
         {viewedTemplate && (
           <div className="mt-20">
-            <RecommendationsSection 
-              currentType="template" 
+            <RecommendationsSection
+              currentType="template"
               currentItem={viewedTemplate}
               compact={true}
             />

@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import {
-  ArrowRight, Sparkles, BarChart3, FileText, Music, Bot, Check,
-  Globe, Zap, TrendingUp, Shield, Star, Play, Award, Users, Clock,
+  ArrowRight, Sparkles, FileText, Bot, Check,
+  Globe, Zap, Shield, Star, Play, Users,
   Home as HomeIcon, Car, Heart, Lock, Eye, MessageSquare, ChevronRight,
-  Cpu, Database, Network, Layers, BarChart2, Settings, CheckCircle
+  Cpu, Database, Network, Layers, BarChart2, CheckCircle
 } from 'lucide-react';
 
 const GOLD = '#D4AF37';

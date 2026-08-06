@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User, Sparkles, ArrowRight } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, Sparkles, ArrowRight } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 const GOLD = '#D4AF37';

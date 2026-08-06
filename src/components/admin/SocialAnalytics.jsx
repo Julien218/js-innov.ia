@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
@@ -6,7 +6,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   RadarChart, Radar, PolarGrid, PolarAngleAxis, Legend
 } from 'recharts';
-import { TrendingUp, Eye, Heart, MessageCircle, Share2, Users, Play, Image, Layers, RefreshCw } from 'lucide-react';
+import { TrendingUp, Eye, Heart, MessageCircle, Share2, Users, Play, Image, RefreshCw } from 'lucide-react';
 
 const GOLD = '#D4AF37';
 const PURPLE = '#8B5CF6';

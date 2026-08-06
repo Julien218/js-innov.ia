@@ -28,7 +28,7 @@ import SaasLanding from './pages/saas/SaasLanding';
 import SaasClientDashboard from './pages/saas/SaasClientDashboard';
 import SaasEvents from './pages/saas/SaasEvents';
 import SaasLegal from './pages/saas/SaasLegal';
-import SaasChatbot from './pages/saas/SaasChatbot';
+import SaasChatbot from './components/chatbot/AIChatbot';
 import SaasChatbotAdmin from './pages/saas/SaasChatbotAdmin';
 import EcranLed from './pages/saas/EcranLed';
 import Ps from './pages/Ps';

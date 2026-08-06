@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Bot, FileText, Globe, Share2, Search, Settings, Headphones, CheckSquare, ArrowRight, Sparkles, Shield } from 'lucide-react';
+import { Bot, FileText, Globe, Share2, Search, Settings, Headphones, CheckSquare, Sparkles, Shield } from 'lucide-react';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';

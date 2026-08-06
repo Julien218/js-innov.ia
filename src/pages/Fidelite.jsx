@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Trophy, Gift, Star, TrendingUp, Zap, Share2, Check, Copy,
-  Clock, Crown, Rocket, Building2, ChevronRight, Sparkles,
-  ArrowUpRight, Lock, RefreshCw, Award, Users, BarChart2
+  Trophy, Gift, Star, TrendingUp, Zap, Share2, Check, Copy, Crown, Rocket, Building2, ChevronRight, Sparkles,
+  ArrowUpRight, Lock, RefreshCw, Award, Users
 } from 'lucide-react';
 
 const GOLD = '#D4AF37';
