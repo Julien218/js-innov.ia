@@ -31,6 +31,7 @@ import SaasLegal from './pages/saas/SaasLegal';
 import SaasChatbot from './components/chatbot/AIChatbot';
 import SaasChatbotAdmin from './pages/saas/SaasChatbotAdmin';
 import EcranLed from './pages/saas/EcranLed';
+import EcranEspaceC from './pages/saas/EcranEspaceC';
 import Ps from './pages/Ps';
 import CockpitConnectedSite from './pages/CockpitConnectedSite';
 import __Layout from './Layout.jsx';
@@ -120,6 +121,7 @@ const AuthenticatedApp = () => {
       <Route path="/cockpit" element={<CockpitConnectedSite />} />
       <Route path="/site-cockpit" element={<CockpitConnectedSite />} />
       <Route path="/ecran" element={<EcranLed />} />
+      <Route path="/ecranespacec" element={<EcranEspaceC />} />
       <Route path="/ps" element={<Ps />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
