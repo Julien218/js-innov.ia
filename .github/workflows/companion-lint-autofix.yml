@@ -37,6 +37,11 @@ jobs:
       - name: Apply ESLint safe fixes
         run: npm run lint:fix
 
+      - name: Normalize modified source files
+        shell: bash
+        run: |
+          git diff --name-only --diff-filter=ACM -z -- src | xargs -0 -r sed -i 's/[[:space:]]\+$//'
+
       - name: Verify patch integrity
         run: git diff --check
 
