@@ -1,0 +1,73 @@
+name: Security upgrade once
+
+on:
+  push:
+    branches:
+      - agent/finish-public-companion
+    paths:
+      - .github/workflows/security-upgrade-once.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: security-upgrade-once-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  migrate-and-validate:
+    if: ${{ !contains(github.event.head_commit.message || '', '[security-upgrade]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v5
+        with:
+          ref: agent/finish-public-companion
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Verify React Quill is unused
+        shell: bash
+        run: |
+          if git grep -n -E "from ['\"]react-quill['\"]|require\(['\"]react-quill['\"]\)" -- ':!package.json' ':!package-lock.json'; then
+            echo "react-quill is still imported; aborting guarded removal."
+            exit 1
+          fi
+
+      - name: Apply controlled security migrations
+        run: |
+          npm uninstall react-quill
+          npm install --save-exact jspdf@4.2.1 react-router-dom@7.18.1
+
+      - name: Reject remaining critical production vulnerabilities
+        run: npm audit --omit=dev --audit-level=critical
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Commit validated lockfile migration
+        shell: bash
+        run: |
+          if git diff --quiet -- package.json package-lock.json; then
+            echo "No dependency changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "chore(security): migrate vulnerable dependencies [security-upgrade]"
+          git push origin HEAD:agent/finish-public-companion
