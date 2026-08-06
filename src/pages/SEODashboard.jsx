@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import { 
-  Search, TrendingUp, AlertCircle, CheckCircle, 
-  RefreshCw, FileText, BarChart3, Settings,
+import {
+  Search, TrendingUp, AlertCircle, CheckCircle,
+  RefreshCw, FileText, BarChart3,
   Globe, Zap, Eye, Shield
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -27,7 +27,7 @@ export default function SEODashboard() {
     try {
       const analysisResult = await base44.integrations.Core.InvokeLLM({
         prompt: `Analyse SEO interne pour JS-INNOV.IA. Évalue:
-        
+
 1. Métadonnées: titres, descriptions, mots-clés
 2. Structure: H1, H2, sémantique HTML
 3. Performance: lazy loading, scripts defer
@@ -58,7 +58,7 @@ Génère un rapport avec scores et recommandations.`,
       });
 
       const result = analysisResult?.data || analysisResult;
-      
+
       await base44.entities.SEOReport.create({
         report_date: new Date().toISOString(),
         global_score: result.global_score || 75,
@@ -262,7 +262,7 @@ Génère un rapport avec scores et recommandations.`,
             <h3 className="text-xl font-bold text-white mb-4">Historique des Analyses</h3>
             <div className="space-y-2">
               {reports.slice(1).map((report, i) => (
-                <div 
+                <div
                   key={i}
                   className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-purple-500/20"
                 >

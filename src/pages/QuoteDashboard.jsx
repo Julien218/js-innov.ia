@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
@@ -22,13 +22,13 @@ export default function QuoteDashboard() {
     queryKey: ['quotes'],
     queryFn: async () => {
       const quotesData = await base44.entities.Quote.list('-created_date');
-      
+
       // Charger les infos clients et projets associés
       const enrichedQuotes = await Promise.all(
         quotesData.map(async (quote) => {
           const customer = await base44.entities.Customer.filter({ id: quote.customer_id });
           const project = await base44.entities.Project.filter({ id: quote.project_id });
-          
+
           return {
             ...quote,
             customer: customer[0] || {},
@@ -36,7 +36,7 @@ export default function QuoteDashboard() {
           };
         })
       );
-      
+
       return enrichedQuotes;
     }
   });
@@ -78,9 +78,9 @@ export default function QuoteDashboard() {
       'Refusé': { color: 'bg-red-500/20 text-red-400 border-red-500/30', icon: XCircle },
       'Devis envoyé': { color: 'bg-blue-500/20 text-blue-400 border-blue-500/30', icon: Send }
     };
-    
+
     const { color, icon: Icon } = config[statut] || config['À valider'];
-    
+
     return (
       <Badge className={`${color} border flex items-center gap-1`}>
         <Icon className="w-3 h-3" />
@@ -111,7 +111,7 @@ export default function QuoteDashboard() {
             <Filter className="w-5 h-5 text-purple-400" />
             <h3 className="text-white font-semibold">Filtres</h3>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="text-sm text-gray-400 mb-2 block">Statut</label>

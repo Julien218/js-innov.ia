@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   Sparkles, ArrowRight, ArrowLeft, Check, Globe, Palette, Zap,
-  QrCode, Instagram, FileText, Mail, Loader2, CheckCircle, User
+  QrCode, Instagram, FileText, Loader2, CheckCircle
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 

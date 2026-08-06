@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import SectionHeader from '../components/shared/SectionHeader';
@@ -6,7 +6,7 @@ import RecommendationsSection from '../components/recommendations/Recommendation
 import ProductSEOWrapper from '../components/seo/ProductSEOWrapper';
 import { useNavigationTracking } from '../components/recommendations/useRecommendations';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Lightbulb, Calendar, Tag, ExternalLink, Instagram } from 'lucide-react';
+import { Lightbulb, Calendar, ExternalLink, Instagram } from 'lucide-react';
 import InstagramCarouselPublisher from '../components/innovations/InstagramCarouselPublisher';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -88,7 +88,7 @@ export default function Innovations() {
               </button>
             ))}
           </div>
-          
+
           {/* Category Description */}
           <motion.div
             key={selectedCategory}
@@ -199,8 +199,8 @@ export default function Innovations() {
         {/* Recommendations */}
         {viewedInnovation && (
           <div className="mt-20">
-            <RecommendationsSection 
-              currentType="innovation" 
+            <RecommendationsSection
+              currentType="innovation"
               currentItem={viewedInnovation}
               compact={true}
             />

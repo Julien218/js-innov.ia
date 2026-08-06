@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { Send, CheckCircle, Mail, Phone, MapPin, Globe, Sparkles } from 'lucide-react';

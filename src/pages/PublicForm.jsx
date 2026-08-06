@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 export default function PublicForm() {
   const urlParams = new URLSearchParams(window.location.search);
   const slug = urlParams.get('slug');
-  
+
   const [formValues, setFormValues] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -69,7 +69,7 @@ export default function PublicForm() {
         const newValues = {};
         form.fields.forEach(field => {
           const fieldKey = field.label.toLowerCase();
-          const matchingKey = Object.keys(response).find(key => 
+          const matchingKey = Object.keys(response).find(key =>
             key.toLowerCase().includes(fieldKey) || fieldKey.includes(key.toLowerCase())
           );
           if (matchingKey && response[matchingKey]) {
@@ -203,7 +203,7 @@ export default function PublicForm() {
                 <label className="block text-sm text-gray-400 mb-2">
                   {field.label} {field.required && <span className="text-pink-400">*</span>}
                 </label>
-                
+
                 {field.type === 'textarea' ? (
                   <Textarea
                     required={field.required}

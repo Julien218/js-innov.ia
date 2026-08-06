@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, Bot, CheckSquare, TrendingUp, Zap, Target, Sparkles, Search } from 'lucide-react';
 import ContentGenerator from '../components/seo/ContentGenerator';

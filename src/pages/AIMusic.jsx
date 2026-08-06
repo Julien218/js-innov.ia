@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Music2, Sparkles, Mic, Volume2, Store, Megaphone, TrendingUp, CheckCircle2, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import SectionHeader from '../components/shared/SectionHeader';
 import AIMusicRequestModal from '../components/music/AIMusicRequestModal';
 
 export default function AIMusic() {

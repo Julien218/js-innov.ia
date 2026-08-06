@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import { 
-  Plus, Sparkles, Edit, Trash2, Eye, Save, 
-  Loader2, BookOpen, Search, TrendingUp, Lightbulb
+import { Sparkles, Edit, Trash2, Save,
+  Loader2, BookOpen, TrendingUp
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import SectionHeader from '../components/shared/SectionHeader';
 
 const ARTICLE_TOPICS = [
@@ -124,7 +121,7 @@ Format markdown.`,
       });
 
       const article = result?.data || result;
-      
+
       if (article) {
         const coverImages = {
           'Intelligence Artificielle': 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200',
@@ -186,7 +183,7 @@ Fournis :
       });
 
       const seo = result?.data || result;
-      
+
       if (seo) {
         setFormData(prev => ({
           ...prev,
@@ -195,7 +192,7 @@ Fournis :
           seo_keywords: (seo.seo_keywords || []).join(', '),
           tags: (seo.tags || []).join(', ')
         }));
-        
+
         if (seo.suggestions) {
           alert(`Score SEO: ${seo.seo_score}/100\n\nSuggestions:\n${seo.suggestions.join('\n')}`);
         }
@@ -314,8 +311,8 @@ Fournis :
                     <Input
                       value={formData.title}
                       onChange={(e) => {
-                        setFormData({ 
-                          ...formData, 
+                        setFormData({
+                          ...formData,
                           title: e.target.value,
                           slug: generateSlug(e.target.value)
                         });
@@ -356,8 +353,8 @@ Fournis :
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm text-gray-400 mb-1 block">Catégorie</label>
-                    <Select 
-                      value={formData.category} 
+                    <Select
+                      value={formData.category}
                       onValueChange={(v) => setFormData({ ...formData, category: v })}
                     >
                       <SelectTrigger className="bg-black/30 border-purple-500/30">
@@ -375,8 +372,8 @@ Fournis :
                   </div>
                   <div>
                     <label className="text-sm text-gray-400 mb-1 block">Statut</label>
-                    <Select 
-                      value={formData.status} 
+                    <Select
+                      value={formData.status}
                       onValueChange={(v) => setFormData({ ...formData, status: v })}
                     >
                       <SelectTrigger className="bg-black/30 border-purple-500/30">

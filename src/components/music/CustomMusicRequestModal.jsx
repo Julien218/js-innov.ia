@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Send, Sparkles } from 'lucide-react';
+import { X, Send, Sparkles } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -79,8 +79,8 @@ ${data.message}`
           {/* Avatar Header */}
           <div className="p-8 text-center border-b border-purple-500/20">
             <div className="w-24 h-24 mx-auto rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-2xl mb-4 overflow-hidden border-2 border-pink-400/30">
-              <img 
-                src="https://drive.google.com/uc?export=view&id=1ySt1ej95d6U1gMbAZ_Hw-wdKG3hj8KuF" 
+              <img
+                src="https://drive.google.com/uc?export=view&id=1ySt1ej95d6U1gMbAZ_Hw-wdKG3hj8KuF"
                 alt="Assistant Musical"
                 className="w-full h-full object-cover"
               />
@@ -103,7 +103,7 @@ ${data.message}`
                 <h3 className="text-lg font-semibold text-white mb-6">
                   📋 Parlez-moi de votre projet
                 </h3>
-                
+
                 <form onSubmit={(e) => { e.preventDefault(); setStep(2); }} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -181,7 +181,7 @@ ${data.message}`
                 <h3 className="text-lg font-semibold text-white mb-6">
                   🎨 Définissons votre ambiance musicale
                 </h3>
-                
+
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label className="block text-sm text-gray-400 mb-2">Style musical souhaité</label>

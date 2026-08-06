@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  Ticket, QrCode, Users, Plus, Calendar, MapPin, Check,
-  ChevronRight, Sparkles, AlertCircle, ExternalLink
+  Ticket, QrCode, Users, Plus, Calendar, MapPin, Check, Sparkles
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 

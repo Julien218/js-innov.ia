@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Users, ShoppingBag, CheckCircle, Palette, Sparkles, Target, Lightbulb } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -57,7 +57,7 @@ export default function LogoSenergieDour() {
     setFormData(prev => {
       const currentArray = prev[field] || [];
       const isSelected = currentArray.includes(value);
-      
+
       if (isSelected) {
         return {
           ...prev,
@@ -122,8 +122,8 @@ export default function LogoSenergieDour() {
 
   const sectionVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.5, ease: "easeOut" }
     }
@@ -143,7 +143,7 @@ export default function LogoSenergieDour() {
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          animate={{ 
+          animate={{
             scale: [1, 1.2, 1],
             rotate: [0, 90, 0],
             opacity: [0.3, 0.5, 0.3]
@@ -152,7 +152,7 @@ export default function LogoSenergieDour() {
           className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-blue-400/30 to-purple-400/30 rounded-full blur-3xl"
         />
         <motion.div
-          animate={{ 
+          animate={{
             scale: [1.2, 1, 1.2],
             rotate: [90, 0, 90],
             opacity: [0.2, 0.4, 0.2]
@@ -170,7 +170,7 @@ export default function LogoSenergieDour() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <motion.div 
+          <motion.div
             whileHover={{ scale: 1.05 }}
             className="inline-flex items-center gap-3 mb-6 px-6 py-3 bg-white rounded-full shadow-xl border-2 border-blue-500 backdrop-blur-sm"
           >
@@ -183,8 +183,8 @@ export default function LogoSenergieDour() {
             <span className="text-blue-600 font-bold text-lg">Synergie Dour</span>
             <Sparkles className="w-4 h-4 text-yellow-500" />
           </motion.div>
-          
-          <motion.h1 
+
+          <motion.h1
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
@@ -192,14 +192,14 @@ export default function LogoSenergieDour() {
           >
             Construisons ensemble le logo de Synergie Dour
           </motion.h1>
-          
-          <motion.p 
+
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
             className="text-base sm:text-xl lg:text-2xl text-gray-700 font-medium mb-6 sm:mb-8 flex items-center justify-center gap-2 sm:gap-3 flex-wrap px-2"
           >
-            Habitants et commerçants de Dour, votre avis compte 
+            Habitants et commerçants de Dour, votre avis compte
             <motion.div
               animate={{ scale: [1, 1.2, 1] }}
               transition={{ duration: 1.5, repeat: Infinity }}
@@ -209,7 +209,7 @@ export default function LogoSenergieDour() {
             <span className="text-2xl">💛</span>
           </motion.p>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
@@ -239,9 +239,9 @@ export default function LogoSenergieDour() {
         >
           {/* Progress indicator */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-yellow-500" />
-          
+
           {/* A. Profil */}
-          <motion.div 
+          <motion.div
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
@@ -266,7 +266,7 @@ export default function LogoSenergieDour() {
               <Label className="text-gray-700 font-semibold text-lg">Vous êtes * :</Label>
               <RadioGroup required value={formData.type} onValueChange={(value) => setFormData({...formData, type: value})}>
                 {['Habitant de Dour', 'Commerçant à Dour', 'Les deux'].map((option, i) => (
-                  <motion.div 
+                  <motion.div
                     key={option}
                     custom={i}
                     variants={itemVariants}
@@ -275,8 +275,8 @@ export default function LogoSenergieDour() {
                     viewport={{ once: true }}
                     whileHover={{ scale: 1.02, x: 5 }}
                     className={`flex items-center space-x-3 p-4 rounded-xl border-2 transition-all duration-300 cursor-pointer ${
-                      formData.type === option 
-                        ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-blue-500 shadow-lg' 
+                      formData.type === option
+                        ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-blue-500 shadow-lg'
                         : 'bg-white border-gray-200 hover:border-blue-300 hover:shadow-md'
                     }`}
                   >
@@ -304,7 +304,7 @@ export default function LogoSenergieDour() {
           </motion.div>
 
           {/* B. Valeurs */}
-          <motion.div 
+          <motion.div
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
@@ -332,7 +332,7 @@ export default function LogoSenergieDour() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {valeursOptions.map((valeur, i) => (
-                <motion.div 
+                <motion.div
                   key={valeur}
                   custom={i}
                   variants={itemVariants}
@@ -378,7 +378,7 @@ export default function LogoSenergieDour() {
           </motion.div>
 
           {/* C. Image de Dour */}
-          <motion.div 
+          <motion.div
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
@@ -404,7 +404,7 @@ export default function LogoSenergieDour() {
 
             <div className="space-y-3">
               {imageDourOptions.map((option, i) => (
-                <motion.div 
+                <motion.div
                   key={option}
                   custom={i}
                   variants={itemVariants}
@@ -430,7 +430,7 @@ export default function LogoSenergieDour() {
           </motion.div>
 
           {/* D. Style */}
-          <motion.div 
+          <motion.div
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
@@ -457,7 +457,7 @@ export default function LogoSenergieDour() {
 
             <RadioGroup required value={formData.style} onValueChange={(value) => setFormData({...formData, style: value})}>
               {['Moderne & simple', 'Chaleureux & humain', 'Associatif & citoyen', 'Institutionnel', 'Créatif / original'].map((style, i) => (
-                <motion.div 
+                <motion.div
                   key={style}
                   custom={i}
                   variants={itemVariants}
@@ -479,7 +479,7 @@ export default function LogoSenergieDour() {
           </motion.div>
 
           {/* E. Couleurs */}
-          <motion.div 
+          <motion.div
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
@@ -506,7 +506,7 @@ export default function LogoSenergieDour() {
 
             <div className="grid grid-cols-2 gap-3">
               {couleursOptions.map((couleur, i) => (
-                <motion.div 
+                <motion.div
                   key={couleur}
                   custom={i}
                   variants={itemVariants}
@@ -547,7 +547,7 @@ export default function LogoSenergieDour() {
           </motion.div>
 
           {/* F. Slogan */}
-          <motion.div 
+          <motion.div
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
@@ -573,7 +573,7 @@ export default function LogoSenergieDour() {
 
             <RadioGroup required value={formData.slogan_souhaite} onValueChange={(value) => setFormData({...formData, slogan_souhaite: value})}>
               {['Oui', 'Non', 'Je ne sais pas'].map((option, i) => (
-                <motion.div 
+                <motion.div
                   key={option}
                   custom={i}
                   variants={itemVariants}
@@ -615,7 +615,7 @@ export default function LogoSenergieDour() {
           </motion.div>
 
           {/* G. Message libre */}
-          <motion.div 
+          <motion.div
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
@@ -673,7 +673,7 @@ export default function LogoSenergieDour() {
                   </>
                 ) : (
                   <>
-                    Je participe au logo de Senergie Dour 
+                    Je participe au logo de Senergie Dour
                     <motion.span
                       animate={{ rotate: [0, 10, -10, 0] }}
                       transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 2 }}

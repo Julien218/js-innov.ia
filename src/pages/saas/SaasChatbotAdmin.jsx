@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { MessageCircle, Send, Bot, User, Search, Filter, Archive, Trash2, Clock, Mail, Phone, Building2, CheckCircle, AlertCircle } from 'lucide-react';
+import { MessageCircle, Send, Search, Clock, Mail, Phone, Building2, CheckCircle, AlertCircle } from 'lucide-react';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -37,7 +37,7 @@ export default function SaasChatbotAdmin() {
 
   // Update lead status mutation
   const updateStatusMutation = useMutation({
-    mutationFn: ({ leadId, newStatus }) => 
+    mutationFn: ({ leadId, newStatus }) =>
       base44.entities.Lead.update(leadId, { status: newStatus }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['chatbot_leads'] });
@@ -62,12 +62,12 @@ export default function SaasChatbotAdmin() {
   });
 
   const filteredLeads = leads.filter(lead => {
-    const matchSearch = !searchTerm || 
+    const matchSearch = !searchTerm ||
       lead.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lead.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lead.company?.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchStatus = filterStatus === 'tous' || lead.status === filterStatus;
     return matchSearch && matchStatus;
   });
@@ -120,7 +120,7 @@ export default function SaasChatbotAdmin() {
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="lg:col-span-1">
             <div className="rounded-2xl p-4 border overflow-hidden"
               style={{ background: 'rgba(10,8,22,0.8)', borderColor: 'rgba(212,175,55,0.18)' }}>
-              
+
               {/* Search & Filter */}
               <div className="space-y-3 mb-4">
                 <div className="relative">
@@ -193,7 +193,7 @@ export default function SaasChatbotAdmin() {
             {selectedLead ? (
               <div className="rounded-2xl overflow-hidden border flex flex-col h-[calc(100vh-200px)]"
                 style={{ background: 'rgba(10,8,22,0.8)', borderColor: 'rgba(212,175,55,0.18)' }}>
-                
+
                 {/* Lead Header */}
                 <div className="p-4 border-b" style={{ borderColor: 'rgba(212,175,55,0.15)' }}>
                   <div className="flex items-start justify-between mb-3">

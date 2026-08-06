@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ExternalLink, ArrowRight, Tag, Palette, Monitor, BarChart3, Bot, Star, X, Sparkles } from 'lucide-react';
+import { ArrowRight, Palette, Monitor, BarChart3, Bot, Star, X, Sparkles } from 'lucide-react';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';

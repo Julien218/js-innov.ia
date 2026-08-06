@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import {
-  Users, Briefcase, CheckSquare, FileText, BarChart3, Bell, Zap,
-  Eye, Check, X, MessageSquare, Clock, TrendingUp, Star, AlertTriangle,
-  ChevronRight, Filter, Search, Edit, Trash2, Plus, Mail, Phone
+  Users, Briefcase, CheckSquare, FileText, Bell, Check, X, MessageSquare, AlertTriangle, Search, Edit
 } from 'lucide-react';
 import TikTokStats from '../../components/admin/TikTokStats';
 

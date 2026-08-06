@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import {
-  Globe, TrendingUp, Zap, Cpu, Bot, Smartphone, Film, BarChart3,
-  Check, ChevronRight, ChevronLeft, Sparkles, Plus, Minus,
-  Users, Clock, Target, Megaphone, Mail, Phone, Building,
-  CheckCircle, MessageCircle, Send, Star, Shield, Briefcase
+  Globe, Zap, Bot, Smartphone,
+  Check, ChevronRight, ChevronLeft, Sparkles,
+  Users, Target, Megaphone,
+  CheckCircle, MessageCircle, Send, Star, Shield
 } from 'lucide-react';
 
 const GOLD = '#D4AF37';

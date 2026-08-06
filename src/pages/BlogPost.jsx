@@ -1,16 +1,14 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import ReactMarkdown from 'react-markdown';
-import { 
-  Calendar, Clock, Tag, ArrowLeft, Share2, 
-  Bookmark, ChevronRight, Sparkles 
+import {
+  Calendar, Clock, Tag, ArrowLeft, Share2, ChevronRight, Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import PowerWord from '../components/shared/PowerWord';
 
 export default function BlogPost() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -28,8 +26,8 @@ export default function BlogPost() {
   const { data: relatedPosts = [] } = useQuery({
     queryKey: ['related-posts', post?.category],
     queryFn: () => base44.entities.BlogPost.filter(
-      { category: post.category, status: 'publié' }, 
-      '-published_date', 
+      { category: post.category, status: 'publié' },
+      '-published_date',
       4
     ),
     enabled: !!post?.category,
@@ -41,7 +39,7 @@ export default function BlogPost() {
   useEffect(() => {
     if (post) {
       document.title = `${post.title} | Blog JS-INNOV.IA`;
-      
+
       // Meta description
       let metaDesc = document.querySelector('meta[name="description"]');
       if (!metaDesc) {
@@ -137,7 +135,7 @@ export default function BlogPost() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <Link 
+          <Link
             to={createPageUrl('Blog')}
             className="inline-flex items-center gap-2 text-gray-400 hover:text-pink-400 transition-colors"
           >

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Pause, Music, Clock, Activity, Check, ShoppingCart, CheckCircle2 } from 'lucide-react';
 import { useCart } from '../cart/CartContext';
@@ -13,7 +13,7 @@ export default function MusicProductCard({ product, index = 0, popular = false }
 
   const handlePlayPause = () => {
     if (!product.preview_url) return;
-    
+
     if (isPlaying) {
       audioRef.current?.pause();
     } else {
@@ -30,7 +30,7 @@ export default function MusicProductCard({ product, index = 0, popular = false }
       className="group relative"
     >
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm border border-purple-500/20 hover:border-pink-500/50 hover:shadow-2xl hover:shadow-pink-500/20 hover:-translate-y-2 transition-all duration-300">
-        
+
         {/* Cover Image */}
         <div className="relative h-48 overflow-hidden bg-gradient-to-br from-pink-900/30 to-purple-900/30">
           {product.cover_image ? (
@@ -44,7 +44,7 @@ export default function MusicProductCard({ product, index = 0, popular = false }
               <Music className="w-20 h-20 text-pink-400/50" />
             </div>
           )}
-          
+
           {/* Play Button Overlay */}
           {product.preview_url && (
             <button
@@ -144,15 +144,15 @@ export default function MusicProductCard({ product, index = 0, popular = false }
                 <div className="text-xs text-gray-500">Paiement unique</div>
               </div>
             </div>
-            <Button 
+            <Button
               onClick={() => {
                 addToCart(product);
                 setIsAdded(true);
                 setTimeout(() => setIsAdded(false), 2000);
               }}
               className={`w-full transition-all ${
-                isAdded 
-                  ? 'bg-green-600 hover:bg-green-700' 
+                isAdded
+                  ? 'bg-green-600 hover:bg-green-700'
                   : 'bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700'
               }`}
             >

@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ExternalLink, Sparkles, Globe, Zap, Users, Calendar, Store, Scissors } from 'lucide-react';
+import { ExternalLink, Sparkles, Globe, Users, Calendar, Store, Scissors } from 'lucide-react';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';

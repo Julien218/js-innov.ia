@@ -1,10 +1,8 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
-  ArrowRight, Sparkles, Globe, Bot, Smartphone, Film, Zap, Users,
-  CheckCircle, Star, ChevronRight, MessageCircle, Play, Shield,
-  BarChart3, Cpu, Layers, Clock, Target, TrendingUp
+  ArrowRight, Sparkles, Globe, Bot, Smartphone, Film, Zap, Star, ChevronRight, MessageCircle, Cpu, Layers, Target, TrendingUp
 } from 'lucide-react';
 
 const GOLD = '#D4AF37';

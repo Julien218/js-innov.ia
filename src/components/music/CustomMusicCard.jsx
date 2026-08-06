@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, X, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../../utils';
 
@@ -10,23 +9,23 @@ export default function CustomMusicCard() {
   const [currentMessage, setCurrentMessage] = useState(0);
 
   const messages = [
-    { 
+    {
       text: "🎯 Découvrez nos innovations IA révolutionnaires !",
       link: "Innovations"
     },
-    { 
+    {
       text: "🎬 Templates vidéo professionnels dès maintenant !",
       link: "Templates"
     },
-    { 
+    {
       text: "⚡ Automatisations clé en main pour votre entreprise",
       link: "Automations"
     },
-    { 
+    {
       text: "🚀 Applications sur mesure avec intelligence artificielle",
       link: "Applications"
     },
-    { 
+    {
       text: "💡 Transformez votre commerce avec l'IA",
       link: "Contact"
     }
@@ -37,7 +36,7 @@ export default function CustomMusicCard() {
     const bubbleInterval = setInterval(() => {
       setShowBubble(true);
       setCurrentMessage((prev) => (prev + 1) % messages.length);
-      
+
       setTimeout(() => {
         setShowBubble(false);
       }, 6000);
@@ -62,7 +61,7 @@ export default function CustomMusicCard() {
         className="group relative"
       >
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-600/20 via-purple-600/20 to-cyan-600/20 backdrop-blur-sm border-2 border-pink-500/40 hover:border-pink-400/60 hover:shadow-2xl hover:shadow-pink-500/30 hover:-translate-y-2 transition-all duration-300">
-          
+
           {/* Sparkle Effect */}
           <div className="absolute top-4 right-4">
             <Sparkles className="w-6 h-6 text-yellow-400 animate-pulse" />
@@ -84,17 +83,17 @@ export default function CustomMusicCard() {
               {/* Avatar */}
               <div className="w-32 h-32 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-500 p-1 shadow-2xl">
                 <div className="w-full h-full rounded-full bg-white/10 backdrop-blur-sm overflow-hidden border-2 border-white/20">
-                  <img 
-                    src="https://drive.google.com/uc?export=view&id=1ySt1ej95d6U1gMbAZ_Hw-wdKG3hj8KuF" 
+                  <img
+                    src="https://drive.google.com/uc?export=view&id=1ySt1ej95d6U1gMbAZ_Hw-wdKG3hj8KuF"
                     alt="Assistant JS-INNOV.IA"
                     className="w-full h-full object-cover"
                   />
                 </div>
               </div>
-              
+
               {/* Pulse effect */}
               <div className="absolute inset-0 rounded-full bg-pink-500/30 animate-ping"></div>
-              
+
               {/* Availability indicator */}
               <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg"></div>
             </motion.div>
@@ -132,11 +131,11 @@ export default function CustomMusicCard() {
               <div className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-500/30 text-pink-300 text-xs font-semibold mb-3">
                 ✨ Votre Assistant IA
               </div>
-              
+
               <h3 className="text-xl font-bold text-white mb-2 gradient-text">
                 Explorez Nos Services
               </h3>
-              
+
               <p className="text-gray-300 text-sm">
                 Innovations, templates, automatisations et plus encore. Trouvez la solution parfaite pour votre projet !
               </p>

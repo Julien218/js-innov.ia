@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Check, Globe, TrendingUp, Zap, Cpu, ArrowRight, Sparkles, MessageCircle, CreditCard } from 'lucide-react';
+import { Check, Globe, TrendingUp, Zap, Cpu, Sparkles, MessageCircle, CreditCard } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 const GOLD = '#D4AF37';
@@ -141,8 +141,8 @@ export default function SaasPacks() {
                     </div>
                     <div className="space-y-2">
                       {pack.name !== 'Pack IA Premium' && (
-                        <motion.button 
-                          whileHover={{ scale: 1.04 }} 
+                        <motion.button
+                          whileHover={{ scale: 1.04 }}
                           whileTap={{ scale: 0.97 }}
                           onClick={() => handlePayment(pack.name)}
                           disabled={loadingPack === pack.name}

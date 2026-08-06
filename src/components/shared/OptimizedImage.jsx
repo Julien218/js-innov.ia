@@ -1,17 +1,16 @@
-import React from 'react';
 
 /**
  * Composant Image optimisé avec lazy loading et attributs alt obligatoires
  * Améliore la performance et l'accessibilité
  */
-export default function OptimizedImage({ 
-  src, 
-  alt, 
-  className = '', 
+export default function OptimizedImage({
+  src,
+  alt,
+  className = '',
   width,
   height,
   priority = false,
-  ...props 
+  ...props
 }) {
   // Validation: alt est obligatoire pour l'accessibilité
   if (!alt) {

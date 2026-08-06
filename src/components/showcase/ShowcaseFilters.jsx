@@ -1,14 +1,13 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { X } from 'lucide-react';
 
-export default function ShowcaseFilters({ 
-  selectedCategory, 
-  onCategoryChange, 
-  selectedTechniques, 
+export default function ShowcaseFilters({
+  selectedCategory,
+  onCategoryChange,
+  selectedTechniques,
   onTechniquesChange,
-  allProjects 
+  allProjects
 }) {
   const categories = [
     'all',

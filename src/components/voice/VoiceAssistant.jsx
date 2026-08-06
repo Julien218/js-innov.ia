@@ -1,16 +1,16 @@
 /**
  * VoiceAssistant — Widget vocal temps-réel pour JS-Innov.IA Cockpit
- * 
+ *
  * Utilise l'OpenAI Realtime API (gpt-4o-realtime-preview)
  * Architecture :
  *   1. Demande un token éphémère au backend (/realtime/session)
  *   2. Ouvre une WebSocket directe vers wss://api.openai.com/v1/realtime
  *   3. Stream audio micro → OpenAI → audio réponse
- * 
+ *
  * ⚠️ La clé OPENAI_API_KEY reste CÔTÉ SERVEUR (backend.jsinnovia.com)
  */
-import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { Mic, MicOff, Volume2, VolumeX, Loader2, X, PhoneCall } from 'lucide-react';
+import { useState, useRef, useCallback, useEffect } from 'react';
+import { Mic, Volume2, VolumeX, Loader2, X, PhoneCall } from 'lucide-react';
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const BACKEND_URL = import.meta.env.VITE_AGENT_URL || 'https://jsinnovia-agent-production.up.railway.app';

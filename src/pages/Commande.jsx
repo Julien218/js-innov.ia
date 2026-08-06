@@ -5,7 +5,7 @@ import {
   Rocket, Building2, Sparkles, Crown, ChevronRight, ChevronLeft,
   User, Mail, Phone, MapPin, MessageSquare, Upload, Check, Loader2,
   Scissors, UtensilsCrossed, Wrench, Calendar, Users, Globe,
-  Gift, Star, TrendingUp, Zap, Share2, Trophy, Clock, ArrowRight
+  Gift, Star, TrendingUp, Zap, Share2, Trophy, Clock
 } from 'lucide-react';
 
 const GOLD = '#D4AF37';

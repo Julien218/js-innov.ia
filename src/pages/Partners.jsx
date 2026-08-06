@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import SectionHeader from '../components/shared/SectionHeader';
 import PowerWord from '../components/shared/PowerWord';
@@ -62,11 +61,11 @@ export default function Partners() {
               <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-purple-500/20 p-8 hover:border-pink-500/50 transition-all duration-300 h-full">
                 {/* Gradient Overlay */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${partner.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
-                
+
                 <div className="relative flex flex-col items-center text-center h-full">
                   <div className="w-20 h-20 mb-6 flex items-center justify-center bg-white rounded-2xl group-hover:scale-110 transition-transform">
-                    <img 
-                      src={partner.logo} 
+                    <img
+                      src={partner.logo}
                       alt={partner.name}
                       className="w-16 h-16 object-contain"
                     />
@@ -98,7 +97,7 @@ export default function Partners() {
           className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-pink-600/20 via-purple-600/20 to-cyan-600/20 border border-purple-500/30 p-12 text-center"
         >
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
-          
+
           <div className="relative">
             <h2 className="text-3xl font-bold text-white mb-4">
               <PowerWord>Intégrations</PowerWord> & <PowerWord>Collaborations</PowerWord>

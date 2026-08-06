@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, CheckCircle, AlertCircle, XCircle, TrendingUp, Loader2, Download, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -36,15 +36,15 @@ export default function SEOAudit() {
 
     try {
       const competitorUrls = competitors.filter(c => c.trim()).map(c => c.trim());
-      const response = await base44.functions.invoke('analyzeSEO', { 
+      const response = await base44.functions.invoke('analyzeSEO', {
         url: url.trim(),
         email: email.trim(),
         competitors: competitorUrls
       });
-      
+
       // Validation robuste de la réponse
       let reportData = null;
-      
+
       if (response && response.data) {
         if (typeof response.data === 'string') {
           try {
@@ -56,7 +56,7 @@ export default function SEOAudit() {
           reportData = response.data;
         }
       }
-      
+
       if (reportData && typeof reportData.global_score === 'number') {
         setReport(reportData);
         setEmailSent(true);
@@ -176,7 +176,7 @@ export default function SEOAudit() {
               ${report.recommendations.map(rec => `
                 <div class="rec-card">
                   <span class="priority priority-${rec.priority || 'medium'}">${
-                    rec.priority === 'high' ? 'Priorité haute' : 
+                    rec.priority === 'high' ? 'Priorité haute' :
                     rec.priority === 'low' ? 'Priorité basse' : 'Priorité moyenne'
                   }</span>
                   <h4>${rec.title}</h4>
@@ -255,7 +255,7 @@ export default function SEOAudit() {
                 className="w-full bg-black/30 border-gray-700 text-white text-lg py-6"
                 disabled={isAnalyzing}
               />
-              
+
               <div className="pt-4 border-t border-gray-700">
                 <h4 className="text-sm font-medium text-gray-300 mb-3">🔍 Analyse Comparative (optionnel)</h4>
                 <p className="text-xs text-gray-500 mb-3">Ajoutez jusqu'à 3 sites concurrents pour une analyse comparative</p>

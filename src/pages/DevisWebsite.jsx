@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,7 +6,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CheckCircle, ArrowRight, ArrowLeft, Sparkles, Globe, Zap } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
@@ -14,7 +13,7 @@ export default function DevisWebsite() {
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     // Étape 1
     prenom: '',
@@ -68,7 +67,7 @@ export default function DevisWebsite() {
     setFormData(prev => {
       const currentArray = prev[field] || [];
       const isSelected = currentArray.includes(value);
-      
+
       if (isSelected) {
         return {
           ...prev,
@@ -102,7 +101,7 @@ export default function DevisWebsite() {
 
   const handleSubmit = async () => {
     setLoading(true);
-    
+
     try {
       // Appel à la fonction backend
       const response = await base44.functions.invoke('submitQuoteRequest', {
@@ -138,7 +137,7 @@ export default function DevisWebsite() {
         return formData.prenom && formData.nom && formData.email;
       case 2:
         return formData.type_projet && (
-          formData.type_projet !== 'Rénovation de site existant' || 
+          formData.type_projet !== 'Rénovation de site existant' ||
           (formData.url_site_existant && formData.problemes_site && formData.ameliorations_site)
         );
       case 3:
@@ -194,19 +193,19 @@ export default function DevisWebsite() {
               <Globe className="w-5 h-5 text-pink-400" />
               <span className="text-pink-400 font-semibold">Devis personnalisé</span>
             </div>
-            
+
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
               Demande de devis personnalisé
             </h1>
-            
+
             <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
               Cet espace est réservé aux clients souhaitant un devis pour la création, la rénovation ou l'ajout de fonctionnalités à leur site Internet.
             </p>
-            
+
             <p className="text-lg text-gray-400 mb-12">
               Après analyse de votre demande, vous recevrez une estimation personnalisée par email.
             </p>
-            
+
             <Button
               onClick={nextStep}
               className="px-8 py-6 text-lg rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white shadow-2xl"
@@ -245,7 +244,7 @@ export default function DevisWebsite() {
                     className="space-y-6"
                   >
                     <h2 className="text-3xl font-bold text-white mb-6">Vos informations</h2>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <Label className="text-gray-300 mb-2">Prénom *</Label>
@@ -257,7 +256,7 @@ export default function DevisWebsite() {
                           placeholder="Votre prénom"
                         />
                       </div>
-                      
+
                       <div>
                         <Label className="text-gray-300 mb-2">Nom *</Label>
                         <Input
@@ -324,7 +323,7 @@ export default function DevisWebsite() {
                     className="space-y-6"
                   >
                     <h2 className="text-3xl font-bold text-white mb-6">Type de projet</h2>
-                    
+
                     <div>
                       <Label className="text-gray-300 mb-4">Quel est votre projet ? *</Label>
                       <RadioGroup
@@ -399,7 +398,7 @@ export default function DevisWebsite() {
                   >
                     <h2 className="text-3xl font-bold text-white mb-6">Objectifs du site</h2>
                     <p className="text-gray-400 mb-6">Sélectionnez un ou plusieurs objectifs *</p>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {objectifsOptions.map((objectif) => (
                         <div
@@ -434,7 +433,7 @@ export default function DevisWebsite() {
                   >
                     <h2 className="text-3xl font-bold text-white mb-6">Fonctionnalités souhaitées</h2>
                     <p className="text-gray-400 mb-6">Sélectionnez les fonctionnalités dont vous avez besoin *</p>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {fonctionnalitesOptions.map((fonctionnalite) => (
                         <div
@@ -468,7 +467,7 @@ export default function DevisWebsite() {
                     className="space-y-6"
                   >
                     <h2 className="text-3xl font-bold text-white mb-6">Design & Inspiration</h2>
-                    
+
                     <div>
                       <Label className="text-gray-300 mb-4">Style souhaité *</Label>
                       <RadioGroup
@@ -495,7 +494,7 @@ export default function DevisWebsite() {
                     <div>
                       <Label className="text-gray-300 mb-2">Sites de référence (optionnel)</Label>
                       <p className="text-sm text-gray-500 mb-3">Ajoutez des liens de sites qui vous inspirent</p>
-                      
+
                       <div className="flex gap-2 mb-3">
                         <Input
                           value={formData.lien_reference_input}
@@ -550,7 +549,7 @@ export default function DevisWebsite() {
                     className="space-y-6"
                   >
                     <h2 className="text-3xl font-bold text-white mb-6">Budget & Délai</h2>
-                    
+
                     <div>
                       <Label className="text-gray-300 mb-4">Budget indicatif *</Label>
                       <RadioGroup

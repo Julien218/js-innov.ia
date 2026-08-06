@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Globe, TrendingUp, Zap, Cpu, Check, Plus, Minus, ChevronRight,
-  Sparkles, Info, ToggleLeft, ToggleRight
+  Sparkles
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Package, Download, Clock, CheckCircle, Truck, FileText,
-  ExternalLink, BarChart3, RefreshCw, AlertCircle
+  Package, Download, Clock, CheckCircle, Truck, FileText, RefreshCw, AlertCircle
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
