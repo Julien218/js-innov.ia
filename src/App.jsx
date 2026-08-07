@@ -1,3 +1,4 @@
+// Build trigger: force rebuild for /ecranespacec route
 import './App.css'
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
