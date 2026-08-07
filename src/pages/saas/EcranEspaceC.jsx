@@ -42,11 +42,11 @@ const WHY = [
 ];
 
 const REALISATIONS = [
-  { cat: "WEB DESIGN & UI", title: "Fashionist'ART Dour",
-    text: "Conception visuelle, mise en page et adaptation de l'identité graphique au web pour Olivier Trevis.",
-    link: "https://www.oliviertrevis.be/fashionistart" },
-  { cat: "DESIGN PRINT", title: "Roll-up Fashionist'ART",
-    text: "Création d'un support événementiel 85 × 200 cm pour l'ASBL Starlight et Fashionist'ART Dour.",
+  { cat: "WEB DESIGN & UI", title: "Site vitrine artisan",
+    text: "Conception visuelle, mise en page et adaptation de l'identité graphique au web pour un artisan indépendant.",
+    link: null },
+  { cat: "DESIGN PRINT", title: "Roll-up événementiel",
+    text: "Création d'un support événementiel 85 × 200 cm pour une activité locale en Belgique.",
     link: null },
   { cat: "SOLUTION MÉTIER", title: "Assistant vocal infirmières",
     text: "Prototype d'assistant vocal pour structurer les demandes, les rendez-vous et les rappels des infirmières indépendantes.",
