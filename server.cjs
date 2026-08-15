@@ -10,6 +10,8 @@ const COCKPIT_COMMERCE_URL = (process.env.COCKPIT_COMMERCE_URL || 'https://cockp
 const COMMERCE_BRIDGE_KEY = process.env.COMMERCE_BRIDGE_KEY || '';
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || '';
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || '';
+const STRIPE_API_VERSION = '2026-06-24.dahlia';
+const checkoutRateLimits = new Map();
 
 const PRICE_MAP = {
   signage: {
@@ -31,6 +33,20 @@ const MIME = {
 function json(res, status, body) {
   res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
   res.end(JSON.stringify(body));
+}
+
+function checkoutAllowed(req) {
+  const ip = String(req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown').split(',')[0].trim();
+  const now = Date.now(), windowMs = 15 * 60 * 1000, current = checkoutRateLimits.get(ip);
+  if (!current || now - current.startedAt > windowMs) { checkoutRateLimits.set(ip, { startedAt: now, count: 1 }); return true; }
+  current.count += 1;
+  return current.count <= 5;
+}
+
+function integrationIdentifier() {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  const bytes = crypto.randomBytes(8);
+  return `jsinnovia_${Array.from(bytes, value => alphabet[value % alphabet.length]).join('')}`;
 }
 
 function readBody(req, max = 256 * 1024) {
@@ -84,6 +100,7 @@ async function cockpitPost(endpoint, payload) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-commerce-key': COMMERCE_BRIDGE_KEY },
     body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(15000),
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(data.error || `Cockpit HTTP ${response.status}`);
@@ -102,9 +119,11 @@ async function stripeRequest(resource, params, idempotencyKey) {
     headers: {
       Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
       'Content-Type': 'application/x-www-form-urlencoded',
+      'Stripe-Version': STRIPE_API_VERSION,
       ...(idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : {}),
     },
     body,
+    signal: AbortSignal.timeout(20000),
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(data.error?.message || `Stripe HTTP ${response.status}`);
@@ -114,7 +133,8 @@ async function stripeRequest(resource, params, idempotencyKey) {
 async function stripeGet(resource) {
   if (!STRIPE_SECRET_KEY) throw new Error('Stripe non configuré');
   const response = await fetch(`https://api.stripe.com/v1/${resource}`, {
-    headers: { Authorization: `Bearer ${STRIPE_SECRET_KEY}` },
+    headers: { Authorization: `Bearer ${STRIPE_SECRET_KEY}`, 'Stripe-Version': STRIPE_API_VERSION },
+    signal: AbortSignal.timeout(20000),
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(data.error?.message || `Stripe HTTP ${response.status}`);
@@ -140,6 +160,7 @@ function verifyStripeSignature(rawBody, header) {
 
 async function handleCheckout(req, res) {
   try {
+    if (!checkoutAllowed(req)) return json(res, 429, { error: 'Trop de tentatives. Réessayez dans 15 minutes.' });
     const raw = await readBody(req);
     const questionnaire = validateQuestionnaire(JSON.parse(raw.toString('utf8') || '{}'));
     const prices = PRICE_MAP[questionnaire.packageId];
@@ -151,6 +172,7 @@ async function handleCheckout(req, res) {
 
     const session = await stripeRequest('checkout/sessions', {
       mode: 'subscription',
+      integration_identifier: integrationIdentifier(),
       customer_email: questionnaire.email,
       'line_items[0][price]': prices.monthly,
       'line_items[0][quantity]': 1,
@@ -193,7 +215,7 @@ async function handleWebhook(req, res) {
     const raw = await readBody(req, 1024 * 1024);
     if (!verifyStripeSignature(raw, req.headers['stripe-signature'])) return json(res, 400, { error: 'Signature Stripe invalide' });
     const event = JSON.parse(raw.toString('utf8'));
-    const supported = new Set(['checkout.session.completed', 'invoice.paid', 'invoice.payment_failed', 'customer.subscription.updated', 'customer.subscription.deleted', 'charge.refunded']);
+    const supported = new Set(['checkout.session.completed', 'checkout.session.async_payment_succeeded', 'checkout.session.async_payment_failed', 'invoice.paid', 'invoice.payment_failed', 'customer.subscription.updated', 'customer.subscription.deleted', 'charge.refunded']);
     if (supported.has(event.type)) {
       await cockpitPost('/stripe-event', {
         eventId: event.id,
@@ -241,3 +263,4 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, '0.0.0.0', () => console.log(`JS-Innov.IA site + commerce API listening on ${PORT}`));
+
