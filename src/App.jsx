@@ -35,6 +35,7 @@ import EcranLed from './pages/saas/EcranLed';
 import EcranEspaceC from './pages/saas/EcranEspaceC';
 import Ps from './pages/Ps';
 import CockpitConnectedSite from './pages/CockpitConnectedSite';
+import CataloguePricingDraft from './pages/CataloguePricingDraft';
 import __Layout from './Layout.jsx';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
@@ -121,6 +122,8 @@ const AuthenticatedApp = () => {
       <Route path="/saas-chatbot-admin" element={<SaasLayout><SaasChatbotAdmin /></SaasLayout>} />
       <Route path="/cockpit" element={<CockpitConnectedSite />} />
       <Route path="/site-cockpit" element={<CockpitConnectedSite />} />
+      {/* Draft-only route: intentionally absent from public navigation. */}
+      <Route path="/catalogue-tarifs-brouillon" element={<SaasLayout><CataloguePricingDraft /></SaasLayout>} />
       <Route path="/ecran" element={<EcranLed />} />
       <Route path="/ecranespacec" element={<EcranEspaceC />} />
       <Route path="/ps" element={<Ps />} />
