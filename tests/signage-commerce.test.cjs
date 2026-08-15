@@ -11,6 +11,8 @@ test('Stripe Checkout uses subscription mode, Prices and dynamic payment methods
   assert.doesNotMatch(server, /payment_method_types/);
   assert.match(server, /integration_identifier/);
   assert.match(server, /2026-06-24\.dahlia/);
+  assert.match(server, /tax_id_collection\[enabled\]/);
+  assert.match(server, /allow_promotion_codes/);
 });
 
 test('Stripe secrets stay server-side and requests have timeouts', () => {
