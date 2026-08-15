@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import ReactMarkdown from 'react-markdown';
@@ -16,7 +16,7 @@ export default function BlogPost() {
 
   const { data: posts = [], isLoading } = useQuery({
     queryKey: ['blog-post', slug],
-    queryFn: () => base44.entities.BlogPost.filter({ slug, status: 'publié' }),
+    queryFn: () => platform.entities.BlogPost.filter({ slug, status: 'publié' }),
     enabled: !!slug,
   });
 
@@ -25,7 +25,7 @@ export default function BlogPost() {
   // Articles similaires
   const { data: relatedPosts = [] } = useQuery({
     queryKey: ['related-posts', post?.category],
-    queryFn: () => base44.entities.BlogPost.filter(
+    queryFn: () => platform.entities.BlogPost.filter(
       { category: post.category, status: 'publié' },
       '-published_date',
       4

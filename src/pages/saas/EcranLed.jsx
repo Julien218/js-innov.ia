@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import {
   Monitor, Zap, Calendar, Star, CheckCircle, Send, Sparkles,
   Phone, Mail, MapPin, AlertTriangle, ArrowRight, Clock,
@@ -107,7 +107,7 @@ export default function EcranLed() {
     const pack = PACKS.find(p => p.id === selected);
 
     try {
-      await base44.functions.invoke('receiveLead', {
+      await platform.functions.invoke('receiveLead', {
         firstName: form.prenom,
         lastName:  form.nom,
         email:     form.email,

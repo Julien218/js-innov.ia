@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import {
   Users, Briefcase, CheckSquare, FileText, Bell, Check, X, MessageSquare, AlertTriangle, Search, Edit
 } from 'lucide-react';
@@ -53,7 +53,7 @@ export default function SaasAdmin() {
   const [comment, setComment] = useState('');
 
   useEffect(() => {
-    base44.auth.me().then(u => {
+    platform.auth.me().then(u => {
       setIsAdmin(u?.role === 'admin');
       setCheckingAuth(false);
     }).catch(() => setCheckingAuth(false));
@@ -62,10 +62,10 @@ export default function SaasAdmin() {
   useEffect(() => {
     if (!isAdmin) return;
     Promise.all([
-      base44.entities.Lead.list('-created_date', 100),
-      base44.entities.SaasProject.list('-created_date', 100),
-      base44.entities.Validation.list('-created_date', 100),
-      base44.entities.SaasContent.list('-created_date', 100),
+      platform.entities.Lead.list('-created_date', 100),
+      platform.entities.SaasProject.list('-created_date', 100),
+      platform.entities.Validation.list('-created_date', 100),
+      platform.entities.SaasContent.list('-created_date', 100),
     ]).then(([l, p, v, c]) => {
       setLeads(l || []);
       setProjects(p || []);
@@ -75,14 +75,14 @@ export default function SaasAdmin() {
   }, [isAdmin]);
 
   const updateValidationStatus = async (id, status) => {
-    await base44.entities.Validation.update(id, { status, adminComment: comment });
+    await platform.entities.Validation.update(id, { status, adminComment: comment });
     setValidations(prev => prev.map(v => v.id === id ? { ...v, status, adminComment: comment } : v));
     setEditingValidation(null);
     setComment('');
   };
 
   const updateLeadStatus = async (id, status) => {
-    await base44.entities.Lead.update(id, { status });
+    await platform.entities.Lead.update(id, { status });
     setLeads(prev => prev.map(l => l.id === id ? { ...l, status } : l));
   };
 

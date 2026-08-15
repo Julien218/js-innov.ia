@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import {
   RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Cell
@@ -181,7 +181,7 @@ export default function SEOScoreDashboard() {
   const queryClient = useQueryClient();
   const { data: contents = [], isLoading, dataUpdatedAt } = useQuery({
     queryKey: ['generated-content-seo'],
-    queryFn: () => base44.entities.GeneratedContent.list('-created_date', 100),
+    queryFn: () => platform.entities.GeneratedContent.list('-created_date', 100),
     refetchInterval: 30000, // auto-refresh every 30s
   });
 

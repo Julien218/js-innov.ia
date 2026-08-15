@@ -4,7 +4,7 @@ import {
   Globe, TrendingUp, Zap, Cpu, Check, Plus, Minus, ChevronRight,
   Sparkles
 } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -84,7 +84,7 @@ export default function PackConfigurator({ onComplete }) {
 
     // Notification dashboard (Validation entity) + email admin — en parallèle
     await Promise.all([
-      base44.entities.Validation.create({
+      platform.entities.Validation.create({
         type: 'autre',
         title: `🛒 Nouvelle configuration pack — ${summary.pack}`,
         content: contentBody,
@@ -92,7 +92,7 @@ export default function PackConfigurator({ onComplete }) {
         urgency: 'normale',
         agentName: 'PackConfigurator',
       }),
-      base44.integrations.Core.SendEmail({
+      platform.integrations.Core.SendEmail({
         to: 'contact@js-innov.ia',
         subject: `🛒 Nouveau pack configuré — ${summary.pack}`,
         body: `Un client vient de finaliser sa configuration.\n\n${contentBody.replace(/\*\*/g, '')}\n\nConnectez-vous au dashboard pour le traiter.`,

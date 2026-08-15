@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 export default function CustomMusicRequestModal({ isOpen, onClose }) {
   const [step, setStep] = useState(1);
@@ -26,7 +26,7 @@ export default function CustomMusicRequestModal({ isOpen, onClose }) {
   const queryClient = useQueryClient();
 
   const createContactMutation = useMutation({
-    mutationFn: (data) => base44.entities.Contact.create({
+    mutationFn: (data) => platform.entities.Contact.create({
       ...data,
       subject: 'Demande Musique Personnalisée',
       message: `Type de commerce: ${data.business_type}

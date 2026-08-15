@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import SectionHeader from '../components/shared/SectionHeader';
 import DemoModal from '../components/automations/DemoModal';
 import RecommendationsSection from '../components/recommendations/RecommendationsSection';
@@ -23,7 +23,7 @@ export default function Automations() {
 
   const { data: automations = [], isLoading } = useQuery({
     queryKey: ['automations'],
-    queryFn: () => base44.entities.Automation.list('-created_date'),
+    queryFn: () => platform.entities.Automation.list('-created_date'),
   });
 
   const categories = ['all', 'Marketing', 'Productivité', 'E-commerce', 'Service Client', 'Gestion de données', 'Autre'];

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -21,13 +21,13 @@ export default function QuoteDashboard() {
   const { data: quotes = [], isLoading } = useQuery({
     queryKey: ['quotes'],
     queryFn: async () => {
-      const quotesData = await base44.entities.Quote.list('-created_date');
+      const quotesData = await platform.entities.Quote.list('-created_date');
 
       // Charger les infos clients et projets associés
       const enrichedQuotes = await Promise.all(
         quotesData.map(async (quote) => {
-          const customer = await base44.entities.Customer.filter({ id: quote.customer_id });
-          const project = await base44.entities.Project.filter({ id: quote.project_id });
+          const customer = await platform.entities.Customer.filter({ id: quote.customer_id });
+          const project = await platform.entities.Project.filter({ id: quote.project_id });
 
           return {
             ...quote,
@@ -44,7 +44,7 @@ export default function QuoteDashboard() {
   // Mutation pour mettre à jour le statut
   const updateStatusMutation = useMutation({
     mutationFn: async ({ quote_id, statut, notes_internes }) => {
-      const response = await base44.functions.invoke('updateQuoteStatus', {
+      const response = await platform.functions.invoke('updateQuoteStatus', {
         quote_id,
         statut,
         notes_internes

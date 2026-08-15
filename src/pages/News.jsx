@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import SectionHeader from '../components/shared/SectionHeader';
 import PowerWord from '../components/shared/PowerWord';
 import { motion } from 'framer-motion';
@@ -13,7 +13,7 @@ export default function News() {
 
   const { data: news = [], isLoading } = useQuery({
     queryKey: ['news'],
-    queryFn: () => base44.entities.News.list('-created_date'),
+    queryFn: () => platform.entities.News.list('-created_date'),
   });
 
   const categories = [
@@ -276,7 +276,7 @@ export default function News() {
                 tendances émergentes.
               </p>
               <a
-                href={base44.agents.getWhatsAppConnectURL('news_hunter')}
+                href={platform.agents.getWhatsAppConnectURL('news_hunter')}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all"

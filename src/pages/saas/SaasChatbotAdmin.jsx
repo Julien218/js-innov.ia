@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { MessageCircle, Send, Search, Clock, Mail, Phone, Building2, CheckCircle, AlertCircle } from 'lucide-react';
 
@@ -31,14 +31,14 @@ export default function SaasChatbotAdmin() {
   // Fetch all leads with chatbot source
   const { data: leads = [], isLoading } = useQuery({
     queryKey: ['chatbot_leads'],
-    queryFn: () => base44.entities.Lead.filter({ source: 'chatbot' }, '-created_date', 100),
+    queryFn: () => platform.entities.Lead.filter({ source: 'chatbot' }, '-created_date', 100),
     refetchInterval: 5000, // Auto-refresh every 5s
   });
 
   // Update lead status mutation
   const updateStatusMutation = useMutation({
     mutationFn: ({ leadId, newStatus }) =>
-      base44.entities.Lead.update(leadId, { status: newStatus }),
+      platform.entities.Lead.update(leadId, { status: newStatus }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['chatbot_leads'] });
     }
@@ -47,12 +47,12 @@ export default function SaasChatbotAdmin() {
   // Send manual reply mutation
   const sendReplyMutation = useMutation({
     mutationFn: async ({ leadId, email, message }) => {
-      await base44.integrations.Core.SendEmail({
+      await platform.integrations.Core.SendEmail({
         to: email,
         subject: `Re: Votre demande Js-Innov.IA`,
         body: message
       });
-      return base44.entities.Lead.update(leadId, { status: 'contacté' });
+      return platform.entities.Lead.update(leadId, { status: 'contacté' });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['chatbot_leads'] });

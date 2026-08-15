@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { FileText, Plus, Edit, Trash2, Copy } from 'lucide-react';
@@ -42,7 +42,7 @@ export default function FormBuilder() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const currentUser = await base44.auth.me();
+        const currentUser = await platform.auth.me();
         if (!currentUser || currentUser.role !== 'admin') {
           navigate(createPageUrl('Home'));
           return;
@@ -57,12 +57,12 @@ export default function FormBuilder() {
 
   const { data: forms = [], isLoading } = useQuery({
     queryKey: ['customForms'],
-    queryFn: () => base44.entities.CustomForm.list(),
+    queryFn: () => platform.entities.CustomForm.list(),
     enabled: !!user
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.CustomForm.create(data),
+    mutationFn: (data) => platform.entities.CustomForm.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['customForms'] });
       resetForm();
@@ -70,7 +70,7 @@ export default function FormBuilder() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.CustomForm.update(id, data),
+    mutationFn: ({ id, data }) => platform.entities.CustomForm.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['customForms'] });
       resetForm();
@@ -78,7 +78,7 @@ export default function FormBuilder() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.CustomForm.delete(id),
+    mutationFn: (id) => platform.entities.CustomForm.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['customForms'] });
     }

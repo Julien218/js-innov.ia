@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { Send, CheckCircle, Mail, Phone, MapPin, Globe, Sparkles } from 'lucide-react';
 
 const GOLD = '#D4AF37';
@@ -49,7 +49,7 @@ export default function WebOSContact() {
     setLoading(true);
     const score = calcScore(formData);
     const category = getCategory(score);
-    await base44.entities.ProjectRequest.create({
+    await platform.entities.ProjectRequest.create({
       ...formData,
       lead_score: score,
       lead_category: category,

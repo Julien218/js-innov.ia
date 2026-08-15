@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { Plus, Lock, Sparkles, Pause, Play, Trash2, ChevronDown, ChevronUp, Palette } from 'lucide-react';
 
 const GOLD = '#D4AF37';
@@ -28,7 +28,7 @@ export default function NicheTab({ onGenerateContent, onRegenerateIdentity }) {
 
   const { data: niches = [], isLoading } = useQuery({
     queryKey: ['niches'],
-    queryFn: () => base44.entities.Niche.list('-created_date', 50),
+    queryFn: () => platform.entities.Niche.list('-created_date', 50),
   });
 
   const createMutation = useMutation({
@@ -40,24 +40,24 @@ export default function NicheTab({ onGenerateContent, onRegenerateIdentity }) {
         status: 'active',
         ...(isJsInnov ? JS_INNOV_IDENTITY : {}),
       };
-      return base44.entities.Niche.create(nicheData);
+      return platform.entities.Niche.create(nicheData);
     },
     onSuccess: () => { qc.invalidateQueries(['niches']); setShowForm(false); setForm({ name: '', bio: '', targetAudience: '', tone: '', goal: '' }); },
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Niche.update(id, data),
+    mutationFn: ({ id, data }) => platform.entities.Niche.update(id, data),
     onSuccess: () => qc.invalidateQueries(['niches']),
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Niche.delete(id),
+    mutationFn: (id) => platform.entities.Niche.delete(id),
     onSuccess: () => qc.invalidateQueries(['niches']),
   });
 
   const handleGenerateIdentity = async (niche) => {
     setGenerating(niche.id);
-    const result = await base44.integrations.Core.InvokeLLM({
+    const result = await platform.integrations.Core.InvokeLLM({
       prompt: `Tu es un expert en identité visuelle TikTok. Crée une identité visuelle unique et cohérente pour cette niche TikTok :
 Nom : ${niche.name}
 Bio : ${niche.bio || ''}

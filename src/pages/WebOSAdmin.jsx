@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { FileText, Ticket,
   TrendingUp, AlertTriangle, MessageCircle
@@ -64,7 +64,7 @@ function RequestRow({ req, onUpdate }) {
   const qc = useQueryClient();
 
   const update = useMutation({
-    mutationFn: (data) => base44.entities.ProjectRequest.update(req.id, data),
+    mutationFn: (data) => platform.entities.ProjectRequest.update(req.id, data),
     onSuccess: () => qc.invalidateQueries(['requests']),
   });
 
@@ -128,7 +128,7 @@ function TicketRow({ ticket }) {
   const [notes, setNotes] = useState(ticket.internal_notes || '');
   const qc = useQueryClient();
   const update = useMutation({
-    mutationFn: (data) => base44.entities.Ticket.update(ticket.id, data),
+    mutationFn: (data) => platform.entities.Ticket.update(ticket.id, data),
     onSuccess: () => qc.invalidateQueries(['tickets']),
   });
   const prioColor = PRIORITY_COLORS[ticket.priority] || '#aaa';
@@ -194,24 +194,24 @@ export default function WebOSAdmin() {
   const qc = useQueryClient();
 
   useEffect(() => {
-    base44.auth.me().then(u => setIsAdmin(u?.role === 'admin')).catch(() => {});
+    platform.auth.me().then(u => setIsAdmin(u?.role === 'admin')).catch(() => {});
   }, []);
 
   const { data: requests = [] } = useQuery({
     queryKey: ['requests'],
-    queryFn: () => base44.entities.ProjectRequest.list('-created_date', 100),
+    queryFn: () => platform.entities.ProjectRequest.list('-created_date', 100),
     enabled: isAdmin,
   });
 
   const { data: tickets = [] } = useQuery({
     queryKey: ['tickets'],
-    queryFn: () => base44.entities.Ticket.list('-created_date', 100),
+    queryFn: () => platform.entities.Ticket.list('-created_date', 100),
     enabled: isAdmin,
   });
 
   const { data: emailLogs = [] } = useQuery({
     queryKey: ['emailLogs'],
-    queryFn: () => base44.entities.EmailLog.list('-created_date', 100),
+    queryFn: () => platform.entities.EmailLog.list('-created_date', 100),
     enabled: isAdmin,
   });
 

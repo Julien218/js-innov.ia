@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -24,13 +24,13 @@ export default function PageManager() {
 
   const { data: pages = [], isLoading } = useQuery({
     queryKey: ['dynamic-pages'],
-    queryFn: () => base44.entities.DynamicPage.list('-created_date'),
+    queryFn: () => platform.entities.DynamicPage.list('-created_date'),
   });
 
   const saveMutation = useMutation({
     mutationFn: (data) => editing === 'new'
-      ? base44.entities.DynamicPage.create(data)
-      : base44.entities.DynamicPage.update(editing, data),
+      ? platform.entities.DynamicPage.create(data)
+      : platform.entities.DynamicPage.update(editing, data),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['dynamic-pages'] });
       setEditing(null);
@@ -39,7 +39,7 @@ export default function PageManager() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.DynamicPage.delete(id),
+    mutationFn: (id) => platform.entities.DynamicPage.delete(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['dynamic-pages'] })
   });
 

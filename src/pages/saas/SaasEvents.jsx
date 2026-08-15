@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   Ticket, QrCode, Users, Plus, Calendar, MapPin, Check, Sparkles
 } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -28,7 +28,7 @@ function EventCard({ event }) {
   const handleRegister = async () => {
     if (!form.name || !form.email) return;
     const qr = `${event.id}-${form.email}-${Date.now()}`;
-    await base44.entities.EventTicket.create({
+    await platform.entities.EventTicket.create({
       event_id: event.id,
       event_title: event.title,
       attendee_name: form.name,
@@ -36,9 +36,9 @@ function EventCard({ event }) {
       qr_code: qr,
       amount_paid: event.price || 0,
     });
-    await base44.entities.Event.update(event.id, { tickets_sold: sold + 1 });
+    await platform.entities.Event.update(event.id, { tickets_sold: sold + 1 });
     // Send confirmation email
-    await base44.integrations.Core.SendEmail({
+    await platform.integrations.Core.SendEmail({
       to: form.email,
       subject: `🎟 Votre ticket pour "${event.title}"`,
       body: `Bonjour ${form.name},\n\nVotre inscription est confirmée !\n\nÉvénement : ${event.title}\nDate : ${new Date(event.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}\nLieu : ${event.location || 'À préciser'}\n\nVotre code QR de ticket : ${qr}\n\nPrésentez ce code à l'entrée.\n\nÀ bientôt,\nL'équipe JS-Innov.IA`,
@@ -157,14 +157,14 @@ export default function SaasEvents() {
 
   const { data: events = [], isLoading } = useQuery({
     queryKey: ['events'],
-    queryFn: () => base44.entities.Event.filter({ status: 'published' }, '-date', 20),
+    queryFn: () => platform.entities.Event.filter({ status: 'published' }, '-date', 20),
   });
 
   const handleCreateEvent = async () => {
     if (!newEvent.title || !newEvent.date) return;
     // Submit as draft to admin
-    await base44.entities.Event.create({ ...newEvent, status: 'draft' });
-    await base44.integrations.Core.SendEmail({
+    await platform.entities.Event.create({ ...newEvent, status: 'draft' });
+    await platform.integrations.Core.SendEmail({
       to: 'contact@js-innov.ia',
       subject: `🎟 Nouvelle demande d'événement — ${newEvent.title}`,
       body: `Titre : ${newEvent.title}\nDate : ${newEvent.date}\nLieu : ${newEvent.location}\nCapacité : ${newEvent.capacity}\nPrix : ${newEvent.price}€\nDescription : ${newEvent.description}`,

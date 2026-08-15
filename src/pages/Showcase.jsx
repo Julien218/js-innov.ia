@@ -94,7 +94,7 @@ const PROJECTS = [
     category: 'Dashboard admin',
     description: "Plateforme de commande interne JS-Innov.IA : gestion clients, devis, projets, stagiaires, leads et automatisations. Tableau de bord centralise pour piloter toute l'agence en temps reel.",
     image_url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
-    project_url: 'https://app.base44.com',
+    project_url: 'https://app.platform.com',
     technologies: ['React', 'IA', 'CRM', 'Automatisations', 'Dashboard'],
     featured: false,
     color: GOLD,

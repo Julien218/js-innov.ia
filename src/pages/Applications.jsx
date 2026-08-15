@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import SectionHeader from '../components/shared/SectionHeader';
 import RecommendationsSection from '../components/recommendations/RecommendationsSection';
 import ProductSEOWrapper from '../components/seo/ProductSEOWrapper';
@@ -22,7 +22,7 @@ export default function Applications() {
 
   const { data: applications = [], isLoading } = useQuery({
     queryKey: ['applications'],
-    queryFn: () => base44.entities.Application.list('-created_date'),
+    queryFn: () => platform.entities.Application.list('-created_date'),
   });
 
   const categories = ['all', 'IA Générative', 'Assistant IA', 'Analyse de données', 'Création de contenu', 'CRM', 'Autre'];

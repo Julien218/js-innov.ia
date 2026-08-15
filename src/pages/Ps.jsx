@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import ReactMarkdown from 'react-markdown';
 import {
   Zap, Send, Copy, Check, RotateCcw, Code, Gamepad2, Clock, Terminal, MessageSquare, X
@@ -104,7 +104,7 @@ export default function Ps() {
     setLoading(true);
 
     try {
-      const res = await base44.integrations.Core.InvokeLLM({
+      const res = await platform.integrations.Core.InvokeLLM({
         prompt: `${SYSTEM_PROMPT}\n\nDEMANDE DE L'UTILISATEUR : ${userMsg}`,
         model: 'gemini_3_flash',
       });

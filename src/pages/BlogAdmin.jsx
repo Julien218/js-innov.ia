@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { Sparkles, Edit, Trash2, Save,
   Loader2, BookOpen, TrendingUp
 } from 'lucide-react';
@@ -43,11 +43,11 @@ export default function BlogAdmin() {
 
   const { data: posts = [], isLoading } = useQuery({
     queryKey: ['admin-blog-posts'],
-    queryFn: () => base44.entities.BlogPost.list('-created_date', 100),
+    queryFn: () => platform.entities.BlogPost.list('-created_date', 100),
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.BlogPost.create(data),
+    mutationFn: (data) => platform.entities.BlogPost.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-blog-posts'] });
       resetForm();
@@ -55,7 +55,7 @@ export default function BlogAdmin() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.BlogPost.update(id, data),
+    mutationFn: ({ id, data }) => platform.entities.BlogPost.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-blog-posts'] });
       resetForm();
@@ -63,7 +63,7 @@ export default function BlogAdmin() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.BlogPost.delete(id),
+    mutationFn: (id) => platform.entities.BlogPost.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-blog-posts'] })
   });
 
@@ -92,7 +92,7 @@ export default function BlogAdmin() {
     setIsGenerating(true);
 
     try {
-      const result = await base44.integrations.Core.InvokeLLM({
+      const result = await platform.integrations.Core.InvokeLLM({
         prompt: `Tu es un expert en rédaction SEO pour JS-INNOV.IA, spécialisé dans l'automatisation et l'IA pour indépendants et PME en Belgique (Dour, Hainaut).
 
 Rédige un article de blog complet et optimisé SEO sur le sujet : "${topic}"
@@ -156,7 +156,7 @@ Format markdown.`,
     setIsGenerating(true);
 
     try {
-      const result = await base44.integrations.Core.InvokeLLM({
+      const result = await platform.integrations.Core.InvokeLLM({
         prompt: `Analyse et optimise le SEO de cet article pour JS-INNOV.IA (automatisation & IA à Dour, Belgique).
 
 Titre: ${formData.title}

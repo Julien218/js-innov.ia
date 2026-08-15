@@ -7,7 +7,7 @@ import AIChatbot from './components/chatbot/AIChatbot';
 import SalesAgent from './components/agent/SalesAgent';
 import SEOMetaTags from './components/seo/SEOMetaTags';
 import { CartProvider, useCart } from './components/cart/CartContext';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import PageTransition from './components/shared/PageTransition';
 
 const GOLD = '#D4AF37';
@@ -25,11 +25,11 @@ function LayoutContent({ children, currentPageName }) {
   const isStandalonePage = currentPageName === 'LogoSenergieDour';
 
   useEffect(() => {
-    base44.auth.me().then(u => setIsAdmin(u?.role === 'admin')).catch(() => {});
+    platform.auth.me().then(u => setIsAdmin(u?.role === 'admin')).catch(() => {});
   }, []);
 
   useEffect(() => {
-    base44.entities.DynamicPage.filter({ show_in_nav: true, status: 'publiée' })
+    platform.entities.DynamicPage.filter({ show_in_nav: true, status: 'publiée' })
       .then(setDynNavPages).catch(() => {});
   }, []);
 

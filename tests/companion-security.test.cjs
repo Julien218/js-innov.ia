@@ -6,13 +6,15 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const client = fs.readFileSync(path.join(root, 'src/components/chatbot/AIChatbot.jsx'), 'utf8');
 const avatar = fs.readFileSync(path.join(root, 'src/components/chatbot/AIAvatar.jsx'), 'utf8');
-const endpoint = fs.readFileSync(path.join(root, 'base44/functions/publicChat/entry.ts'), 'utf8');
+const endpoint = fs.readFileSync(path.join(root, 'server.mjs'), 'utf8');
+const platformClient = fs.readFileSync(path.join(root, 'src/api/platformClient.js'), 'utf8');
 const app = fs.readFileSync(path.join(root, 'src/App.jsx'), 'utf8');
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'public/brand/companion/manifest.json'), 'utf8'));
 
 test('the browser delegates AI requests to the server function', () => {
   assert.match(client, /functions\.invoke\('publicChat'/);
   assert.doesNotMatch(client, /integrations\.Core\.InvokeLLM/);
+  assert.match(platformClient, /\/api\/platform\/functions/);
 });
 
 test('the branded companion is mounted on the active SaaS landing routes', () => {
@@ -23,13 +25,21 @@ test('the branded companion is mounted on the active SaaS landing routes', () =>
 test('the public endpoint bounds input and rate limits requests', () => {
   assert.match(endpoint, /slice\(-10\)/);
   assert.match(endpoint, /slice\(0, 1000\)/);
-  assert.match(endpoint, /RATE_MAX/);
-  assert.match(endpoint, /, 429/);
+  assert.match(endpoint, /current\.count <= 30/);
+  assert.match(endpoint, /response, 429/);
 });
 
 test('the public assistant is explicitly isolated from the cockpit', () => {
-  assert.match(endpoint, /assistant public/);
-  assert.match(endpoint, /ne prétends pas accéder au cockpit/);
+  assert.match(endpoint, /compagnon public/);
+  assert.match(endpoint, /Ne révèle aucune donnée interne/);
+});
+
+test('the application has no runtime dependency on Base44', () => {
+  const packageJson = fs.readFileSync(path.join(root, 'package.json'), 'utf8');
+  const viteConfig = fs.readFileSync(path.join(root, 'vite.config.js'), 'utf8');
+  assert.doesNotMatch(packageJson, /@base44/);
+  assert.doesNotMatch(viteConfig, /base44/i);
+  assert.equal(fs.existsSync(path.join(root, 'src/api/base44Client.js')), false);
 });
 
 test('the premium local visual pack is used instead of a remote mascot', () => {

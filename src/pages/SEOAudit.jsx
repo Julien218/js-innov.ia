@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, CheckCircle, AlertCircle, XCircle, TrendingUp, Loader2, Download, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import SectionHeader from '../components/shared/SectionHeader';
 import PowerWord from '../components/shared/PowerWord';
 import SEOHero from '../components/seo/SEOHero';
@@ -36,7 +36,7 @@ export default function SEOAudit() {
 
     try {
       const competitorUrls = competitors.filter(c => c.trim()).map(c => c.trim());
-      const response = await base44.functions.invoke('analyzeSEO', {
+      const response = await platform.functions.invoke('analyzeSEO', {
         url: url.trim(),
         email: email.trim(),
         competitors: competitorUrls

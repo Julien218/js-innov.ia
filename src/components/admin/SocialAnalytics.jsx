@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { motion } from 'framer-motion';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -47,13 +47,13 @@ export default function SocialAnalytics() {
 
   const { data: ttData, isLoading: ttLoading, refetch: refetchTT } = useQuery({
     queryKey: ['tiktok-stats'],
-    queryFn: () => base44.functions.invoke('getTikTokStats', {}).then(r => r.data),
+    queryFn: () => platform.functions.invoke('getTikTokStats', {}).then(r => r.data),
     retry: false,
   });
 
   const { data: igData, isLoading: igLoading, refetch: refetchIG } = useQuery({
     queryKey: ['instagram-stats'],
-    queryFn: () => base44.functions.invoke('getInstagramStats', {}).then(r => r.data),
+    queryFn: () => platform.functions.invoke('getInstagramStats', {}).then(r => r.data),
     retry: false,
   });
 
