@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { AlertCircle, ArrowUpRight, Loader2, RotateCcw, Send, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { platform } from '@/api/platformClient';
@@ -94,7 +95,7 @@ export default function AIChatbot() {
     window.setTimeout(() => inputRef.current?.focus(), 0);
   }
 
-  return (
+  return createPortal(
     <>
       {!isOpen && <AIAvatar onClick={() => setIsOpen(true)} showWelcome={messages.length === 1} />}
       <AnimatePresence>
@@ -208,6 +209,7 @@ export default function AIChatbot() {
           </motion.section>
         )}
       </AnimatePresence>
-    </>
+    </>,
+    document.body
   );
 }
