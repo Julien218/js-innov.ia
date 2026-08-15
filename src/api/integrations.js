@@ -1,21 +1,21 @@
-import { base44 } from './base44Client';
+import { platform } from './platformClient';
 
 
 
 
-export const Core = base44.integrations.Core;
+export const Core = platform.integrations.Core;
 
-export const InvokeLLM = base44.integrations.Core.InvokeLLM;
+export const InvokeLLM = platform.integrations.Core.InvokeLLM;
 
-export const SendEmail = base44.integrations.Core.SendEmail;
+export const SendEmail = platform.integrations.Core.SendEmail;
 
-export const SendSMS = base44.integrations.Core.SendSMS;
+export const SendSMS = platform.integrations.Core.SendSMS;
 
-export const UploadFile = base44.integrations.Core.UploadFile;
+export const UploadFile = platform.integrations.Core.UploadFile;
 
-export const GenerateImage = base44.integrations.Core.GenerateImage;
+export const GenerateImage = platform.integrations.Core.GenerateImage;
 
-export const ExtractDataFromUploadedFile = base44.integrations.Core.ExtractDataFromUploadedFile;
+export const ExtractDataFromUploadedFile = platform.integrations.Core.ExtractDataFromUploadedFile;
 
 
 

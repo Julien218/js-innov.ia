@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Bot, Sparkles, TrendingUp, AlertCircle, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 const PLANS = [
   {
@@ -155,7 +155,7 @@ export default function SalesAgent() {
     addMessage('agent', '⏳ Analyse en cours... Je scanne votre site avec notre IA SEO.');
 
     try {
-      const res = await base44.functions.invoke('salesAgentAnalyze', { url });
+      const res = await platform.functions.invoke('salesAgentAnalyze', { url });
       const data = res.data;
       setSeoData(data);
       setMessages(prev => [
@@ -189,7 +189,7 @@ export default function SalesAgent() {
     setCheckingOut(true);
     addMessage('agent', '🔒 Redirection vers le paiement sécurisé Stripe...');
     try {
-      const res = await base44.functions.invoke('salesAgentCheckout', { plan: selectedPlan.name, email });
+      const res = await platform.functions.invoke('salesAgentCheckout', { plan: selectedPlan.name, email });
       if (res.data?.url) {
         window.open(res.data.url, '_blank');
         addMessage('agent', `✅ La page de paiement s'est ouverte dans un nouvel onglet. Bon succès avec votre Plan ${selectedPlan.name} ! 🚀`);

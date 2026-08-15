@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import SectionHeader from '../components/shared/SectionHeader';
 import RecommendationsSection from '../components/recommendations/RecommendationsSection';
 import ProductSEOWrapper from '../components/seo/ProductSEOWrapper';
@@ -18,7 +18,7 @@ export default function Innovations() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    base44.auth.me().then(u => setIsAdmin(u?.role === 'admin')).catch(() => {});
+    platform.auth.me().then(u => setIsAdmin(u?.role === 'admin')).catch(() => {});
   }, []);
   const { trackView } = useNavigationTracking();
 
@@ -29,7 +29,7 @@ export default function Innovations() {
 
   const { data: innovations = [], isLoading } = useQuery({
     queryKey: ['innovations'],
-    queryFn: () => base44.entities.Innovation.list('-created_date'),
+    queryFn: () => platform.entities.Innovation.list('-created_date'),
   });
 
   const categories = ['all', 'IA Générative', 'Automatisation', 'Vision par ordinateur', 'NLP', 'Robotique', 'Autre'];

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Loader2, Upload, Sparkles } from 'lucide-react';
@@ -19,7 +19,7 @@ export default function PublicForm() {
   const { data: form, isLoading } = useQuery({
     queryKey: ['customForm', slug],
     queryFn: async () => {
-      const forms = await base44.entities.CustomForm.filter({ slug });
+      const forms = await platform.entities.CustomForm.filter({ slug });
       return forms[0];
     },
     enabled: !!slug
@@ -27,9 +27,9 @@ export default function PublicForm() {
 
   const submitMutation = useMutation({
     mutationFn: async (data) => {
-      await base44.entities.FormSubmission.create(data);
+      await platform.entities.FormSubmission.create(data);
       if (form.notification_email) {
-        await base44.integrations.Core.SendEmail({
+        await platform.integrations.Core.SendEmail({
           to: form.notification_email,
           subject: `Nouvelle soumission: ${form.name}`,
           body: `Nouvelle soumission reçue:\n\n${JSON.stringify(data.data, null, 2)}`
@@ -47,10 +47,10 @@ export default function PublicForm() {
 
     setIsProcessing(true);
     try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const { file_url } = await platform.integrations.Core.UploadFile({ file });
       setUploadedFile(file_url);
 
-      const response = await base44.integrations.Core.InvokeLLM({
+      const response = await platform.integrations.Core.InvokeLLM({
         prompt: `Analyse ce document et extrais toutes les informations pertinentes. Retourne un objet JSON avec des clés correspondant aux champs du formulaire si possible (nom, email, téléphone, entreprise, message, etc.).`,
         file_urls: [file_url],
         response_json_schema: {

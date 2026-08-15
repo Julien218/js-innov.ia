@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Bot, Sparkles, ArrowRight } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -144,7 +144,7 @@ export default function SaasChatbot() {
     setLoading(true);
     const recommended = PACK_LOGIC(data);
     setPack(recommended);
-    await base44.functions.invoke('receiveLead', {
+    await platform.functions.invoke('receiveLead', {
       ...data,
       recommendedPack: recommended,
       source: 'chatbot',

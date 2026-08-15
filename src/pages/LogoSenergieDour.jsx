@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 export default function LogoSenergieDour() {
   const [formData, setFormData] = useState({
@@ -80,7 +80,7 @@ export default function LogoSenergieDour() {
     setLoading(true);
 
     try {
-      await base44.entities.LogoSubmission.create(formData);
+      await platform.entities.LogoSubmission.create(formData);
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { Check, X, Clock, Eye, ChevronDown, ChevronUp, Calendar } from 'lucide-react';
 
 const GOLD = '#D4AF37';
@@ -27,16 +27,16 @@ export default function ValidationTab() {
 
   const { data: contents = [], isLoading } = useQuery({
     queryKey: ['generated-content'],
-    queryFn: () => base44.entities.GeneratedContent.list('-created_date', 100),
+    queryFn: () => platform.entities.GeneratedContent.list('-created_date', 100),
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.GeneratedContent.update(id, data),
+    mutationFn: ({ id, data }) => platform.entities.GeneratedContent.update(id, data),
     onSuccess: () => qc.invalidateQueries(['generated-content']),
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.GeneratedContent.delete(id),
+    mutationFn: (id) => platform.entities.GeneratedContent.delete(id),
     onSuccess: () => qc.invalidateQueries(['generated-content']),
   });
 

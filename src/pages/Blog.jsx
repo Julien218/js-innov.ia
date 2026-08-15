@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import { BookOpen, Clock, Tag, Search, Calendar, ArrowRight, Sparkles } from 'lucide-react';
@@ -38,7 +38,7 @@ export default function Blog() {
 
   const { data: posts = [], isLoading } = useQuery({
     queryKey: ['blog-posts'],
-    queryFn: () => base44.entities.BlogPost.filter({ status: 'publié' }, '-published_date', 50),
+    queryFn: () => platform.entities.BlogPost.filter({ status: 'publié' }, '-published_date', 50),
   });
 
   const filtered = posts.filter(p => {

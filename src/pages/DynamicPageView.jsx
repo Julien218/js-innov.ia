@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import ReactMarkdown from 'react-markdown';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
@@ -14,7 +14,7 @@ export default function DynamicPageView() {
   useEffect(() => {
     const load = async () => {
       setLoading(true);
-      const results = await base44.entities.DynamicPage.filter({ slug, status: 'publiée' });
+      const results = await platform.entities.DynamicPage.filter({ slug, status: 'publiée' });
       if (results.length > 0) {
         setPage(results[0]);
       } else {

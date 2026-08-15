@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Instagram, Send, CheckCircle2, AlertCircle, X, ImageOff, Loader2 } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 const GOLD = '#D4AF37';
 
@@ -28,7 +28,7 @@ export default function InstagramCarouselPublisher({ innovations, onClose }) {
     if (selectedInnovations.length < 2) return;
     setLoading(true);
     setResult(null);
-    const res = await base44.functions.invoke('publishInstagramCarousel', {
+    const res = await platform.functions.invoke('publishInstagramCarousel', {
       innovations: selectedInnovations,
       caption: caption.trim() || null,
     });

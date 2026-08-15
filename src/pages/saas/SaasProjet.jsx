@@ -5,7 +5,7 @@ import {
   Sparkles, ArrowRight, ArrowLeft, Check, Globe, Palette, Zap,
   QrCode, Instagram, FileText, Loader2, CheckCircle
 } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -74,7 +74,7 @@ export default function SaasProjet() {
     const styleLabel = STYLES.find(s => s.id === form.style)?.label || form.style;
 
     await Promise.all([
-      base44.entities.Lead.create({
+      platform.entities.Lead.create({
         firstName: form.nom.split(' ')[0] || form.nom,
         lastName: form.nom.split(' ').slice(1).join(' ') || '',
         email: form.email,
@@ -87,7 +87,7 @@ export default function SaasProjet() {
         consentRgpd: form.consentement,
         message: `Activité: ${form.activite} | Besoins: ${besoinsLabels} | Style: ${styleLabel} | Couleurs: ${form.couleurs} | Budget: ${form.budget}`,
       }),
-      base44.integrations.Core.SendEmail({
+      platform.integrations.Core.SendEmail({
         to: 'contact@js-innov.ia',
         subject: `🚀 Nouveau projet — ${form.nom} (${besoinsLabels})`,
         body: `Nouveau projet soumis via le formulaire.\n\n👤 ${form.nom}\n📧 ${form.email}\n📱 ${form.phone || 'Non renseigné'}\n\n🏢 Activité: ${form.activite}\n📝 Description: ${form.description || 'Non renseignée'}\n✅ Besoins: ${besoinsLabels}\n🎨 Style: ${styleLabel}\n🎨 Couleurs: ${form.couleurs || 'Non renseignées'}\n💰 Budget: ${form.budget}\n\nConnectez-vous au dashboard pour traiter ce prospect.`,

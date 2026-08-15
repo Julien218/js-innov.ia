@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Check, Sparkles, MessageCircle, ArrowRight } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -103,7 +103,7 @@ export default function SaasAnalyse() {
     setLoading(true);
     const recommended = PACK_LOGIC(data);
     setPack(recommended);
-    await base44.entities.Lead.create({
+    await platform.entities.Lead.create({
       ...data,
       recommendedPack: recommended,
       source: 'formulaire',

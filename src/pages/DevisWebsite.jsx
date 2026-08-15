@@ -7,7 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { CheckCircle, ArrowRight, ArrowLeft, Sparkles, Globe, Zap } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 export default function DevisWebsite() {
   const [step, setStep] = useState(0);
@@ -104,7 +104,7 @@ export default function DevisWebsite() {
 
     try {
       // Appel à la fonction backend
-      const response = await base44.functions.invoke('submitQuoteRequest', {
+      const response = await platform.functions.invoke('submitQuoteRequest', {
         ...formData
       });
 

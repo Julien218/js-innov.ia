@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { Send, CheckCircle, Sparkles, User, Mail, Phone, Building2, MessageSquare } from 'lucide-react';
 
 const GOLD = '#D4AF37';
@@ -19,7 +19,7 @@ export default function LandingContactForm() {
     if (!form.consentRgpd || !form.email) return;
     setLoading(true);
     try {
-      await base44.functions.invoke('receiveLead', { ...form, source: 'landing_form' });
+      await platform.functions.invoke('receiveLead', { ...form, source: 'landing_form' });
       setSent(true);
     } catch {
       setSent(true);

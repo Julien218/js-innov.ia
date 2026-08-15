@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { AlertCircle, ArrowUpRight, Loader2, RotateCcw, Send, ShieldCheck, Sparkles, X } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import AIAvatar from './AIAvatar';
 
 const AVATAR = '/brand/companion/companion-avatar-256.webp';
@@ -69,7 +69,7 @@ export default function AIChatbot() {
     setStatus('loading');
 
     try {
-      const response = await withTimeout(base44.functions.invoke('publicChat', {
+      const response = await withTimeout(platform.functions.invoke('publicChat', {
         messages: nextMessages.slice(-10).map(({ role, content: text }) => ({ role, content: text }))
       }), 25_000);
       const answer = response?.data?.message;

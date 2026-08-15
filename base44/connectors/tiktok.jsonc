@@ -1,8 +1,0 @@
-{
-  "type": "tiktok",
-  "scopes": [
-    "user.info.basic",
-    "user.info.stats",
-    "video.list"
-  ]
-}

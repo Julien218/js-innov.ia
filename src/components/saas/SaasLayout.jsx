@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, MessageCircle } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import VoiceButton from '@/components/voice/VoiceButton';
 
 const GOLD = '#D4AF37';
@@ -42,7 +42,7 @@ export default function SaasLayout({ children }) {
   const location = useLocation();
 
   useEffect(() => {
-    base44.auth.me().then(u => setIsAdmin(u?.role === 'admin')).catch(() => {});
+    platform.auth.me().then(u => setIsAdmin(u?.role === 'admin')).catch(() => {});
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
