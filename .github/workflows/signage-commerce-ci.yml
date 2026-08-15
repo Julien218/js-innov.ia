@@ -7,6 +7,17 @@ on:
       - 'src/pages/saas/SignageSuccess.jsx'
       - 'tests/signage-commerce.test.cjs'
       - '.github/workflows/signage-commerce-ci.yml'
+      - 'package.json'
+  push:
+    branches:
+      - 'feature/digital-signage-product-checkout'
+    paths:
+      - 'server.cjs'
+      - 'src/pages/saas/SignageProduct.jsx'
+      - 'src/pages/saas/SignageSuccess.jsx'
+      - 'tests/signage-commerce.test.cjs'
+      - '.github/workflows/signage-commerce-ci.yml'
+      - 'package.json'
   workflow_dispatch:
 jobs:
   verify:
@@ -19,4 +30,3 @@ jobs:
       - run: node --check server.cjs
       - run: npm test
       - run: npm run build
-
