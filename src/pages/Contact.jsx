@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import SectionHeader from '../components/shared/SectionHeader';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
@@ -24,7 +24,7 @@ export default function Contact() {
   const queryClient = useQueryClient();
 
   const createContactMutation = useMutation({
-    mutationFn: (data) => base44.entities.Contact.create(data),
+    mutationFn: (data) => platform.entities.Contact.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['contacts'] });
       setSubmitted(true);

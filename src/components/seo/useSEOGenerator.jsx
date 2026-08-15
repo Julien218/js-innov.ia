@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 export default function useSEOGenerator(pageName, pageContent = '') {
   const [seoData, setSeoData] = useState(null);
@@ -32,7 +32,7 @@ export default function useSEOGenerator(pageName, pageContent = '') {
 
         const context = pageContexts[pageName] || pageContent;
 
-        const response = await base44.integrations.Core.InvokeLLM({
+        const response = await platform.integrations.Core.InvokeLLM({
           prompt: `Tu es un expert SEO. Génère des meta-descriptions et mots-clés optimisés pour le référencement Google.
 
 Page: ${pageName}

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { TrendingUp, Eye, Heart, MessageCircle, Share2, Trophy } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -11,12 +11,12 @@ const CYAN = '#06B6D4';
 export default function PerformanceTab() {
   const { data: contents = [] } = useQuery({
     queryKey: ['generated-content'],
-    queryFn: () => base44.entities.GeneratedContent.list('-created_date', 200),
+    queryFn: () => platform.entities.GeneratedContent.list('-created_date', 200),
   });
 
   const { data: niches = [] } = useQuery({
     queryKey: ['niches'],
-    queryFn: () => base44.entities.Niche.list('-created_date', 50),
+    queryFn: () => platform.entities.Niche.list('-created_date', 50),
   });
 
   const published = contents.filter(c => c.status === 'published');

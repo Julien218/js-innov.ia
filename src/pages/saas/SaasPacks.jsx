@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Check, Globe, TrendingUp, Zap, Cpu, Sparkles, MessageCircle, CreditCard } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -58,7 +58,7 @@ export default function SaasPacks() {
   const handlePayment = async (packName) => {
     setLoadingPack(packName);
     try {
-      const response = await base44.functions.invoke('createStripeSession', {
+      const response = await platform.functions.invoke('createStripeSession', {
         pack: packName,
         email: '',
         firstName: '',

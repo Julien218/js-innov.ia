@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 export default function ContentGenerator({ onContentGenerated }) {
   const [keywords, setKeywords] = useState('');
@@ -36,7 +36,7 @@ export default function ContentGenerator({ onContentGenerated }) {
         article: 'Article de blog complet avec introduction, développement en plusieurs parties, et conclusion.'
       };
 
-      const response = await base44.integrations.Core.InvokeLLM({
+      const response = await platform.integrations.Core.InvokeLLM({
         prompt: `Tu es un expert en rédaction web et SEO pour JS-INNOV.IA, une entreprise spécialisée en intelligence artificielle.
 
 Mots-clés: ${keywords}

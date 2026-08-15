@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { Loader2, CreditCard } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -26,7 +26,7 @@ export default function CheckoutButton({
     setLoading(true);
 
     try {
-      const response = await base44.functions.invoke('createCheckout', {
+      const response = await platform.functions.invoke('createCheckout', {
         productType,
         productId,
         productName,

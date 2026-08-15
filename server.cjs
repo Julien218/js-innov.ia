@@ -1,10 +1,5 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
 const crypto = require('crypto');
 
-const PORT = Number(process.env.PORT || 3000);
-const DIST = path.join(__dirname, 'dist');
 const SITE_URL = (process.env.SITE_URL || 'https://jsinnovia.com').replace(/\/$/, '');
 const COCKPIT_COMMERCE_URL = (process.env.COCKPIT_COMMERCE_URL || 'https://cockpit.jsinnovia.com/api/commerce').replace(/\/$/, '');
 const COMMERCE_BRIDGE_KEY = process.env.COMMERCE_BRIDGE_KEY || '';
@@ -22,12 +17,6 @@ const PRICE_MAP = {
     monthly: process.env.STRIPE_PRICE_SIGNAGE_SURVEILLANCE_MONTHLY || '',
     setup: process.env.STRIPE_PRICE_SIGNAGE_SURVEILLANCE_SETUP || process.env.STRIPE_PRICE_INSTALLATION || '',
   },
-};
-
-const MIME = {
-  '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
-  '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2',
 };
 
 function json(res, status, body) {
@@ -232,35 +221,21 @@ async function handleWebhook(req, res) {
   }
 }
 
-function serveStatic(req, res, url) {
-  const pathname = decodeURIComponent(url.pathname);
-  let file = path.join(DIST, pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, ''));
-  if (!file.startsWith(DIST)) return json(res, 403, { error: 'Forbidden' });
-  fs.stat(file, (err, stat) => {
-    if (!err && stat.isDirectory()) file = path.join(file, 'index.html');
-    fs.readFile(file, (readErr, data) => {
-      if (!readErr) {
-        res.writeHead(200, { 'Content-Type': MIME[path.extname(file).toLowerCase()] || 'application/octet-stream', 'Cache-Control': path.extname(file) === '.html' ? 'no-cache' : 'public, max-age=31536000, immutable' });
-        return res.end(data);
-      }
-      fs.readFile(path.join(DIST, 'index.html'), (spaErr, html) => {
-        if (spaErr) return json(res, 500, { error: 'Application non construite' });
-        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' });
-        res.end(html);
-      });
-    });
-  });
+async function handleCommerceRequest(req, res, pathname, url) {
+  if (req.method === 'POST' && pathname === '/api/signage/checkout') {
+    await handleCheckout(req, res);
+    return true;
+  }
+  if (req.method === 'GET' && pathname === '/api/signage/session') {
+    await handleSession(req, res, url);
+    return true;
+  }
+  if (req.method === 'POST' && pathname === '/api/stripe/webhook') {
+    await handleWebhook(req, res);
+    return true;
+  }
+  return false;
 }
 
-const server = http.createServer(async (req, res) => {
-  const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-  if (req.method === 'GET' && url.pathname === '/api/health') return json(res, 200, { status: 'ok', service: 'jsinnovia-commerce' });
-  if (req.method === 'POST' && url.pathname === '/api/signage/checkout') return handleCheckout(req, res);
-  if (req.method === 'GET' && url.pathname === '/api/signage/session') return handleSession(req, res, url);
-  if (req.method === 'POST' && url.pathname === '/api/stripe/webhook') return handleWebhook(req, res);
-  if (req.method === 'GET' || req.method === 'HEAD') return serveStatic(req, res, url);
-  return json(res, 404, { error: 'Not found' });
-});
-
-server.listen(PORT, '0.0.0.0', () => console.log(`JS-Innov.IA site + commerce API listening on ${PORT}`));
+module.exports = { handleCommerceRequest };
 

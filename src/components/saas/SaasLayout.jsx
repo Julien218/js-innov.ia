@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, MessageCircle } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
-import { appParams } from '@/lib/app-params';
+import { platform } from '@/api/platformClient';
 import VoiceButton from '@/components/voice/VoiceButton';
 
 const GOLD = '#D4AF37';
@@ -32,6 +31,7 @@ const navItems = [
   { label: 'Accueil', path: '/' },
   { label: 'Packs', path: '/saas-packs' },
   { label: 'Agents IA', path: '/saas-agents' },
+  { label: 'Écrans', path: '/digital-signage' },
   { label: 'Contact', path: '/saas-contact' },
   { label: 'Mon espace', path: '/saas-client' },
 ];
@@ -43,9 +43,7 @@ export default function SaasLayout({ children }) {
   const location = useLocation();
 
   useEffect(() => {
-    if (appParams.appId && appParams.serverUrl) {
-      base44.auth.me().then(u => setIsAdmin(u?.role === 'admin')).catch(() => {});
-    }
+    platform.auth.me().then(u => setIsAdmin(u?.role === 'admin')).catch(() => {});
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
@@ -75,7 +73,7 @@ export default function SaasLayout({ children }) {
               <span className="font-cinzel font-bold text-base tracking-wide block leading-none text-gold-gradient">
                 Js-Innov.IA
               </span>
-              <span className="text-[8px] tracking-[0.15em] uppercase block mt-0.5 font-poppins" style={{ color: 'rgba(212,175,55,0.45)' }}>Automatisation Â· IA Â· Humain</span>
+              <span className="text-[8px] tracking-[0.15em] uppercase block mt-0.5 font-poppins" style={{ color: 'rgba(212,175,55,0.45)' }}>Automatisation · IA · Humain</span>
             </div>
           </Link>
 
@@ -102,7 +100,7 @@ export default function SaasLayout({ children }) {
             </a>
             <Link to="/saas-landing#formulaire"
               className="ml-2 btn-primary-gold px-4 py-2 text-xs">
-              CrÃ©er mon projet â†’
+              Créer mon projet →
             </Link>
           </div>
 
@@ -132,7 +130,7 @@ export default function SaasLayout({ children }) {
               </a>
               <Link to="/saas-landing#formulaire" onClick={() => setMenuOpen(false)}
                 className="btn-primary-gold block px-4 py-3.5 text-sm text-center">
-                CrÃ©er mon projet â†’
+                Créer mon projet →
               </Link>
             </motion.div>
           )}
@@ -155,7 +153,7 @@ export default function SaasLayout({ children }) {
                 </div>
               </div>
               <p className="text-xs leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                Votre problÃ¨me devient notre point de dÃ©part.<br />Votre solution devient notre crÃ©ation.
+                Votre problème devient notre point de départ.<br />Votre solution devient notre création.
               </p>
               <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold"
@@ -174,19 +172,19 @@ export default function SaasLayout({ children }) {
             </div>
             <div>
               <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: GOLD }}>Services</p>
-              {['Sites web', 'Chatbots mÃ©tier', 'App mobile', 'Contenus digitaux', 'Automatisation', 'Agents IA'].map(s => (
+              {['Sites web', 'Chatbots métier', 'App mobile', 'Contenus digitaux', 'Automatisation', 'Agents IA'].map(s => (
                 <p key={s} className="text-xs py-1" style={{ color: 'rgba(255,255,255,0.3)' }}>{s}</p>
               ))}
             </div>
             <div>
-              <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: GOLD }}>LÃ©gal</p>
+              <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: GOLD }}>Légal</p>
               <Link to="/saas-mentions" className="block text-xs py-1 transition-colors" style={{ color: 'rgba(255,255,255,0.3)' }}
                 onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.3)'}>
-                Mentions lÃ©gales
+                Mentions légales
               </Link>
               <Link to="/saas-confidentialite" className="block text-xs py-1 transition-colors" style={{ color: 'rgba(255,255,255,0.3)' }}
                 onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.3)'}>
-                ConfidentialitÃ©
+                Confidentialité
               </Link>
               <Link to="/saas-cgv" className="block text-xs py-1 transition-colors" style={{ color: 'rgba(255,255,255,0.3)' }}
                 onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.3)'}>
@@ -197,8 +195,8 @@ export default function SaasLayout({ children }) {
             </div>
           </div>
           <div className="border-t pt-6 flex flex-col md:flex-row items-center justify-between gap-2 text-xs" style={{ borderColor: 'rgba(212,175,55,0.08)', color: 'rgba(255,255,255,0.18)' }}>
-            <p>Â© 2025 Js-Innov.IA Â· Julien Pagin Â· Grand Rue 52, 7370 Dour Â· BCE 0877926214</p>
-            <p style={{ color: 'rgba(212,175,55,0.3)' }}>info@jsinnovia.com Â· 0494/11.90.90</p>
+            <p>© 2025 Js-Innov.IA · Julien Pagin · Grand Rue 52, 7370 Dour · BCE 0877926214</p>
+            <p style={{ color: 'rgba(212,175,55,0.3)' }}>info@jsinnovia.com · 0494/11.90.90</p>
           </div>
         </div>
       </footer>
@@ -215,4 +213,3 @@ export default function SaasLayout({ children }) {
     </div>
   );
 }
-

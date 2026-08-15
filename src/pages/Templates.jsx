@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import SectionHeader from '../components/shared/SectionHeader';
 import RecommendationsSection from '../components/recommendations/RecommendationsSection';
 import CheckoutButton from '../components/payment/CheckoutButton';
@@ -21,7 +21,7 @@ export default function Templates() {
 
   const { data: templates = [], isLoading } = useQuery({
     queryKey: ['templates'],
-    queryFn: () => base44.entities.Template.list('-created_date'),
+    queryFn: () => platform.entities.Template.list('-created_date'),
   });
 
   const categories = ['all', 'Vidéo Marketing', 'Réseaux Sociaux', 'Présentation', 'Animation 3D', 'Motion Design', 'Autre'];

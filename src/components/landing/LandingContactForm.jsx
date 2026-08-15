@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { Send, CheckCircle, Sparkles, User, Mail, Phone, Building2, MessageSquare } from 'lucide-react';
 
 const GOLD = '#D4AF37';
@@ -13,18 +13,26 @@ export default function LandingContactForm() {
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '', company: '', need: '', message: '', consentRgpd: false });
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState('');
+
+  const updateField = (field, value) => {
+    setForm(current => ({ ...current, [field]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.consentRgpd || !form.email) return;
     setLoading(true);
+    setError('');
     try {
-      await base44.functions.invoke('receiveLead', { ...form, source: 'landing_form' });
+      await platform.functions.invoke('receiveLead', { ...form, source: 'landing_form' });
       setSent(true);
-    } catch {
-      setSent(true);
+    } catch (submitError) {
+      console.error('[landing-contact]', submitError);
+      setError("Votre demande n'a pas pu être envoyée. Réessayez dans un instant ou contactez-nous par WhatsApp.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const inputStyle = {
@@ -77,33 +85,33 @@ export default function LandingContactForm() {
                   <div className="relative">
                     <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(255,255,255,0.3)' }} />
                     <input placeholder="Prénom *" value={form.firstName} required
-                      onChange={e => setForm({ ...form, firstName: e.target.value })}
+                      onChange={e => updateField('firstName', e.target.value)}
                       style={inputStyle} onFocus={e => e.target.style.borderColor = 'rgba(212,175,55,0.4)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'} />
                   </div>
                   <div className="relative">
                     <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(255,255,255,0.3)' }} />
                     <input placeholder="Nom *" value={form.lastName} required
-                      onChange={e => setForm({ ...form, lastName: e.target.value })}
+                      onChange={e => updateField('lastName', e.target.value)}
                       style={inputStyle} onFocus={e => e.target.style.borderColor = 'rgba(212,175,55,0.4)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'} />
                   </div>
                 </div>
                 <div className="relative">
                   <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(255,255,255,0.3)' }} />
                   <input type="email" placeholder="Email *" value={form.email} required
-                    onChange={e => setForm({ ...form, email: e.target.value })}
+                    onChange={e => updateField('email', e.target.value)}
                     style={inputStyle} onFocus={e => e.target.style.borderColor = 'rgba(212,175,55,0.4)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'} />
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="relative">
                     <Phone size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(255,255,255,0.3)' }} />
                     <input type="tel" placeholder="Téléphone" value={form.phone}
-                      onChange={e => setForm({ ...form, phone: e.target.value })}
+                      onChange={e => updateField('phone', e.target.value)}
                       style={inputStyle} onFocus={e => e.target.style.borderColor = 'rgba(212,175,55,0.4)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'} />
                   </div>
                   <div className="relative">
                     <Building2 size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(255,255,255,0.3)' }} />
                     <input placeholder="Entreprise / Activité" value={form.company}
-                      onChange={e => setForm({ ...form, company: e.target.value })}
+                      onChange={e => updateField('company', e.target.value)}
                       style={inputStyle} onFocus={e => e.target.style.borderColor = 'rgba(212,175,55,0.4)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'} />
                   </div>
                 </div>
@@ -111,7 +119,7 @@ export default function LandingContactForm() {
                   <p className="text-xs font-semibold mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>Votre besoin principal</p>
                   <div className="flex flex-wrap gap-2">
                     {needs.map(n => (
-                      <button key={n} type="button" onClick={() => setForm({ ...form, need: n })}
+                      <button key={n} type="button" onClick={() => updateField('need', n)}
                         className="px-3 py-2 rounded-xl text-xs font-semibold transition-all"
                         style={form.need === n
                           ? { background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.4)', color: GOLD }
@@ -124,20 +132,22 @@ export default function LandingContactForm() {
                 <div className="relative">
                   <MessageSquare size={16} className="absolute left-4 top-4" style={{ color: 'rgba(255,255,255,0.3)' }} />
                   <textarea placeholder="Décrivez votre projet..." value={form.message} rows={3}
-                    onChange={e => setForm({ ...form, message: e.target.value })}
+                    onChange={e => updateField('message', e.target.value)}
                     style={{ ...inputStyle, resize: 'none', paddingTop: 14 }}
                     onFocus={e => e.target.style.borderColor = 'rgba(212,175,55,0.4)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'} />
                 </div>
                 <label className="flex items-start gap-3 cursor-pointer">
-                  <div onClick={() => setForm({ ...form, consentRgpd: !form.consentRgpd })}
-                    className="w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center mt-0.5 cursor-pointer transition-all"
-                    style={form.consentRgpd ? { background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` } : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,175,55,0.25)' }}>
-                    {form.consentRgpd && <span className="text-black text-xs font-black">✓</span>}
-                  </div>
+                  <input type="checkbox" checked={form.consentRgpd} required
+                    onChange={e => updateField('consentRgpd', e.target.checked)}
+                    className="mt-1 h-5 w-5 flex-shrink-0 cursor-pointer accent-amber-400"
+                    aria-label="Consentement RGPD" />
                   <span className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
                     J'accepte que mes données soient utilisées pour être recontacté (RGPD). <span style={{ color: GOLD }}>*</span>
                   </span>
                 </label>
+                {error && (
+                  <p role="alert" className="text-center text-sm" style={{ color: '#fca5a5' }}>{error}</p>
+                )}
                 <motion.button type="submit" disabled={loading || !form.consentRgpd || !form.email}
                   whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                   className="w-full py-4 rounded-2xl font-bold text-sm text-black flex items-center justify-center gap-2 disabled:opacity-40"
@@ -155,3 +165,4 @@ export default function LandingContactForm() {
     </section>
   );
 }
+

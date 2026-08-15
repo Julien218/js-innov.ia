@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { Send, CheckCircle, Mail, Phone, MapPin, Sparkles, MessageCircle, ArrowLeft, Settings } from 'lucide-react';
 import PackConfigurator from '../../components/saas/PackConfigurator';
 
@@ -42,7 +42,7 @@ export default function SaasContact() {
     e.preventDefault();
     if (!form.consentRgpd) return alert('Consentement RGPD obligatoire.');
     setLoading(true);
-    await base44.functions.invoke('receiveLead', {
+    await platform.functions.invoke('receiveLead', {
       ...form,
       name: `${form.firstName} ${form.lastName}`,
       recommendedPack: packSummary?.pack || packParam || '',

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import {
   Search, TrendingUp, AlertCircle, CheckCircle,
   RefreshCw, FileText, BarChart3,
@@ -17,7 +17,7 @@ export default function SEODashboard() {
 
   const { data: reports = [], isLoading } = useQuery({
     queryKey: ['seo-reports'],
-    queryFn: () => base44.entities.SEOReport.list('-report_date', 10),
+    queryFn: () => platform.entities.SEOReport.list('-report_date', 10),
   });
 
   const latestReport = reports[0];
@@ -25,7 +25,7 @@ export default function SEODashboard() {
   const runAnalysis = async () => {
     setIsAnalyzing(true);
     try {
-      const analysisResult = await base44.integrations.Core.InvokeLLM({
+      const analysisResult = await platform.integrations.Core.InvokeLLM({
         prompt: `Analyse SEO interne pour JS-INNOV.IA. Évalue:
 
 1. Métadonnées: titres, descriptions, mots-clés
@@ -59,7 +59,7 @@ Génère un rapport avec scores et recommandations.`,
 
       const result = analysisResult?.data || analysisResult;
 
-      await base44.entities.SEOReport.create({
+      await platform.entities.SEOReport.create({
         report_date: new Date().toISOString(),
         global_score: result.global_score || 75,
         scores: result.scores || {},

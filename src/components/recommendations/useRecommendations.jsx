@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 export function useNavigationTracking() {
   const trackView = (type, item) => {
@@ -40,10 +40,10 @@ export function useRecommendations(currentType = null, currentItem = null) {
       
       // Fetch all data
       const [innovations, templates, automations, applications] = await Promise.all([
-        base44.entities.Innovation.list('-created_date', 10),
-        base44.entities.Template.list('-created_date', 10),
-        base44.entities.Automation.list('-created_date', 10),
-        base44.entities.Application.list('-created_date', 10)
+        platform.entities.Innovation.list('-created_date', 10),
+        platform.entities.Template.list('-created_date', 10),
+        platform.entities.Automation.list('-created_date', 10),
+        platform.entities.Application.list('-created_date', 10)
       ]);
 
       // Build context for AI
@@ -86,7 +86,7 @@ Priorise:
 
 Exclus le contenu actuel si fourni.`;
 
-      const response = await base44.integrations.Core.InvokeLLM({
+      const response = await platform.integrations.Core.InvokeLLM({
         prompt,
         response_json_schema: {
           type: "object",

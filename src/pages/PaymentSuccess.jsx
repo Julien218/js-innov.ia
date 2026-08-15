@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { CheckCircle, ArrowRight, Download, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../utils';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { Button } from '@/components/ui/button';
 
 export default function PaymentSuccess() {
@@ -23,7 +23,7 @@ export default function PaymentSuccess() {
 
   const fetchPaymentStatus = async (sessionId) => {
     try {
-      const response = await base44.functions.invoke('getPaymentStatus', { sessionId });
+      const response = await platform.functions.invoke('getPaymentStatus', { sessionId });
       setPaymentInfo(response.data);
     } catch (error) {
       console.error('Error fetching payment status:', error);

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Package, Download, Clock, CheckCircle, Truck, FileText, RefreshCw, AlertCircle
 } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -32,7 +32,7 @@ export default function SaasClientDashboard() {
     if (!inputEmail) return;
     setLoading(true);
     setError('');
-    const all = await base44.entities.ClientOrder.list('-created_date', 50);
+    const all = await platform.entities.ClientOrder.list('-created_date', 50);
     const mine = all.filter(o => o.client_email?.toLowerCase() === inputEmail.toLowerCase());
     if (mine.length === 0) setError('Aucune commande trouvée pour cet email.');
     setOrders(mine);

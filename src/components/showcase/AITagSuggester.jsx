@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
@@ -14,13 +14,13 @@ export default function AITagSuggester() {
   const [loading, setLoading] = useState(false);
 
   React.useEffect(() => {
-    base44.auth.me().then(u => setUser(u)).catch(() => {});
+    platform.auth.me().then(u => setUser(u)).catch(() => {});
   }, []);
 
   const generateSuggestions = async () => {
     setLoading(true);
     try {
-      const response = await base44.integrations.Core.InvokeLLM({
+      const response = await platform.integrations.Core.InvokeLLM({
         prompt: `En tant qu'expert en IA, analyse cette description de projet et suggère:
 1. La catégorie la plus appropriée parmi: Création artistique, Automatisation, Application IA, Template vidéo, Analyse de données, Chatbot, Vision par ordinateur, Autre
 2. Les techniques IA utilisées (ex: GPT-4, DALL-E, Stable Diffusion, Computer Vision, NLP, etc.)

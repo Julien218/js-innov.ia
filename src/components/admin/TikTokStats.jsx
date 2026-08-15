@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { TrendingUp, Users, Heart, Video, Eye, MessageCircle, Share2, Loader2, AlertCircle } from 'lucide-react';
 
 const TIKTOK_BLACK = '#010101';
@@ -48,7 +48,7 @@ export default function TikTokStats() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    base44.functions.invoke('getTikTokStats', {})
+    platform.functions.invoke('getTikTokStats', {})
       .then(res => setData(res.data))
       .catch(err => setError(err.message))
       .finally(() => setLoading(false));

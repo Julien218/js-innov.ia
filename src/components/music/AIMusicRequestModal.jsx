@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { useMutation } from '@tanstack/react-query';
 
 export default function AIMusicRequestModal({ isOpen, onClose }) {
@@ -26,7 +26,7 @@ export default function AIMusicRequestModal({ isOpen, onClose }) {
 
   const submitMutation = useMutation({
     mutationFn: async (data) => {
-      await base44.entities.Contact.create({
+      await platform.entities.Contact.create({
         name: data.name,
         email: data.email,
         phone: data.phone,

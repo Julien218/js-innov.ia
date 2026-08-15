@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { Sparkles, Zap, Copy, Check } from 'lucide-react';
 
 const GOLD = '#D4AF37';
@@ -18,16 +18,16 @@ export default function GenerationTab({ preselectedNiche }) {
 
   const { data: niches = [] } = useQuery({
     queryKey: ['niches'],
-    queryFn: () => base44.entities.Niche.list('-created_date', 50),
+    queryFn: () => platform.entities.Niche.list('-created_date', 50),
   });
 
   const { data: allContent = [] } = useQuery({
     queryKey: ['generated-content'],
-    queryFn: () => base44.entities.GeneratedContent.list('-created_date', 20),
+    queryFn: () => platform.entities.GeneratedContent.list('-created_date', 20),
   });
 
   const saveMutation = useMutation({
-    mutationFn: (data) => base44.entities.GeneratedContent.create(data),
+    mutationFn: (data) => platform.entities.GeneratedContent.create(data),
     onSuccess: () => qc.invalidateQueries(['generated-content']),
   });
 
@@ -49,7 +49,7 @@ export default function GenerationTab({ preselectedNiche }) {
       ? `\nIdentité visuelle OBLIGATOIRE (verrouillée) :\n- Couleurs : #D4AF37 (or), #8B5CF6 (violet), #06B6D4 (cyan), fond #10101a\n- Polices : Cinzel (titres), Inter (corps)\n- Style : Dark premium, anthracite, effets lumineux\n- Ton : Expert, premium, innovant`
       : selectedNiche.colors ? `\nIdentité visuelle de la niche :\n- Couleurs : ${selectedNiche.colors}\n- Polices : ${selectedNiche.fonts || 'Non défini'}\n- Style : ${selectedNiche.style || 'Non défini'}\n- CTA : ${selectedNiche.ctaStyle || 'Non défini'}` : '';
 
-    const result = await base44.integrations.Core.InvokeLLM({
+    const result = await platform.integrations.Core.InvokeLLM({
       prompt: `Tu es un expert créateur de contenu TikTok viral. Génère du contenu optimisé pour cette niche.
 
 Niche : ${selectedNiche.name}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, Plus, Edit, Trash2, Music, BarChart2 } from 'lucide-react';
@@ -22,7 +22,7 @@ export default function Admin() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const currentUser = await base44.auth.me();
+        const currentUser = await platform.auth.me();
         if (!currentUser || currentUser.role !== 'admin') {
           navigate(createPageUrl('Home'));
           return;
@@ -38,13 +38,13 @@ export default function Admin() {
   // Fetch products
   const { data: products = [], isLoading } = useQuery({
     queryKey: ['musicProducts'],
-    queryFn: () => base44.entities.MusicProduct.list(),
+    queryFn: () => platform.entities.MusicProduct.list(),
     enabled: !!user
   });
 
   // Create mutation
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.MusicProduct.create(data),
+    mutationFn: (data) => platform.entities.MusicProduct.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['musicProducts'] });
       setShowForm(false);
@@ -54,7 +54,7 @@ export default function Admin() {
 
   // Update mutation
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.MusicProduct.update(id, data),
+    mutationFn: ({ id, data }) => platform.entities.MusicProduct.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['musicProducts'] });
       setShowForm(false);
@@ -64,7 +64,7 @@ export default function Admin() {
 
   // Delete mutation
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.MusicProduct.delete(id),
+    mutationFn: (id) => platform.entities.MusicProduct.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['musicProducts'] });
     }

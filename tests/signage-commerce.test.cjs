@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const server = fs.readFileSync(path.join(__dirname, '..', 'server.cjs'), 'utf8');
+const mainServer = fs.readFileSync(path.join(__dirname, '..', 'server.mjs'), 'utf8');
 
 test('Stripe Checkout uses subscription mode, Prices and dynamic payment methods', () => {
   assert.match(server, /mode: 'subscription'/);
@@ -28,5 +29,11 @@ test('webhook verifies signatures and forwards asynchronous payment outcomes', (
   assert.match(server, /checkout\.session\.async_payment_succeeded/);
   assert.match(server, /checkout\.session\.async_payment_failed/);
   assert.match(server, /x-commerce-key/);
+});
+
+test('commerce is mounted in the current NOVA server and API errors stay JSON', () => {
+  assert.match(mainServer, /handleCommerceRequest/);
+  assert.match(mainServer, /pathname\.startsWith\('\/api\/'\)/);
+  assert.match(mainServer, /Route API inconnue/);
 });
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Users, Eye, MessageSquare, Filter, TrendingUp, Clock, CheckCircle2, Zap } from 'lucide-react';
@@ -21,7 +21,7 @@ export default function CRM() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const currentUser = await base44.auth.me();
+        const currentUser = await platform.auth.me();
         if (!currentUser || currentUser.role !== 'admin') {
           navigate(createPageUrl('Home'));
           return;
@@ -36,12 +36,12 @@ export default function CRM() {
 
   const { data: submissions = [], isLoading } = useQuery({
     queryKey: ['formSubmissions'],
-    queryFn: () => base44.entities.FormSubmission.list('-created_date'),
+    queryFn: () => platform.entities.FormSubmission.list('-created_date'),
     enabled: !!user
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.FormSubmission.update(id, data),
+    mutationFn: ({ id, data }) => platform.entities.FormSubmission.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['formSubmissions'] });
     }

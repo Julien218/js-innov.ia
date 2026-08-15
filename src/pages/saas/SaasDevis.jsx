@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import {
   Globe, Zap, Bot, Smartphone,
   Check, ChevronRight, ChevronLeft, Sparkles,
@@ -508,7 +508,7 @@ export default function SaasDevis() {
       contact.message ? `\nPrécisions: ${contact.message}` : '',
     ].filter(Boolean).join('\n');
 
-    await base44.entities.Lead.create({
+    await platform.entities.Lead.create({
       firstName: contact.firstName,
       lastName: contact.lastName,
       email: contact.email,

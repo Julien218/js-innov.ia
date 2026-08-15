@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { platform } from '@/api/platformClient';
 import SectionHeader from '../components/shared/SectionHeader';
 import MusicProductCard from '../components/music/MusicProductCard';
 import CustomMusicCard from '../components/music/CustomMusicCard';
@@ -14,7 +14,7 @@ export default function MusicShop() {
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ['music-products'],
-    queryFn: () => base44.entities.MusicProduct.list('-created_date'),
+    queryFn: () => platform.entities.MusicProduct.list('-created_date'),
   });
 
   const styles = ['all', 'Lounge', 'Jazz', 'Pop', 'Électronique', 'Classique', 'Ambiance', 'Énergique', 'Relaxante'];
