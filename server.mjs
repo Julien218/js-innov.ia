@@ -8,6 +8,8 @@ const port = Number.parseInt(process.env.PORT || '8080', 10);
 const agentUrl = (process.env.JSINNOVIA_AGENT_URL || 'https://jsinnovia-agent-production.up.railway.app').replace(/\/$/, '');
 const agentKey = process.env.AGENT_API_KEY || process.env.JSINNOVIA_AGENT_KEY || '';
 const rateLimits = new Map();
+const MAX_RATE_LIMIT_CLIENTS = 5_000;
+const AGENT_TIMEOUT_MS = 20_000;
 const publicReadTables = new Set(['Application', 'Automation', 'BlogPost', 'DynamicPage', 'Event', 'Innovation', 'MusicProduct', 'News', 'Showcase', 'Template']);
 const publicWriteTables = new Set(['Contact', 'EventTicket', 'FormSubmission', 'Lead', 'LogoSubmission', 'ProjectRequest']);
 const mime = {
@@ -31,6 +33,15 @@ const json = (response, status, value) => {
   response.end(JSON.stringify(value));
 };
 
+const setSecurityHeaders = (response) => {
+  response.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  response.setHeader('Permissions-Policy', 'camera=(), geolocation=(), microphone=()');
+  response.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  response.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  response.setHeader('X-Content-Type-Options', 'nosniff');
+  response.setHeader('X-Frame-Options', 'DENY');
+};
+
 const readJson = async (request) => {
   const chunks = [];
   let size = 0;
@@ -47,6 +58,14 @@ const allow = (request) => {
   const now = Date.now();
   const current = rateLimits.get(key);
   if (!current || current.resetAt <= now) {
+    if (rateLimits.size >= MAX_RATE_LIMIT_CLIENTS) {
+      for (const [client, entry] of rateLimits) {
+        if (entry.resetAt <= now) rateLimits.delete(client);
+      }
+      while (rateLimits.size >= MAX_RATE_LIMIT_CLIENTS) {
+        rateLimits.delete(rateLimits.keys().next().value);
+      }
+    }
     rateLimits.set(key, { count: 1, resetAt: now + 60_000 });
     return true;
   }
@@ -58,6 +77,7 @@ const agentFetch = async (path, options = {}) => {
   if (!agentKey) throw new Error('Agent API key missing');
   return fetch(`${agentUrl}${path}`, {
     ...options,
+    signal: options.signal || AbortSignal.timeout(AGENT_TIMEOUT_MS),
     headers: { 'Content-Type': 'application/json', 'x-agent-key': agentKey, ...(options.headers || {}) },
   });
 };
@@ -73,7 +93,13 @@ const proxyAgent = async (request, response, path) => {
 const systemPrompt = `Tu es le compagnon public officiel de JS-Innov.IA. Réponds uniquement en français, de façon chaleureuse, claire et concise. Présente les solutions IA, automatisations, applications sur mesure, création web, SEO, contenus et musiques libres de droits sans inventer de prix ni de garanties. Oriente vers Contact ou une demande de devis lorsque pertinent. Ne révèle aucune donnée interne et refuse les actions administratives.`;
 
 createServer(async (request, response) => {
-  const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
+  setSecurityHeaders(response);
+  let pathname;
+  try {
+    pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
+  } catch {
+    return json(response, 400, { error: 'URL invalide' });
+  }
   if (pathname === '/api/health') return json(response, 200, { status: 'ok', service: 'js-innovia-site', backend: 'nova' });
   if (pathname.startsWith('/api/platform/')) {
     if (!allow(request)) return json(response, 429, { error: 'Trop de requêtes. Réessayez dans une minute.' });
@@ -90,7 +116,11 @@ createServer(async (request, response) => {
         return await proxyAgent(request, response, `/data/${upstreamSuffix}${url.search}`);
       }
 
-      const body = request.method === 'POST' ? await readJson(request) : {};
+      if (request.method !== 'POST') {
+        response.setHeader('Allow', 'POST');
+        return json(response, 405, { error: 'Méthode non autorisée' });
+      }
+      const body = await readJson(request);
       if (pathname === '/api/platform/functions/publicChat') {
         const messages = Array.isArray(body.messages) ? body.messages.slice(-10) : [];
         const transcript = messages.map(({ role, content }) => `${role === 'assistant' ? 'Compagnon' : 'Visiteur'}: ${String(content || '').slice(0, 1000)}`).join('\n');
