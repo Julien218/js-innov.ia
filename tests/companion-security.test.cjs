@@ -27,6 +27,15 @@ test('the public endpoint bounds input and rate limits requests', () => {
   assert.match(endpoint, /slice\(0, 1000\)/);
   assert.match(endpoint, /current\.count <= 30/);
   assert.match(endpoint, /response, 429/);
+  assert.match(endpoint, /MAX_RATE_LIMIT_CLIENTS/);
+  assert.match(endpoint, /AbortSignal\.timeout\(AGENT_TIMEOUT_MS\)/);
+});
+
+test('the public server applies baseline security headers and rejects unsupported methods', () => {
+  assert.match(endpoint, /X-Content-Type-Options', 'nosniff/);
+  assert.match(endpoint, /X-Frame-Options', 'DENY/);
+  assert.match(endpoint, /Strict-Transport-Security/);
+  assert.match(endpoint, /response, 405/);
 });
 
 test('the public assistant is explicitly isolated from the cockpit', () => {
