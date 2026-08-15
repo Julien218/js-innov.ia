@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Monitor, Camera, Wifi, HardDrive, CalendarDays, ShieldCheck, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 const PACKS = [
