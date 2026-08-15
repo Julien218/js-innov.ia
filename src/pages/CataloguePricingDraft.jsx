@@ -12,86 +12,18 @@ import {
   TrendingUp,
   Zap,
 } from 'lucide-react';
+import { HAINOFLOW_PLANS, SERVICE_PACKS, formatEuro } from '@/config/catalog';
 
 const GOLD = '#D4AF37';
 const GOLD_LIGHT = '#F5CF41';
 const CYAN = '#06B6D4';
-const PURPLE = '#8B5CF6';
-const PINK = '#EC4899';
 
-const servicePacks = [
-  {
-    name: 'Pack Starter',
-    icon: Globe,
-    color: CYAN,
-    standardPrice: '790 €',
-    launchPrice: '490 €',
-    recurring: 'Maintenance : 79 €/mois',
-    description: 'Un site vitrine professionnel, mobile-first et prêt à générer des contacts.',
-    features: ['3 à 5 pages', 'Formulaire et WhatsApp', 'SEO de base', 'Google Business Profile'],
-  },
-  {
-    name: 'Pack Business',
-    icon: TrendingUp,
-    color: GOLD,
-    standardPrice: '1 790 €',
-    launchPrice: '990 €',
-    recurring: 'Suivi : 99 à 149 €/mois',
-    popular: true,
-    description: 'Un système d’acquisition complet avec site, chatbot, CRM et automatisations.',
-    features: ['Jusqu’à 8 pages', 'Chatbot de qualification', 'CRM prospects', 'Séquences email'],
-  },
-  {
-    name: 'Pack Automation',
-    icon: Zap,
-    color: PURPLE,
-    standardPrice: '2 990 €',
-    launchPrice: '1 490 €',
-    recurring: 'Supervision : 199 €/mois',
-    description: 'Des workflows et tableaux de bord conçus pour supprimer les tâches répétitives.',
-    features: ['Analyse des processus', 'Workflows sur mesure', 'Dashboard', 'WhatsApp et email'],
-  },
-  {
-    name: 'Pack IA Premium',
-    icon: Cpu,
-    color: PINK,
-    standardPrice: 'Dès 5 900 €',
-    launchPrice: 'Sur devis',
-    recurring: 'Accompagnement : dès 399 €/mois',
-    description: 'Une plateforme métier complète avec agents IA, espace client et pilotage avancé.',
-    features: ['Agents IA spécialisés', 'Espace client sécurisé', 'Cockpit complet', 'Support prioritaire'],
-  },
-];
-
-const hainoFlowPlans = [
-  {
-    name: 'Starter',
-    color: CYAN,
-    monthly: '19 €',
-    yearly: '190 €',
-    bundled: '17 €',
-    target: 'Indépendants et petites activités',
-    features: ['Factures et devis', 'Facturation structurée', 'Relances simples', 'Export comptable'],
-  },
-  {
-    name: 'Pro',
-    color: GOLD,
-    monthly: '39 €',
-    yearly: '390 €',
-    bundled: '35 €',
-    target: 'PME et facturation récurrente',
-    features: ['Tout Starter', 'Factures récurrentes', 'Relances automatisées', 'Portail et suivi client'],
-  },
-  {
-    name: 'Business',
-    color: PURPLE,
-    monthly: '79 €',
-    yearly: '790 €',
-    bundled: '69 €',
-    target: 'Équipes et automatisations avancées',
-    features: ['Tout Pro', 'Workflows avancés', 'API et intégrations', 'Support prioritaire'],
-  },
-];
+const PACK_ICONS = {
+  globe: Globe,
+  'trending-up': TrendingUp,
+  zap: Zap,
+  cpu: Cpu,
+};
 
 function DraftBadge() {
   return (
@@ -146,9 +78,13 @@ export default function CataloguePricingDraft() {
         </div>
 
         <div className="grid gap-5 md:grid-cols-2">
-          {servicePacks.map((pack, index) => (
+          {SERVICE_PACKS.map((pack, index) => {
+            const PackIcon = PACK_ICONS[pack.icon];
+            const standardPrice = `${pack.standardPricePrefix ? `${pack.standardPricePrefix} ` : ''}${formatEuro(pack.standardPrice)}`;
+            const launchPrice = pack.launchPriceLabel ?? formatEuro(pack.launchPrice);
+            return (
             <motion.article
-              key={pack.name}
+              key={pack.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -164,7 +100,7 @@ export default function CataloguePricingDraft() {
               )}
               <div className="flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl" style={{ background: `${pack.color}14`, border: `1px solid ${pack.color}30` }}>
-                  <pack.icon className="h-6 w-6" style={{ color: pack.color }} />
+                  <PackIcon className="h-6 w-6" style={{ color: pack.color }} />
                 </div>
                 <h3 className="text-xl font-black">{pack.name}</h3>
               </div>
@@ -172,21 +108,21 @@ export default function CataloguePricingDraft() {
               <div className="my-6 grid grid-cols-2 gap-3">
                 <div className="rounded-2xl border border-white/5 bg-white/[0.025] p-4">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-white/30">Prix standard</p>
-                  <p className="mt-1 text-2xl font-black" style={{ color: pack.color }}>{pack.standardPrice}</p>
+                  <p className="mt-1 text-2xl font-black" style={{ color: pack.color }}>{standardPrice}</p>
                   <p className="mt-1 text-[11px] text-white/30">HTVA · à partir de</p>
                 </div>
                 <div className="rounded-2xl border border-emerald-400/15 bg-emerald-400/[0.04] p-4">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-300/70">Lancement limité</p>
-                  <p className="mt-1 text-2xl font-black text-emerald-300">{pack.launchPrice}</p>
+                  <p className="mt-1 text-2xl font-black text-emerald-300">{launchPrice}</p>
                   <p className="mt-1 text-[11px] text-white/30">HTVA · sous conditions</p>
                 </div>
               </div>
               <FeatureList features={pack.features} color={pack.color} />
               <div className="mt-6 rounded-xl px-4 py-3 text-xs font-bold" style={{ color: pack.color, background: `${pack.color}0c` }}>
-                {pack.recurring}
+                {pack.recurringLabel}
               </div>
             </motion.article>
-          ))}
+          )})}
         </div>
       </section>
 
@@ -202,9 +138,9 @@ export default function CataloguePricingDraft() {
         </div>
 
         <div className="grid gap-5 lg:grid-cols-3">
-          {hainoFlowPlans.map((plan, index) => (
+          {HAINOFLOW_PLANS.map((plan, index) => (
             <motion.article
-              key={plan.name}
+              key={plan.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -221,13 +157,13 @@ export default function CataloguePricingDraft() {
               </div>
               <p className="mt-3 min-h-10 text-sm text-white/42">{plan.target}</p>
               <div className="mt-6 flex items-baseline gap-1">
-                <span className="text-4xl font-black" style={{ color: plan.color }}>{plan.monthly}</span>
+                <span className="text-4xl font-black" style={{ color: plan.color }}>{formatEuro(plan.monthlyPrice)}</span>
                 <span className="text-sm text-white/35">/mois HTVA</span>
               </div>
-              <p className="mt-2 text-xs text-white/35">ou {plan.yearly}/an — deux mois offerts</p>
+              <p className="mt-2 text-xs text-white/35">ou {formatEuro(plan.yearlyPrice)}/an — deux mois offerts</p>
               <div className="my-6 rounded-2xl border p-4" style={{ borderColor: `${plan.color}25`, background: `${plan.color}0b` }}>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-white/35">Ajouté à un pack</p>
-                <p className="mt-1 text-xl font-black" style={{ color: plan.color }}>+ {plan.bundled}/mois</p>
+                <p className="mt-1 text-xl font-black" style={{ color: plan.color }}>+ {formatEuro(plan.bundledMonthlyPrice)}/mois</p>
                 <p className="mt-1 text-[11px] text-white/30">Tarif groupé non cumulable</p>
               </div>
               <FeatureList features={plan.features} color={plan.color} />
