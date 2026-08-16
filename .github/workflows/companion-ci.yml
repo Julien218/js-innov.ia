@@ -35,6 +35,9 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
+      - name: Validate Elyna 3D asset contract
+        run: npm run validate:elyna
+
       - name: Run companion security and integration tests
         run: npm test
 

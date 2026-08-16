@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { AlertCircle, ArrowUpRight, Loader2, RotateCcw, Send, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { platform } from '@/api/platformClient';
 import AIAvatar from './AIAvatar';
+import ElynaAvatar3D from './ElynaAvatar3D';
 
 const AVATAR = '/brand/companion/companion-avatar-256.webp';
 const WELCOME = {
@@ -34,6 +35,7 @@ export default function AIChatbot() {
   const [lastInput, setLastInput] = useState('');
   const inputRef = useRef(null);
   const endRef = useRef(null);
+  const avatarState = status === 'loading' ? 'thinking' : status === 'error' ? 'error' : 'idle';
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -116,7 +118,12 @@ export default function AIChatbot() {
             <header className="relative flex items-center justify-between border-b border-white/10 bg-slate-950/60 p-4 backdrop-blur-xl">
               <div className="flex min-w-0 items-center gap-3">
                 <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-amber-300/40 bg-slate-950 shadow-[0_0_22px_rgba(212,175,55,0.22)]">
-                  <img src={AVATAR} alt="" width="256" height="256" decoding="async" className="h-full w-full object-cover" />
+                  <ElynaAvatar3D
+                    state={avatarState}
+                    fallbackSrc={AVATAR}
+                    className="h-full w-full rounded-full object-cover"
+                    alt="Elyna — Compagnon JS-Innov.IA"
+                  />
                   <span className="absolute bottom-0.5 right-0.5 h-3 w-3 rounded-full border-2 border-slate-950 bg-emerald-400" aria-hidden="true" />
                 </div>
                 <div className="min-w-0">

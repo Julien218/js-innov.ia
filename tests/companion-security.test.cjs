@@ -1,5 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
+const { execFileSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -7,6 +8,7 @@ const root = path.resolve(__dirname, '..');
 const client = fs.readFileSync(path.join(root, 'src/components/chatbot/AIChatbot.jsx'), 'utf8');
 const avatar = fs.readFileSync(path.join(root, 'src/components/chatbot/AIAvatar.jsx'), 'utf8');
 const renderer3d = fs.readFileSync(path.join(root, 'src/components/chatbot/ElynaAvatar3D.jsx'), 'utf8');
+const validator3d = fs.readFileSync(path.join(root, 'scripts/validate-elyna-vrm.mjs'), 'utf8');
 const endpoint = fs.readFileSync(path.join(root, 'server.mjs'), 'utf8');
 const platformClient = fs.readFileSync(path.join(root, 'src/api/platformClient.js'), 'utf8');
 const app = fs.readFileSync(path.join(root, 'src/App.jsx'), 'utf8');
@@ -57,11 +59,15 @@ test('Elyna keeps the premium local visual pack as a production fallback', () =>
   assert.match(avatar, /\/brand\/companion\/companion-launcher-256\.webp/);
   assert.equal(manifest.assistant, 'Elyna');
   assert.equal(manifest.role, 'Compagnon JS-Innov.IA');
-  assert.equal(manifest.version, '1.1.0');
+  assert.equal(manifest.version, '1.2.0');
   assert.equal(manifest.threeD.enabled, false);
   assert.equal(manifest.threeD.format, 'vrm');
   assert.equal(manifest.threeD.model, '/brand/companion/elyna/elyna.vrm');
+  assert.equal(manifest.threeD.runtime, '@pixiv/three-vrm@3.5.5');
+  assert.equal(manifest.threeD.activationPolicy, 'validated-model-only');
   assert.equal(manifest.threeD.fallbackRequired, true);
+  assert.equal(manifest.threeD.maxModelBytes, 15728640);
+  assert.deepEqual(manifest.threeD.requiredExpressions, ['blink', 'aa']);
   assert.deepEqual(manifest.threeD.states, ['idle', 'listening', 'thinking', 'speaking', 'success', 'error']);
   assert.match(avatar, /ElynaAvatar3D/);
 });
@@ -78,6 +84,28 @@ test('the Elyna 3D runtime is lazy, stateful and fails safely to the 2D asset', 
   assert.match(renderer3d, /currentState === 'success'/);
   assert.match(renderer3d, /currentState === 'error'/);
   assert.match(renderer3d, /prefers-reduced-motion: reduce/);
+});
+
+test('the public chat drives the 3D header state without spawning extra WebGL avatars per message', () => {
+  assert.match(client, /import ElynaAvatar3D from '.\/ElynaAvatar3D'/);
+  assert.match(client, /status === 'loading' \? 'thinking'/);
+  assert.match(client, /status === 'error' \? 'error'/);
+  assert.match(client, /state=\{avatarState\}/);
+  assert.match(client, /<img src=\{AVATAR\} alt="" width="256" height="256"/);
+});
+
+test('the Elyna production validator passes while 3D is disabled and the master model is absent', () => {
+  assert.match(packageJson, /"validate:elyna": "node scripts\/validate-elyna-vrm\.mjs"/);
+  assert.match(validator3d, /GLB_MAGIC/);
+  assert.match(validator3d, /VRMC_vrm/);
+  assert.match(validator3d, /legacy VRM/);
+  assert.match(validator3d, /requiredExpressions/);
+  assert.match(validator3d, /3D is enabled but model is missing/);
+  const output = execFileSync(process.execPath, ['scripts/validate-elyna-vrm.mjs'], {
+    cwd: root,
+    encoding: 'utf8'
+  });
+  assert.match(output, /OK — 3D disabled/);
 });
 
 test('the chat remains accessible and respects reduced motion', () => {
