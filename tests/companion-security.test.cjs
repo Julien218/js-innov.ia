@@ -6,9 +6,11 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const client = fs.readFileSync(path.join(root, 'src/components/chatbot/AIChatbot.jsx'), 'utf8');
 const avatar = fs.readFileSync(path.join(root, 'src/components/chatbot/AIAvatar.jsx'), 'utf8');
+const renderer3d = fs.readFileSync(path.join(root, 'src/components/chatbot/ElynaAvatar3D.jsx'), 'utf8');
 const endpoint = fs.readFileSync(path.join(root, 'server.mjs'), 'utf8');
 const platformClient = fs.readFileSync(path.join(root, 'src/api/platformClient.js'), 'utf8');
 const app = fs.readFileSync(path.join(root, 'src/App.jsx'), 'utf8');
+const packageJson = fs.readFileSync(path.join(root, 'package.json'), 'utf8');
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'public/brand/companion/manifest.json'), 'utf8'));
 
 test('the browser delegates AI requests to the server function', () => {
@@ -44,7 +46,6 @@ test('the public assistant is explicitly isolated from the cockpit', () => {
 });
 
 test('the application has no runtime dependency on Base44', () => {
-  const packageJson = fs.readFileSync(path.join(root, 'package.json'), 'utf8');
   const viteConfig = fs.readFileSync(path.join(root, 'vite.config.js'), 'utf8');
   assert.doesNotMatch(packageJson, /@base44/);
   assert.doesNotMatch(viteConfig, /base44/i);
@@ -59,9 +60,24 @@ test('Elyna keeps the premium local visual pack as a production fallback', () =>
   assert.equal(manifest.version, '1.1.0');
   assert.equal(manifest.threeD.enabled, false);
   assert.equal(manifest.threeD.format, 'vrm');
+  assert.equal(manifest.threeD.model, '/brand/companion/elyna/elyna.vrm');
   assert.equal(manifest.threeD.fallbackRequired, true);
   assert.deepEqual(manifest.threeD.states, ['idle', 'listening', 'thinking', 'speaking', 'success', 'error']);
-  assert.match(avatar, /Elyna/);
+  assert.match(avatar, /ElynaAvatar3D/);
+});
+
+test('the Elyna 3D runtime is lazy, stateful and fails safely to the 2D asset', () => {
+  assert.match(packageJson, /"@pixiv\/three-vrm": "3\.5\.5"/);
+  assert.match(renderer3d, /import\('@pixiv\/three-vrm'\)/);
+  assert.match(renderer3d, /VRMLoaderPlugin/);
+  assert.match(renderer3d, /threeD\?\.enabled/);
+  assert.match(renderer3d, /fallback 2D conservé/);
+  assert.match(renderer3d, /currentState === 'listening'/);
+  assert.match(renderer3d, /currentState === 'thinking'/);
+  assert.match(renderer3d, /currentState === 'speaking'/);
+  assert.match(renderer3d, /currentState === 'success'/);
+  assert.match(renderer3d, /currentState === 'error'/);
+  assert.match(renderer3d, /prefers-reduced-motion: reduce/);
 });
 
 test('the chat remains accessible and respects reduced motion', () => {
