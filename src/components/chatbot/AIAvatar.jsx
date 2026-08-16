@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import ElynaAvatar3D from './ElynaAvatar3D';
 
 const LAUNCHER = '/brand/companion/companion-launcher-256.webp';
 const HINT_STORAGE_KEY = 'jsinnovia-companion-hint-seen';
@@ -78,13 +79,11 @@ export default function AIAvatar({ onClick, showWelcome }) {
             aria-hidden="true"
           />
         )}
-        <img
-          src={LAUNCHER}
-          alt=""
-          width="256"
-          height="256"
-          decoding="async"
-          className="relative h-full w-full rounded-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+        <ElynaAvatar3D
+          state="idle"
+          fallbackSrc={LAUNCHER}
+          className="relative h-full w-full rounded-full transition-transform duration-300 group-hover:scale-[1.02]"
+          alt="Elyna — Compagnon JS-Innov.IA"
         />
         <span className="absolute bottom-1 right-1 h-4 w-4 rounded-full border-[3px] border-slate-950 bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.75)]" aria-hidden="true" />
       </motion.button>
