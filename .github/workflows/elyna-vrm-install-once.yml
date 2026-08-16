@@ -1,0 +1,54 @@
+name: Elyna VRM dependency install once
+
+on:
+  push:
+    branches:
+      - agent/elyna-3d-runtime
+    paths:
+      - .github/workflows/elyna-vrm-install-once.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  install-and-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout Elyna branch
+        uses: actions/checkout@v5
+        with:
+          ref: agent/elyna-3d-runtime
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install VRM runtime
+        run: npm install --save-exact @pixiv/three-vrm@3.5.5
+
+      - name: Validate dependency tree
+        run: npm ls @pixiv/three-vrm three
+
+      - name: Run existing tests
+        run: npm test
+
+      - name: Build existing app
+        run: npm run build
+
+      - name: Commit lockfile update
+        shell: bash
+        run: |
+          if git diff --quiet -- package.json package-lock.json; then
+            echo "No dependency change to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "build: add Elyna VRM runtime [elyna-vrm-install]"
+          git push origin HEAD:agent/elyna-3d-runtime
