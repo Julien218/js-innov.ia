@@ -39,7 +39,7 @@ jobs:
         run: npm test
 
       - name: Validate companion source without warnings
-        run: npm exec -- eslint src/components/chatbot/AIAvatar.jsx src/components/chatbot/AIChatbot.jsx --max-warnings=0
+        run: npm exec -- eslint src/components/chatbot/AIAvatar.jsx src/components/chatbot/AIChatbot.jsx src/components/chatbot/ElynaAvatar3D.jsx --max-warnings=0
 
       - name: Run repository ESLint
         run: npm run lint
