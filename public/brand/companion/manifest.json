@@ -1,9 +1,24 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "brand": "JS-Innov.IA",
-  "assistant": "Compagnon JS-Innov.IA",
+  "assistant": "Elyna",
+  "role": "Compagnon JS-Innov.IA",
   "primaryAvatar": "/brand/companion/companion-avatar-256.webp",
   "launcher": "/brand/companion/companion-launcher-256.webp",
+  "threeD": {
+    "enabled": false,
+    "format": "vrm",
+    "model": "/brand/companion/elyna/elyna.vrm",
+    "fallbackRequired": true,
+    "states": [
+      "idle",
+      "listening",
+      "thinking",
+      "speaking",
+      "success",
+      "error"
+    ]
+  },
   "colors": {
     "navy": "#080B1F",
     "indigo": "#121A2E",
@@ -18,5 +33,5 @@
     "avatarMinPx": 32,
     "preferredBackground": "dark"
   },
-  "generatedAt": "2026-08-05"
+  "generatedAt": "2026-08-16"
 }
