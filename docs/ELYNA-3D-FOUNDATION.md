@@ -26,7 +26,7 @@ Une seule identité, une seule personnalité et une seule charte visuelle doiven
 
 Ils restent les fallbacks obligatoires tant que le modèle 3D n'est pas livré et validé.
 
-## Emplacement réservé au modèle maître
+## Emplacement du modèle maître de diffusion
 
 Le modèle de diffusion prévu est :
 
@@ -34,7 +34,7 @@ Le modèle de diffusion prévu est :
 
 Le fichier source de création 3D ne doit pas être servi par le site. Il pourra être conservé hors bundle web sous forme de fichier Blender maître.
 
-## États d'animation prévus
+## États d'animation
 
 - `idle`
 - `listening`
@@ -47,17 +47,31 @@ Les transitions doivent rester sobres, lentes et compatibles avec `prefers-reduc
 
 ## Contrat du modèle 3D
 
-Le modèle final devra fournir au minimum :
+Le modèle final doit fournir au minimum :
 
-- rig humanoïde ;
-- clignement des yeux ;
+- un conteneur GLB glTF 2.0 valide ;
+- une extension VRM `VRMC_vrm` (VRM 1.x) ou `VRM` legacy ;
+- un rig humanoïde ;
+- les expressions `blink` et `aa` pour le clignement et la base du lip-sync ;
 - regard orientable ;
 - expressions neutre, attentive, réflexion et sourire ;
-- morph targets / expressions nécessaires au lip-sync ;
 - textures optimisées pour navigateur ;
 - silhouette adulte et professionnelle ;
 - ADN JS-Innov.IA bleu nuit, or, cyan et violet ;
-- symbole phénix intégré sans surcharger le visage.
+- symbole phénix intégré sans surcharger le visage ;
+- poids maximal de diffusion : 15 MiB.
+
+## Garde de production
+
+Le fichier `scripts/validate-elyna-vrm.mjs` est la porte d'activation officielle.
+
+Commande locale :
+
+```bash
+npm run validate:elyna
+```
+
+La CI exécute cette validation avant les tests et le build. Tant que `threeD.enabled=false`, l'absence de `elyna.vrm` est acceptée et les WebP sont contrôlés. Dès qu'un modèle est présent, le validateur contrôle son en-tête GLB, glTF 2.0, l'extension VRM, le humanoid, les expressions obligatoires et le poids. Si `threeD.enabled=true` alors que le modèle manque ou est invalide, la CI échoue : aucune activation 3D cassée ne doit atteindre `main`.
 
 ## Intégration progressive
 
@@ -67,11 +81,11 @@ Le manifeste et l'interface utilisent le nom Elyna, avec le sous-titre `Compagno
 
 ### Phase 2 — renderer 3D
 
-Ajouter Three.js + `@pixiv/three-vrm`, charger le modèle VRM uniquement lorsque `threeD.enabled` vaut `true`, et conserver l'image WebP en fallback en cas d'échec de chargement ou de WebGL indisponible.
+Three.js + `@pixiv/three-vrm@3.5.5` sont chargés à la demande. Le modèle VRM n'est chargé que lorsque `threeD.enabled` vaut `true`. L'image WebP reste le fallback si le modèle, WebGL ou le runtime 3D est indisponible.
 
 ### Phase 3 — états
 
-Connecter l'état de l'interface au personnage :
+L'état de l'interface pilote le personnage :
 
 ```text
 idle      -> idle
@@ -82,13 +96,24 @@ success   -> success
 error     -> error
 ```
 
+Le launcher utilise `idle`. L'en-tête du chat utilise actuellement `idle`, `thinking` et `error`. Les états `listening` et `speaking` seront utilisés par la couche Voice / Realtime ; `success` par les actions confirmées.
+
 ### Phase 4 — voix et lip-sync
 
-Le lip-sync temps réel doit être piloté par l'audio de sortie. Une version plus précise pourra ensuite exploiter des visèmes.
+Le lip-sync temps réel doit être piloté par l'audio de sortie. Une version plus précise pourra ensuite exploiter les visèmes fournis par le pipeline vocal.
 
 ### Phase 5 — desktop
 
 L'application desktop du cockpit pourra afficher Elyna dans une fenêtre transparente `alwaysOnTop`, indépendante de la fenêtre principale, pour qu'elle reste visible lorsque le cockpit est réduit.
+
+## Procédure d'activation finale
+
+1. livrer `public/brand/companion/elyna/elyna.vrm` ;
+2. lancer `npm run validate:elyna` ;
+3. tester launcher + chat sur desktop et mobile avec `threeD.enabled=false` en chargeant le modèle dans une branche de validation ;
+4. vérifier cadrage, GPU/CPU, mémoire, clignement, expression `aa`, reduced-motion et fallback WebGL ;
+5. passer `threeD.enabled=true` uniquement après succès ;
+6. lancer `npm test`, `npm run lint`, `npm run build` et un smoke test du site publié.
 
 ## Règle de migration
 
