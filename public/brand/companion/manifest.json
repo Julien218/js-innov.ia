@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "brand": "JS-Innov.IA",
   "assistant": "Elyna",
   "role": "Compagnon JS-Innov.IA",
@@ -9,7 +9,14 @@
     "enabled": false,
     "format": "vrm",
     "model": "/brand/companion/elyna/elyna.vrm",
+    "runtime": "@pixiv/three-vrm@3.5.5",
+    "activationPolicy": "validated-model-only",
     "fallbackRequired": true,
+    "maxModelBytes": 15728640,
+    "requiredExpressions": [
+      "blink",
+      "aa"
+    ],
     "states": [
       "idle",
       "listening",
