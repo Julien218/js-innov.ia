@@ -51,11 +51,17 @@ test('the application has no runtime dependency on Base44', () => {
   assert.equal(fs.existsSync(path.join(root, 'src/api/base44Client.js')), false);
 });
 
-test('the premium local visual pack is used instead of a remote mascot', () => {
+test('Elyna keeps the premium local visual pack as a production fallback', () => {
   assert.match(client, /\/brand\/companion\/companion-avatar-256\.webp/);
   assert.match(avatar, /\/brand\/companion\/companion-launcher-256\.webp/);
-  assert.equal(manifest.assistant, 'Compagnon JS-Innov.IA');
-  assert.equal(manifest.version, '1.0.0');
+  assert.equal(manifest.assistant, 'Elyna');
+  assert.equal(manifest.role, 'Compagnon JS-Innov.IA');
+  assert.equal(manifest.version, '1.1.0');
+  assert.equal(manifest.threeD.enabled, false);
+  assert.equal(manifest.threeD.format, 'vrm');
+  assert.equal(manifest.threeD.fallbackRequired, true);
+  assert.deepEqual(manifest.threeD.states, ['idle', 'listening', 'thinking', 'speaking', 'success', 'error']);
+  assert.match(avatar, /Elyna/);
 });
 
 test('the chat remains accessible and respects reduced motion', () => {
