@@ -31,6 +31,7 @@ const navItems = [
   { label: 'Accueil', path: '/' },
   { label: 'Packs', path: '/saas-packs' },
   { label: 'Agents IA', path: '/saas-agents' },
+  { label: 'Écrans', path: '/digital-signage' },
   { label: 'Contact', path: '/saas-contact' },
   { label: 'Mon espace', path: '/saas-client' },
 ];

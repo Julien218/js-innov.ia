@@ -1,0 +1,36 @@
+name: Signage commerce CI
+on:
+  pull_request:
+    paths:
+      - 'server.cjs'
+      - 'server.mjs'
+      - 'src/pages/saas/SignageProduct.jsx'
+      - 'src/pages/saas/SignageSuccess.jsx'
+      - 'tests/signage-commerce.test.cjs'
+      - '.github/workflows/signage-commerce-ci.yml'
+      - 'package.json'
+  push:
+    branches:
+      - 'feature/digital-signage-product-checkout'
+      - 'feature/digital-signage-product-release'
+    paths:
+      - 'server.cjs'
+      - 'server.mjs'
+      - 'src/pages/saas/SignageProduct.jsx'
+      - 'src/pages/saas/SignageSuccess.jsx'
+      - 'tests/signage-commerce.test.cjs'
+      - '.github/workflows/signage-commerce-ci.yml'
+      - 'package.json'
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: node --check server.cjs
+      - run: node --check server.mjs
+      - run: npm test
+      - run: npm run build

@@ -33,6 +33,8 @@ import SaasChatbot from './components/chatbot/AIChatbot';
 import SaasChatbotAdmin from './pages/saas/SaasChatbotAdmin';
 import EcranLed from './pages/saas/EcranLed';
 import EcranEspaceC from './pages/saas/EcranEspaceC';
+import SignageProduct from './pages/saas/SignageProduct';
+import SignageSuccess from './pages/saas/SignageSuccess';
 import Ps from './pages/Ps';
 import CockpitConnectedSite from './pages/CockpitConnectedSite';
 import __Layout from './Layout.jsx';
@@ -51,7 +53,6 @@ const LayoutWrapper = ({ children, currentPageName }) => Layout ?
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, isAuthenticated, navigateToLogin } = useAuth();
 
-  // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {
     return (
       <div className="fixed inset-0 flex items-center justify-center">
@@ -60,18 +61,15 @@ const AuthenticatedApp = () => {
     );
   }
 
-  // Handle authentication errors
   if (authError) {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
-      // Redirect to login automatically
       navigateToLogin();
       return null;
     }
   }
 
-  // Render the main app
   return (
     <Routes>
       <Route path="/" element={<SaasLayout><SaasLanding /><SaasChatbot /></SaasLayout>} />
@@ -96,7 +94,6 @@ const AuthenticatedApp = () => {
           <DynamicPageView />
         </__Layout>
       } />
-      {/* WebOS Routes */}
       <Route path="/webos" element={<WebOSLayout><WebOSHome /></WebOSLayout>} />
       <Route path="/webos-portfolio" element={<WebOSLayout><WebOSPortfolio /></WebOSLayout>} />
       <Route path="/webos-services" element={<WebOSLayout><WebOSServices /></WebOSLayout>} />
@@ -104,7 +101,6 @@ const AuthenticatedApp = () => {
       <Route path="/webos-contact" element={<WebOSLayout><WebOSContact /></WebOSLayout>} />
       <Route path="/webos-admin" element={<WebOSLayout><WebOSAdmin /></WebOSLayout>} />
       <Route path="/webos-mentions" element={<WebOSLayout><WebOSMentions /></WebOSLayout>} />
-      {/* SaaS Routes */}
       <Route path="/saas" element={<SaasLayout><SaasHome /><SaasChatbot /></SaasLayout>} />
       <Route path="/saas-packs" element={<SaasLayout><SaasPacks /><SaasChatbot /></SaasLayout>} />
       <Route path="/saas-analyse" element={<SaasLayout><SaasAnalyse /></SaasLayout>} />
@@ -119,6 +115,8 @@ const AuthenticatedApp = () => {
       <Route path="/saas-client" element={<SaasLayout><SaasClientDashboard /></SaasLayout>} />
       <Route path="/saas-events" element={<SaasLayout><SaasEvents /></SaasLayout>} />
       <Route path="/saas-chatbot-admin" element={<SaasLayout><SaasChatbotAdmin /></SaasLayout>} />
+      <Route path="/digital-signage" element={<SaasLayout><SignageProduct /><SaasChatbot /></SaasLayout>} />
+      <Route path="/digital-signage/success" element={<SaasLayout><SignageSuccess /></SaasLayout>} />
       <Route path="/cockpit" element={<CockpitConnectedSite />} />
       <Route path="/site-cockpit" element={<CockpitConnectedSite />} />
       <Route path="/ecran" element={<EcranLed />} />
@@ -129,9 +127,7 @@ const AuthenticatedApp = () => {
   );
 };
 
-
 function App() {
-
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
