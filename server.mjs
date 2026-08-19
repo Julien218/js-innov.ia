@@ -6,6 +6,7 @@ import { extname, join, normalize } from 'node:path';
 const dist = join(process.cwd(), 'dist');
 const port = Number.parseInt(process.env.PORT || '8080', 10);
 const agentUrl = (process.env.JSINNOVIA_AGENT_URL || 'https://jsinnovia-agent-production.up.railway.app').replace(/\/$/, '');
+const playerDownloadUrl = (process.env.PIXELIUM_PLAYER_DOWNLOAD_URL || 'https://olivier-signage-cockpit-production.up.railway.app/api/player-download/commissioning').trim();
 const agentKey = process.env.AGENT_API_KEY || process.env.JSINNOVIA_AGENT_KEY || '';
 const rateLimits = new Map();
 const MAX_RATE_LIMIT_CLIENTS = 5_000;
@@ -100,6 +101,23 @@ createServer(async (request, response) => {
   } catch {
     return json(response, 400, { error: 'URL invalide' });
   }
+
+  // Lien court de mise en service Pixelium. Il reste stable tandis que la cible
+  // /commissioning sert uniquement la release signée et validée la plus récente.
+  if (pathname === '/p' || pathname === '/player') {
+    if (!['GET', 'HEAD'].includes(request.method)) {
+      response.setHeader('Allow', 'GET, HEAD');
+      return json(response, 405, { error: 'Méthode non autorisée' });
+    }
+    response.writeHead(302, {
+      Location: playerDownloadUrl,
+      'Cache-Control': 'no-store, max-age=0',
+      Pragma: 'no-cache',
+      'X-Robots-Tag': 'noindex, nofollow, noarchive',
+    });
+    return response.end();
+  }
+
   if (pathname === '/api/health') return json(response, 200, { status: 'ok', service: 'js-innovia-site', backend: 'nova' });
   if (pathname.startsWith('/api/platform/')) {
     if (!allow(request)) return json(response, 429, { error: 'Trop de requêtes. Réessayez dans une minute.' });
