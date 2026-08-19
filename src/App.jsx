@@ -35,6 +35,9 @@ import EcranLed from './pages/saas/EcranLed';
 import EcranEspaceC from './pages/saas/EcranEspaceC';
 import Ps from './pages/Ps';
 import CockpitConnectedSite from './pages/CockpitConnectedSite';
+import CataloguePricingDraft from './pages/CataloguePricingDraft';
+import HainoFlowLanding from './pages/HainoFlowLanding';
+import { resolveProductExperience } from './lib/productHostRouter';
 import __Layout from './Layout.jsx';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
@@ -47,6 +50,28 @@ const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
 const LayoutWrapper = ({ children, currentPageName }) => Layout ?
   <Layout currentPageName={currentPageName}>{children}</Layout>
   : <>{children}</>;
+
+const DomainAwareHome = () => {
+  const experience = resolveProductExperience(window.location.hostname);
+
+  if (experience === 'hainoflow') {
+    return <SaasLayout><HainoFlowLanding /><SaasChatbot /></SaasLayout>;
+  }
+
+  if (experience === 'signage') {
+    return <EcranLed />;
+  }
+
+  if (experience === 'webos') {
+    return <WebOSLayout><WebOSHome /></WebOSLayout>;
+  }
+
+  if (experience === 'cockpit') {
+    return <CockpitConnectedSite />;
+  }
+
+  return <SaasLayout><SaasLanding /><SaasChatbot /></SaasLayout>;
+};
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, isAuthenticated, navigateToLogin } = useAuth();
@@ -74,7 +99,7 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      <Route path="/" element={<SaasLayout><SaasLanding /><SaasChatbot /></SaasLayout>} />
+      <Route path="/" element={<DomainAwareHome />} />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
@@ -121,6 +146,9 @@ const AuthenticatedApp = () => {
       <Route path="/saas-chatbot-admin" element={<SaasLayout><SaasChatbotAdmin /></SaasLayout>} />
       <Route path="/cockpit" element={<CockpitConnectedSite />} />
       <Route path="/site-cockpit" element={<CockpitConnectedSite />} />
+      <Route path="/hainoflow" element={<SaasLayout><HainoFlowLanding /><SaasChatbot /></SaasLayout>} />
+      {/* Draft-only route: intentionally absent from public navigation. */}
+      <Route path="/catalogue-tarifs-brouillon" element={<SaasLayout><CataloguePricingDraft /></SaasLayout>} />
       <Route path="/ecran" element={<EcranLed />} />
       <Route path="/ecranespacec" element={<EcranEspaceC />} />
       <Route path="/ps" element={<Ps />} />
