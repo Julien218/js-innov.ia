@@ -6,7 +6,7 @@ import { extname, join, normalize } from 'node:path';
 const dist = join(process.cwd(), 'dist');
 const port = Number.parseInt(process.env.PORT || '8080', 10);
 const agentUrl = (process.env.JSINNOVIA_AGENT_URL || 'https://jsinnovia-agent-production.up.railway.app').replace(/\/$/, '');
-const playerDownloadUrl = (process.env.PIXELIUM_PLAYER_DOWNLOAD_URL || 'https://olivier-signage-cockpit-production.up.railway.app/api/player-download/commissioning').trim();
+const playerDownloadUrl = (process.env.PIXELIUM_PLAYER_DOWNLOAD_URL || 'https://olivier-signage-cockpit-production.up.railway.app/api/player-download/latest').trim();
 const agentKey = process.env.AGENT_API_KEY || process.env.JSINNOVIA_AGENT_KEY || '';
 const rateLimits = new Map();
 const MAX_RATE_LIMIT_CLIENTS = 5_000;
@@ -103,7 +103,7 @@ createServer(async (request, response) => {
   }
 
   // Lien court de mise en service Pixelium. Il reste stable tandis que la cible
-  // /commissioning sert uniquement la release signée et validée la plus récente.
+  // /latest sert la release approuvée la plus récente; le serveur Player la valide.
   if (pathname === '/p' || pathname === '/player') {
     if (!['GET', 'HEAD'].includes(request.method)) {
       response.setHeader('Allow', 'GET, HEAD');
