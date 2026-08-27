@@ -1,7 +1,11 @@
 import { createReadStream, existsSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
+import { createRequire } from 'node:module';
 import { extname, join, normalize } from 'node:path';
+
+const require = createRequire(import.meta.url);
+const { handleCommerceRequest } = require('./server.cjs');
 
 const dist = join(process.cwd(), 'dist');
 const port = Number.parseInt(process.env.PORT || '8080', 10);
@@ -96,8 +100,10 @@ const systemPrompt = `Tu es le compagnon public officiel de JS-Innov.IA. Répond
 createServer(async (request, response) => {
   setSecurityHeaders(response);
   let pathname;
+  let requestUrl;
   try {
-    pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
+    requestUrl = new URL(request.url, 'http://localhost');
+    pathname = decodeURIComponent(requestUrl.pathname);
   } catch {
     return json(response, 400, { error: 'URL invalide' });
   }
@@ -119,6 +125,7 @@ createServer(async (request, response) => {
   }
 
   if (pathname === '/api/health') return json(response, 200, { status: 'ok', service: 'js-innovia-site', backend: 'nova' });
+  if (await handleCommerceRequest(request, response, pathname, requestUrl)) return;
   if (pathname.startsWith('/api/platform/')) {
     if (!allow(request)) return json(response, 429, { error: 'Trop de requêtes. Réessayez dans une minute.' });
     try {
@@ -163,6 +170,7 @@ createServer(async (request, response) => {
       return json(response, error.message === 'payload-too-large' ? 413 : 502, { error: 'Service NOVA momentanément indisponible' });
     }
   }
+  if (pathname.startsWith('/api/')) return json(response, 404, { error: 'Route API inconnue' });
   const relativePath = normalize(pathname).replace(/^([/\\])+/, '');
   let filePath = join(dist, relativePath);
 
