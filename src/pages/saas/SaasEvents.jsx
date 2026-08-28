@@ -165,7 +165,7 @@ export default function SaasEvents() {
     // Submit as draft to admin
     await platform.entities.Event.create({ ...newEvent, status: 'draft' });
     await platform.integrations.Core.SendEmail({
-      to: 'contact@js-innov.ia',
+      to: 'info@jsinnovia.store',
       subject: `🎟 Nouvelle demande d'événement — ${newEvent.title}`,
       body: `Titre : ${newEvent.title}\nDate : ${newEvent.date}\nLieu : ${newEvent.location}\nCapacité : ${newEvent.capacity}\nPrix : ${newEvent.price}€\nDescription : ${newEvent.description}`,
     }).catch(() => {});

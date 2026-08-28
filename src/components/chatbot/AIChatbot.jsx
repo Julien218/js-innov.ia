@@ -7,14 +7,16 @@ import AIAvatar from './AIAvatar';
 import ElynaAvatar3D from './ElynaAvatar3D';
 
 const AVATAR = '/brand/companion/companion-avatar-256.webp';
+const AUTO_WELCOME_STORAGE_KEY = 'jsinnovia-elynea-welcomed-at';
+const AUTO_WELCOME_COOLDOWN = 7 * 24 * 60 * 60 * 1000;
 const WELCOME = {
   role: 'assistant',
-  content: 'Bonjour ! Je suis Elyna, le Compagnon JS-Innov.IA. Je peux vous guider parmi nos solutions, répondre à vos questions et vous aider à préparer votre projet.'
+  content: 'Bonjour 👋 Je suis Elynea, votre guide JS-Innov.IA. Dites-moi ce que vous aimeriez améliorer dans votre entreprise : je vous orienterai vers la solution adaptée, sans engagement.'
 };
 const QUICK_PROMPTS = [
-  'Quelles solutions proposez-vous ?',
-  'Comment automatiser une tâche ?',
-  'Je souhaite demander un devis'
+  'Je veux créer ou améliorer mon site',
+  'Je veux automatiser mon entreprise',
+  'Aidez-moi à choisir une solution'
 ];
 
 function withTimeout(promise, delay) {
@@ -36,6 +38,28 @@ export default function AIChatbot() {
   const inputRef = useRef(null);
   const endRef = useRef(null);
   const avatarState = status === 'loading' ? 'thinking' : status === 'error' ? 'error' : 'idle';
+
+  useEffect(() => {
+    let shouldWelcome = true;
+    try {
+      const welcomedAt = Number(window.localStorage.getItem(AUTO_WELCOME_STORAGE_KEY) || 0);
+      shouldWelcome = !welcomedAt || Date.now() - welcomedAt > AUTO_WELCOME_COOLDOWN;
+    } catch {
+      // Elynea remains manually accessible when storage is unavailable.
+    }
+    if (!shouldWelcome) return undefined;
+
+    const welcomeTimer = window.setTimeout(() => {
+      setIsOpen(true);
+      try {
+        window.localStorage.setItem(AUTO_WELCOME_STORAGE_KEY, String(Date.now()));
+      } catch {
+        // Automatic guidance must not depend on storage access.
+      }
+    }, reduceMotion ? 300 : 1200);
+
+    return () => window.clearTimeout(welcomeTimer);
+  }, [reduceMotion]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -80,7 +104,7 @@ export default function AIChatbot() {
       setMessages((current) => [...current, { role: 'assistant', content: answer }]);
       setStatus('idle');
     } catch {
-      setError('Elyna est momentanément indisponible. Votre message n’a pas été perdu.');
+      setError('Elynea est momentanément indisponible. Votre message n’a pas été perdu.');
       setStatus('error');
     }
   }
@@ -122,18 +146,18 @@ export default function AIChatbot() {
                     state={avatarState}
                     fallbackSrc={AVATAR}
                     className="h-full w-full rounded-full object-cover"
-                    alt="Elyna — Compagnon JS-Innov.IA"
+                    alt="Elynea — Guide JS-Innov.IA"
                   />
                   <span className="absolute bottom-0.5 right-0.5 h-3 w-3 rounded-full border-2 border-slate-950 bg-emerald-400" aria-hidden="true" />
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
                     <Sparkles className="h-3.5 w-3.5 text-amber-300" aria-hidden="true" />
-                    <h2 id="companion-title" className="truncate font-semibold tracking-tight text-white">Elyna</h2>
+                    <h2 id="companion-title" className="truncate font-semibold tracking-tight text-white">Elynea · by JS-Innov.IA</h2>
                   </div>
                   <p className="mt-0.5 flex items-center gap-1.5 text-xs text-slate-300">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
-                    Compagnon JS-Innov.IA · En ligne
+                    Guide intelligent · En ligne
                   </p>
                 </div>
               </div>
@@ -173,7 +197,7 @@ export default function AIChatbot() {
               {status === 'loading' && (
                 <div className="ml-10 flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.055] px-3 py-2 text-sm text-slate-300">
                   <Loader2 className="h-4 w-4 animate-spin text-amber-300" aria-hidden="true" />
-                  Elyna réfléchit…
+                  Elynea réfléchit…
                 </div>
               )}
 

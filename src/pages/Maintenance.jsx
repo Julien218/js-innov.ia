@@ -181,11 +181,11 @@ export default function Maintenance() {
         {/* Contact info */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.65 }}
           className="flex flex-wrap justify-center gap-6 mb-8 text-sm">
-          <a href="mailto:contact@js-innov.ia" className="flex items-center gap-2 transition-colors"
+          <a href="mailto:info@jsinnovia.store" className="flex items-center gap-2 transition-colors"
             style={{ color: 'rgba(255,255,255,0.4)' }}
             onMouseEnter={e => e.currentTarget.style.color = GOLD}
             onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}>
-            <Mail className="w-4 h-4" /> contact@js-innov.ia
+            <Mail className="w-4 h-4" /> info@jsinnovia.store
           </a>
           <a href="tel:+32494119090" className="flex items-center gap-2 transition-colors"
             style={{ color: 'rgba(255,255,255,0.4)' }}

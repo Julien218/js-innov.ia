@@ -149,7 +149,7 @@ export default function SaasContact() {
         {/* Contact info chips */}
         <div className="flex flex-wrap justify-center gap-3 mb-6">
           {[
-            { icon: Mail, text: 'info@jsinnovia.com', color: GOLD },
+            { icon: Mail, text: 'info@jsinnovia.store', color: GOLD },
             { icon: Phone, text: '0494/11.90.90', color: PURPLE },
             { icon: MapPin, text: 'Grand Rue 52, Dour', color: CYAN },
           ].map(({ icon: Icon, text, color }) => (

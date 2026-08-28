@@ -9,7 +9,7 @@ const CYAN = '#06B6D4';
 const sections = [
   {
     title: 'Éditeur du site',
-    content: "Js-Innov.IA est une activité exercée par Julien Pagin, basée à Dour, Belgique.\nEmail : contact@js-innov.ia\nTéléphone : +32 494 11 90 90\nSite : www.jsinnovia.com\nNuméro d'entreprise : en cours d'enregistrement"
+    content: "Js-Innov.IA est une activité exercée par Julien Pagin, basée à Dour, Belgique.\nEmail : info@jsinnovia.store\nTéléphone : +32 494 11 90 90\nSite : www.jsinnovia.com\nNuméro d'entreprise : en cours d'enregistrement"
   },
   {
     title: 'Hébergement',
@@ -21,7 +21,7 @@ const sections = [
   },
   {
     title: 'Données personnelles (RGPD)',
-    content: "Les données collectées via les formulaires (nom, email, téléphone, message) sont utilisées uniquement pour répondre à vos demandes et vous contacter dans le cadre de votre projet.\n\nAucune donnée n'est vendue à des tiers. Vous pouvez exercer votre droit d'accès, de rectification ou de suppression en contactant : contact@js-innov.ia\n\nResponsable du traitement : Julien Pagin, Js-Innov.IA, Dour, Belgique."
+    content: "Les données collectées via les formulaires (nom, email, téléphone, message) sont utilisées uniquement pour répondre à vos demandes et vous contacter dans le cadre de votre projet.\n\nAucune donnée n'est vendue à des tiers. Vous pouvez exercer votre droit d'accès, de rectification ou de suppression en contactant : info@jsinnovia.store\n\nResponsable du traitement : Julien Pagin, Js-Innov.IA, Dour, Belgique."
   },
   {
     title: 'Cookies',
@@ -86,7 +86,7 @@ export default function WebOSMentions() {
           className="mt-8 text-center p-6 rounded-2xl"
           style={{ background: 'rgba(212,175,55,0.05)', border: `1px solid rgba(212,175,55,0.15)` }}>
           <p className="text-sm font-bold mb-1" style={{ color: GOLD }}>Julien Pagin · Js-Innov.IA</p>
-          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>contact@js-innov.ia · 0494/11.90.90 · Dour, Belgique</p>
+          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>info@jsinnovia.store · 0494/11.90.90 · Dour, Belgique</p>
         </motion.div>
       </div>
     </div>

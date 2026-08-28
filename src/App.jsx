@@ -1,55 +1,68 @@
 // Build trigger: force rebuild for /ecranespacec route
+import { lazy, Suspense } from 'react';
 import './App.css'
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
 import VisualEditAgent from '@/lib/VisualEditAgent'
 import NavigationTracker from '@/lib/NavigationTracker'
-import { pagesConfig } from './pages.config'
+import { lazyPagesConfig as pagesConfig } from './config/lazyPages'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import DynamicPageView from './pages/DynamicPageView';
-import Visuels from './pages/Visuels';
-import WebOSHome from './pages/WebOSHome';
-import WebOSPortfolio from './pages/WebOSPortfolio';
-import WebOSServices from './pages/WebOSServices';
-import WebOSOffre from './pages/WebOSOffre';
-import WebOSContact from './pages/WebOSContact';
-import WebOSAdmin from './pages/WebOSAdmin';
-import WebOSMentions from './pages/WebOSMentions';
-import WebOSLayout from './components/webos/WebOSLayout';
 import SaasLayout from './components/saas/SaasLayout';
-import SaasHome from './pages/saas/SaasHome';
-import SaasPacks from './pages/saas/SaasPacks';
-import SaasAnalyse from './pages/saas/SaasAnalyse';
-import SaasAdmin from './pages/saas/SaasAdmin';
-import SaasAgents from './pages/saas/SaasAgents';
-import SaasContact from './pages/saas/SaasContact';
-import SaasDevis from './pages/saas/SaasDevis';
 import SaasLanding from './pages/saas/SaasLanding';
-import SaasClientDashboard from './pages/saas/SaasClientDashboard';
-import SaasEvents from './pages/saas/SaasEvents';
-import SaasLegal from './pages/saas/SaasLegal';
 import SaasChatbot from './components/chatbot/AIChatbot';
-import SaasChatbotAdmin from './pages/saas/SaasChatbotAdmin';
-import EcranLed from './pages/saas/EcranLed';
-import EcranEspaceC from './pages/saas/EcranEspaceC';
-import Ps from './pages/Ps';
-import CockpitConnectedSite from './pages/CockpitConnectedSite';
+import { resolveProductExperience } from './lib/productHostRouter';
 import __Layout from './Layout.jsx';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
-const { Pages, Layout, mainPage } = pagesConfig;
-const mainPageKey = mainPage ?? Object.keys(Pages)[0];
-const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
+const DynamicPageView = lazy(() => import('./pages/DynamicPageView'));
+const Visuels = lazy(() => import('./pages/Visuels'));
+const SaasHome = lazy(() => import('./pages/saas/SaasHome'));
+const SaasPacks = lazy(() => import('./pages/saas/SaasPacks'));
+const SaasAnalyse = lazy(() => import('./pages/saas/SaasAnalyse'));
+const SaasAdmin = lazy(() => import('./pages/saas/SaasAdmin'));
+const SaasAgents = lazy(() => import('./pages/saas/SaasAgents'));
+const SaasContact = lazy(() => import('./pages/saas/SaasContact'));
+const SaasDevis = lazy(() => import('./pages/saas/SaasDevis'));
+const SaasClientDashboard = lazy(() => import('./pages/saas/SaasClientDashboard'));
+const SaasEvents = lazy(() => import('./pages/saas/SaasEvents'));
+const SaasLegal = lazy(() => import('./pages/saas/SaasLegal'));
+const SaasChatbotAdmin = lazy(() => import('./pages/saas/SaasChatbotAdmin'));
+const EcranLed = lazy(() => import('./pages/saas/EcranLed'));
+const EcranEspaceC = lazy(() => import('./pages/saas/EcranEspaceC'));
+const Ps = lazy(() => import('./pages/Ps'));
+const CockpitConnectedSite = lazy(() => import('./pages/CockpitConnectedSite'));
+const CataloguePricingDraft = lazy(() => import('./pages/CataloguePricingDraft'));
+const HainoFlowLanding = lazy(() => import('./pages/HainoFlowLanding'));
+
+const { Pages, Layout } = pagesConfig;
 
 const LayoutWrapper = ({ children, currentPageName }) => Layout ?
   <Layout currentPageName={currentPageName}>{children}</Layout>
   : <>{children}</>;
 
+const DomainAwareHome = () => {
+  const experience = resolveProductExperience(window.location.hostname);
+
+  if (experience === 'hainoflow') {
+    return <SaasLayout><HainoFlowLanding /><SaasChatbot /></SaasLayout>;
+  }
+
+  if (experience === 'signage') {
+    return <EcranLed />;
+  }
+
+  if (experience === 'cockpit') {
+    return <CockpitConnectedSite />;
+  }
+
+  return <SaasLayout><SaasLanding /><SaasChatbot /></SaasLayout>;
+};
+
 const AuthenticatedApp = () => {
-  const { isLoadingAuth, isLoadingPublicSettings, authError, isAuthenticated, navigateToLogin } = useAuth();
+  const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
 
   // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {
@@ -74,7 +87,7 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      <Route path="/" element={<SaasLayout><SaasLanding /><SaasChatbot /></SaasLayout>} />
+      <Route path="/" element={<DomainAwareHome />} />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
@@ -96,14 +109,6 @@ const AuthenticatedApp = () => {
           <DynamicPageView />
         </__Layout>
       } />
-      {/* WebOS Routes */}
-      <Route path="/webos" element={<WebOSLayout><WebOSHome /></WebOSLayout>} />
-      <Route path="/webos-portfolio" element={<WebOSLayout><WebOSPortfolio /></WebOSLayout>} />
-      <Route path="/webos-services" element={<WebOSLayout><WebOSServices /></WebOSLayout>} />
-      <Route path="/webos-offre" element={<WebOSLayout><WebOSOffre /></WebOSLayout>} />
-      <Route path="/webos-contact" element={<WebOSLayout><WebOSContact /></WebOSLayout>} />
-      <Route path="/webos-admin" element={<WebOSLayout><WebOSAdmin /></WebOSLayout>} />
-      <Route path="/webos-mentions" element={<WebOSLayout><WebOSMentions /></WebOSLayout>} />
       {/* SaaS Routes */}
       <Route path="/saas" element={<SaasLayout><SaasHome /><SaasChatbot /></SaasLayout>} />
       <Route path="/saas-packs" element={<SaasLayout><SaasPacks /><SaasChatbot /></SaasLayout>} />
@@ -121,6 +126,9 @@ const AuthenticatedApp = () => {
       <Route path="/saas-chatbot-admin" element={<SaasLayout><SaasChatbotAdmin /></SaasLayout>} />
       <Route path="/cockpit" element={<CockpitConnectedSite />} />
       <Route path="/site-cockpit" element={<CockpitConnectedSite />} />
+      <Route path="/hainoflow" element={<SaasLayout><HainoFlowLanding /><SaasChatbot /></SaasLayout>} />
+      {/* Draft-only route: intentionally absent from public navigation. */}
+      <Route path="/catalogue-tarifs-brouillon" element={<SaasLayout><CataloguePricingDraft /></SaasLayout>} />
       <Route path="/ecran" element={<EcranLed />} />
       <Route path="/ecranespacec" element={<EcranEspaceC />} />
       <Route path="/ps" element={<Ps />} />
@@ -137,7 +145,9 @@ function App() {
       <QueryClientProvider client={queryClientInstance}>
         <Router>
           <NavigationTracker />
-          <AuthenticatedApp />
+          <Suspense fallback={<div className="fixed inset-0 grid place-items-center bg-[#060610] text-sm font-bold text-white/60">Chargement sécurisé…</div>}>
+            <AuthenticatedApp />
+          </Suspense>
         </Router>
         <Toaster />
         <VisualEditAgent />

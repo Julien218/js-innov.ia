@@ -18,7 +18,7 @@ const LEGAL_SECTIONS = {
 Responsable : Julien Pagin
 Grand Rue 52, 7370 Dour, Belgique
 Téléphone : 0494/11.90.90
-Email : info@jsinnovia.com
+Email : info@jsinnovia.store
 BCE : 0877926214
 Site : www.jsinnovia.com`
       },
@@ -33,11 +33,11 @@ Site : www.jsinnovia.com`
     icon: Lock,
     color: PURPLE,
     sections: [
-      { title: 'Responsable du traitement', content: 'Julien Pagin – Js-Innov.IA\nGrand Rue 52, 7370 Dour\ninfo@jsinnovia.com · 0494/11.90.90' },
+      { title: 'Responsable du traitement', content: 'Julien Pagin – Js-Innov.IA\nGrand Rue 52, 7370 Dour\ninfo@jsinnovia.store · 0494/11.90.90' },
       { title: 'Données collectées', content: 'Nous collectons uniquement les données nécessaires à la fourniture de nos services :\n- Formulaires de contact : nom, prénom, email, téléphone, entreprise, message\n- Chatbot : réponses aux questions de qualification\n- Analyse de projet : informations sur votre activité et besoins\n- WhatsApp : uniquement si vous nous contactez via ce canal\n- Cookies techniques nécessaires au fonctionnement du site' },
       { title: 'Finalité', content: 'Vos données sont utilisées pour :\n- Répondre à vos demandes et vous recontacter\n- Créer votre dossier projet\n- Vous envoyer une proposition adaptée\n- Améliorer nos services\n\nAucune donnée n\'est vendue à des tiers. Aucune utilisation à des fins commerciales sans votre consentement explicite.' },
       { title: 'Durée de conservation', content: 'Leads non convertis : 3 ans maximum\nClients actifs : durée de la relation commerciale + 5 ans\nDonnées de facturation : 7 ans (obligation légale)\nConversations chatbot : 1 an' },
-      { title: 'Vos droits', content: 'Conformément au RGPD, vous disposez des droits suivants :\n- Droit d\'accès à vos données\n- Droit de rectification\n- Droit à l\'effacement (droit à l\'oubli)\n- Droit à la portabilité\n- Droit d\'opposition\n\nPour exercer vos droits : info@jsinnovia.com' },
+      { title: 'Vos droits', content: 'Conformément au RGPD, vous disposez des droits suivants :\n- Droit d\'accès à vos données\n- Droit de rectification\n- Droit à l\'effacement (droit à l\'oubli)\n- Droit à la portabilité\n- Droit d\'opposition\n\nPour exercer vos droits : info@jsinnovia.store' },
       { title: 'Sécurité', content: 'Vos données sont protégées par des mesures techniques et organisationnelles appropriées. Accès restreint aux seules personnes autorisées. Hébergement en Union européenne.' },
       { title: 'Cookies', content: 'Nous utilisons uniquement des cookies techniques nécessaires au fonctionnement du site. Aucun cookie publicitaire ou de tracking sans votre consentement explicite.' },
     ]
@@ -105,7 +105,7 @@ export default function SaasLegal({ type = 'mentions' }) {
 
         <div className="mt-8 text-center p-6 rounded-2xl" style={{ background: 'rgba(212,175,55,0.05)', border: `1px solid rgba(212,175,55,0.15)` }}>
           <p className="text-sm font-bold mb-1" style={{ color: GOLD }}>Julien Pagin · Js-Innov.IA</p>
-          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>info@jsinnovia.com · 0494/11.90.90 · Grand Rue 52, 7370 Dour · BCE 0877926214</p>
+          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>info@jsinnovia.store · 0494/11.90.90 · Grand Rue 52, 7370 Dour · BCE 0877926214</p>
         </div>
       </div>
     </div>

@@ -156,6 +156,10 @@ createServer(async (request, response) => {
   const relativePath = normalize(pathname).replace(/^([/\\])+/, '');
   let filePath = join(dist, relativePath);
   if (!filePath.startsWith(dist) || !existsSync(filePath) || !statSync(filePath).isFile()) filePath = join(dist, 'index.html');
+
+  if (pathname === '/hainoflow' || pathname === '/catalogue-tarifs-brouillon') {
+    response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  }
   response.setHeader('Content-Type', mime[extname(filePath).toLowerCase()] || 'application/octet-stream');
   response.setHeader('Cache-Control', filePath.endsWith('index.html') ? 'no-cache' : 'public, max-age=31536000, immutable');
   createReadStream(filePath).pipe(response);

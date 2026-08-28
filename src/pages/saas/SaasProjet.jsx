@@ -88,7 +88,7 @@ export default function SaasProjet() {
         message: `Activité: ${form.activite} | Besoins: ${besoinsLabels} | Style: ${styleLabel} | Couleurs: ${form.couleurs} | Budget: ${form.budget}`,
       }),
       platform.integrations.Core.SendEmail({
-        to: 'contact@js-innov.ia',
+        to: 'info@jsinnovia.store',
         subject: `🚀 Nouveau projet — ${form.nom} (${besoinsLabels})`,
         body: `Nouveau projet soumis via le formulaire.\n\n👤 ${form.nom}\n📧 ${form.email}\n📱 ${form.phone || 'Non renseigné'}\n\n🏢 Activité: ${form.activite}\n📝 Description: ${form.description || 'Non renseignée'}\n✅ Besoins: ${besoinsLabels}\n🎨 Style: ${styleLabel}\n🎨 Couleurs: ${form.couleurs || 'Non renseignées'}\n💰 Budget: ${form.budget}\n\nConnectez-vous au dashboard pour traiter ce prospect.`,
       }),

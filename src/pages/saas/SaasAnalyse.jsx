@@ -261,7 +261,7 @@ export default function SaasAnalyse() {
               <div>
                 <div className="p-5 rounded-2xl mb-5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
                   <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                    Vos données sont utilisées uniquement pour répondre à votre demande et vous recontacter dans le cadre de votre projet. Conformément au RGPD, vous pouvez exercer vos droits à tout moment en contactant info@jsinnovia.com.
+                    Vos données sont utilisées uniquement pour répondre à votre demande et vous recontacter dans le cadre de votre projet. Conformément au RGPD, vous pouvez exercer vos droits à tout moment en contactant info@jsinnovia.store.
                   </p>
                 </div>
                 <label className="flex items-start gap-3 cursor-pointer mb-6">

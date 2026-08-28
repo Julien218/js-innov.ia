@@ -23,21 +23,21 @@ function Reveal({ children, delay = 0 }) {
 
 const packs = [
   {
-    icon: Globe, name: 'Pack Starter', price: 'À partir de 490€', color: CYAN,
+    icon: Globe, name: 'Pack Starter', price: 'À partir de 790€ HTVA', color: CYAN,
     target: 'Pour indépendants ou petites activités qui veulent une présence en ligne propre.',
     desc: 'La base solide pour exister sur le web de manière professionnelle.',
     benefits: ['Visibilité immédiate', 'Premiers contacts qualifiés', 'Image professionnelle', 'Base SEO solide'],
     features: ['Site vitrine simple (3 à 5 pages)', 'Design responsive mobile-first', 'Formulaire de contact intégré', 'Bouton WhatsApp intégré', 'SEO de base (titres, métas)', 'Google Business Profile', 'Mentions légales simples', 'Livraison en 3 à 5 jours', '1 modification incluse'],
   },
   {
-    icon: TrendingUp, name: 'Pack Business', price: 'À partir de 990€', color: GOLD, popular: true,
+    icon: TrendingUp, name: 'Pack Business', price: 'À partir de 1 790€ HTVA', color: GOLD, popular: true,
     target: 'Pour clients qui veulent générer des leads et développer leur activité.',
     desc: 'Transformez votre site en machine à prospects qualifiés.',
     benefits: ['Génération de leads qualifiés', 'Chatbot de qualification', 'CRM prospects intégré', 'Automatisation email'],
     features: ['Tout le Pack Starter', 'Site vitrine avancé (jusqu\'à 8 pages)', 'Chatbot de qualification IA', 'Formulaire intelligent multi-étapes', 'CRM prospects basique', 'Automatisation emails (séquence 4 étapes)', 'Contenus réseaux sociaux (5 posts)', 'Lead scoring automatique', '3 modifications incluses', 'Livraison en 5 à 7 jours'],
   },
   {
-    icon: Zap, name: 'Pack Automation', price: 'À partir de 1490€', color: PURPLE,
+    icon: Zap, name: 'Pack Automation', price: 'À partir de 2 990€ HTVA', color: PURPLE,
     target: 'Pour alléger la charge de travail et automatiser votre activité.',
     desc: 'Récupérez du temps en automatisant vos tâches répétitives.',
     benefits: ['Gain de temps massif', 'Zéro oubli de suivi', 'Centralisation des outils', 'Validation humaine'],

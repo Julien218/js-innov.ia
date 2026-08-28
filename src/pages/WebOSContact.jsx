@@ -133,7 +133,7 @@ export default function WebOSContact() {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
           className="flex flex-wrap justify-center gap-4 mb-8">
           {[
-            { icon: Mail, text: 'contact@js-innov.ia', color: GOLD },
+            { icon: Mail, text: 'info@jsinnovia.store', color: GOLD },
             { icon: Phone, text: '0494/11.90.90', color: PURPLE },
             { icon: Globe, text: 'www.jsinnovia.com', color: CYAN },
             { icon: MapPin, text: 'Dour, Belgique', color: GOLD },

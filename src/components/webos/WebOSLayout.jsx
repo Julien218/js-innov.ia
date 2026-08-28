@@ -200,7 +200,7 @@ export default function WebOSLayout({ children }) {
             </div>
             <div>
               <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: GOLD }}>Contact</p>
-              <p className="text-xs py-1" style={{ color: 'rgba(255,255,255,0.32)' }}>contact@js-innov.ia</p>
+              <p className="text-xs py-1" style={{ color: 'rgba(255,255,255,0.32)' }}>info@jsinnovia.store</p>
               <p className="text-xs py-1" style={{ color: 'rgba(255,255,255,0.32)' }}>+32 494 11 90 90</p>
               <p className="text-xs py-1" style={{ color: 'rgba(255,255,255,0.32)' }}>www.jsinnovia.com</p>
               <p className="text-xs py-1" style={{ color: 'rgba(255,255,255,0.32)' }}>Dour, Belgique</p>

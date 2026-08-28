@@ -55,10 +55,10 @@ export default function AIAvatar({ onClick, showWelcome }) {
             className="mb-2 hidden max-w-72 rounded-2xl border border-amber-300/25 bg-slate-950/95 px-4 py-3 shadow-[0_18px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:block"
             role="status"
           >
-            <p className="text-sm font-semibold text-white">Elyna</p>
-            <p className="mt-0.5 text-[11px] font-medium uppercase tracking-[0.14em] text-amber-300/80">Compagnon JS-Innov.IA</p>
+            <p className="text-sm font-semibold text-white">Elynea · by JS-Innov.IA</p>
+            <p className="mt-0.5 text-[11px] font-medium uppercase tracking-[0.14em] text-amber-300/80">Guide intelligent</p>
             <p className="mt-1.5 text-xs leading-relaxed text-slate-300">
-              Posez une question, découvrez nos solutions ou préparez votre projet.
+              Je vous guide vers la solution adaptée à votre projet.
             </p>
           </motion.div>
         )}
@@ -70,7 +70,7 @@ export default function AIAvatar({ onClick, showWelcome }) {
         whileHover={reduceMotion ? undefined : { scale: 1.045, y: -2 }}
         whileTap={reduceMotion ? undefined : { scale: 0.97 }}
         className="group relative grid h-[74px] w-[74px] place-items-center rounded-full border border-amber-300/45 bg-slate-950/90 p-1 shadow-[0_0_0_1px_rgba(139,92,246,0.15),0_16px_48px_rgba(0,0,0,0.5),0_0_32px_rgba(212,175,55,0.28)] backdrop-blur-xl transition-shadow hover:shadow-[0_0_0_1px_rgba(212,175,55,0.35),0_18px_54px_rgba(0,0,0,0.55),0_0_42px_rgba(212,175,55,0.4)] focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300/50 sm:h-[82px] sm:w-[82px]"
-        aria-label="Ouvrir Elyna, Compagnon JS-Innov.IA"
+        aria-label="Ouvrir Elynea, votre guide JS-Innov.IA"
         aria-haspopup="dialog"
       >
         {!reduceMotion && (
@@ -83,7 +83,7 @@ export default function AIAvatar({ onClick, showWelcome }) {
           state="idle"
           fallbackSrc={LAUNCHER}
           className="relative h-full w-full rounded-full transition-transform duration-300 group-hover:scale-[1.02]"
-          alt="Elyna — Compagnon JS-Innov.IA"
+          alt="Elynea — Guide JS-Innov.IA"
         />
         <span className="absolute bottom-1 right-1 h-4 w-4 rounded-full border-[3px] border-slate-950 bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.75)]" aria-hidden="true" />
       </motion.button>

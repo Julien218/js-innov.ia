@@ -129,7 +129,7 @@ export default function EcranLed() {
         `Email : ${form.email}\nTél : ${form.telephone}\n` +
         `Message : ${form.message || '—'}`
       );
-      window.location.href = `mailto:info@jsinnovia.com?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:info@jsinnovia.store?subject=${subject}&body=${body}`;
       setSent(true);
     }
     setSending(false);
@@ -168,7 +168,7 @@ export default function EcranLed() {
             <p style={{ fontSize: '0.75rem', color: 'rgba(255,180,180,0.85)', margin: 0, lineHeight: 1.55 }}>
               <strong style={{ color: '#FF7070' }}>Visuel non fourni.</strong> La création graphique ou vidéo de votre spot publicitaire est à votre charge.
               Nous acceptons les formats JPEG, PNG et MP4.{' '}
-              <a href="mailto:info@jsinnovia.com" style={{ color: C.cyan, textDecoration: 'underline' }}>Besoin d'aide pour créer votre visuel ?</a>
+              <a href="mailto:info@jsinnovia.store" style={{ color: C.cyan, textDecoration: 'underline' }}>Besoin d'aide pour créer votre visuel ?</a>
             </p>
           </div>
 
@@ -407,9 +407,9 @@ export default function EcranLed() {
                 </a>
               </div>
               <div style={{ background: C.card, border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, padding: '16px 18px', marginBottom: 18 }}>
-                <a href="mailto:info@jsinnovia.com" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: C.white }}>
+                <a href="mailto:info@jsinnovia.store" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: C.white }}>
                   <Mail size={16} color={C.cyan} />
-                  <span style={{ fontSize: '0.82rem', fontWeight: 600, color: C.cyan }}>info@jsinnovia.com</span>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 600, color: C.cyan }}>info@jsinnovia.store</span>
                 </a>
               </div>
 
@@ -438,7 +438,7 @@ export default function EcranLed() {
                     Vous recevrez votre devis par email
                   </p>
                   <p style={{ fontSize: '0.68rem', color: C.muted, margin: 0 }}>
-                    Vérifiez vos spams — info@jsinnovia.com
+                    Vérifiez vos spams — info@jsinnovia.store
                   </p>
                 </motion.div>
               ) : (
@@ -545,7 +545,7 @@ export default function EcranLed() {
         <div style={{ maxWidth: 860, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
           <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
             <a href="tel:+32494119090" style={{ fontSize: '0.72rem', color: C.muted, textDecoration: 'none', fontWeight: 600 }}>0494 11 90 90</a>
-            <a href="mailto:info@jsinnovia.com" style={{ fontSize: '0.72rem', color: C.cyan, textDecoration: 'none', fontWeight: 600 }}>info@jsinnovia.com</a>
+            <a href="mailto:info@jsinnovia.store" style={{ fontSize: '0.72rem', color: C.cyan, textDecoration: 'none', fontWeight: 600 }}>info@jsinnovia.store</a>
             <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.20)' }}>Espace C · 7370 Dour · Belgique</span>
           </div>
           <p style={{ fontSize: '0.60rem', color: 'rgba(255,255,255,0.18)', margin: 0 }}>

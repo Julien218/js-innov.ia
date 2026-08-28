@@ -282,7 +282,7 @@ function Modal({ v, onClose }) {
               ))}
             </div>
             <div className="flex gap-3">
-              <a href="mailto:contact@js-innov.ia">
+              <a href="mailto:info@jsinnovia.store">
                 <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
                   className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-black"
                   style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>
@@ -400,7 +400,7 @@ export default function Visuels() {
                 Événement, campagne pub, branding — on crée des visuels premium assistés par IA, rapides et efficaces.
               </p>
               <div className="flex flex-wrap justify-center gap-3">
-                <a href="mailto:contact@js-innov.ia">
+                <a href="mailto:info@jsinnovia.store">
                   <motion.button whileHover={{ scale: 1.05, boxShadow: `0 0 40px rgba(212,175,55,0.4)` }} whileTap={{ scale: 0.97 }}
                     className="flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-black text-sm"
                     style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>

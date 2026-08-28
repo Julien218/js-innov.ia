@@ -80,9 +80,9 @@ const services = [
 ];
 
 const packs = [
-  { name: 'Pack Starter', price: 'À partir de 490€', color: CYAN, icon: Globe, target: 'Indépendants & petites activités', desc: 'Site vitrine + formulaire + WhatsApp + SEO de base' },
-  { name: 'Pack Business', price: 'À partir de 990€', color: GOLD, icon: TrendingUp, target: 'Génération de leads', desc: 'Site avancé + chatbot + CRM + automatisation emails' },
-  { name: 'Pack Automation', price: 'À partir de 1490€', color: PURPLE, icon: Zap, target: 'Alléger votre charge', desc: 'Automatisations + tableaux de bord + WhatsApp + validation' },
+  { name: 'Pack Starter', price: 'À partir de 790€ HTVA', color: CYAN, icon: Globe, target: 'Indépendants & petites activités', desc: 'Site vitrine + formulaire + WhatsApp + SEO de base' },
+  { name: 'Pack Business', price: 'À partir de 1 790€ HTVA', color: GOLD, icon: TrendingUp, target: 'Génération de leads', desc: 'Site avancé + chatbot + CRM + automatisation emails' },
+  { name: 'Pack Automation', price: 'À partir de 2 990€ HTVA', color: PURPLE, icon: Zap, target: 'Alléger votre charge', desc: 'Automatisations + tableaux de bord + WhatsApp + validation' },
   { name: 'Pack IA Premium', price: 'Sur devis', color: '#EC4899', icon: Cpu, target: 'Agents IA complets', desc: 'Agents IA + espace client + dashboard + contenu + suivi' },
 ];
 

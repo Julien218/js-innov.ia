@@ -9,6 +9,11 @@ export default [
     files: [
       "src/components/**/*.{js,mjs,cjs,jsx}",
       "src/pages/**/*.{js,mjs,cjs,jsx}",
+      "src/config/**/*.{js,mjs,cjs,jsx}",
+      "src/App.jsx",
+      "src/lib/NavigationTracker.jsx",
+      "src/lib/productHostRouter.js",
+      "src/lib/useDraftPageMeta.js",
       "src/Layout.jsx",
     ],
     ...pluginJs.configs.recommended,

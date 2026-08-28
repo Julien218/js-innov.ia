@@ -1,0 +1,45 @@
+import { lazy } from 'react';
+import Layout from '../Layout.jsx';
+
+const Pages = {
+  AIMusic: lazy(() => import('../pages/AIMusic')),
+  Admin: lazy(() => import('../pages/Admin')),
+  Applications: lazy(() => import('../pages/Applications')),
+  Automations: lazy(() => import('../pages/Automations')),
+  Blog: lazy(() => import('../pages/Blog')),
+  BlogAdmin: lazy(() => import('../pages/BlogAdmin')),
+  BlogPost: lazy(() => import('../pages/BlogPost')),
+  CRM: lazy(() => import('../pages/CRM')),
+  Cart: lazy(() => import('../pages/Cart')),
+  Checkout: lazy(() => import('../pages/Checkout')),
+  Contact: lazy(() => import('../pages/Contact')),
+  ContentStudio: lazy(() => import('../pages/ContentStudio')),
+  DevisWebsite: lazy(() => import('../pages/DevisWebsite')),
+  ExperimentalHome: lazy(() => import('../pages/ExperimentalHome')),
+  FormBuilder: lazy(() => import('../pages/FormBuilder')),
+  Home: lazy(() => import('../pages/Home')),
+  Innovations: lazy(() => import('../pages/Innovations')),
+  LogoSenergieDour: lazy(() => import('../pages/LogoSenergieDour')),
+  MusicShop: lazy(() => import('../pages/MusicShop')),
+  News: lazy(() => import('../pages/News')),
+  OrderConfirmation: lazy(() => import('../pages/OrderConfirmation')),
+  Partners: lazy(() => import('../pages/Partners')),
+  PaymentCancel: lazy(() => import('../pages/PaymentCancel')),
+  PaymentSuccess: lazy(() => import('../pages/PaymentSuccess')),
+  PublicForm: lazy(() => import('../pages/PublicForm')),
+  QuoteDashboard: lazy(() => import('../pages/QuoteDashboard')),
+  SEOAudit: lazy(() => import('../pages/SEOAudit')),
+  SEODashboard: lazy(() => import('../pages/SEODashboard')),
+  Showcase: lazy(() => import('../pages/Showcase')),
+  Templates: lazy(() => import('../pages/Templates')),
+  Pricing: lazy(() => import('../pages/Pricing')),
+  PageManager: lazy(() => import('../pages/PageManager')),
+  Commande: lazy(() => import('../pages/Commande')),
+  Fidelite: lazy(() => import('../pages/Fidelite')),
+};
+
+export const lazyPagesConfig = {
+  mainPage: 'Home',
+  Pages,
+  Layout,
+};

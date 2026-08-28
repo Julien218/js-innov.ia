@@ -93,7 +93,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <div className="text-sm text-gray-500 mb-1">Email</div>
-                    <div className="text-white font-medium">contact@js-innov.ia</div>
+                    <div className="text-white font-medium">info@jsinnovia.store</div>
                   </div>
                 </div>
 

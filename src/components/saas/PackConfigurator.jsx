@@ -13,17 +13,17 @@ const CYAN = '#06B6D4';
 
 const BASE_PACKS = [
   {
-    id: 'starter', icon: Globe, name: 'Pack Starter', basePrice: 490, color: CYAN,
+    id: 'starter', icon: Globe, name: 'Pack Starter', basePrice: 790, color: CYAN,
     desc: 'Site vitrine + formulaire + WhatsApp + SEO',
     includes: ['Site vitrine (3-5 pages)', 'Formulaire contact', 'Bouton WhatsApp', 'SEO de base', 'Google Business Profile'],
   },
   {
-    id: 'business', icon: TrendingUp, name: 'Pack Business', basePrice: 990, color: GOLD, popular: true,
+    id: 'business', icon: TrendingUp, name: 'Pack Business', basePrice: 1790, color: GOLD, popular: true,
     desc: 'Site avancé + chatbot + CRM + automatisation',
     includes: ['Tout Starter', 'Site avancé (8 pages)', 'Chatbot qualification IA', 'CRM prospects', 'Séquence email 4 étapes'],
   },
   {
-    id: 'automation', icon: Zap, name: 'Pack Automation', basePrice: 1490, color: PURPLE,
+    id: 'automation', icon: Zap, name: 'Pack Automation', basePrice: 2990, color: PURPLE,
     desc: 'Automatisations + dashboards + workflows',
     includes: ['Tout Business', 'Analyse processus', 'Automatisations sur mesure', 'Tableaux de bord', 'Intégration WhatsApp/email'],
   },
@@ -93,7 +93,7 @@ export default function PackConfigurator({ onComplete }) {
         agentName: 'PackConfigurator',
       }),
       platform.integrations.Core.SendEmail({
-        to: 'contact@js-innov.ia',
+        to: 'info@jsinnovia.store',
         subject: `🛒 Nouveau pack configuré — ${summary.pack}`,
         body: `Un client vient de finaliser sa configuration.\n\n${contentBody.replace(/\*\*/g, '')}\n\nConnectez-vous au dashboard pour le traiter.`,
       }),
