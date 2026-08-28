@@ -14,19 +14,10 @@ const AGENT_TIMEOUT_MS = 20_000;
 const publicReadTables = new Set(['Application', 'Automation', 'BlogPost', 'DynamicPage', 'Event', 'Innovation', 'MusicProduct', 'News', 'Showcase', 'Template']);
 const publicWriteTables = new Set(['Contact', 'EventTicket', 'FormSubmission', 'Lead', 'LogoSubmission', 'ProjectRequest']);
 const mime = {
-  '.css': 'text/css; charset=utf-8',
-  '.html': 'text/html; charset=utf-8',
-  '.ico': 'image/x-icon',
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.js': 'text/javascript; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.map': 'application/json; charset=utf-8',
-  '.png': 'image/png',
-  '.svg': 'image/svg+xml',
-  '.webp': 'image/webp',
-  '.woff': 'font/woff',
-  '.woff2': 'font/woff2',
+  '.css': 'text/css; charset=utf-8', '.html': 'text/html; charset=utf-8', '.ico': 'image/x-icon',
+  '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.js': 'text/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8', '.map': 'application/json; charset=utf-8',
+  '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.woff': 'font/woff', '.woff2': 'font/woff2',
 };
 
 const json = (response, status, value) => {
@@ -41,6 +32,23 @@ const setSecurityHeaders = (response) => {
   response.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   response.setHeader('X-Content-Type-Options', 'nosniff');
   response.setHeader('X-Frame-Options', 'DENY');
+};
+
+const isSensitiveProbePath = (pathname) => {
+  const lower = pathname.toLowerCase();
+  return /(^|\/)\.(env|git|svn|hg)(\/|$)/.test(lower)
+    || lower.includes('/.vscode/')
+    || lower.endsWith('/.ds_store')
+    || lower === '/env'
+    || lower === '/config.json'
+    || lower === '/info.php'
+    || lower === '/server-status'
+    || lower.startsWith('/actuator/')
+    || lower.startsWith('/telescope/')
+    || lower.startsWith('/debug/')
+    || lower.startsWith('/@vite/')
+    || lower.startsWith('/___proxy_subdomain_')
+    || lower === '/v2/_catalog';
 };
 
 const readJson = async (request) => {
@@ -60,12 +68,8 @@ const allow = (request) => {
   const current = rateLimits.get(key);
   if (!current || current.resetAt <= now) {
     if (rateLimits.size >= MAX_RATE_LIMIT_CLIENTS) {
-      for (const [client, entry] of rateLimits) {
-        if (entry.resetAt <= now) rateLimits.delete(client);
-      }
-      while (rateLimits.size >= MAX_RATE_LIMIT_CLIENTS) {
-        rateLimits.delete(rateLimits.keys().next().value);
-      }
+      for (const [client, entry] of rateLimits) if (entry.resetAt <= now) rateLimits.delete(client);
+      while (rateLimits.size >= MAX_RATE_LIMIT_CLIENTS) rateLimits.delete(rateLimits.keys().next().value);
     }
     rateLimits.set(key, { count: 1, resetAt: now + 60_000 });
     return true;
@@ -74,14 +78,11 @@ const allow = (request) => {
   return current.count <= 30;
 };
 
-const agentFetch = async (path, options = {}) => {
-  if (!agentKey) throw new Error('Agent API key missing');
-  return fetch(`${agentUrl}${path}`, {
-    ...options,
-    signal: options.signal || AbortSignal.timeout(AGENT_TIMEOUT_MS),
-    headers: { 'Content-Type': 'application/json', 'x-agent-key': agentKey, ...(options.headers || {}) },
-  });
-};
+const agentFetch = async (path, options = {}) => fetch(`${agentUrl}${path}`, {
+  ...options,
+  signal: options.signal || AbortSignal.timeout(AGENT_TIMEOUT_MS),
+  headers: { 'Content-Type': 'application/json', 'x-agent-key': agentKey, ...(options.headers || {}) },
+});
 
 const proxyAgent = async (request, response, path) => {
   const body = ['POST', 'PUT', 'PATCH'].includes(request.method) ? await readJson(request) : undefined;
@@ -96,25 +97,17 @@ const systemPrompt = `Tu es le compagnon public officiel de JS-Innov.IA. Répond
 createServer(async (request, response) => {
   setSecurityHeaders(response);
   let pathname;
-  try {
-    pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
-  } catch {
-    return json(response, 400, { error: 'URL invalide' });
-  }
+  try { pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname); }
+  catch { return json(response, 400, { error: 'URL invalide' }); }
 
-  // Lien court de mise en service Pixelium. Il reste stable tandis que la cible
-  // /latest sert la release approuvée la plus récente; le serveur Player la valide.
+  if (isSensitiveProbePath(pathname)) return json(response, 404, { error: 'Not found' });
+
   if (pathname === '/p' || pathname === '/player') {
     if (!['GET', 'HEAD'].includes(request.method)) {
       response.setHeader('Allow', 'GET, HEAD');
       return json(response, 405, { error: 'Méthode non autorisée' });
     }
-    response.writeHead(302, {
-      Location: playerDownloadUrl,
-      'Cache-Control': 'no-store, max-age=0',
-      Pragma: 'no-cache',
-      'X-Robots-Tag': 'noindex, nofollow, noarchive',
-    });
+    response.writeHead(302, { Location: playerDownloadUrl, 'Cache-Control': 'no-store, max-age=0', Pragma: 'no-cache', 'X-Robots-Tag': 'noindex, nofollow, noarchive' });
     return response.end();
   }
 
@@ -133,11 +126,7 @@ createServer(async (request, response) => {
         const upstreamSuffix = request.method === 'POST' && table === 'Lead' ? 'Contact' : suffix;
         return await proxyAgent(request, response, `/data/${upstreamSuffix}${url.search}`);
       }
-
-      if (request.method !== 'POST') {
-        response.setHeader('Allow', 'POST');
-        return json(response, 405, { error: 'Méthode non autorisée' });
-      }
+      if (request.method !== 'POST') { response.setHeader('Allow', 'POST'); return json(response, 405, { error: 'Méthode non autorisée' }); }
       const body = await readJson(request);
       if (pathname === '/api/platform/functions/publicChat') {
         const messages = Array.isArray(body.messages) ? body.messages.slice(-10) : [];
@@ -163,16 +152,11 @@ createServer(async (request, response) => {
       return json(response, error.message === 'payload-too-large' ? 413 : 502, { error: 'Service NOVA momentanément indisponible' });
     }
   }
+
   const relativePath = normalize(pathname).replace(/^([/\\])+/, '');
   let filePath = join(dist, relativePath);
-
-  if (!filePath.startsWith(dist) || !existsSync(filePath) || !statSync(filePath).isFile()) {
-    filePath = join(dist, 'index.html');
-  }
-
+  if (!filePath.startsWith(dist) || !existsSync(filePath) || !statSync(filePath).isFile()) filePath = join(dist, 'index.html');
   response.setHeader('Content-Type', mime[extname(filePath).toLowerCase()] || 'application/octet-stream');
   response.setHeader('Cache-Control', filePath.endsWith('index.html') ? 'no-cache' : 'public, max-age=31536000, immutable');
   createReadStream(filePath).pipe(response);
-}).listen(port, '0.0.0.0', () => {
-  console.log(`JS-Innov.IA listening on 0.0.0.0:${port}`);
-});
+}).listen(port, '0.0.0.0', () => console.log(`JS-Innov.IA listening on 0.0.0.0:${port}`));
