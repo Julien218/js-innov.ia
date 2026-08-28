@@ -14,6 +14,7 @@ const Pages = {
   Checkout: lazy(() => import('../pages/Checkout')),
   Contact: lazy(() => import('../pages/Contact')),
   ContentStudio: lazy(() => import('../pages/ContentStudio')),
+  CreativeStudio: lazy(() => import('../pages/CreativeStudio')),
   DevisWebsite: lazy(() => import('../pages/DevisWebsite')),
   ExperimentalHome: lazy(() => import('../pages/ExperimentalHome')),
   FormBuilder: lazy(() => import('../pages/FormBuilder')),
