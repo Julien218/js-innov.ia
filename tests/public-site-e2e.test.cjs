@@ -57,10 +57,34 @@ test('Elynea handoff is server-only and requires Cockpit proof before success', 
 });
 
 test('Elynea never displays a false transmission confirmation', () => {
+  const server = read('server.mjs');
   const client = read('src/components/chatbot/AIChatbot.jsx');
   const submitBlock = client.slice(client.indexOf('async function submitHandoff'), client.indexOf('function sendMessage'));
   assert.match(submitBlock, /proof\?\.transmitted !== true/);
   assert.match(submitBlock, /proof\?\.verified !== true/);
   assert.match(submitBlock, /!proof\?\.request_id \|\| !proof\?\.journal_id/);
   assert.match(submitBlock, /La demande n’a pas été transmise/);
+  assert.match(server, /PREMATURE_HANDOFF/);
+  assert.match(server, /pris\(\?:e\)\? en \(\?:charge\|compte\)/);
+  assert.match(server, /reviendra\|recontactera\|contactera/);
+  assert.match(server, /référence Cockpit affichée après l’envoi/);
+  assert.match(server, /safeCommercialMessage\(upstream\.ok \? data\.message : '', messages, qualification\)/);
+});
+
+test('the secure form opens and scrolls into view as soon as the request is qualified', () => {
+  const client = read('src/components/chatbot/AIChatbot.jsx');
+  assert.match(client, /if \(nextQualification\.can_submit\) setHandoffOpen\(true\)/);
+  assert.match(client, /const handoffRef = useRef\(null\)/);
+  assert.match(client, /ref=\{handoffRef\}/);
+  assert.match(client, /qualification\.can_submit && !transmission \? handoffRef\.current : endRef\.current/);
+  assert.match(client, /Votre demande n’est pas encore transmise/);
+  assert.match(client, /Formulaire sécurisé de transmission/);
+});
+
+test('a visitor declining the handoff gets a truthful closure', () => {
+  const server = read('server.mjs');
+  assert.match(server, /DECLINE_HANDOFF/);
+  assert.match(server, /non merci\|pas maintenant\|plus tard/);
+  assert.match(server, /Aucune demande n’a été transmise/);
+  assert.doesNotMatch(server.slice(server.indexOf('const commercialFallback'), server.indexOf('const safeCommercialMessage')), /environnement interne/);
 });
