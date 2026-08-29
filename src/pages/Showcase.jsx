@@ -1,12 +1,13 @@
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ExternalLink, Sparkles, Globe, Users, Calendar, Store, Scissors } from 'lucide-react';
+import { ExternalLink, Sparkles, Globe, Users, Calendar, Store, Scissors, Film, Play } from 'lucide-react';
+import { platform } from '@/api/platformClient';
+import { mergePortfolioProjects } from '@/config/portfolio';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
 const CYAN = '#06B6D4';
 const PURPLE = '#7C3AED';
-const NIGHT = '#0F172A';
 
 function Reveal({ children, delay = 0, y = 30 }) {
   const ref = useRef(null);
@@ -21,14 +22,6 @@ function Reveal({ children, delay = 0, y = 30 }) {
   );
 }
 
-const CATEGORY_COLORS = {
-  'Evenement': GOLD,
-  'ASBL': CYAN,
-  'Landing page': PURPLE,
-  'Site vitrine': '#10B981',
-  'Creation visuelle': '#F59E0B',
-};
-
 const CATEGORY_ICONS = {
   'Evenement': Calendar,
   'ASBL': Users,
@@ -36,6 +29,8 @@ const CATEGORY_ICONS = {
   'Site vitrine': Store,
   'Creation visuelle': Sparkles,
   'Coiffeur': Scissors,
+  'Présentation client': Film,
+  'Affichage dynamique': Film,
 };
 
 const PROJECTS = [
@@ -101,15 +96,24 @@ const PROJECTS = [
   },
 ];
 
-const FILTERS = ['Tous', 'Evenement', 'ASBL', 'Landing page', 'Site vitrine', 'Dashboard admin'];
+const FILTERS = ['Tous', 'Présentation client', 'Affichage dynamique', 'Evenement', 'ASBL', 'Landing page', 'Site vitrine', 'Dashboard admin'];
 
 export default function Showcase() {
   const [activeFilter, setActiveFilter] = useState('Tous');
   const [hovered, setHovered] = useState(null);
+  const [projects, setProjects] = useState(() => mergePortfolioProjects(PROJECTS));
+
+  useEffect(() => {
+    let mounted = true;
+    platform.entities.Showcase.list('-created_date', 100)
+      .then((records) => { if (mounted) setProjects(mergePortfolioProjects(PROJECTS, records)); })
+      .catch(() => {});
+    return () => { mounted = false; };
+  }, []);
 
   const filtered = activeFilter === 'Tous'
-    ? PROJECTS
-    : PROJECTS.filter(p => p.category === activeFilter);
+    ? projects
+    : projects.filter(p => p.category === activeFilter);
 
   const featured = filtered.filter(p => p.featured);
   const regular = filtered.filter(p => !p.featured);
@@ -241,6 +245,8 @@ function ProjectCard({ project, hovered, setHovered, large }) {
   const color = project.color || GOLD;
   const Icon = CATEGORY_ICONS[project.category] || Globe;
   const isHov = hovered === project.id;
+  const [videoActive, setVideoActive] = useState(false);
+  const isVideo = project.media_type === 'video';
 
   return (
     <motion.div
@@ -256,16 +262,42 @@ function ProjectCard({ project, hovered, setHovered, large }) {
         minHeight: large ? 420 : 300,
       }}>
 
-      {/* Image */}
+      {/* Media */}
       <div className="relative overflow-hidden" style={{ height: large ? 220 : 160 }}>
-        <img
-          src={project.image_url}
-          alt={project.title}
-          className="w-full h-full object-cover transition-transform duration-500"
-          style={{ transform: isHov ? 'scale(1.06)' : 'scale(1)' }}
-          onError={(e) => { e.target.src = `https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80`; }}
-        />
-        <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, transparent 50%, rgba(8,6,20,0.95) 100%)` }} />
+        {isVideo && videoActive ? (
+          <video
+            src={project.media_url}
+            controls
+            autoPlay
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-contain bg-black"
+            aria-label={`Vidéo : ${project.title}`}
+          />
+        ) : isVideo ? (
+          <button
+            type="button"
+            onClick={() => setVideoActive(true)}
+            className="w-full h-full flex flex-col items-center justify-center gap-3 text-white"
+            style={{ background: `radial-gradient(circle at 50% 20%, ${color}30, rgba(8,6,20,0.98) 68%)` }}
+            aria-label={`Lire la réalisation ${project.title}`}>
+            <span className="w-14 h-14 rounded-full flex items-center justify-center"
+              style={{ background: `${color}22`, border: `1px solid ${color}66`, boxShadow: `0 0 35px ${color}22` }}>
+              <Play className="w-6 h-6 ml-1" style={{ color }} fill="currentColor" />
+            </span>
+            <span className="text-xs font-bold tracking-wide">Lire la réalisation</span>
+          </button>
+        ) : (
+          <img
+            src={project.image_url}
+            alt={project.title}
+            loading="lazy"
+            className="w-full h-full object-cover transition-transform duration-500"
+            style={{ transform: isHov ? 'scale(1.06)' : 'scale(1)' }}
+            onError={(e) => { e.target.src = `https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80`; }}
+          />
+        )}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(to bottom, transparent 50%, rgba(8,6,20,0.95) 100%)` }} />
         {/* Category badge */}
         <div className="absolute top-3 left-3">
           <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold"
@@ -295,7 +327,7 @@ function ProjectCard({ project, hovered, setHovered, large }) {
         </div>
 
         {/* Link */}
-        <a href={project.project_url} target="_blank" rel="noopener noreferrer">
+        {project.project_url && <a href={project.project_url} target="_blank" rel="noopener noreferrer">
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
@@ -304,7 +336,7 @@ function ProjectCard({ project, hovered, setHovered, large }) {
             <ExternalLink className="w-3.5 h-3.5" />
             Voir le site
           </motion.button>
-        </a>
+        </a>}
       </div>
     </motion.div>
   );
