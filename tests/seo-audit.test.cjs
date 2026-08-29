@@ -81,6 +81,11 @@ test('the public SEO screens call the live server and make no false email promis
   assert.doesNotMatch(audit, /Rapport envoyé à|Analyser et recevoir le rapport|setEmailSent/);
 });
 
+test('the production image includes the SEO audit runtime module', () => {
+  const dockerfile = read('Dockerfile');
+  assert.match(dockerfile, /COPY --from=build \/app\/server-seo-audit\.mjs \.\/server-seo-audit\.mjs/);
+});
+
 test('downloaded SEO report escapes remote text before creating HTML', () => {
   const audit = read('src/pages/SEOAudit.jsx');
   assert.match(audit, /const escapeHtml/);
