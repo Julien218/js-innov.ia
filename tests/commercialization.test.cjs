@@ -26,6 +26,17 @@ test('HainoFlow remains distinct from service packs and FacturaPro remains its m
   assert.equal(facturaPro.model, 'module');
 });
 
+test('the public pricing page uses the canonical project prices and separates recurring costs', () => {
+  const pricing = fs.readFileSync(path.join(root, 'src/pages/Pricing.jsx'), 'utf8');
+
+  assert.match(pricing, /SERVICE_PACKS, formatEuro/);
+  assert.match(pricing, /Création du projet · à partir de/);
+  assert.match(pricing, /recurringLabel.*optionnel/s);
+  assert.match(pricing, /API et crédits IA, hébergement, domaines, publicité, production vidéo/);
+  assert.doesNotMatch(pricing, /priceFrom:\s*(149|349|890)/);
+  assert.doesNotMatch(pricing, /priceTo:\s*(249|599|2500)/);
+});
+
 test('Locelya is only an internal candidate and has no public commercial identity', async () => {
   const { PRODUCT_PORTFOLIO, getCommercialStatus } = await import('../src/config/commercialization.js');
   const project = PRODUCT_PORTFOLIO.find((product) => product.id === 'marketing-local');

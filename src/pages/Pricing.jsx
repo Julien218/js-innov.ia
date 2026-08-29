@@ -3,10 +3,10 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Check, Sparkles, ArrowRight, Shield, Zap, Crown, Star, Rocket, ChevronDown, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import { SERVICE_PACKS, formatEuro } from '@/config/catalog';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
-const CYAN = '#06B6D4';
 const PURPLE = '#7C3AED';
 
 function Reveal({ children, delay = 0, y = 30 }) {
@@ -22,94 +22,44 @@ function Reveal({ children, delay = 0, y = 30 }) {
   );
 }
 
-const PLANS = [
-  {
-    id: 'starter',
-    name: 'Starter',
+const PLAN_PRESENTATION = {
+  starter: {
     icon: Rocket,
-    color: CYAN,
     glow: 'rgba(6,182,212,0.22)',
-    priceFrom: 149,
-    priceTo: 249,
-    tagline: 'Votre presence web, cle en main.',
-    description: "Pour les independants qui ont besoin d'une belle vitrine sans se prendre la tete.",
-    idealFor: ['Coiffeur / estheticienne', 'Infirmier / kine', 'Petit commerce local', 'Independant'],
-    features: [
-      'Site vitrine moderne & responsive',
-      'Formulaire de contact',
-      'Google Business configure',
-      'SEO de base',
-      'Hebergement inclus',
-      'Maintenance legere',
-      '2 publications reseaux / mois',
-    ],
-    note: 'Template optimise · Peu de modifications mensuelles',
-    cta: 'Demarrer avec Starter',
+    tagline: 'Une présence web professionnelle.',
+    idealFor: ['Indépendants', 'Commerces locaux', 'Associations', 'Activités en lancement'],
+    note: 'Projet livré selon un périmètre confirmé dans le devis.',
+    cta: 'Demander le pack Starter',
   },
-  {
-    id: 'business',
-    name: 'Business',
+  business: {
     icon: Star,
-    color: GOLD,
     glow: 'rgba(212,175,55,0.32)',
-    priceFrom: 349,
-    priceTo: 599,
-    popular: true,
-    tagline: 'Le pack le plus rentable.',
-    description: "Le vrai coeur de marche JS-Innov.IA — pour les entreprises actives qui veulent performer.",
-    idealFor: ['PME & commerces actifs', 'Horeca & restauration', 'Artisans & agences', 'Toute entreprise qui veut grandir'],
-    features: [
-      'Site premium personnalise',
-      'SEO optimise & strategique',
-      'Dashboard admin integre',
-      'Formulaires intelligents',
-      'Automatisations Make (simples)',
-      'Gestion reseaux sociaux',
-      '4 a 8 publications / mois',
-      'Creations visuelles',
-      'Optimisation Google',
-      'Analytics & rapports',
-      'Maintenance complete',
-    ],
-    note: "C'est probablement VOTRE vrai pack.",
-    cta: 'Choisir Business',
+    tagline: 'Un système complet pour acquérir des clients.',
+    idealFor: ['PME', 'Commerces actifs', 'Horeca', 'Entreprises en croissance'],
+    note: 'Le suivi mensuel est distinct du prix de création initial.',
+    cta: 'Demander le pack Business',
   },
-  {
-    id: 'innovia',
-    name: 'InnovIA Premium',
+  automation: {
     icon: Crown,
-    color: PURPLE,
     glow: 'rgba(124,58,237,0.28)',
-    priceFrom: 890,
-    priceTo: 2500,
-    tagline: "L'IA au service de votre croissance.",
-    description: "Positionnement haut de gamme pour les entreprises qui veulent automatiser et dominer.",
-    idealFor: ['Agences & franchises', 'Grosses PME', 'Projets ambitieux', 'Entreprises voulant tout automatiser'],
-    features: [
-      'Systeme IA complet sur mesure',
-      'Agents IA personnalises',
-      'Automatisations avancees',
-      'CRM intelligent',
-      'Generation automatique de contenus',
-      'IA reseaux sociaux & videos IA',
-      'Workflows Airtable / Make',
-      'Dashboards metiers',
-      'Automatisation des leads',
-      'Emailing intelligent',
-      'SEO avance',
-      'Strategie digitale complete',
-    ],
-    note: 'Sur devis selon vos besoins specifiques.',
-    cta: 'Obtenir un devis',
+    tagline: 'Automatiser les opérations répétitives.',
+    idealFor: ['Équipes', 'Projets multi-outils', 'Processus métier', 'Besoins sur mesure'],
+    note: 'Les API, crédits IA et services tiers sont chiffrés séparément.',
+    cta: 'Étudier mon automatisation',
   },
-];
+};
+
+const PLANS = SERVICE_PACKS.map((pack) => ({
+  ...pack,
+  ...PLAN_PRESENTATION[pack.id],
+}));
 
 const FAQS = [
-  { q: 'Comment choisir le bon pack ?', a: "Simple : si vous etes independant avec peu de besoins, Starter. Si vous avez une vraie activite commerciale, Business. Si vous voulez automatiser serieusement, InnovIA Premium. En cas de doute, on en parle ensemble — gratuitement." },
-  { q: 'Y a-t-il un engagement ?', a: "Pas pour Starter et Business (mensuel). Pour InnovIA Premium, un engagement minimum de 3 mois est souvent demande pour garantir des resultats concrets." },
-  { q: 'Les prix sont-ils fixes ?', a: "Les fourchettes indiquees correspondent aux cas reels. Le tarif exact depend de votre situation, vos besoins et la complexite du projet. On vous fait une offre claire avant de demarrer." },
-  { q: "Puis-je evoluer d'un pack a l'autre ?", a: "Oui, a tout moment. Beaucoup de clients commencent en Starter et passent en Business des que leur activite decolle." },
-  { q: 'Que comprend la maintenance ?', a: "Selon le pack : mises a jour, corrections, petites modifications de contenu, suivi technique. Pour Starter c'est leger, pour Business et InnovIA c'est complet." },
+  { q: 'Comment choisir le bon pack ?', a: "Starter couvre une présence web professionnelle. Business ajoute l’acquisition, le chatbot et le CRM. Automation cible les processus métier et les intégrations sur mesure. Nous validons le bon périmètre avant le devis." },
+  { q: 'S’agit-il d’un abonnement ?', a: "Non pour la création initiale : le montant « à partir de » correspond au projet. La maintenance ou la supervision mensuelle est affichée séparément et n’est activée qu’avec votre accord." },
+  { q: 'Les prix sont-ils fixes ?', a: "Ce sont des prix de départ hors TVA. Le tarif final dépend du nombre de pages, des intégrations, des contenus, des délais et des services tiers nécessaires. Le devis fixe le périmètre avant tout démarrage." },
+  { q: 'Les coûts d’IA et les outils externes sont-ils inclus ?', a: "Uniquement lorsqu’ils sont explicitement inscrits dans le devis. Les crédits LLM, API, hébergement, nom de domaine, publicité, générateurs vidéo et autres abonnements tiers sont suivis séparément." },
+  { q: 'Que comprend le suivi mensuel ?', a: "Selon le pack : maintenance, sécurité, corrections, support, suivi technique ou supervision des automatisations. Les créations vidéo, campagnes publicitaires et développements supplémentaires restent des prestations distinctes." },
 ];
 
 export default function Pricing() {
@@ -135,7 +85,7 @@ export default function Pricing() {
             transition={{ delay: 0.05 }}
             className="inline-flex items-center gap-2 px-5 py-2 rounded-full mb-6 text-xs font-bold tracking-widest uppercase"
             style={{ background: 'rgba(212,175,55,0.07)', border: `1px solid rgba(212,175,55,0.28)`, color: GOLD }}>
-            <Sparkles className="w-3.5 h-3.5" /> Packs cles en main — Presence & Automatisation
+            <Sparkles className="w-3.5 h-3.5" /> Tarifs 2026 · Projets et suivi séparés
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
@@ -153,7 +103,7 @@ export default function Pricing() {
             transition={{ delay: 0.25 }}
             className="text-lg leading-relaxed"
             style={{ color: 'rgba(255,255,255,0.42)' }}>
-            Des packs penses pour chaque etape — de la simple vitrine a l'entreprise entierement automatisee par l'IA.
+            Des prix de départ lisibles pour la création de votre projet, puis un suivi mensuel optionnel clairement séparé.
           </motion.p>
         </div>
       </section>
@@ -205,11 +155,13 @@ export default function Pricing() {
                   {plan.description}
                 </p>
 
-                <div className="flex items-baseline gap-1.5 mb-6">
-                  <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.3)' }}>de</span>
-                  <span className="text-4xl font-black" style={{ color: plan.color }}>{plan.priceFrom}€</span>
-                  <span className="text-sm" style={{ color: 'rgba(255,255,255,0.3)' }}>a {plan.priceTo}€</span>
-                  <span className="text-xs" style={{ color: 'rgba(255,255,255,0.22)' }}>/mois</span>
+                <div className="mb-6">
+                  <p className="mb-1 text-[10px] font-bold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.3)' }}>Création du projet · à partir de</p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-black" style={{ color: plan.color }}>{formatEuro(plan.price)}</span>
+                    <span className="text-xs" style={{ color: 'rgba(255,255,255,0.28)' }}>HTVA</span>
+                  </div>
+                  <p className="mt-2 text-xs font-bold" style={{ color: plan.color }}>{plan.recurringLabel} · optionnel</p>
                 </div>
 
                 <div className="mb-5 p-3 rounded-xl" style={{ background: `${plan.color}08`, border: `1px solid ${plan.color}14` }}>
@@ -275,6 +227,33 @@ export default function Pricing() {
                 </div>
               </div>
             ))}
+          </div>
+        </Reveal>
+      </section>
+
+      <section className="px-5 pb-24 max-w-6xl mx-auto">
+        <Reveal>
+          <div className="rounded-3xl border border-white/10 bg-white/[0.025] p-7 md:p-9">
+            <p className="text-xs font-black uppercase tracking-[0.18em]" style={{ color: GOLD }}>Ce que cette page chiffre réellement</p>
+            <h2 className="mt-3 text-2xl font-black text-white md:text-3xl">Les prestations JS‑Innov.IA, sans mélanger projet et consommation.</h2>
+            <div className="mt-7 grid gap-5 md:grid-cols-3">
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-5">
+                <p className="font-black text-white">Inclus dans le projet</p>
+                <p className="mt-2 text-sm leading-relaxed text-white/45">Conception, réalisation, configuration et livraison des éléments décrits dans le devis.</p>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-5">
+                <p className="font-black text-white">Suivi optionnel</p>
+                <p className="mt-2 text-sm leading-relaxed text-white/45">Maintenance, support ou supervision récurrente, affichés séparément du coût initial.</p>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-black/20 p-5">
+                <p className="font-black text-white">Chiffré séparément</p>
+                <p className="mt-2 text-sm leading-relaxed text-white/45">TVA, API et crédits IA, hébergement, domaines, publicité, production vidéo, diffusion écran, HainoFlow et abonnements tiers.</p>
+              </div>
+            </div>
+            <div className="mt-7 flex flex-wrap gap-3 text-sm font-bold">
+              <Link to={createPageUrl('CreativeStudio')} className="rounded-full border border-white/15 px-5 py-3 text-white/75 transition hover:border-white/30 hover:text-white">Voir les créations et vidéos</Link>
+              <Link to={createPageUrl('Contact')} className="rounded-full border border-white/15 px-5 py-3 text-white/75 transition hover:border-white/30 hover:text-white">Demander un chiffrage précis</Link>
+            </div>
           </div>
         </Reveal>
       </section>
