@@ -35,13 +35,10 @@ export default function SEOHero() {
                 </div>
                 <div>
                   <h3 className="text-white font-semibold">SEO Dashboard</h3>
-                  <p className="text-xs text-gray-400">Analyse en temps réel</p>
+                  <p className="text-xs text-gray-400">Aperçu des contrôles mesurés</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-xs text-green-400">Live</span>
-              </div>
+              <span className="text-xs text-cyan-300">Résultat après lancement</span>
             </div>
 
             {/* Score Circle */}
@@ -74,8 +71,8 @@ export default function SEOHero() {
                   </defs>
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-3xl font-bold text-white">78</span>
-                  <span className="text-xs text-gray-400">/100</span>
+                  <span className="text-3xl font-bold text-white">—</span>
+                  <span className="text-xs text-gray-400">avant test</span>
                 </div>
               </div>
             </div>
@@ -83,10 +80,10 @@ export default function SEOHero() {
             {/* Mini Stats */}
             <div className="grid grid-cols-4 gap-3 mb-6">
               {[
-                { label: 'Technique', value: '85%', color: 'text-green-400' },
-                { label: 'Contenu', value: '72%', color: 'text-yellow-400' },
-                { label: 'Perf.', value: '68%', color: 'text-orange-400' },
-                { label: 'Access.', value: '91%', color: 'text-cyan-400' },
+                { label: 'Technique', value: 'HTTP', color: 'text-green-400' },
+                { label: 'Structure', value: 'H1', color: 'text-yellow-400' },
+                { label: 'Images', value: 'ALT', color: 'text-orange-400' },
+                { label: 'Données', value: 'JSON-LD', color: 'text-cyan-400' },
               ].map((stat, i) => (
                 <div key={i} className="text-center p-2 rounded-lg bg-white/5">
                   <div className={`text-lg font-bold ${stat.color}`}>{stat.value}</div>
@@ -95,26 +92,16 @@ export default function SEOHero() {
               ))}
             </div>
 
-            {/* Progress Bars */}
-            <div className="space-y-3">
+            {/* Measured scope */}
+            <div className="space-y-2 text-xs text-gray-300">
               {[
-                { label: 'Mots-clés positionnés', value: 65, color: 'bg-cyan-500' },
-                { label: 'Backlinks qualité', value: 45, color: 'bg-purple-500' },
-                { label: 'Vitesse mobile', value: 82, color: 'bg-green-500' },
-              ].map((bar, i) => (
-                <div key={i}>
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-gray-400">{bar.label}</span>
-                    <span className="text-white">{bar.value}%</span>
-                  </div>
-                  <div className="h-1.5 rounded-full bg-white/10">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${bar.value}%` }}
-                      transition={{ duration: 1, delay: 0.5 + i * 0.2 }}
-                      className={`h-full rounded-full ${bar.color}`}
-                    />
-                  </div>
+                'HTTP, HTTPS, robots.txt et sitemap.xml',
+                'Title, description, canonical et titres H1–H3',
+                'Liens, images/alt, Open Graph et JSON-LD',
+              ].map((control) => (
+                <div key={control} className="flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                  <span>{control}</span>
                 </div>
               ))}
             </div>
