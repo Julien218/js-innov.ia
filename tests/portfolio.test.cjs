@@ -22,8 +22,26 @@ test('deduplicates media by integrity hash and rejects unsafe drafts', () => {
 
 test('loads videos only after a visitor click', () => {
   assert.match(showcase, /videoActive \? \(/);
-  assert.match(showcase, /onClick=\{\(\) => setVideoActive\(true\)\}/);
+  assert.match(showcase, /setVideoActive\(true\)/);
   assert.match(showcase, /preload="metadata"/);
+  assert.match(showcase, /poster=\{project\.poster_url\}/);
+  assert.match(config, /\/portfolio\/videos\/dc6586c6c5\.mp4/);
+  assert.doesNotMatch(config, /APPROVED_PORTFOLIO_MEDIA[\s\S]+dropbox\.com/);
+});
+
+test('uses real local captures and official logos for website projects', () => {
+  for (const slug of ['miss-mister-dour', 'synergie-dour', 'fashionistart-dour', 'olivier-trevis', 'cockpit-jsinnovia']) {
+    assert.match(showcase, new RegExp(`/portfolio/${slug}\\.webp`));
+    assert.match(showcase, new RegExp(`/portfolio/logo-${slug.replace('cockpit-jsinnovia', 'jsinnovia-cockpit')}\\.webp`));
+  }
+  assert.doesNotMatch(showcase, /images\.unsplash\.com|drive\.google\.com\/uc\?export=view|app\.platform\.com/);
+});
+
+test('serves byte ranges required by HTML video players', () => {
+  assert.match(server, /Accept-Ranges/);
+  assert.match(server, /Content-Range/);
+  assert.match(server, /writeHead\(206/);
+  assert.match(server, /'\.mp4': 'video\/mp4'/);
 });
 
 test('keeps Showcase read-only on the public server', () => {

@@ -18,7 +18,7 @@ const mime = {
   '.css': 'text/css; charset=utf-8', '.html': 'text/html; charset=utf-8', '.ico': 'image/x-icon',
   '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.js': 'text/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8', '.map': 'application/json; charset=utf-8',
-  '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.woff': 'font/woff', '.woff2': 'font/woff2',
+  '.mp4': 'video/mp4', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.woff': 'font/woff', '.woff2': 'font/woff2',
 };
 
 const json = (response, status, value) => {
@@ -108,6 +108,45 @@ const safeCommercialMessage = (value, messages) => {
   return answer && !INTERNAL_DETAILS.test(answer) ? answer : commercialFallback(messages);
 };
 
+const serveStaticFile = (request, response, filePath) => {
+  const size = statSync(filePath).size;
+  const contentType = mime[extname(filePath).toLowerCase()] || 'application/octet-stream';
+  const cacheControl = filePath.endsWith('index.html') ? 'no-cache' : 'public, max-age=31536000, immutable';
+  const range = request.headers.range;
+
+  response.setHeader('Accept-Ranges', 'bytes');
+  response.setHeader('Cache-Control', cacheControl);
+  response.setHeader('Content-Type', contentType);
+
+  if (range) {
+    const match = /^bytes=(\d*)-(\d*)$/.exec(range.trim());
+    if (!match || (!match[1] && !match[2])) {
+      response.writeHead(416, { 'Content-Range': `bytes */${size}` });
+      return response.end();
+    }
+
+    const suffixLength = match[1] ? null : Number.parseInt(match[2], 10);
+    const start = suffixLength === null ? Number.parseInt(match[1], 10) : Math.max(size - suffixLength, 0);
+    const requestedEnd = match[2] && suffixLength === null ? Number.parseInt(match[2], 10) : size - 1;
+    const end = Math.min(requestedEnd, size - 1);
+    if (!Number.isFinite(start) || !Number.isFinite(end) || start < 0 || start > end || start >= size) {
+      response.writeHead(416, { 'Content-Range': `bytes */${size}` });
+      return response.end();
+    }
+
+    response.writeHead(206, {
+      'Content-Length': end - start + 1,
+      'Content-Range': `bytes ${start}-${end}/${size}`,
+    });
+    if (request.method === 'HEAD') return response.end();
+    return createReadStream(filePath, { start, end }).pipe(response);
+  }
+
+  response.writeHead(200, { 'Content-Length': size });
+  if (request.method === 'HEAD') return response.end();
+  return createReadStream(filePath).pipe(response);
+};
+
 createServer(async (request, response) => {
   setSecurityHeaders(response);
   let pathname;
@@ -184,7 +223,5 @@ createServer(async (request, response) => {
   if (pathname === '/hainoflow' || pathname === '/catalogue-tarifs-brouillon') {
     response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
   }
-  response.setHeader('Content-Type', mime[extname(filePath).toLowerCase()] || 'application/octet-stream');
-  response.setHeader('Cache-Control', filePath.endsWith('index.html') ? 'no-cache' : 'public, max-age=31536000, immutable');
-  createReadStream(filePath).pipe(response);
+  return serveStaticFile(request, response, filePath);
 }).listen(port, '0.0.0.0', () => console.log(`JS-Innov.IA listening on 0.0.0.0:${port}`));

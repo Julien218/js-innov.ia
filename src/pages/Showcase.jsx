@@ -40,7 +40,8 @@ const PROJECTS = [
     client_name: 'Olivier Trevis — ASBL Dour',
     category: 'Evenement',
     description: "Plateforme officielle du concours Miss & Mister Dour 2026. Inscriptions en ligne, galerie candidats, votes du public, backoffice multi-roles, certificats blockchain et partage social. Une experience immersive sur le theme Lady Gaga Night.",
-    image_url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80',
+    image_url: '/portfolio/miss-mister-dour.webp',
+    logo_url: '/portfolio/logo-miss-mister-dour.webp',
     project_url: 'https://www.missetmisterdour.be',
     technologies: ['React', 'IA', 'Stripe', 'RBAC', 'Blockchain'],
     featured: true,
@@ -52,7 +53,8 @@ const PROJECTS = [
     client_name: 'Association Synergie Dour',
     category: 'ASBL',
     description: "Plateforme citoyenne et commerciale pour les independants de Dour. Annuaire public, systeme d'authentification, tableaux de bord personnalises, partage d'actualites et collaboration entre commercants.",
-    image_url: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80',
+    image_url: '/portfolio/synergie-dour.webp',
+    logo_url: '/portfolio/logo-synergie-dour.webp',
     project_url: 'https://www.synergiedour.be',
     technologies: ['React', 'Dashboard', 'Auth', 'CRM'],
     featured: true,
@@ -64,7 +66,8 @@ const PROJECTS = [
     client_name: 'Fashionist\'ART — Evenement mode',
     category: 'Evenement',
     description: "Site evenementiel immersif pour le grand defile de mode de Dour 2026. Galerie video IA, portraits des candidats, teaser cinematique. Production visuelle complete par JS-Innov.IA.",
-    image_url: 'https://drive.google.com/uc?export=view&id=1gn5mYDoRSAGirZi_BSsS9F1gDpQ8hDkm',
+    image_url: '/portfolio/fashionistart-dour.webp',
+    logo_url: '/portfolio/logo-fashionistart-dour.webp',
     project_url: 'https://www.fashionistartdour.be',
     technologies: ['IA Video', 'React', 'Motion', 'Canva'],
     featured: true,
@@ -76,7 +79,8 @@ const PROJECTS = [
     client_name: 'Olivier Trevis — Personnalite locale',
     category: 'Landing page',
     description: "Landing page personnelle premium pour Olivier Trevis, figure incontournable de Dour. Presentation de ses engagements, du Tour de Dour, Miss & Mister Dour et de son ASBL. Design cinematique et immersif.",
-    image_url: 'https://drive.google.com/uc?export=view&id=1LBm-mBHLEA9mDLr0YTkIDatlm8qVjOjq',
+    image_url: '/portfolio/olivier-trevis.webp',
+    logo_url: '/portfolio/logo-olivier-trevis.webp',
     project_url: 'https://www.oliviertrevis.be',
     technologies: ['React', 'Motion', 'SEO', 'Premium design'],
     featured: false,
@@ -88,8 +92,9 @@ const PROJECTS = [
     client_name: 'JS-Innov.IA',
     category: 'Dashboard admin',
     description: "Plateforme de commande interne JS-Innov.IA : gestion clients, devis, projets, stagiaires, leads et automatisations. Tableau de bord centralise pour piloter toute l'agence en temps reel.",
-    image_url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
-    project_url: 'https://app.platform.com',
+    image_url: '/portfolio/cockpit-jsinnovia.webp',
+    logo_url: '/portfolio/logo-jsinnovia-cockpit.webp',
+    project_url: 'https://cockpit.jsinnovia.com',
     technologies: ['React', 'IA', 'CRM', 'Automatisations', 'Dashboard'],
     featured: false,
     color: GOLD,
@@ -246,6 +251,7 @@ function ProjectCard({ project, hovered, setHovered, large }) {
   const Icon = CATEGORY_ICONS[project.category] || Globe;
   const isHov = hovered === project.id;
   const [videoActive, setVideoActive] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const isVideo = project.media_type === 'video';
 
   return (
@@ -267,19 +273,21 @@ function ProjectCard({ project, hovered, setHovered, large }) {
         {isVideo && videoActive ? (
           <video
             src={project.media_url}
+            poster={project.poster_url}
             controls
             autoPlay
             playsInline
             preload="metadata"
             className="w-full h-full object-contain bg-black"
             aria-label={`Vidéo : ${project.title}`}
+            onError={() => setVideoError(true)}
           />
         ) : isVideo ? (
           <button
             type="button"
-            onClick={() => setVideoActive(true)}
-            className="w-full h-full flex flex-col items-center justify-center gap-3 text-white"
-            style={{ background: `radial-gradient(circle at 50% 20%, ${color}30, rgba(8,6,20,0.98) 68%)` }}
+            onClick={() => { setVideoError(false); setVideoActive(true); }}
+            className="w-full h-full flex flex-col items-center justify-center gap-3 text-white bg-cover bg-center"
+            style={{ backgroundImage: `linear-gradient(rgba(8,6,20,0.35), rgba(8,6,20,0.82)), url(${project.poster_url})` }}
             aria-label={`Lire la réalisation ${project.title}`}>
             <span className="w-14 h-14 rounded-full flex items-center justify-center"
               style={{ background: `${color}22`, border: `1px solid ${color}66`, boxShadow: `0 0 35px ${color}22` }}>
@@ -290,11 +298,10 @@ function ProjectCard({ project, hovered, setHovered, large }) {
         ) : (
           <img
             src={project.image_url}
-            alt={project.title}
+            alt={`Capture réelle du site ${project.title}`}
             loading="lazy"
             className="w-full h-full object-cover transition-transform duration-500"
             style={{ transform: isHov ? 'scale(1.06)' : 'scale(1)' }}
-            onError={(e) => { e.target.src = `https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80`; }}
           />
         )}
         <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(to bottom, transparent 50%, rgba(8,6,20,0.95) 100%)` }} />
@@ -306,7 +313,28 @@ function ProjectCard({ project, hovered, setHovered, large }) {
             {project.category}
           </span>
         </div>
+        {project.logo_url && (
+          <div className="absolute top-3 right-3 w-12 h-12 rounded-xl overflow-hidden bg-black/70 p-1.5"
+            style={{ border: `1px solid ${color}55`, backdropFilter: 'blur(10px)' }}>
+            <img
+              src={project.logo_url}
+              alt={`Logo officiel de ${project.title}`}
+              loading="lazy"
+              className="w-full h-full object-contain rounded-lg"
+            />
+          </div>
+        )}
       </div>
+
+      {videoError && (
+        <button
+          type="button"
+          onClick={() => { setVideoError(false); setVideoActive(false); }}
+          className="mx-6 mt-4 rounded-xl px-4 py-3 text-xs font-semibold text-left"
+          style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.28)', color: '#FCA5A5' }}>
+          La vidéo n’a pas pu démarrer. Touchez ici pour réessayer.
+        </button>
+      )}
 
       {/* Content */}
       <div className="p-6 flex flex-col flex-1">
