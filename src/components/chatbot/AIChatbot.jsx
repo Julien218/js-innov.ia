@@ -44,6 +44,7 @@ export default function AIChatbot() {
   const [transmission, setTransmission] = useState(null);
   const inputRef = useRef(null);
   const endRef = useRef(null);
+  const handoffRef = useRef(null);
   const handoffIdRef = useRef(null);
   const avatarState = status === 'loading' ? 'thinking' : status === 'error' ? 'error' : 'idle';
 
@@ -89,8 +90,9 @@ export default function AIChatbot() {
   }, [isOpen]);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
-  }, [messages, status, reduceMotion]);
+    const target = qualification.can_submit && !transmission ? handoffRef.current : endRef.current;
+    target?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' });
+  }, [messages, status, qualification.can_submit, handoffOpen, transmission, reduceMotion]);
 
   async function submitMessage(rawContent) {
     const content = rawContent.trim();
@@ -112,7 +114,7 @@ export default function AIChatbot() {
       const nextQualification = response?.data?.qualification || { can_submit: false, handoff_suggested: false };
       setMessages((current) => [...current, { role: 'assistant', content: answer }]);
       setQualification(nextQualification);
-      if (nextQualification.handoff_suggested) setHandoffOpen(true);
+      if (nextQualification.can_submit) setHandoffOpen(true);
       setStatus('idle');
     } catch {
       setError('Elynea est momentanément indisponible. Votre message n’a pas été perdu.');
@@ -237,7 +239,7 @@ export default function AIChatbot() {
               )}
 
               {qualification.can_submit && !transmission && (
-                <div className="ml-10 rounded-2xl border border-amber-300/25 bg-amber-300/[0.07] p-3">
+                <div ref={handoffRef} className="ml-10 rounded-2xl border border-amber-300/25 bg-amber-300/[0.07] p-3" role="region" aria-label="Formulaire sécurisé de transmission">
                   {!handoffOpen ? (
                     <button type="button" onClick={() => setHandoffOpen(true)} className="flex w-full items-center justify-between gap-3 text-left text-sm font-semibold text-amber-100">
                       <span>Transmettre ce besoin à JS-Innov.IA</span>
@@ -247,6 +249,7 @@ export default function AIChatbot() {
                     <form onSubmit={submitHandoff} className="space-y-2.5" aria-label="Transmission sécurisée de la demande">
                       <div>
                         <p className="text-sm font-semibold text-white">Recevoir un suivi personnalisé</p>
+                        <p className="mt-1 text-xs font-semibold text-amber-200">Votre demande n’est pas encore transmise.</p>
                         <p className="mt-1 text-xs leading-relaxed text-slate-300">Elynea transmettra votre besoin au Cockpit uniquement après votre accord.</p>
                       </div>
                       <div className="grid grid-cols-2 gap-2">

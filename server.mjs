@@ -96,18 +96,30 @@ const proxyAgent = async (request, response, path) => {
 };
 
 const INTERNAL_DETAILS = /(?:\brailway\b|\bsupabase\b|\bbase44\b|\bgithub\b|\bcomfyui\b|\bopenai\b|\bgrok\b|\bsora\b|\bclé(?:s)? api\b|\bapi key\b|\btoken(?:s)?\b|\bjeton(?:s)?\b|\bprompt(?:s)?(?: système)?\b|\bagent(?:s)? interne(?:s)?\b|\borchestration interne\b|\bmode(?:s)? de production\b|\bpipeline(?:s)? interne(?:s)?\b|\bdépôt(?:s)? (?:git|de code)\b|\brepositor(?:y|ies)\b|\bvariable(?:s)? d'environnement\b)/i;
+const PREMATURE_HANDOFF = /(?:\b(?:je vais|je peux maintenant|nous allons|nous transmettons)\s+(?:donc\s+)?(?:transmettre|envoyer|créer|préparer)\b|\bje (?:transmets|prépare)\b|\b(?:demande|dossier|devis|e-?mail|rendez-vous)\b.{0,80}\b(?:a été|est|sera|va être|a bien été)\s+(?:bien\s+)?(?:transmis(?:e)?|envoyé(?:e)?|créé(?:e)?|confirmé(?:e)?|préparé(?:e)?|pris(?:e)? en (?:charge|compte)|compl[eè]t(?:e)?)\b|\b(?:demande|dossier)\b.{0,80}\b(?:pris(?:e)? en (?:charge|compte)|compl[eè]t(?:e)? et transmis(?:e)?)\b|\b(?:l['’]équipe|nous)\b.{0,60}\b(?:reviendra|recontactera|contactera)\b|\bvous (?:recevrez|serez recontacté(?:e)?)\b)/i;
+const DECLINE_HANDOFF = /\b(?:non merci|pas maintenant|plus tard|je ne souhaite pas (?:transmettre|être recontacté)|ne transmettez pas)\b/i;
+
+const latestUserMessage = (messages = []) => String([...messages].reverse().find(({ role }) => role === 'user')?.content || '');
 
 const commercialFallback = (messages = []) => {
   const request = String(messages.at(-1)?.content || '').toLowerCase();
+  if (DECLINE_HANDOFF.test(request)) return "Bien compris. Aucune demande n’a été transmise. Vous pourrez reprendre la conversation plus tard si vous le souhaitez.";
   if (/site|seo|référencement/.test(request)) return "Nous pouvons vous accompagner pour créer un site ou améliorer l’existant, avec une attention particulière portée à l’image, aux conversions et au référencement. Souhaitez-vous créer un nouveau site ou optimiser celui que vous avez déjà ?";
   if (/automat|tâche|workflow|processus/.test(request)) return "Nous pouvons identifier et automatiser les tâches répétitives afin de vous faire gagner du temps. Quelle opération vous prend aujourd’hui le plus de temps ?";
   if (/assistant|chatbot|agent ia|intelligence artificielle/.test(request)) return "Nous pouvons concevoir un assistant adapté à votre activité pour informer, qualifier les demandes ou faciliter le suivi client. Votre priorité concerne-t-elle l’accueil, la vente ou le support ?";
   return "Merci pour votre message. Je peux vous orienter vers la solution JS-Innov.IA la plus adaptée : quel résultat souhaitez-vous obtenir en priorité pour votre entreprise ?";
 };
 
-const safeCommercialMessage = (value, messages) => {
+const safeCommercialMessage = (value, messages, qualification = {}) => {
   const answer = String(value || '').trim().slice(0, 4000);
-  return answer && !INTERNAL_DETAILS.test(answer) ? answer : commercialFallback(messages);
+  if (DECLINE_HANDOFF.test(latestUserMessage(messages))) return commercialFallback(messages);
+  if (!answer || INTERNAL_DETAILS.test(answer)) return commercialFallback(messages);
+  if (PREMATURE_HANDOFF.test(answer)) {
+    return qualification.can_submit
+      ? "Votre demande n’est pas encore transmise. Remplissez le formulaire sécurisé ci-dessous : seule une référence Cockpit affichée après l’envoi confirmera sa prise en charge."
+      : "Votre demande n’est pas encore transmise. Je peux continuer à préciser votre besoin avant d’afficher le formulaire sécurisé.";
+  }
+  return answer;
 };
 
 const serveStaticFile = (request, response, filePath) => {
@@ -197,10 +209,11 @@ createServer(async (request, response) => {
             signal: AbortSignal.timeout(AGENT_TIMEOUT_MS),
           });
           const data = await upstream.json().catch(() => ({}));
+          const qualification = upstream.ok && data.qualification ? data.qualification : { can_submit: false, handoff_suggested: false };
           return json(response, 200, {
-            message: safeCommercialMessage(upstream.ok ? data.message : '', messages),
+            message: safeCommercialMessage(upstream.ok ? data.message : '', messages, qualification),
             source: upstream.ok ? 'nova' : 'guided-fallback',
-            qualification: upstream.ok && data.qualification ? data.qualification : { can_submit: false, handoff_suggested: false },
+            qualification,
           });
         } catch (_error) {
           return json(response, 200, { message: commercialFallback(messages), source: 'guided-fallback', qualification: { can_submit: false, handoff_suggested: false } });
