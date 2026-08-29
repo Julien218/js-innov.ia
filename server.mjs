@@ -7,6 +7,8 @@ const dist = join(process.cwd(), 'dist');
 const port = Number.parseInt(process.env.PORT || '8080', 10);
 const agentUrl = (process.env.JSINNOVIA_AGENT_URL || 'https://jsinnovia-agent-production.up.railway.app').replace(/\/$/, '');
 const elyneaUrl = (process.env.ELYNEA_NOVA_URL || 'https://cockpit.jsinnovia.com/api/public/elynea/chat').trim();
+const elyneaSubmitUrl = (process.env.ELYNEA_SUBMIT_URL || elyneaUrl.replace(/\/chat\/?$/, '/submit')).trim();
+const elyneaSiteKey = process.env.ELYNEA_SITE_KEY || '';
 const playerDownloadUrl = (process.env.PIXELIUM_PLAYER_DOWNLOAD_URL || 'https://olivier-signage-cockpit-production.up.railway.app/api/player-download/latest').trim();
 const agentKey = process.env.AGENT_API_KEY || process.env.JSINNOVIA_AGENT_KEY || '';
 const rateLimits = new Map();
@@ -195,9 +197,47 @@ createServer(async (request, response) => {
             signal: AbortSignal.timeout(AGENT_TIMEOUT_MS),
           });
           const data = await upstream.json().catch(() => ({}));
-          return json(response, 200, { message: safeCommercialMessage(upstream.ok ? data.message : '', messages), source: upstream.ok ? 'nova' : 'guided-fallback' });
+          return json(response, 200, {
+            message: safeCommercialMessage(upstream.ok ? data.message : '', messages),
+            source: upstream.ok ? 'nova' : 'guided-fallback',
+            qualification: upstream.ok && data.qualification ? data.qualification : { can_submit: false, handoff_suggested: false },
+          });
         } catch (_error) {
-          return json(response, 200, { message: commercialFallback(messages), source: 'guided-fallback' });
+          return json(response, 200, { message: commercialFallback(messages), source: 'guided-fallback', qualification: { can_submit: false, handoff_suggested: false } });
+        }
+      }
+      if (pathname === '/api/platform/functions/submitElyneaRequest') {
+        if (!elyneaSiteKey || elyneaSiteKey.length < 32) {
+          console.error('[elynea] ELYNEA_SITE_KEY is missing or too short');
+          return json(response, 503, { error: 'La demande n’a pas été transmise. Merci de réessayer plus tard.' });
+        }
+        try {
+          const upstream = await fetch(elyneaSubmitUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-elynea-site-key': elyneaSiteKey },
+            body: JSON.stringify({
+              messages: Array.isArray(body.messages) ? body.messages.slice(-10) : [],
+              contact: body.contact || {},
+              consent: body.consent === true,
+              idempotency_key: String(body.idempotency_key || ''),
+            }),
+            signal: AbortSignal.timeout(AGENT_TIMEOUT_MS),
+          });
+          const data = await upstream.json().catch(() => ({}));
+          if (!upstream.ok || data.transmitted !== true || data.verified !== true || !data.request_id || !data.journal_id) {
+            console.error('[elynea] Cockpit handoff rejected:', upstream.status, data.error || 'missing proof');
+            return json(response, 502, { error: 'La demande n’a pas été transmise. Vérifiez vos informations puis réessayez.' });
+          }
+          return json(response, 201, {
+            transmitted: true,
+            verified: true,
+            request_id: data.request_id,
+            journal_id: data.journal_id,
+            status: data.status,
+          });
+        } catch (error) {
+          console.error('[elynea] Cockpit handoff failed:', error.message);
+          return json(response, 502, { error: 'La demande n’a pas été transmise. Merci de réessayer.' });
         }
       }
       if (pathname === '/api/platform/functions/receiveLead') {

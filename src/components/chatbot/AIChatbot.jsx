@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { AlertCircle, ArrowUpRight, Loader2, RotateCcw, Send, ShieldCheck, Sparkles, X } from 'lucide-react';
+import { AlertCircle, ArrowUpRight, CheckCircle2, Loader2, RotateCcw, Send, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { platform } from '@/api/platformClient';
 import AIAvatar from './AIAvatar';
 import ElynaAvatar3D from './ElynaAvatar3D';
@@ -35,8 +35,16 @@ export default function AIChatbot() {
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
   const [lastInput, setLastInput] = useState('');
+  const [qualification, setQualification] = useState({ can_submit: false, handoff_suggested: false });
+  const [handoffOpen, setHandoffOpen] = useState(false);
+  const [contact, setContact] = useState({ name: '', email: '', company: '', phone: '' });
+  const [consent, setConsent] = useState(false);
+  const [handoffStatus, setHandoffStatus] = useState('idle');
+  const [handoffError, setHandoffError] = useState('');
+  const [transmission, setTransmission] = useState(null);
   const inputRef = useRef(null);
   const endRef = useRef(null);
+  const handoffIdRef = useRef(null);
   const avatarState = status === 'loading' ? 'thinking' : status === 'error' ? 'error' : 'idle';
 
   useEffect(() => {
@@ -101,11 +109,45 @@ export default function AIChatbot() {
       }), 25_000);
       const answer = response?.data?.message;
       if (!answer) throw new Error('empty-response');
+      const nextQualification = response?.data?.qualification || { can_submit: false, handoff_suggested: false };
       setMessages((current) => [...current, { role: 'assistant', content: answer }]);
+      setQualification(nextQualification);
+      if (nextQualification.handoff_suggested) setHandoffOpen(true);
       setStatus('idle');
     } catch {
       setError('Elynea est momentanément indisponible. Votre message n’a pas été perdu.');
       setStatus('error');
+    }
+  }
+
+  async function submitHandoff(event) {
+    event.preventDefault();
+    if (handoffStatus === 'loading' || transmission) return;
+    setHandoffError('');
+    if (!contact.name.trim() || !contact.email.trim() || !consent) {
+      setHandoffError('Indiquez votre nom, votre e-mail et confirmez votre accord.');
+      return;
+    }
+    if (!handoffIdRef.current) handoffIdRef.current = window.crypto.randomUUID();
+    setHandoffStatus('loading');
+    try {
+      const response = await withTimeout(platform.functions.invoke('submitElyneaRequest', {
+        messages: messages.slice(-10).map(({ role, content: text }) => ({ role, content: text })),
+        contact,
+        consent: true,
+        idempotency_key: handoffIdRef.current,
+      }), 25_000);
+      const proof = response?.data;
+      if (proof?.transmitted !== true || proof?.verified !== true || !proof?.request_id || !proof?.journal_id) throw new Error('unverified');
+      setTransmission(proof);
+      setHandoffStatus('success');
+      setMessages((current) => [...current, {
+        role: 'assistant',
+        content: `Votre demande a bien été transmise à Julien et à l’équipe JS-Innov.IA. Référence Cockpit : ${proof.request_id}. Aucun devis, e-mail ou rendez-vous n’a été créé automatiquement.`,
+      }]);
+    } catch {
+      setHandoffStatus('error');
+      setHandoffError('La demande n’a pas été transmise. Vérifiez vos informations puis réessayez.');
     }
   }
 
@@ -191,6 +233,49 @@ export default function AIChatbot() {
                       <ArrowUpRight className="h-3.5 w-3.5 text-amber-300 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
                     </button>
                   ))}
+                </div>
+              )}
+
+              {qualification.can_submit && !transmission && (
+                <div className="ml-10 rounded-2xl border border-amber-300/25 bg-amber-300/[0.07] p-3">
+                  {!handoffOpen ? (
+                    <button type="button" onClick={() => setHandoffOpen(true)} className="flex w-full items-center justify-between gap-3 text-left text-sm font-semibold text-amber-100">
+                      <span>Transmettre ce besoin à JS-Innov.IA</span>
+                      <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+                    </button>
+                  ) : (
+                    <form onSubmit={submitHandoff} className="space-y-2.5" aria-label="Transmission sécurisée de la demande">
+                      <div>
+                        <p className="text-sm font-semibold text-white">Recevoir un suivi personnalisé</p>
+                        <p className="mt-1 text-xs leading-relaxed text-slate-300">Elynea transmettra votre besoin au Cockpit uniquement après votre accord.</p>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <input required value={contact.name} onChange={(event) => setContact((current) => ({ ...current, name: event.target.value.slice(0, 160) }))} placeholder="Nom *" autoComplete="name" className="min-w-0 rounded-xl border border-white/10 bg-slate-950/70 px-3 py-2 text-xs text-white outline-none focus:border-amber-300/50" />
+                        <input value={contact.company} onChange={(event) => setContact((current) => ({ ...current, company: event.target.value.slice(0, 180) }))} placeholder="Entreprise" autoComplete="organization" className="min-w-0 rounded-xl border border-white/10 bg-slate-950/70 px-3 py-2 text-xs text-white outline-none focus:border-amber-300/50" />
+                      </div>
+                      <input required type="email" value={contact.email} onChange={(event) => setContact((current) => ({ ...current, email: event.target.value.slice(0, 254) }))} placeholder="E-mail *" autoComplete="email" className="w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-2 text-xs text-white outline-none focus:border-amber-300/50" />
+                      <input value={contact.phone} onChange={(event) => setContact((current) => ({ ...current, phone: event.target.value.slice(0, 60) }))} placeholder="Téléphone (facultatif)" autoComplete="tel" className="w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-2 text-xs text-white outline-none focus:border-amber-300/50" />
+                      <label className="flex cursor-pointer items-start gap-2 text-[11px] leading-relaxed text-slate-300">
+                        <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} className="mt-0.5 accent-amber-300" />
+                        <span>J’autorise JS-Innov.IA à recevoir cette conversation et mes coordonnées pour répondre à ma demande.</span>
+                      </label>
+                      {handoffError && <p className="text-xs text-red-200" role="alert">{handoffError}</p>}
+                      <div className="flex gap-2">
+                        <button type="submit" disabled={handoffStatus === 'loading'} className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-amber-300 px-3 py-2 text-xs font-bold text-slate-950 disabled:opacity-50">
+                          {handoffStatus === 'loading' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
+                          {handoffStatus === 'loading' ? 'Transmission…' : 'Transmettre ma demande'}
+                        </button>
+                        <button type="button" onClick={() => setHandoffOpen(false)} className="rounded-xl border border-white/10 px-3 py-2 text-xs text-slate-300">Plus tard</button>
+                      </div>
+                    </form>
+                  )}
+                </div>
+              )}
+
+              {transmission && (
+                <div className="ml-10 rounded-2xl border border-emerald-400/30 bg-emerald-400/10 p-3 text-xs text-emerald-100" role="status">
+                  <p className="flex items-center gap-2 font-semibold"><CheckCircle2 className="h-4 w-4" /> Demande enregistrée dans le Cockpit</p>
+                  <p className="mt-1 break-all text-[10px] text-emerald-200/75">Référence : {transmission.request_id}</p>
                 </div>
               )}
 
