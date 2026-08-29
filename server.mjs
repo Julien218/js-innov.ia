@@ -6,6 +6,7 @@ import { extname, join, normalize } from 'node:path';
 const dist = join(process.cwd(), 'dist');
 const port = Number.parseInt(process.env.PORT || '8080', 10);
 const agentUrl = (process.env.JSINNOVIA_AGENT_URL || 'https://jsinnovia-agent-production.up.railway.app').replace(/\/$/, '');
+const elyneaUrl = (process.env.ELYNEA_NOVA_URL || 'https://cockpit.jsinnovia.com/api/public/elynea/chat').trim();
 const playerDownloadUrl = (process.env.PIXELIUM_PLAYER_DOWNLOAD_URL || 'https://olivier-signage-cockpit-production.up.railway.app/api/player-download/latest').trim();
 const agentKey = process.env.AGENT_API_KEY || process.env.JSINNOVIA_AGENT_KEY || '';
 const rateLimits = new Map();
@@ -92,7 +93,20 @@ const proxyAgent = async (request, response, path) => {
   response.end(text);
 };
 
-const systemPrompt = `Tu es le compagnon public officiel de JS-Innov.IA. Réponds uniquement en français, de façon chaleureuse, claire et concise. Présente les solutions IA, automatisations, applications sur mesure, création web, SEO, contenus et musiques libres de droits sans inventer de prix ni de garanties. Oriente vers Contact ou une demande de devis lorsque pertinent. Ne révèle aucune donnée interne et refuse les actions administratives.`;
+const INTERNAL_DETAILS = /(?:\brailway\b|\bsupabase\b|\bbase44\b|\bgithub\b|\bcomfyui\b|\bopenai\b|\bgrok\b|\bsora\b|\bclé(?:s)? api\b|\bapi key\b|\btoken(?:s)?\b|\bjeton(?:s)?\b|\bprompt(?:s)?(?: système)?\b|\bagent(?:s)? interne(?:s)?\b|\borchestration interne\b|\bmode(?:s)? de production\b|\bpipeline(?:s)? interne(?:s)?\b|\bdépôt(?:s)? (?:git|de code)\b|\brepositor(?:y|ies)\b|\bvariable(?:s)? d'environnement\b)/i;
+
+const commercialFallback = (messages = []) => {
+  const request = String(messages.at(-1)?.content || '').toLowerCase();
+  if (/site|seo|référencement/.test(request)) return "Nous pouvons vous accompagner pour créer un site ou améliorer l’existant, avec une attention particulière portée à l’image, aux conversions et au référencement. Souhaitez-vous créer un nouveau site ou optimiser celui que vous avez déjà ?";
+  if (/automat|tâche|workflow|processus/.test(request)) return "Nous pouvons identifier et automatiser les tâches répétitives afin de vous faire gagner du temps. Quelle opération vous prend aujourd’hui le plus de temps ?";
+  if (/assistant|chatbot|agent ia|intelligence artificielle/.test(request)) return "Nous pouvons concevoir un assistant adapté à votre activité pour informer, qualifier les demandes ou faciliter le suivi client. Votre priorité concerne-t-elle l’accueil, la vente ou le support ?";
+  return "Merci pour votre message. Je peux vous orienter vers la solution JS-Innov.IA la plus adaptée : quel résultat souhaitez-vous obtenir en priorité pour votre entreprise ?";
+};
+
+const safeCommercialMessage = (value, messages) => {
+  const answer = String(value || '').trim().slice(0, 4000);
+  return answer && !INTERNAL_DETAILS.test(answer) ? answer : commercialFallback(messages);
+};
 
 createServer(async (request, response) => {
   setSecurityHeaders(response);
@@ -129,13 +143,23 @@ createServer(async (request, response) => {
       if (request.method !== 'POST') { response.setHeader('Allow', 'POST'); return json(response, 405, { error: 'Méthode non autorisée' }); }
       const body = await readJson(request);
       if (pathname === '/api/platform/functions/publicChat') {
-        const messages = Array.isArray(body.messages) ? body.messages.slice(-10) : [];
-        const transcript = messages.map(({ role, content }) => `${role === 'assistant' ? 'Compagnon' : 'Visiteur'}: ${String(content || '').slice(0, 1000)}`).join('\n');
-        if (!transcript) return json(response, 400, { error: 'Message requis' });
-        const upstream = await agentFetch('/chat', { method: 'POST', body: JSON.stringify({ message: `${systemPrompt}\n\n${transcript}`, session_id: `public-${randomUUID()}`, security: { assistant: 'public', actions: false } }) });
-        const data = await upstream.json().catch(() => ({}));
-        if (!upstream.ok) return json(response, 502, { error: 'Compagnon momentanément indisponible' });
-        return json(response, 200, { message: data.response || data.reply || data.message });
+        const messages = Array.isArray(body.messages) ? body.messages.slice(-10).map(({ role, content }) => ({
+          role: role === 'assistant' ? 'assistant' : 'user',
+          content: String(content || '').slice(0, 1000),
+        })).filter(({ content }) => content.trim()) : [];
+        if (!messages.length) return json(response, 400, { error: 'Message requis' });
+        try {
+          const upstream = await fetch(elyneaUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages }),
+            signal: AbortSignal.timeout(AGENT_TIMEOUT_MS),
+          });
+          const data = await upstream.json().catch(() => ({}));
+          return json(response, 200, { message: safeCommercialMessage(upstream.ok ? data.message : '', messages), source: upstream.ok ? 'nova' : 'guided-fallback' });
+        } catch (_error) {
+          return json(response, 200, { message: commercialFallback(messages), source: 'guided-fallback' });
+        }
       }
       if (pathname === '/api/platform/functions/receiveLead') {
         const upstream = await agentFetch('/data/Contact', { method: 'POST', body: JSON.stringify(body) });

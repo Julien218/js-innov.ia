@@ -43,8 +43,10 @@ test('the public server applies baseline security headers and rejects unsupporte
 });
 
 test('the public assistant is explicitly isolated from the cockpit', () => {
-  assert.match(endpoint, /compagnon public/);
-  assert.match(endpoint, /Ne révèle aucune donnée interne/);
+  assert.match(endpoint, /cockpit\.jsinnovia\.com\/api\/public\/elynea\/chat/);
+  assert.match(endpoint, /INTERNAL_DETAILS/);
+  assert.match(endpoint, /commercialFallback/);
+  assert.doesNotMatch(endpoint, /fetch\(elyneaUrl[^]*x-agent-key/);
 });
 
 test('the application has no runtime dependency on Base44', () => {

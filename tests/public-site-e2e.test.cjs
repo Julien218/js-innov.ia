@@ -34,8 +34,10 @@ test('landing portfolio cards link to the real public projects', () => {
 
 test('public chatbot is proxied server-side to NOVA', () => {
   const server = read('server.mjs');
-  assert.match(server, /JSINNOVIA_AGENT_KEY/);
   assert.match(server, /\/api\/platform\/functions\/publicChat/);
-  assert.match(server, /x-agent-key/);
-  assert.match(server, /security:\s*\{\s*assistant:\s*'public',\s*actions:\s*false\s*\}/);
+  assert.match(server, /cockpit\.jsinnovia\.com\/api\/public\/elynea\/chat/);
+  assert.match(server, /source: upstream\.ok \? 'nova' : 'guided-fallback'/);
+  assert.match(server, /INTERNAL_DETAILS/);
+  const publicChatBlock = server.slice(server.indexOf("pathname === '/api/platform/functions/publicChat'"), server.indexOf("pathname === '/api/platform/functions/receiveLead'"));
+  assert.doesNotMatch(publicChatBlock, /agentFetch|x-agent-key|agentKey/);
 });
