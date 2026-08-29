@@ -68,6 +68,8 @@ test('SEO target validation rejects private networks and unsafe protocols', asyn
 test('the public SEO screens call the live server and make no false email promise', () => {
   const home = read('src/pages/Home.jsx');
   const audit = read('src/pages/SEOAudit.jsx');
+  const hero = read('src/components/seo/SEOHero.jsx');
+  const pricing = read('src/components/seo/SEOPricingCards.jsx');
   const server = read('server.mjs');
   const homeHandler = home.slice(home.indexOf('const handleAnalyze'), home.indexOf('return (', home.indexOf('const handleAnalyze')));
   assert.match(homeHandler, /platform\.functions\.invoke\('analyzeSEO'/);
@@ -79,6 +81,11 @@ test('the public SEO screens call the live server and make no false email promis
   assert.match(audit, /source === 'live_server_measurement'/);
   assert.match(audit, /Aucun e-mail n’est envoyé automatiquement/);
   assert.doesNotMatch(audit, /Rapport envoyé à|Analyser et recevoir le rapport|setEmailSent/);
+  assert.match(hero, /Aperçu des contrôles mesurés/);
+  assert.match(hero, /avant test/);
+  assert.doesNotMatch(hero, /Analyse en temps réel|>78<|>85%<|>72%<|>68%<|>91%<|>Live</);
+  assert.match(pricing, /Rapport HTML téléchargeable/);
+  assert.doesNotMatch(pricing, /Rapport par email|Rapport PDF détaillé/);
 });
 
 test('the production image includes the SEO audit runtime module', () => {
