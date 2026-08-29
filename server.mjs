@@ -2,6 +2,7 @@ import { createReadStream, existsSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { extname, join, normalize } from 'node:path';
+import { auditSeo, SeoAuditError } from './server-seo-audit.mjs';
 
 const dist = join(process.cwd(), 'dist');
 const port = Number.parseInt(process.env.PORT || '8080', 10);
@@ -195,6 +196,18 @@ createServer(async (request, response) => {
       }
       if (request.method !== 'POST') { response.setHeader('Allow', 'POST'); return json(response, 405, { error: 'Méthode non autorisée' }); }
       const body = await readJson(request);
+      if (pathname === '/api/platform/functions/analyzeSEO') {
+        try {
+          return json(response, 200, await auditSeo({
+            url: body.url,
+            competitors: body.competitors,
+          }));
+        } catch (error) {
+          const status = error instanceof SeoAuditError ? error.statusCode : 502;
+          console.error('[seo-audit]', error.message);
+          return json(response, status, { error: error.message || 'Analyse SEO impossible' });
+        }
+      }
       if (pathname === '/api/platform/functions/publicChat') {
         const messages = Array.isArray(body.messages) ? body.messages.slice(-10).map(({ role, content }) => ({
           role: role === 'assistant' ? 'assistant' : 'user',
