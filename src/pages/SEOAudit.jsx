@@ -9,14 +9,19 @@ import PowerWord from '../components/shared/PowerWord';
 import SEOHero from '../components/seo/SEOHero';
 import SEOPricingCards from '../components/seo/SEOPricingCards';
 
+const escapeHtml = (value) => String(value ?? '')
+  .replaceAll('&', '&amp;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;')
+  .replaceAll("'", '&#39;');
+
 export default function SEOAudit() {
-  const [url, setUrl] = useState('');
-  const [email, setEmail] = useState('');
+  const [url, setUrl] = useState(() => new URLSearchParams(window.location.search).get('url') || '');
   const [competitors, setCompetitors] = useState(['', '', '']);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [report, setReport] = useState(null);
   const [error, setError] = useState(null);
-  const [emailSent, setEmailSent] = useState(false);
   const auditFormRef = useRef(null);
 
   const scrollToAudit = () => {
@@ -24,21 +29,18 @@ export default function SEOAudit() {
   };
 
   const analyzeWebsite = async () => {
-    if (!url.trim() || !email.trim()) {
-      setError('Veuillez remplir l\'URL et votre email');
+    if (!url.trim()) {
+      setError('Veuillez indiquer l\'URL du site à analyser');
       return;
     }
 
     setIsAnalyzing(true);
     setError(null);
     setReport(null);
-    setEmailSent(false);
-
     try {
       const competitorUrls = competitors.filter(c => c.trim()).map(c => c.trim());
       const response = await platform.functions.invoke('analyzeSEO', {
         url: url.trim(),
-        email: email.trim(),
         competitors: competitorUrls
       });
 
@@ -57,11 +59,10 @@ export default function SEOAudit() {
         }
       }
 
-      if (reportData && typeof reportData.global_score === 'number') {
+      if (reportData?.verified === true && reportData.source === 'live_server_measurement' && typeof reportData.global_score === 'number') {
         setReport(reportData);
-        setEmailSent(true);
       } else {
-        setError('Réponse invalide du serveur. Veuillez réessayer.');
+        setError('Aucune mesure vérifiable n’a été reçue du serveur. Veuillez réessayer.');
       }
     } catch (err) {
       console.error('Error analyzing:', err);
@@ -77,12 +78,6 @@ export default function SEOAudit() {
     return 'text-red-400';
   };
 
-  const getScoreGradient = (score) => {
-    if (score >= 80) return 'from-green-600 to-emerald-600';
-    if (score >= 50) return 'from-yellow-600 to-orange-600';
-    return 'from-red-600 to-pink-600';
-  };
-
   const downloadReport = () => {
     // Générer un PDF HTML
     const getScoreEmoji = (score) => {
@@ -96,7 +91,7 @@ export default function SEOAudit() {
       <html lang="fr">
       <head>
         <meta charset="UTF-8">
-        <title>Rapport SEO - ${url}</title>
+        <title>Rapport SEO - ${escapeHtml(url)}</title>
         <style>
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; color: #eee; padding: 40px; }
@@ -134,7 +129,7 @@ export default function SEOAudit() {
         <div class="container">
           <div class="header">
             <h1>🎯 Rapport Audit SEO</h1>
-            <p>${url}</p>
+            <p>${escapeHtml(url)}</p>
             <p style="margin-top: 5px; font-size: 12px;">Généré le ${new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
           </div>
 
@@ -147,7 +142,7 @@ export default function SEOAudit() {
             ${Object.entries(report.scores || {}).map(([cat, score]) => `
               <div class="score-card">
                 <div class="value" style="color: ${score >= 80 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444'}">${getScoreEmoji(score)} ${score}%</div>
-                <div class="label">${cat.replace('_', ' ')}</div>
+                <div class="label">${escapeHtml(cat.replace('_', ' '))}</div>
               </div>
             `).join('')}
           </div>
@@ -156,7 +151,7 @@ export default function SEOAudit() {
             <div class="section section-green">
               <h2>✅ Points Forts</h2>
               <ul>
-                ${report.strengths.map(s => `<li>• ${s}</li>`).join('')}
+                ${report.strengths.map(s => `<li>• ${escapeHtml(s)}</li>`).join('')}
               </ul>
             </div>
           ` : ''}
@@ -165,7 +160,7 @@ export default function SEOAudit() {
             <div class="section section-red">
               <h2>⚠️ Problèmes Critiques</h2>
               <ul>
-                ${report.critical_issues.map(i => `<li>• ${i}</li>`).join('')}
+                ${report.critical_issues.map(i => `<li>• ${escapeHtml(i)}</li>`).join('')}
               </ul>
             </div>
           ` : ''}
@@ -179,9 +174,9 @@ export default function SEOAudit() {
                     rec.priority === 'high' ? 'Priorité haute' :
                     rec.priority === 'low' ? 'Priorité basse' : 'Priorité moyenne'
                   }</span>
-                  <h4>${rec.title}</h4>
-                  <p>${rec.description}</p>
-                  ${rec.impact ? `<p style="color: #8b5cf6; margin-top: 8px;">💡 ${rec.impact}</p>` : ''}
+                  <h4>${escapeHtml(rec.title)}</h4>
+                  <p>${escapeHtml(rec.description)}</p>
+                  ${rec.impact ? `<p style="color: #8b5cf6; margin-top: 8px;">💡 ${escapeHtml(rec.impact)}</p>` : ''}
                 </div>
               `).join('')}
             </div>
@@ -247,15 +242,6 @@ export default function SEOAudit() {
                 className="w-full bg-black/30 border-gray-700 text-white text-lg py-6"
                 disabled={isAnalyzing}
               />
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="votre@email.com"
-                className="w-full bg-black/30 border-gray-700 text-white text-lg py-6"
-                disabled={isAnalyzing}
-              />
-
               <div className="pt-4 border-t border-gray-700">
                 <h4 className="text-sm font-medium text-gray-300 mb-3">🔍 Analyse Comparative (optionnel)</h4>
                 <p className="text-xs text-gray-500 mb-3">Ajoutez jusqu'à 3 sites concurrents pour une analyse comparative</p>
@@ -277,7 +263,7 @@ export default function SEOAudit() {
               </div>
               <Button
                 onClick={analyzeWebsite}
-                disabled={isAnalyzing || !url.trim() || !email.trim()}
+                disabled={isAnalyzing || !url.trim()}
                 className="w-full py-6 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 hover:shadow-2xl hover:shadow-pink-500/50"
               >
                 {isAnalyzing ? (
@@ -288,33 +274,16 @@ export default function SEOAudit() {
                 ) : (
                   <>
                     <Search className="w-5 h-5 mr-2" />
-                    Analyser et recevoir le rapport
+                    Lancer l’analyse mesurée
                   </>
                 )}
               </Button>
             </div>
             <p className="text-sm text-gray-400 mt-4">
-              📧 Vous recevrez le rapport complet par email + recommandations personnalisées
+              Le rapport s’affiche ici et peut être téléchargé. Aucun e-mail n’est envoyé automatiquement.
             </p>
           </div>
         </motion.div>
-
-        {/* Success Message */}
-        <AnimatePresence>
-          {emailSent && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="max-w-3xl mx-auto mb-8 p-4 rounded-xl bg-green-500/10 border border-green-500/30 text-green-400"
-            >
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5" />
-                <span>✅ Rapport envoyé à {email} ! Consultez votre boîte email.</span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         {/* Error */}
         <AnimatePresence>
@@ -343,6 +312,9 @@ export default function SEOAudit() {
             >
               {/* Score Global */}
               <div className="p-8 rounded-3xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-purple-500/20 text-center">
+                <div className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-4 py-2 text-xs font-semibold text-green-300 mb-4">
+                  <CheckCircle className="w-4 h-4" /> Mesures serveur vérifiées · audit {report.audit_id}
+                </div>
                 <h3 className="text-xl text-gray-300 mb-4">Score SEO Global</h3>
                 <div className="relative inline-block">
                   <svg className="w-48 h-48">
@@ -379,6 +351,9 @@ export default function SEOAudit() {
                     <div className="text-sm text-gray-400">/ 100</div>
                   </div>
                 </div>
+                <p className="text-xs text-gray-500 mt-5">
+                  Cible finale : {report.final_url} · mesuré le {new Date(report.measured_at).toLocaleString('fr-BE')}
+                </p>
                 <div className="flex justify-center gap-4 mt-6">
                   <Button onClick={downloadReport} variant="outline" className="gap-2">
                     <Download className="w-4 h-4" />
@@ -398,6 +373,22 @@ export default function SEOAudit() {
                   </Button>
                 </div>
               </div>
+
+              {report.measurements && (
+                <div className="p-6 rounded-2xl bg-cyan-500/5 border border-cyan-500/20">
+                  <h3 className="text-xl font-bold text-white mb-4">Mesures brutes principales</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div><span className="text-gray-500">HTTP</span><div className="text-white font-semibold">{report.measurements.status}</div></div>
+                    <div><span className="text-gray-500">Réponse serveur</span><div className="text-white font-semibold">{report.measurements.response_ms} ms</div></div>
+                    <div><span className="text-gray-500">Poids HTML</span><div className="text-white font-semibold">{Math.round(report.measurements.html_bytes / 1024)} Ko</div></div>
+                    <div><span className="text-gray-500">Mots</span><div className="text-white font-semibold">{report.measurements.word_count}</div></div>
+                    <div><span className="text-gray-500">H1</span><div className="text-white font-semibold">{report.measurements.h1_count}</div></div>
+                    <div><span className="text-gray-500">Liens internes</span><div className="text-white font-semibold">{report.measurements.internal_links}</div></div>
+                    <div><span className="text-gray-500">Images avec alt</span><div className="text-white font-semibold">{report.measurements.image_alt_ratio}%</div></div>
+                    <div><span className="text-gray-500">JSON-LD</span><div className="text-white font-semibold">{report.measurements.json_ld_count}</div></div>
+                  </div>
+                </div>
+              )}
 
               {/* Catégories de Score */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -492,26 +483,21 @@ export default function SEOAudit() {
                               {report.scores.accessibilite}
                             </td>
                           </tr>
-                          {report.comparison.map((comp, idx) => (
-                            <tr key={idx} className="border-b border-gray-700 hover:bg-white/5">
-                              <td className="py-3 px-4 text-gray-400">{comp.url}</td>
-                              <td className={`text-center py-3 px-4 font-bold ${getScoreColor(comp.global_score)}`}>
-                                {comp.global_score}
-                              </td>
-                              <td className={`text-center py-3 px-4 ${getScoreColor(comp.scores.technique)}`}>
-                                {comp.scores.technique}
-                              </td>
-                              <td className={`text-center py-3 px-4 ${getScoreColor(comp.scores.contenu)}`}>
-                                {comp.scores.contenu}
-                              </td>
-                              <td className={`text-center py-3 px-4 ${getScoreColor(comp.scores.performance)}`}>
-                                {comp.scores.performance}
-                              </td>
-                              <td className={`text-center py-3 px-4 ${getScoreColor(comp.scores.accessibilite)}`}>
-                                {comp.scores.accessibilite}
-                              </td>
-                            </tr>
-                          ))}
+                          {report.comparison.map((comp, idx) => comp.verified ? (
+                              <tr key={idx} className="border-b border-gray-700 hover:bg-white/5">
+                                <td className="py-3 px-4 text-gray-400">{comp.url}</td>
+                                <td className={`text-center py-3 px-4 font-bold ${getScoreColor(comp.global_score)}`}>{comp.global_score}</td>
+                                <td className={`text-center py-3 px-4 ${getScoreColor(comp.scores.technique)}`}>{comp.scores.technique}</td>
+                                <td className={`text-center py-3 px-4 ${getScoreColor(comp.scores.contenu)}`}>{comp.scores.contenu}</td>
+                                <td className={`text-center py-3 px-4 ${getScoreColor(comp.scores.performance)}`}>{comp.scores.performance}</td>
+                                <td className={`text-center py-3 px-4 ${getScoreColor(comp.scores.accessibilite)}`}>{comp.scores.accessibilite}</td>
+                              </tr>
+                            ) : (
+                              <tr key={idx} className="border-b border-gray-700">
+                                <td className="py-3 px-4 text-gray-400">{comp.url}</td>
+                                <td colSpan="5" className="py-3 px-4 text-red-400">Non mesuré : {comp.error}</td>
+                              </tr>
+                            ))}
                         </tbody>
                       </table>
                     </div>
@@ -567,6 +553,15 @@ export default function SEOAudit() {
                       </div>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {report.limitations?.length > 0 && (
+                <div className="p-6 rounded-2xl bg-yellow-500/5 border border-yellow-500/20">
+                  <h3 className="text-lg font-bold text-white mb-3">Limites de cette mesure</h3>
+                  <ul className="space-y-2 text-sm text-gray-400">
+                    {report.limitations.map((item) => <li key={item}>• {item}</li>)}
+                  </ul>
                 </div>
               )}
 

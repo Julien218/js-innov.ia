@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import { platform } from '@/api/platformClient';
 import {
   ArrowRight, Sparkles, FileText, Bot, Check,
   Globe, Zap, Shield, Star, Play, Users,
@@ -171,7 +172,8 @@ function DashboardMockup() {
 export default function Home() {
   const [url, setUrl] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
-  const [score, setScore] = useState(null);
+  const [seoReport, setSeoReport] = useState(null);
+  const [seoError, setSeoError] = useState('');
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 600], [0, -100]);
   const heroOpacity = useTransform(scrollY, [0, 400], [1, 0.4]);
@@ -179,9 +181,17 @@ export default function Home() {
   const handleAnalyze = async () => {
     if (!url.trim()) return;
     setAnalyzing(true);
-    await new Promise(r => setTimeout(r, 2500));
-    setScore(Math.floor(Math.random() * 28) + 44);
-    setAnalyzing(false);
+    setSeoError('');
+    setSeoReport(null);
+    try {
+      const response = await platform.functions.invoke('analyzeSEO', { url: url.trim() });
+      if (!response?.data?.verified || typeof response.data.global_score !== 'number') throw new Error('Le serveur n’a fourni aucune mesure vérifiable.');
+      setSeoReport(response.data);
+    } catch (error) {
+      setSeoError(error.message || 'Analyse impossible. Vérifiez l’adresse puis réessayez.');
+    } finally {
+      setAnalyzing(false);
+    }
   };
 
   return (
@@ -468,7 +478,7 @@ export default function Home() {
                   { icon: Car, title: 'Automobile', desc: 'RC, tous risques, protection conducteur', color: PURPLE },
                   { icon: Heart, title: 'Santé & famille', desc: 'Mutuelle, prévoyance, garanties solides', color: CYAN },
                   { icon: Shield, title: 'Professionnelle', desc: 'RC Pro, multirisque commerce, cyber', color: BLUE },
-                ].map((card, i) => (
+                ].map((card) => (
                   <motion.div key={card.title} whileHover={{ scale: 1.04, y: -4 }} transition={{ duration: 0.2 }}
                     className="p-5 rounded-2xl"
                     style={{ background: 'rgba(10,10,25,0.8)', border: `1px solid ${card.color}20` }}>
@@ -642,31 +652,34 @@ export default function Home() {
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-5 text-xs font-bold"
                   style={{ background: 'rgba(6,182,212,0.1)', border: `1px solid ${CYAN}30`, color: CYAN }}>
                   <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-                  Analyse IA gratuite — Sans inscription
+                  Analyse technique mesurée — Sans inscription
                 </div>
                 <h2 className="text-3xl font-black text-white mb-2">Analysez votre site maintenant</h2>
-                <p className="text-sm mb-8" style={{ color: 'rgba(212,175,55,0.55)' }}>Score SEO complet en 30 secondes</p>
+                <p className="text-sm mb-8" style={{ color: 'rgba(212,175,55,0.55)' }}>Mesures live : HTTP, balises, structure, liens, robots et sitemap</p>
                 <AnimatePresence mode="wait">
-                  {!score ? (
-                    <motion.div key="input" exit={{ opacity: 0 }} className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
-                      <div className="relative flex-1">
-                        <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: 'rgba(212,175,55,0.4)' }} />
-                        <input value={url} onChange={e => setUrl(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleAnalyze()}
-                          placeholder="https://votre-site.com"
-                          className="w-full pl-10 pr-4 py-3.5 rounded-xl text-sm outline-none"
-                          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,175,55,0.2)', color: 'white' }} />
+                  {!seoReport ? (
+                    <motion.div key="input" exit={{ opacity: 0 }} className="max-w-xl mx-auto">
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <div className="relative flex-1">
+                          <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: 'rgba(212,175,55,0.4)' }} />
+                          <input value={url} onChange={e => setUrl(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleAnalyze()}
+                            placeholder="https://votre-site.com"
+                            className="w-full pl-10 pr-4 py-3.5 rounded-xl text-sm outline-none"
+                            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,175,55,0.2)', color: 'white' }} />
+                        </div>
+                        <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+                          onClick={handleAnalyze} disabled={analyzing || !url.trim()}
+                          className="px-6 py-3.5 rounded-xl font-black text-black text-sm whitespace-nowrap disabled:opacity-40"
+                          style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, boxShadow: `0 0 25px rgba(212,175,55,0.3)` }}>
+                          {analyzing ? (
+                            <span className="flex items-center gap-2">
+                              <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}><Zap className="w-4 h-4" /></motion.div>
+                              Mesure…
+                            </span>
+                          ) : 'Analyser →'}
+                        </motion.button>
                       </div>
-                      <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
-                        onClick={handleAnalyze} disabled={analyzing || !url.trim()}
-                        className="px-6 py-3.5 rounded-xl font-black text-black text-sm whitespace-nowrap disabled:opacity-40"
-                        style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})`, boxShadow: `0 0 25px rgba(212,175,55,0.3)` }}>
-                        {analyzing ? (
-                          <span className="flex items-center gap-2">
-                            <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}><Zap className="w-4 h-4" /></motion.div>
-                            Analyse…
-                          </span>
-                        ) : 'Analyser →'}
-                      </motion.button>
+                      {seoError && <p className="mt-4 text-sm text-red-400" role="alert">{seoError}</p>}
                     </motion.div>
                   ) : (
                     <motion.div key="result" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="space-y-5">
@@ -674,30 +687,36 @@ export default function Home() {
                         <div className="relative">
                           <svg className="w-28 h-28 -rotate-90" viewBox="0 0 100 100">
                             <circle cx="50" cy="50" r="42" stroke="rgba(255,255,255,0.05)" strokeWidth="8" fill="none" />
-                            <motion.circle cx="50" cy="50" r="42" stroke={score >= 80 ? '#22c55e' : score >= 60 ? GOLD : '#ef4444'}
+                            <motion.circle cx="50" cy="50" r="42" stroke={seoReport.global_score >= 80 ? '#22c55e' : seoReport.global_score >= 60 ? GOLD : '#ef4444'}
                               strokeWidth="8" fill="none" strokeLinecap="round"
                               initial={{ strokeDasharray: '0 264' }}
-                              animate={{ strokeDasharray: `${2.64 * score} 264` }}
+                              animate={{ strokeDasharray: `${2.64 * seoReport.global_score} 264` }}
                               transition={{ duration: 1.5, ease: 'easeOut' }} />
                           </svg>
                           <div className="absolute inset-0 flex flex-col items-center justify-center">
-                            <span className="text-3xl font-black" style={{ color: score >= 80 ? '#22c55e' : score >= 60 ? GOLD : '#ef4444' }}>{score}</span>
+                            <span className="text-3xl font-black" style={{ color: seoReport.global_score >= 80 ? '#22c55e' : seoReport.global_score >= 60 ? GOLD : '#ef4444' }}>{seoReport.global_score}</span>
                             <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>/100</span>
                           </div>
                         </div>
                         <div className="text-left space-y-2">
-                          {['Mots-clés cibles manquants', 'Balises meta incomplètes', 'Vitesse à optimiser', 'Maillage interne insuffisant'].map(issue => (
+                          {(seoReport.critical_issues?.slice(0, 4).length ? seoReport.critical_issues.slice(0, 4) : ['Aucun problème critique détecté sur les contrôles exécutés.']).map(issue => (
                             <div key={issue} className="flex items-center gap-2 text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                              <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-red-400" />{issue}
+                              <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${seoReport.critical_issues?.length ? 'bg-red-400' : 'bg-green-400'}`} />{issue}
                             </div>
                           ))}
                         </div>
                       </div>
+                      <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                        Mesuré le {new Date(seoReport.measured_at).toLocaleString('fr-BE')} · source : serveur JS-Innov.IA · audit {seoReport.audit_id}
+                      </p>
                       <div className="flex flex-wrap gap-3 justify-center">
+                        <Link to={`${createPageUrl('SEOAudit')}?url=${encodeURIComponent(url)}`}>
+                          <button className="px-5 py-2.5 rounded-xl text-sm border" style={{ borderColor: 'rgba(6,182,212,0.35)', color: CYAN }}>Voir le rapport détaillé</button>
+                        </Link>
                         <Link to={createPageUrl('Pricing')}>
                           <button className="px-5 py-2.5 rounded-xl text-sm font-black text-black" style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` }}>Voir les plans →</button>
                         </Link>
-                        <button onClick={() => { setScore(null); setUrl(''); }}
+                        <button onClick={() => { setSeoReport(null); setSeoError(''); setUrl(''); }}
                           className="px-5 py-2.5 rounded-xl text-sm border" style={{ borderColor: 'rgba(212,175,55,0.3)', color: GOLD }}>
                           Nouveau test
                         </button>
