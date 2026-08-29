@@ -1,6 +1,7 @@
 import LandingHero from '@/components/landing/LandingHero';
 import LandingDifferentiator from '@/components/landing/LandingDifferentiator';
 import LandingServices from '@/components/landing/LandingServices';
+import LandingProducts from '@/components/landing/LandingProducts';
 import LandingProof from '@/components/landing/LandingProof';
 import LandingContactForm from '@/components/landing/LandingContactForm';
 import LandingCTA from '@/components/landing/LandingCTA';
@@ -11,6 +12,7 @@ export default function SaasLanding() {
       <LandingHero />
       <LandingDifferentiator />
       <LandingServices />
+      <LandingProducts />
       <LandingProof />
       <LandingContactForm />
       <LandingCTA />

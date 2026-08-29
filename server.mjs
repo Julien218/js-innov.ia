@@ -286,7 +286,7 @@ createServer(async (request, response) => {
   let filePath = join(dist, relativePath);
   if (!filePath.startsWith(dist) || !existsSync(filePath) || !statSync(filePath).isFile()) filePath = join(dist, 'index.html');
 
-  if (pathname === '/hainoflow' || pathname === '/catalogue-tarifs-brouillon') {
+  if (pathname === '/catalogue-tarifs-brouillon') {
     response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
   }
   return serveStaticFile(request, response, filePath);

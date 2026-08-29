@@ -13,7 +13,6 @@ import {
   Workflow,
 } from 'lucide-react';
 import { HAINOFLOW_PLANS, formatEuro } from '@/config/catalog';
-import { useDraftPageMeta } from '@/lib/useDraftPageMeta';
 
 const NAVY = '#031238';
 const NAVY_LIGHT = '#071F4C';
@@ -45,8 +44,6 @@ function FeatureList({ features, color }) {
 }
 
 export default function HainoFlowLanding() {
-  useDraftPageMeta('Aperçu HainoFlow — validation en cours');
-
   return (
     <main className="min-h-screen overflow-hidden text-white" style={{ background: `linear-gradient(180deg, ${NAVY}, ${NAVY_LIGHT} 48%, ${NAVY})`, fontFamily: 'Manrope, ui-sans-serif, system-ui, sans-serif' }}>
       <section className="relative px-5 pb-24 pt-20">

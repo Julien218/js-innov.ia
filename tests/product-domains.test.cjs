@@ -7,7 +7,7 @@ test('product subdomains resolve to one unique product', async () => {
 
   assert.equal(new Set(hostnames).size, hostnames.length);
   assert.equal(findProductByHostname('hainoflow.jsinnovia.com')?.id, 'hainoflow');
-  assert.equal(findProductByHostname('SIGNAGE.JSINNOVIA.COM')?.id, 'signage');
+  assert.equal(findProductByHostname('SIGNELYA.JSINNOVIA.COM')?.id, 'signage');
 });
 
 test('hostname normalization removes whitespace and development ports', async () => {
@@ -23,11 +23,11 @@ test('unknown domains safely fall back to the main experience', async () => {
   assert.equal(findProductByHostname('preview.example.test'), null);
 });
 
-test('unvalidated product subdomains cannot activate a public experience', async () => {
+test('published product subdomains activate their dedicated experience', async () => {
   const { resolveProductExperience } = await import('../src/lib/productHostRouter.js');
 
-  assert.equal(resolveProductExperience('hainoflow.jsinnovia.com'), 'main');
-  assert.equal(resolveProductExperience('signage.jsinnovia.com'), 'main');
+  assert.equal(resolveProductExperience('hainoflow.jsinnovia.com'), 'hainoflow');
+  assert.equal(resolveProductExperience('signelya.jsinnovia.com'), 'main');
   assert.equal(resolveProductExperience('cockpit.jsinnovia.com'), 'cockpit');
 });
 

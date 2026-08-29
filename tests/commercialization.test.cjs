@@ -66,18 +66,26 @@ test('every externally branded product carries the JS-Innov.IA endorsement', asy
   }
 });
 
-test('draft commercial pages are protected against search indexing at server and browser level', () => {
+test('the private catalogue stays noindex while the published HainoFlow page is indexable', () => {
   const server = fs.readFileSync(path.join(root, 'server.mjs'), 'utf8');
   const catalogue = fs.readFileSync(path.join(root, 'src/pages/CataloguePricingDraft.jsx'), 'utf8');
-  const hainoFlow = fs.readFileSync(path.join(root, 'src/pages/HainoFlowLanding.jsx'), 'utf8');
   const hook = fs.readFileSync(path.join(root, 'src/lib/useDraftPageMeta.js'), 'utf8');
 
   assert.match(server, /X-Robots-Tag.*noindex, nofollow, noarchive/s);
   assert.match(server, /catalogue-tarifs-brouillon/);
-  assert.match(server, /hainoflow/);
   assert.match(catalogue, /useDraftPageMeta/);
-  assert.match(hainoFlow, /useDraftPageMeta/);
   assert.match(hook, /noindex,nofollow,noarchive/);
+});
+
+test('the public homepage exposes HainoFlow and Signelya through dedicated subdomains', () => {
+  const landing = fs.readFileSync(path.join(root, 'src/components/landing/LandingProducts.jsx'), 'utf8');
+  const home = fs.readFileSync(path.join(root, 'src/pages/saas/SaasLanding.jsx'), 'utf8');
+
+  assert.match(landing, /https:\/\/hainoflow\.jsinnovia\.com/);
+  assert.match(landing, /https:\/\/signelya\.jsinnovia\.com/);
+  assert.match(landing, /Signelya/);
+  assert.match(landing, /signelya-brand\.png/);
+  assert.match(home, /<LandingProducts \/>/);
 });
 
 test('secondary pages remain code-split for a fast mobile-first initial load', () => {

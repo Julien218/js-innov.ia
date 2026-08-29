@@ -37,13 +37,13 @@ export const PRODUCT_PORTFOLIO = [
   },
   {
     id: 'signage',
-    name: 'Solution d’affichage dynamique',
-    signature: 'Nom commercial à définir — by JS‑Innov.IA',
+    name: 'Signelya',
+    signature: 'Signelya — by JS‑Innov.IA',
     model: 'standalone-and-bundle',
     repository: 'Julien218/js-innov.ia',
-    visibility: 'pilot',
-    gates: pendingGates({ name: false, brand: false, offer: true, legal: false, security: false, tests: false, billing: null, deployment: false }),
-    blockers: ['Nom distinctif à choisir', 'Secrets à révoquer et déplacer', 'CI pilote, APK, Electron et Dropbox à stabiliser', 'Plan de rollback et rétention à valider'],
+    visibility: 'public-pilot',
+    gates: pendingGates({ name: true, brand: true, offer: true, legal: false, security: false, tests: false, billing: null, deployment: true }),
+    blockers: ['Secrets à révoquer et déplacer', 'CI pilote, APK, Electron et Dropbox à stabiliser', 'Plan de rollback et rétention à valider'],
   },
   {
     id: 'ville-connect',
