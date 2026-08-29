@@ -41,3 +41,26 @@ test('public chatbot is proxied server-side to NOVA', () => {
   const publicChatBlock = server.slice(server.indexOf("pathname === '/api/platform/functions/publicChat'"), server.indexOf("pathname === '/api/platform/functions/receiveLead'"));
   assert.doesNotMatch(publicChatBlock, /agentFetch|x-agent-key|agentKey/);
 });
+
+test('Elynea handoff is server-only and requires Cockpit proof before success', () => {
+  const server = read('server.mjs');
+  const client = read('src/components/chatbot/AIChatbot.jsx');
+  assert.match(server, /ELYNEA_SITE_KEY/);
+  assert.match(server, /x-elynea-site-key/);
+  assert.match(server, /data\.transmitted !== true \|\| data\.verified !== true/);
+  assert.match(server, /request_id/);
+  assert.match(server, /journal_id/);
+  assert.doesNotMatch(client, /ELYNEA_SITE_KEY|x-elynea-site-key/);
+  assert.match(client, /submitElyneaRequest/);
+  assert.match(client, /Transmettre ma demande/);
+  assert.match(client, /Aucun devis, e-mail ou rendez-vous n’a été créé automatiquement/);
+});
+
+test('Elynea never displays a false transmission confirmation', () => {
+  const client = read('src/components/chatbot/AIChatbot.jsx');
+  const submitBlock = client.slice(client.indexOf('async function submitHandoff'), client.indexOf('function sendMessage'));
+  assert.match(submitBlock, /proof\?\.transmitted !== true/);
+  assert.match(submitBlock, /proof\?\.verified !== true/);
+  assert.match(submitBlock, /!proof\?\.request_id \|\| !proof\?\.journal_id/);
+  assert.match(submitBlock, /La demande n’a pas été transmise/);
+});
