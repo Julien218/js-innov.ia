@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { platform } from '@/api/platformClient';
 import {
@@ -98,6 +98,12 @@ export default function EcranLed() {
   const [sending, setSending] = useState(false);
   const [error, setError]     = useState('');
 
+  useEffect(() => {
+    const previousTitle = document.title;
+    document.title = 'Signelya — Vos écrans prennent vie | JS-Innov.IA';
+    return () => { document.title = previousTitle; };
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.rgpd) return setError('Le consentement RGPD est obligatoire.');
@@ -145,11 +151,16 @@ export default function EcranLed() {
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 80% 20%, rgba(212,175,55,0.08) 0%, transparent 55%)', pointerEvents: 'none' }} />
         <motion.div initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
           style={{ maxWidth: 860, margin: '0 auto', position: 'relative', zIndex: 2 }}>
+          <img
+            src="/signelya-brand.png"
+            alt="Signelya — Vos écrans prennent vie"
+            style={{ display: 'block', width: 'min(100%, 680px)', aspectRatio: '3 / 2', objectFit: 'contain', margin: '0 auto 28px' }}
+          />
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(0,180,216,0.10)',
             border: '1px solid rgba(0,180,216,0.28)', borderRadius: 50, padding: '6px 16px', marginBottom: 20 }}>
             <Monitor size={14} color={C.cyan} />
             <span style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.cyan }}>
-              Écran LED — Espace C · Dour
+              Signelya · by JS-Innov.IA — Espace C · Dour
             </span>
           </div>
           <h1 style={{ fontSize: 'clamp(2rem,6vw,3.8rem)', fontWeight: 900, textTransform: 'uppercase', lineHeight: 1.05, margin: '0 0 18px' }}>
