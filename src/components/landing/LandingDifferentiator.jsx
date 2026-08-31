@@ -69,7 +69,7 @@ export default function LandingDifferentiator() {
                 Nos agents IA tournent en local pour la confidentialité, synchronisés avec le cloud pour la puissance. Vous gardez le contrôle total de vos données.
               </p>
               <div className="flex flex-wrap gap-3">
-                {['IA locale', 'Sync cloud', 'RGPD natif', 'Temps réel'].map(t => (
+                {['IA locale', 'Sync cloud', 'Minimisation des données', 'Temps réel'].map(t => (
                   <span key={t} className="px-3 py-1.5 rounded-full text-xs font-semibold"
                     style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)' }}>{t}</span>
                 ))}

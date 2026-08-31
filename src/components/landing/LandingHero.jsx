@@ -15,7 +15,7 @@ export default function LandingHero() {
     { v: '48h', l: 'Livraison express' },
     { v: '100%', l: 'Sur mesure' },
     { v: '24/7', l: 'IA + Humain' },
-    { v: 'RGPD', l: 'Conforme' },
+    { v: 'RGPD', l: 'Cadre appliqué' },
   ];
 
   return (

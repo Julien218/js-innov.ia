@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Bot, Sparkles, ArrowRight } from 'lucide-react';
 import { platform } from '@/api/platformClient';
+import PrivacyConsentNotice from '@/components/legal/PrivacyConsentNotice';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -269,9 +270,7 @@ export default function SaasChatbot() {
                           style={consent ? { background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` } : { background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(212,175,55,0.3)' }}>
                           {consent && <span className="text-black text-xs font-black">✓</span>}
                         </div>
-                        <span className="text-xs" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                          J'accepte que mes données soient utilisées pour être recontacté dans le cadre de ma demande (RGPD).
-                        </span>
+                        <PrivacyConsentNotice className="text-xs" style={{ color: 'rgba(255,255,255,0.55)' }} />
                       </label>
                       <motion.button whileTap={{ scale: 0.97 }} onClick={handleFinalSubmit} disabled={!consent || loading}
                         className="w-full py-2.5 rounded-xl text-xs font-black text-black flex items-center justify-center gap-2 disabled:opacity-40"

@@ -11,5 +11,6 @@ ENV NODE_ENV=production
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server.mjs ./server.mjs
 COPY --from=build /app/server-seo-audit.mjs ./server-seo-audit.mjs
+COPY --from=build /app/privacy-consent.mjs ./privacy-consent.mjs
 EXPOSE 8080
 CMD ["node", "server.mjs"]

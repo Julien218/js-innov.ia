@@ -119,6 +119,8 @@ const AuthenticatedApp = () => {
       <Route path="/saas-mentions" element={<SaasLayout><SaasLegal type="mentions" /></SaasLayout>} />
       <Route path="/saas-confidentialite" element={<SaasLayout><SaasLegal type="confidentialite" /></SaasLayout>} />
       <Route path="/saas-cgv" element={<SaasLayout><SaasLegal type="cgv" /></SaasLayout>} />
+      <Route path="/mentions" element={<SaasLayout><SaasLegal type="mentions" /></SaasLayout>} />
+      <Route path="/confidentialite" element={<SaasLayout><SaasLegal type="confidentialite" /></SaasLayout>} />
       <Route path="/saas-devis" element={<SaasLayout><SaasDevis /></SaasLayout>} />
       <Route path="/saas-landing" element={<SaasLayout><SaasLanding /></SaasLayout>} />
       <Route path="/saas-client" element={<SaasLayout><SaasClientDashboard /></SaasLayout>} />

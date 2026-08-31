@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { platform } from '@/api/platformClient';
 import { Send, CheckCircle, Sparkles, User, Mail, Phone, Building2, MessageSquare } from 'lucide-react';
+import PrivacyConsentNotice from '@/components/legal/PrivacyConsentNotice';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -141,9 +142,7 @@ export default function LandingContactForm() {
                     onChange={e => updateField('consentRgpd', e.target.checked)}
                     className="mt-1 h-5 w-5 flex-shrink-0 cursor-pointer accent-amber-400"
                     aria-label="Consentement RGPD" />
-                  <span className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                    J'accepte que mes données soient utilisées pour être recontacté (RGPD). <span style={{ color: GOLD }}>*</span>
-                  </span>
+                  <PrivacyConsentNotice className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }} />
                 </label>
                 {error && (
                   <p role="alert" className="text-center text-sm" style={{ color: '#fca5a5' }}>{error}</p>
@@ -155,7 +154,7 @@ export default function LandingContactForm() {
                   {loading ? 'Envoi...' : <><Send size={16} /> Envoyer ma demande</>}
                 </motion.button>
                 <p className="text-center text-xs" style={{ color: 'rgba(255,255,255,0.22)' }}>
-                  Réponse sous 24h · Sans engagement · RGPD conforme
+                  Réponse sous 24h · Sans engagement · Données traitées selon notre politique de confidentialité
                 </p>
               </motion.form>
             )}
