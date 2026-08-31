@@ -45,7 +45,7 @@ export default function LandingCTA() {
               </a>
             </div>
             <div className="flex flex-wrap justify-center gap-5 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
-              {['Sans engagement', 'Réponse sous 24h', 'RGPD conforme', 'BCE 0877926214'].map(t => (
+              {['Sans engagement', 'Réponse sous 24h', 'Politique de confidentialité', 'BCE 0877926214'].map(t => (
                 <div key={t} className="flex items-center gap-1.5">
                   <CheckCircle size={14} style={{ color: 'rgba(212,175,55,0.5)' }} /> {t}
                 </div>

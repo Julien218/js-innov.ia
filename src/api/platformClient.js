@@ -1,3 +1,18 @@
+import { PRIVACY_CONSENT_TEXT, PRIVACY_NOTICE_VERSION, PRIVACY_POLICY_PATH } from '../../privacy-consent.mjs';
+
+const withPrivacyProof = (payload = {}) => {
+  if (payload?.consentRgpd !== true && payload?.consent !== true) return payload;
+  return {
+    ...payload,
+    privacyConsent: {
+      submissionId: globalThis.crypto.randomUUID(),
+      text: PRIVACY_CONSENT_TEXT,
+      version: PRIVACY_NOTICE_VERSION,
+      policyPath: PRIVACY_POLICY_PATH,
+    },
+  };
+};
+
 const jsonRequest = async (path, options = {}) => {
   const response = await fetch(path, {
     ...options,
@@ -30,7 +45,7 @@ const entity = (name) => ({
     if (limit) query.set('limit', String(limit));
     return toArray(await jsonRequest(`/api/platform/data/${name}?${query}`));
   },
-  create: (data) => jsonRequest(`/api/platform/data/${name}`, { method: 'POST', body: JSON.stringify(data) }),
+  create: (data) => jsonRequest(`/api/platform/data/${name}`, { method: 'POST', body: JSON.stringify(withPrivacyProof(data)) }),
   update: (id, data) => jsonRequest(`/api/platform/data/${name}/${encodeURIComponent(id)}`, { method: 'PATCH', body: JSON.stringify(data) }),
   delete: (id) => jsonRequest(`/api/platform/data/${name}/${encodeURIComponent(id)}`, { method: 'DELETE' }),
 });
@@ -41,7 +56,7 @@ export const platform = {
   entities,
   functions: {
     invoke: (name, payload = {}) => jsonRequest(`/api/platform/functions/${encodeURIComponent(name)}`, {
-      method: 'POST', body: JSON.stringify(payload),
+      method: 'POST', body: JSON.stringify(withPrivacyProof(payload)),
     }).then((data) => ({ data })),
   },
   integrations: {

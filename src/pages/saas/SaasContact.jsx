@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { platform } from '@/api/platformClient';
 import { Send, CheckCircle, Mail, Phone, MapPin, Sparkles, MessageCircle, ArrowLeft, Settings } from 'lucide-react';
 import PackConfigurator from '../../components/saas/PackConfigurator';
+import PrivacyConsentNotice from '@/components/legal/PrivacyConsentNotice';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -241,9 +242,7 @@ export default function SaasContact() {
                     style={form.consentRgpd ? { background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` } : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,175,55,0.25)' }}>
                     {form.consentRgpd && <span className="text-black text-xs font-black">✓</span>}
                   </div>
-                  <span className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                    J'accepte que mes données soient utilisées pour être recontacté (RGPD). <span style={{ color: GOLD }}>*</span>
-                  </span>
+                  <PrivacyConsentNotice className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }} />
                 </label>
 
                 <motion.button type="submit" disabled={loading || !form.consentRgpd || !form.email}

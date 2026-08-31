@@ -3,6 +3,7 @@ import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { extname, join, normalize } from 'node:path';
 import { auditSeo, SeoAuditError } from './server-seo-audit.mjs';
+import { PRIVACY_CONSENT_TEXT, PRIVACY_NOTICE_VERSION, PRIVACY_POLICY_PATH, purposeForSource } from './privacy-consent.mjs';
 
 const dist = join(process.cwd(), 'dist');
 const port = Number.parseInt(process.env.PORT || '8080', 10);
@@ -10,6 +11,7 @@ const agentUrl = (process.env.JSINNOVIA_AGENT_URL || 'https://jsinnovia-agent-pr
 const elyneaUrl = (process.env.ELYNEA_NOVA_URL || 'https://cockpit.jsinnovia.com/api/public/elynea/chat').trim();
 const elyneaSubmitUrl = (process.env.ELYNEA_SUBMIT_URL || elyneaUrl.replace(/\/chat\/?$/, '/submit')).trim();
 const elyneaSiteKey = process.env.ELYNEA_SITE_KEY || '';
+const governanceConsentUrl = (process.env.GOVERNANCE_CONSENT_URL || elyneaUrl.replace(/\/api\/public\/elynea\/chat\/?$/, '/api/governance/public-consents')).trim();
 const playerDownloadUrl = (process.env.PIXELIUM_PLAYER_DOWNLOAD_URL || 'https://olivier-signage-cockpit-production.up.railway.app/api/player-download/latest').trim();
 const agentKey = process.env.AGENT_API_KEY || process.env.JSINNOVIA_AGENT_KEY || '';
 const rateLimits = new Map();
@@ -88,12 +90,51 @@ const agentFetch = async (path, options = {}) => fetch(`${agentUrl}${path}`, {
   headers: { 'Content-Type': 'application/json', 'x-agent-key': agentKey, ...(options.headers || {}) },
 });
 
-const proxyAgent = async (request, response, path) => {
-  const body = ['POST', 'PUT', 'PATCH'].includes(request.method) ? await readJson(request) : undefined;
+const proxyAgent = async (request, response, path, suppliedBody) => {
+  const body = suppliedBody ?? (['POST', 'PUT', 'PATCH'].includes(request.method) ? await readJson(request) : undefined);
   const upstream = await agentFetch(path, { method: request.method, body: body ? JSON.stringify(body) : undefined });
   const text = await upstream.text();
   response.writeHead(upstream.status, { 'Content-Type': upstream.headers.get('content-type') || 'application/json', 'Cache-Control': 'no-store' });
   response.end(text);
+};
+
+const withoutPrivacyProof = ({ privacyConsent: _privacyConsent, ...payload }) => payload;
+
+const recordPrivacyConsent = async (body, request) => {
+  const consentGiven = body?.consentRgpd === true || body?.consent === true;
+  if (!consentGiven) return null;
+  if (!elyneaSiteKey || elyneaSiteKey.length < 32) throw new Error('privacy-registry-not-configured');
+
+  const proof = body.privacyConsent || {};
+  if (proof.text !== PRIVACY_CONSENT_TEXT || proof.version !== PRIVACY_NOTICE_VERSION || proof.policyPath !== PRIVACY_POLICY_PATH) {
+    throw new Error('privacy-proof-invalid');
+  }
+  const contact = body.contact || body;
+  const email = String(contact.email || '').trim().toLowerCase();
+  if (!email) throw new Error('privacy-email-required');
+
+  const upstream = await fetch(governanceConsentUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-elynea-site-key': elyneaSiteKey,
+      'x-forwarded-for': request.headers['x-forwarded-for']?.split(',')[0]?.trim() || request.socket.remoteAddress || '',
+      'user-agent': request.headers['user-agent'] || '',
+    },
+    body: JSON.stringify({
+      person_email: email,
+      person_name: String(contact.name || [contact.firstName, contact.lastName].filter(Boolean).join(' ') || contact.nom || '').trim(),
+      purpose: purposeForSource(body.source || (body.contact ? 'elynea_chatbot' : 'public_website')),
+      consent_text: proof.text,
+      text_version: proof.version,
+      submission_id: String(proof.submissionId || ''),
+      source: String(body.source || (body.contact ? 'elynea_chatbot' : 'public_website')),
+    }),
+    signal: AbortSignal.timeout(AGENT_TIMEOUT_MS),
+  });
+  const data = await upstream.json().catch(() => ({}));
+  if (!upstream.ok || !data?.data?.id || !data?.data?.processing_activity_id) throw new Error('privacy-registry-write-failed');
+  return data.data;
 };
 
 const INTERNAL_DETAILS = /(?:\brailway\b|\bsupabase\b|\bbase44\b|\bgithub\b|\bcomfyui\b|\bopenai\b|\bgrok\b|\bsora\b|\bclé(?:s)? api\b|\bapi key\b|\btoken(?:s)?\b|\bjeton(?:s)?\b|\bprompt(?:s)?(?: système)?\b|\bagent(?:s)? interne(?:s)?\b|\borchestration interne\b|\bmode(?:s)? de production\b|\bpipeline(?:s)? interne(?:s)?\b|\bdépôt(?:s)? (?:git|de code)\b|\brepositor(?:y|ies)\b|\bvariable(?:s)? d'environnement\b)/i;
@@ -192,7 +233,13 @@ createServer(async (request, response) => {
         const canWrite = request.method === 'POST' && publicWriteTables.has(table) && !suffix.includes('/');
         if (!canRead && !canWrite) return json(response, 403, { error: 'Cette opération est réservée au cockpit NOVA' });
         const upstreamSuffix = request.method === 'POST' && table === 'Lead' ? 'Contact' : suffix;
-        return await proxyAgent(request, response, `/data/${upstreamSuffix}${url.search}`);
+        let body;
+        if (canWrite) {
+          body = await readJson(request);
+          await recordPrivacyConsent(body, request);
+          body = withoutPrivacyProof(body);
+        }
+        return await proxyAgent(request, response, `/data/${upstreamSuffix}${url.search}`, body);
       }
       if (request.method !== 'POST') { response.setHeader('Allow', 'POST'); return json(response, 405, { error: 'Méthode non autorisée' }); }
       const body = await readJson(request);
@@ -238,6 +285,7 @@ createServer(async (request, response) => {
           return json(response, 503, { error: 'La demande n’a pas été transmise. Merci de réessayer plus tard.' });
         }
         try {
+          await recordPrivacyConsent(body, request);
           const upstream = await fetch(elyneaSubmitUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'x-elynea-site-key': elyneaSiteKey },
@@ -267,7 +315,8 @@ createServer(async (request, response) => {
         }
       }
       if (pathname === '/api/platform/functions/receiveLead') {
-        const upstream = await agentFetch('/data/Contact', { method: 'POST', body: JSON.stringify(body) });
+        await recordPrivacyConsent(body, request);
+        const upstream = await agentFetch('/data/Contact', { method: 'POST', body: JSON.stringify(withoutPrivacyProof(body)) });
         return json(response, upstream.ok ? 200 : 502, await upstream.json().catch(() => ({})));
       }
       if (pathname === '/api/platform/llm') {

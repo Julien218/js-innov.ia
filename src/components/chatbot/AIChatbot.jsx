@@ -5,6 +5,7 @@ import { AlertCircle, ArrowUpRight, CheckCircle2, Loader2, RotateCcw, Send, Shie
 import { platform } from '@/api/platformClient';
 import AIAvatar from './AIAvatar';
 import ElynaAvatar3D from './ElynaAvatar3D';
+import PrivacyConsentNotice from '@/components/legal/PrivacyConsentNotice';
 
 const AVATAR = '/brand/companion/companion-avatar-256.webp';
 const AUTO_WELCOME_STORAGE_KEY = 'jsinnovia-elynea-welcomed-at';
@@ -260,7 +261,7 @@ export default function AIChatbot() {
                       <input value={contact.phone} onChange={(event) => setContact((current) => ({ ...current, phone: event.target.value.slice(0, 60) }))} placeholder="Téléphone (facultatif)" autoComplete="tel" className="w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-2 text-xs text-white outline-none focus:border-amber-300/50" />
                       <label className="flex cursor-pointer items-start gap-2 text-[11px] leading-relaxed text-slate-300">
                         <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} className="mt-0.5 accent-amber-300" />
-                        <span>J’autorise JS-Innov.IA à recevoir cette conversation et mes coordonnées pour répondre à ma demande.</span>
+                        <PrivacyConsentNotice />
                       </label>
                       {handoffError && <p className="text-xs text-red-200" role="alert">{handoffError}</p>}
                       <div className="flex gap-2">

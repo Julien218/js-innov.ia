@@ -6,6 +6,7 @@ import {
   QrCode, Instagram, FileText, Loader2, CheckCircle
 } from 'lucide-react';
 import { platform } from '@/api/platformClient';
+import PrivacyConsentNotice from '@/components/legal/PrivacyConsentNotice';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -313,16 +314,15 @@ export default function SaasProjet() {
                     placeholder="votre@email.com" type="email" className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
                     style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: 'white' }} />
                 </div>
-                <button onClick={() => setForm(f => ({ ...f, consentement: !f.consentement }))}
-                  className="flex items-start gap-3 text-left w-full">
+                <label className="flex items-start gap-3 text-left w-full cursor-pointer">
+                  <input type="checkbox" className="sr-only" checked={form.consentement}
+                    onChange={e => setForm(f => ({ ...f, consentement: e.target.checked }))} />
                   <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 transition-all"
                     style={{ background: form.consentement ? GOLD : 'rgba(255,255,255,0.08)', border: `1px solid ${form.consentement ? GOLD : 'rgba(255,255,255,0.2)'}` }}>
                     {form.consentement && <Check className="w-3 h-3 text-black" />}
                   </div>
-                  <span className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                    J'accepte que mes données soient utilisées pour recevoir une offre personnalisée. Conformité RGPD garantie. *
-                  </span>
-                </button>
+                  <PrivacyConsentNotice className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }} />
+                </label>
                 {error && <p className="text-xs text-red-400">{error}</p>}
               </div>
             )}

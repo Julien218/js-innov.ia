@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Check, Sparkles, MessageCircle, ArrowRight } from 'lucide-react';
 import { platform } from '@/api/platformClient';
+import PrivacyConsentNotice from '@/components/legal/PrivacyConsentNotice';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -272,9 +273,7 @@ export default function SaasAnalyse() {
                       : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,175,55,0.25)' }}>
                     {data.consentRgpd && <Check className="w-4 h-4 text-black" />}
                   </div>
-                  <span className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                    J'accepte que mes données soient utilisées pour être recontacté dans le cadre de ma demande. <span style={{ color: GOLD }}>*</span>
-                  </span>
+                  <PrivacyConsentNotice className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }} />
                 </label>
                 <motion.button whileHover={{ scale: 1.04, boxShadow: '0 0 50px rgba(212,175,55,0.45)' }} whileTap={{ scale: 0.97 }}
                   onClick={handleSubmit} disabled={!data.consentRgpd || loading}

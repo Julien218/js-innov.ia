@@ -7,6 +7,7 @@ import {
   Users, Target, Megaphone,
   CheckCircle, MessageCircle, Send, Star, Shield
 } from 'lucide-react';
+import PrivacyConsentNotice from '@/components/legal/PrivacyConsentNotice';
 
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
@@ -349,9 +350,7 @@ function StepContact({ form, onChange }) {
             style={form.consent ? { background: `linear-gradient(135deg, ${GOLD}, ${GOLD_L})` } : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,175,55,0.25)' }}>
             {form.consent && <span className="text-black text-xs font-black">✓</span>}
           </div>
-          <span className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
-            J'accepte que mes données soient utilisées pour recevoir ce devis et être recontacté (RGPD). <span style={{ color: GOLD }}>*</span>
-          </span>
+          <PrivacyConsentNotice className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }} />
         </label>
       </div>
     </div>

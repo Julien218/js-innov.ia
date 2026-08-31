@@ -6,6 +6,7 @@ import {
   Phone, Mail, MapPin, AlertTriangle, ArrowRight, Clock,
   BarChart2, Eye, Repeat
 } from 'lucide-react';
+import PrivacyConsentNotice from '@/components/legal/PrivacyConsentNotice';
 
 const C = {
   bg:     '#06090F',
@@ -119,18 +120,8 @@ export default function EcranLed() {
         consentRgpd: true,
       });
       setSent(true);
-    } catch (err) {
-      // Fallback mailto si Supabase KO
-      const subject = encodeURIComponent(`Demande écran LED — Forfait ${pack.label}`);
-      const body = encodeURIComponent(
-        `Forfait : ${pack.label}\n` +
-        `Prénom : ${form.prenom}\nNom : ${form.nom}\n` +
-        `Entreprise : ${form.entreprise || '—'}\n` +
-        `Email : ${form.email}\nTél : ${form.telephone}\n` +
-        `Message : ${form.message || '—'}`
-      );
-      window.location.href = `mailto:info@jsinnovia.store?subject=${subject}&body=${body}`;
-      setSent(true);
+    } catch (_error) {
+      setError('La demande n’a pas pu être enregistrée avec sa preuve de consentement. Merci de réessayer ou de nous écrire à info@jsinnovia.store.');
     }
     setSending(false);
   };
@@ -514,9 +505,7 @@ export default function EcranLed() {
                     <input type="checkbox" required checked={form.rgpd}
                       onChange={e => setForm({ ...form, rgpd: e.target.checked })}
                       style={{ marginTop: 3, accentColor: C.cyan, flexShrink: 0, width: 15, height: 15 }} />
-                    <span style={{ fontSize: '0.62rem', color: C.muted, lineHeight: 1.5 }}>
-                      J'accepte que mes données soient utilisées pour répondre à ma demande. Données non revendues ni partagées. (RGPD UE 2016/679) *
-                    </span>
+                    <PrivacyConsentNotice style={{ fontSize: '0.62rem', color: C.muted, lineHeight: 1.5 }} />
                   </label>
 
                   {error && (
