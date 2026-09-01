@@ -32,7 +32,8 @@ const PACKS = [
       'Diffusion 24h/7j pendant 12 mois',
       'Paiement mensuel pendant 12 mois',
       'Spot de 10 secondes en rotation',
-      '+300 passages/jour — Espace C, Dour',
+      '+300 diffusions estimées par jour',
+      '+300 passages estimés par jour — Espace C, Dour',
       'Vidéo publicitaire offerte par Pixelium',
       'Activation sous 48h',
     ],
@@ -60,7 +61,8 @@ const PACKS = [
 
 const SPECS = [
   { icon: <Monitor size={18} />,  label: 'Dimensions écran',  value: 'Grand format LED — Espace C, Dour' },
-  { icon: <Eye size={18} />,      label: 'Trafic estimé',     value: '+300 passages / jour' },
+  { icon: <Eye size={18} />,      label: 'Passages estimés',  value: '+300 passages / jour' },
+  { icon: <Repeat size={18} />,   label: 'Diffusions estimées', value: '+300 diffusions du spot / jour' },
   { icon: <Clock size={18} />,    label: 'Diffusion',         value: '24h / 7j / 365j' },
   { icon: <Repeat size={18} />,   label: 'Format spot',       value: '10 secondes en rotation' },
   { icon: <BarChart2 size={18} />,label: 'Formats acceptés',  value: 'JPEG, PNG, MP4 (fourni par le client)' },
@@ -236,6 +238,37 @@ export default function EcranLed() {
             borderRadius: 50, textDecoration: 'none', boxShadow: '0 6px 24px rgba(0,180,216,0.45)' }}>
             Demander un devis <ArrowRight size={16} />
           </a>
+        </motion.div>
+      </section>
+
+      {/* ══ CHIFFRES CLÉS EXPLIQUÉS ══ */}
+      <section aria-labelledby="chiffres-cles" style={{ padding: 'clamp(38px,6vw,56px) 5%', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+        <motion.div {...fadeUp} style={{ maxWidth: 860, margin: '0 auto' }}>
+          <p style={{ fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase', color: C.gold, marginBottom: 10 }}>
+            Visibilité expliquée simplement
+          </p>
+          <h2 id="chiffres-cles" style={{ fontSize: 'clamp(1.3rem,3.5vw,2rem)', fontWeight: 900, textTransform: 'uppercase', margin: '0 0 12px' }}>
+            Deux chiffres, <span style={{ color: C.cyan }}>deux informations différentes</span>
+          </h2>
+          <p style={{ fontSize: '0.82rem', color: C.silver, lineHeight: 1.65, margin: '0 0 26px', maxWidth: 680 }}>
+            Le nombre de diffusions mesure la fréquence d'affichage de votre publicité. Le nombre de passages estime la fréquentation quotidienne devant l'emplacement.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,280px),1fr))', gap: 16 }}>
+            <div style={{ padding: '22px 24px', borderRadius: 18, background: 'linear-gradient(145deg,rgba(0,217,255,0.12),rgba(23,120,255,0.06))', border: '1px solid rgba(0,217,255,0.32)', boxShadow: '0 14px 36px rgba(0,217,255,0.08)' }}>
+              <div style={{ fontSize: 'clamp(2rem,6vw,3rem)', fontWeight: 900, color: C.cyan, lineHeight: 1 }}>+300</div>
+              <div style={{ fontSize: '0.82rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: 8 }}>diffusions estimées par jour</div>
+              <p style={{ fontSize: '0.72rem', color: C.silver, lineHeight: 1.55, margin: '8px 0 0' }}>
+                Votre spot publicitaire est programmé en boucle et apparaît plus de 300 fois au cours d'une journée.
+              </p>
+            </div>
+            <div style={{ padding: '22px 24px', borderRadius: 18, background: 'linear-gradient(145deg,rgba(117,75,255,0.12),rgba(241,0,255,0.05))', border: '1px solid rgba(117,75,255,0.34)', boxShadow: '0 14px 36px rgba(117,75,255,0.08)' }}>
+              <div style={{ fontSize: 'clamp(2rem,6vw,3rem)', fontWeight: 900, color: '#A98FFF', lineHeight: 1 }}>+300</div>
+              <div style={{ fontSize: '0.82rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: 8 }}>passages estimés par jour</div>
+              <p style={{ fontSize: '0.72rem', color: C.silver, lineHeight: 1.55, margin: '8px 0 0' }}>
+                Il s'agit de l'estimation du nombre de passages quotidiens devant l'écran situé à l'Espace C de Dour.
+              </p>
+            </div>
+          </div>
         </motion.div>
       </section>
 
