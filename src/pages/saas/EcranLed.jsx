@@ -268,7 +268,7 @@ export default function EcranLed() {
               aria-label="Vidéo promotionnelle Pixelium — écran géant de l'Espace C à Dour"
               style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'contain' }}
             >
-              <source src="https://www.dropbox.com/scl/fi/l3k06nl6t5zzhcx9ytvuy/JS-Innov.IA-Pub-ecran-espace-dour-js-innov-ia-2026-09-01-68a14e6383.mp4?rlkey=vdfw6n1vlbcpd9vhm57nukuar&raw=1" type="video/mp4" />
+              <source src="/media/pixelium-espace-c-dour.mp4" type="video/mp4" />
               Votre navigateur ne prend pas en charge la lecture vidéo.
             </video>
           </div>
