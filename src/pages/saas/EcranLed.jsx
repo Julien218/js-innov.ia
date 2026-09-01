@@ -199,9 +199,9 @@ export default function EcranLed() {
             alt="Pixelium — entreprise de diffusion digitale"
             width="512"
             height="512"
-            style={{ display: 'block', width: 'min(78vw, 360px)', height: 'auto', objectFit: 'contain', margin: '0 auto 20px' }}
+            style={{ display: 'block', width: 'min(78vw, 360px)', height: 'auto', objectFit: 'contain', margin: '0 0 20px' }}
           />
-          <p style={{ margin: '0 auto 24px', textAlign: 'center', color: C.muted, fontSize: '0.68rem', letterSpacing: '0.10em', textTransform: 'uppercase' }}>
+          <p style={{ margin: '0 0 24px', textAlign: 'left', color: C.muted, fontSize: '0.68rem', letterSpacing: '0.10em', textTransform: 'uppercase' }}>
             SIGNELYA · application de diffusion digitale
           </p>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(0,180,216,0.10)',
