@@ -83,7 +83,7 @@ export default function EcranLed() {
 
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = 'PIXELIUM — Publicité sur écran géant à Dour | SYNELYA';
+    document.title = 'PIXELIUM — Publicité sur écran géant à Dour | SIGNELYA';
     return () => { document.title = previousTitle; };
   }, []);
 
@@ -125,7 +125,42 @@ export default function EcranLed() {
   };
 
   return (
-    <div style={{ fontFamily: "'Inter','Segoe UI',sans-serif", background: C.bg, color: C.white, minHeight: '100vh', overflowX: 'hidden' }}>
+    <div className="pixelium-signage-page" style={{ fontFamily: "'Inter','Segoe UI',sans-serif", background: C.bg, color: C.white, minHeight: '100vh', overflowX: 'hidden' }}>
+      <style>{`
+        @keyframes brandVisualFloat {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-7px); }
+        }
+        .pixelium-signage-page img,
+        .pixelium-signage-page video {
+          border-radius: 20px !important;
+          box-shadow:
+            0 16px 38px rgba(0, 217, 255, 0.20),
+            0 0 26px rgba(117, 75, 255, 0.18),
+            0 0 18px rgba(241, 0, 255, 0.10);
+          filter: saturate(1.18) contrast(1.04);
+          animation: brandVisualFloat 6s ease-in-out infinite;
+          transition: filter 240ms ease, box-shadow 240ms ease;
+        }
+        .pixelium-signage-page img:hover,
+        .pixelium-signage-page video:hover {
+          filter: saturate(1.32) contrast(1.06);
+          box-shadow:
+            0 20px 48px rgba(0, 217, 255, 0.28),
+            0 0 34px rgba(117, 75, 255, 0.24),
+            0 0 24px rgba(241, 0, 255, 0.16);
+        }
+        .pixelium-signage-page video {
+          display: block;
+          max-width: 100%;
+          overflow: hidden;
+          background: #03050A;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .pixelium-signage-page img,
+          .pixelium-signage-page video { animation: none; }
+        }
+      `}</style>
 
       {/* ══ IDENTITÉ PIXELIUM ══ */}
       <nav aria-label="Navigation principale" style={{
@@ -143,10 +178,11 @@ export default function EcranLed() {
           </div>
         </a>
         <div style={{
-          maxWidth: 250, padding: '7px 12px', borderRadius: 50, textAlign: 'right',
-          background: 'rgba(0,180,216,0.08)', border: '1px solid rgba(0,180,216,0.20)'
+          width: 'min(42vw, 260px)', padding: '8px 12px', borderRadius: 18, textAlign: 'center',
+          background: 'rgba(0,180,216,0.08)', border: '1px solid rgba(117,75,255,0.28)'
         }}>
-          <div style={{ fontSize: '0.62rem', color: C.cyan, fontWeight: 900, letterSpacing: '0.12em' }}>SYNELYA</div>
+          <img src="/signelya-lockup-horizontal.svg" alt="SIGNELYA — Vos écrans prennent vie"
+            width="220" height="78" style={{ display: 'block', width: '100%', height: 'auto', objectFit: 'contain', marginBottom: 4 }} />
           <div style={{ fontSize: '0.56rem', color: C.muted }}>Application de diffusion utilisée par Pixelium</div>
         </div>
       </nav>
@@ -166,7 +202,7 @@ export default function EcranLed() {
             style={{ display: 'block', width: 'min(78vw, 360px)', height: 'auto', objectFit: 'contain', margin: '0 auto 20px' }}
           />
           <p style={{ margin: '0 auto 24px', textAlign: 'center', color: C.muted, fontSize: '0.68rem', letterSpacing: '0.10em', textTransform: 'uppercase' }}>
-            SYNELYA · application de diffusion digitale
+            SIGNELYA · application de diffusion digitale
           </p>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(0,180,216,0.10)',
             border: '1px solid rgba(0,180,216,0.28)', borderRadius: 50, padding: '6px 16px', marginBottom: 20 }}>
@@ -564,7 +600,7 @@ export default function EcranLed() {
             </div>
           </div>
           <p style={{ fontSize: '0.72rem', color: C.silver, margin: 0 }}>
-            <strong style={{ color: C.cyan }}>Synelya</strong> — application de diffusion digitale utilisée par Pixelium.
+            <strong style={{ color: C.cyan }}>Signelya</strong> — application de diffusion digitale utilisée par Pixelium.
           </p>
           <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', justifyContent: 'center' }}>
             <a href="tel:+32494119090" style={{ fontSize: '0.72rem', color: C.muted, textDecoration: 'none', fontWeight: 600 }}>0494 11 90 90</a>
@@ -576,7 +612,7 @@ export default function EcranLed() {
           {/* Carte flottante de conception JS-Innov.IA */}
           <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" aria-label="Visiter le site JS-Innov.IA, concepteur du site et des créations visuelles"
             style={{
-              width: 'min(100%, 480px)', boxSizing: 'border-box',
+              width: 'min(100%, 560px)', boxSizing: 'border-box',
               display: 'flex', alignItems: 'center', gap: 16, textAlign: 'left',
               padding: '14px 18px', borderRadius: 18, textDecoration: 'none',
               background: 'linear-gradient(145deg, rgba(19,27,43,0.98), rgba(6,13,24,0.98))',
@@ -584,10 +620,10 @@ export default function EcranLed() {
               boxShadow: '0 16px 44px rgba(0,0,0,0.48), 0 0 30px rgba(0,180,216,0.10)',
               transform: 'translateY(-2px)'
             }}>
-            <img src="/brand/companion/companion-avatar-256.webp"
-              alt="Logo JS-Innov.IA" width="76" height="76"
+            <img src="https://raw.githubusercontent.com/Julien218/jsinnovia-assets-/main/logo-complet-800.png"
+              alt="Logo officiel JS-Innov.IA" width="112" height="112"
               style={{
-                width: 76, height: 76, flexShrink: 0, objectFit: 'contain',
+                width: 112, height: 112, flexShrink: 0, objectFit: 'cover',
                 borderRadius: 16, background: 'rgba(255,255,255,0.04)',
                 border: '1px solid rgba(212,175,55,0.28)'
               }} />
