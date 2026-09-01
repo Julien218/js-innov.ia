@@ -156,6 +156,48 @@ export default function EcranLed() {
           overflow: hidden;
           background: #03050A;
         }
+        .brand-zigzag {
+          width: 100%;
+          max-width: 1280px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          align-items: center;
+          gap: clamp(32px, 6vw, 88px);
+        }
+        .brand-zigzag-copy,
+        .brand-zigzag-media {
+          min-width: 0;
+        }
+        .brand-zigzag-media {
+          width: 100%;
+        }
+        .brand-video-grid .brand-zigzag-media {
+          grid-column: 1;
+          grid-row: 1;
+        }
+        .brand-video-grid .brand-zigzag-copy {
+          grid-column: 2;
+          grid-row: 1;
+        }
+        @media (max-width: 760px) {
+          .brand-zigzag {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 24px;
+          }
+          .brand-video-grid .brand-zigzag-copy { grid-column: 1; grid-row: auto; order: 1; }
+          .brand-video-grid .brand-zigzag-media { grid-column: 1; grid-row: auto; order: 2; }
+          .brand-zigzag-media img,
+          .brand-zigzag-media video { width: 100% !important; }
+        }
+        @media (max-width: 420px) {
+          .pixelium-main-nav {
+            position: relative !important;
+            flex-direction: column;
+            align-items: stretch !important;
+          }
+          .pixelium-main-nav > div { width: 100% !important; box-sizing: border-box; }
+        }
         @media (prefers-reduced-motion: reduce) {
           .pixelium-signage-page img,
           .pixelium-signage-page video { animation: none; }
@@ -163,7 +205,7 @@ export default function EcranLed() {
       `}</style>
 
       {/* ══ IDENTITÉ PIXELIUM ══ */}
-      <nav aria-label="Navigation principale" style={{
+      <nav className="pixelium-main-nav" aria-label="Navigation principale" style={{
         position: 'sticky', top: 0, zIndex: 100, minHeight: 72, padding: '8px 5%',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,
         background: 'rgba(2,5,9,0.94)', backdropFilter: 'blur(14px)',
@@ -192,8 +234,9 @@ export default function EcranLed() {
         borderBottom: '1px solid rgba(0,180,216,0.14)' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 20% 50%, rgba(0,180,216,0.12) 0%, transparent 60%)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 80% 20%, rgba(212,175,55,0.08) 0%, transparent 55%)', pointerEvents: 'none' }} />
-        <motion.div initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-          style={{ maxWidth: 860, margin: '0 auto', position: 'relative', zIndex: 2 }}>
+        <motion.div className="brand-zigzag brand-hero-grid" initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
+          style={{ position: 'relative', zIndex: 2 }}>
+          <div className="brand-zigzag-copy">
           <img
             src="/pixelium-logo.png"
             alt="Pixelium — entreprise de diffusion digitale"
@@ -236,32 +279,24 @@ export default function EcranLed() {
             borderRadius: 50, textDecoration: 'none', boxShadow: '0 6px 24px rgba(0,180,216,0.45)' }}>
             Demander un devis <ArrowRight size={16} />
           </a>
-        </motion.div>
-      </section>
-
-      {/* ══ TECHNOLOGIE SIGNELYA ══ */}
-      <section aria-labelledby="technologie-signelya" style={{
-        padding: 'clamp(44px,7vw,68px) 5%',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
-        background: 'radial-gradient(ellipse at 50% 50%, rgba(94,54,255,0.12) 0%, transparent 68%)'
-      }}>
-        <motion.div {...fadeUp} style={{ maxWidth: 980, margin: '0 auto', textAlign: 'center' }}>
-          <p style={{ fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase', color: C.gold, marginBottom: 10 }}>
-            Technologie de diffusion
-          </p>
-          <h2 id="technologie-signelya" style={{ fontSize: 'clamp(1.3rem,3.5vw,2rem)', fontWeight: 900, textTransform: 'uppercase', margin: '0 0 10px' }}>
-            SIGNELYA, <span style={{ color: C.cyan }}>l'application utilisée par Pixelium</span>
-          </h2>
-          <p style={{ fontSize: '0.82rem', color: C.silver, lineHeight: 1.65, margin: '0 auto 24px', maxWidth: 720 }}>
-            La programmation et la diffusion digitale des campagnes Pixelium sont pilotées avec SIGNELYA, une application conçue par <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a>.
-          </p>
-          <img
-            src="/branding/signelya-officiel-jsinnovia.png"
-            alt="SIGNELYA by JS-Innov.IA — Vos écrans prennent vie"
-            width="1672"
-            height="941"
-            style={{ display: 'block', width: '100%', height: 'auto', objectFit: 'cover', borderRadius: 24 }}
-          />
+          </div>
+          <div className="brand-zigzag-media" style={{
+            padding: 'clamp(10px,2vw,18px)', borderRadius: 28,
+            background: 'linear-gradient(145deg,rgba(0,217,255,0.10),rgba(117,75,255,0.12))',
+            border: '1px solid rgba(0,217,255,0.30)',
+            boxShadow: '0 24px 64px rgba(0,0,0,0.44), 0 0 40px rgba(117,75,255,0.14)'
+          }}>
+            <img
+              src="/branding/signelya-officiel-jsinnovia.png"
+              alt="SIGNELYA by JS-Innov.IA — application de diffusion utilisée par Pixelium"
+              width="1672"
+              height="941"
+              style={{ display: 'block', width: '100%', height: 'auto', objectFit: 'cover', borderRadius: 22 }}
+            />
+            <p style={{ fontSize: '0.68rem', color: C.silver, lineHeight: 1.5, margin: '14px 6px 2px', textAlign: 'center' }}>
+              SIGNELYA — application de diffusion digitale conçue par <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a> et utilisée par Pixelium.
+            </p>
+          </div>
         </motion.div>
       </section>
 
@@ -271,7 +306,8 @@ export default function EcranLed() {
         borderBottom: '1px solid rgba(255,255,255,0.05)',
         background: 'radial-gradient(ellipse at 50% 10%, rgba(117,75,255,0.10) 0%, transparent 62%)'
       }}>
-        <motion.div {...fadeUp} style={{ maxWidth: 860, margin: '0 auto' }}>
+        <motion.div className="brand-zigzag brand-video-grid" {...fadeUp}>
+          <div className="brand-zigzag-copy">
           <p style={{ fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase', color: C.gold, marginBottom: 10 }}>
             Découvrez l'offre en images
           </p>
@@ -281,6 +317,8 @@ export default function EcranLed() {
           <p style={{ fontSize: '0.82rem', color: C.silver, lineHeight: 1.65, margin: '0 0 24px', maxWidth: 680 }}>
             Découvrez le dispositif Pixelium à l'Espace C et la puissance d'une campagne diffusée avec SIGNELYA.
           </p>
+          </div>
+          <div className="brand-zigzag-media">
           <div style={{
             padding: 'clamp(10px,2vw,16px)', borderRadius: 24,
             background: 'linear-gradient(145deg,rgba(0,180,216,0.10),rgba(117,75,255,0.10))',
@@ -301,19 +339,25 @@ export default function EcranLed() {
           <p style={{ fontSize: '0.66rem', color: C.muted, lineHeight: 1.5, margin: '14px 0 0', textAlign: 'center' }}>
             Vidéo promotionnelle conçue par <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a>.
           </p>
+          </div>
         </motion.div>
       </section>
 
       {/* ══ CHIFFRE CLÉ EXPLIQUÉ ══ */}
       <section aria-labelledby="chiffres-cles" style={{ padding: 'clamp(38px,6vw,56px) 5%', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-        <motion.div {...fadeUp} style={{ maxWidth: 860, margin: '0 auto' }}>
+        <motion.div className="brand-zigzag" {...fadeUp}>
+          <div className="brand-zigzag-copy">
           <p style={{ fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase', color: C.gold, marginBottom: 10 }}>
             Fréquence de diffusion
           </p>
           <h2 id="chiffres-cles" style={{ fontSize: 'clamp(1.3rem,3.5vw,2rem)', fontWeight: 900, textTransform: 'uppercase', margin: '0 0 22px' }}>
             Plus de <span style={{ color: C.cyan }}>300 passages du spot</span> par jour
           </h2>
-          <div style={{ padding: 'clamp(22px,4vw,30px)', borderRadius: 20, background: 'linear-gradient(145deg,rgba(0,217,255,0.12),rgba(117,75,255,0.07))', border: '1px solid rgba(0,217,255,0.32)', boxShadow: '0 14px 36px rgba(0,217,255,0.08)' }}>
+          <p style={{ fontSize: '0.82rem', color: C.silver, lineHeight: 1.65, margin: 0 }}>
+            Une fréquence élevée et régulière pour donner à votre campagne une présence continue sur l'écran géant de l'Espace C.
+          </p>
+          </div>
+          <div className="brand-zigzag-media" style={{ padding: 'clamp(22px,4vw,30px)', borderRadius: 20, background: 'linear-gradient(145deg,rgba(0,217,255,0.12),rgba(117,75,255,0.07))', border: '1px solid rgba(0,217,255,0.32)', boxShadow: '0 14px 36px rgba(0,217,255,0.08)' }}>
             <div style={{ fontSize: 'clamp(2.2rem,7vw,3.6rem)', fontWeight: 900, color: C.cyan, lineHeight: 1 }}>+300</div>
             <div style={{ fontSize: '0.86rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: 8 }}>
               diffusions de votre publicité par jour
