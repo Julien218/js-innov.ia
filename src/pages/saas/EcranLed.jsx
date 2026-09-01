@@ -452,6 +452,7 @@ export default function EcranLed() {
                   <span style={{ fontSize: '0.82rem', fontWeight: 600, color: C.cyan }}>info@jsinnovia.com</span>
                 </a>
               </div>
+            </div>
 
             {/* Formulaire */}
             <div>
