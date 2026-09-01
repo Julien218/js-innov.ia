@@ -196,7 +196,7 @@ export default function EcranLed() {
             flex-direction: column;
             align-items: stretch !important;
           }
-          .pixelium-main-nav > div { width: 100% !important; box-sizing: border-box; }
+          .pixelium-main-nav > div { width: 100% !important; box-sizing: border-box; justify-content: center !important; }
         }
         @media (prefers-reduced-motion: reduce) {
           .pixelium-signage-page img,
@@ -220,12 +220,16 @@ export default function EcranLed() {
           </div>
         </a>
         <div style={{
-          width: 'min(42vw, 260px)', padding: '8px 12px', borderRadius: 18, textAlign: 'center',
+          width: 'min(44vw, 270px)', padding: '7px 10px', borderRadius: 18,
+          display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 10,
           background: 'rgba(0,180,216,0.08)', border: '1px solid rgba(117,75,255,0.28)'
         }}>
-          <img src="/branding/signelya-officiel-jsinnovia.png" alt="SIGNELYA by JS-Innov.IA — Vos écrans prennent vie"
-            width="1672" height="941" style={{ display: 'block', width: '100%', height: 56, objectFit: 'cover', objectPosition: 'center 63%', marginBottom: 4 }} />
-          <div style={{ fontSize: '0.56rem', color: C.muted }}>Application de diffusion utilisée par Pixelium</div>
+          <img src="/branding/signelya-logo-carre.png" alt="Logo SIGNELYA"
+            width="1536" height="1536" style={{ display: 'block', width: 58, height: 58, flexShrink: 0, objectFit: 'contain', borderRadius: 14 }} />
+          <div style={{ maxWidth: 150, textAlign: 'left' }}>
+            <div style={{ fontSize: '0.68rem', color: C.white, fontWeight: 900, letterSpacing: '0.08em' }}>SIGNELYA</div>
+            <div style={{ fontSize: '0.54rem', color: C.muted, lineHeight: 1.35 }}>Application de diffusion utilisée par Pixelium</div>
+          </div>
         </div>
       </nav>
 
