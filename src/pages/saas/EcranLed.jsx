@@ -589,9 +589,15 @@ export default function EcranLed() {
             <a href="mailto:info@jsinnovia.store" style={{ fontSize: '0.72rem', color: C.cyan, textDecoration: 'none', fontWeight: 600 }}>info@jsinnovia.store</a>
             <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.28)' }}>Espace C · 7370 Dour · Belgique</span>
           </div>
-          <p style={{ fontSize: '0.60rem', color: 'rgba(255,255,255,0.24)', margin: 0 }}>
-            {`© ${new Date().getFullYear()} Pixelium — Tous droits réservés`}
-          </p>
+          <div style={{ fontSize: '0.60rem', color: 'rgba(255,255,255,0.38)', lineHeight: 1.7 }}>
+            <div>{`© ${new Date().getFullYear()} Pixelium — Tous droits réservés`}</div>
+            <div>
+              Site conçu et développé par{' '}
+              <a href="mailto:info@jsinnovia.store" style={{ color: C.cyan, textDecoration: 'none', fontWeight: 700 }}>
+                JS-Innov.IA
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
 
