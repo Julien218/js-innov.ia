@@ -181,8 +181,8 @@ export default function EcranLed() {
           width: 'min(42vw, 260px)', padding: '8px 12px', borderRadius: 18, textAlign: 'center',
           background: 'rgba(0,180,216,0.08)', border: '1px solid rgba(117,75,255,0.28)'
         }}>
-          <img src="/signelya-lockup-horizontal.svg" alt="SIGNELYA — Vos écrans prennent vie"
-            width="220" height="78" style={{ display: 'block', width: '100%', height: 'auto', objectFit: 'contain', marginBottom: 4 }} />
+          <img src="/branding/signelya-officiel-jsinnovia.png" alt="SIGNELYA by JS-Innov.IA — Vos écrans prennent vie"
+            width="1672" height="941" style={{ display: 'block', width: '100%', height: 56, objectFit: 'cover', objectPosition: 'center 63%', marginBottom: 4 }} />
           <div style={{ fontSize: '0.56rem', color: C.muted }}>Application de diffusion utilisée par Pixelium</div>
         </div>
       </nav>
@@ -236,6 +236,32 @@ export default function EcranLed() {
             borderRadius: 50, textDecoration: 'none', boxShadow: '0 6px 24px rgba(0,180,216,0.45)' }}>
             Demander un devis <ArrowRight size={16} />
           </a>
+        </motion.div>
+      </section>
+
+      {/* ══ TECHNOLOGIE SIGNELYA ══ */}
+      <section aria-labelledby="technologie-signelya" style={{
+        padding: 'clamp(44px,7vw,68px) 5%',
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        background: 'radial-gradient(ellipse at 50% 50%, rgba(94,54,255,0.12) 0%, transparent 68%)'
+      }}>
+        <motion.div {...fadeUp} style={{ maxWidth: 980, margin: '0 auto', textAlign: 'center' }}>
+          <p style={{ fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase', color: C.gold, marginBottom: 10 }}>
+            Technologie de diffusion
+          </p>
+          <h2 id="technologie-signelya" style={{ fontSize: 'clamp(1.3rem,3.5vw,2rem)', fontWeight: 900, textTransform: 'uppercase', margin: '0 0 10px' }}>
+            SIGNELYA, <span style={{ color: C.cyan }}>l'application utilisée par Pixelium</span>
+          </h2>
+          <p style={{ fontSize: '0.82rem', color: C.silver, lineHeight: 1.65, margin: '0 auto 24px', maxWidth: 720 }}>
+            La programmation et la diffusion digitale des campagnes Pixelium sont pilotées avec SIGNELYA, une application conçue par <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a>.
+          </p>
+          <img
+            src="/branding/signelya-officiel-jsinnovia.png"
+            alt="SIGNELYA by JS-Innov.IA — Vos écrans prennent vie"
+            width="1672"
+            height="941"
+            style={{ display: 'block', width: '100%', height: 'auto', objectFit: 'cover', borderRadius: 24 }}
+          />
         </motion.div>
       </section>
 
