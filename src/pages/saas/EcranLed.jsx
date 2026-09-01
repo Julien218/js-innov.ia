@@ -841,14 +841,14 @@ export default function EcranLed() {
                         { name: 'telephone', label: 'Téléphone *', type: 'tel' },
                       ].map(({ name, label, type }) => (
                         <div key={name}>
-                          <label style={{ display: 'block', fontSize: '0.60rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.silver, marginBottom: 4 }}>{label}</label>
-                          <input name={name} type={type} value={form[name]} onChange={e => setForm({ ...form, [name]: e.target.value })}
+                          <label htmlFor={`quote-${name}`} style={{ display: 'block', fontSize: '0.60rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.silver, marginBottom: 4 }}>{label}</label>
+                          <input id={`quote-${name}`} name={name} type={type} value={form[name]} onChange={e => setForm({ ...form, [name]: e.target.value })}
                             style={{ width: '100%', padding: '11px 12px', background: 'rgba(6,9,15,0.7)', border: '1px solid rgba(0,180,216,0.18)', borderRadius: 9, color: C.white, fontSize: '0.84rem', outline: 'none', boxSizing: 'border-box' }} />
                         </div>
                       ))}
                       <div>
-                        <label style={{ display: 'block', fontSize: '0.60rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.silver, marginBottom: 4 }}>Message (optionnel)</label>
-                        <textarea name="message" rows={3} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} placeholder="Décrivez votre campagne..."
+                        <label htmlFor="quote-message" style={{ display: 'block', fontSize: '0.60rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.silver, marginBottom: 4 }}>Message (optionnel)</label>
+                        <textarea id="quote-message" name="message" rows={3} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} placeholder="Décrivez votre campagne..."
                           style={{ width: '100%', padding: '11px 12px', background: 'rgba(6,9,15,0.7)', border: '1px solid rgba(0,180,216,0.18)', borderRadius: 9, color: C.white, fontSize: '0.82rem', outline: 'none', resize: 'vertical', boxSizing: 'border-box' }} />
                       </div>
                       <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, background: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.25)', borderRadius: 10, padding: '10px 12px', cursor: 'pointer' }}>
