@@ -239,6 +239,45 @@ export default function EcranLed() {
         </motion.div>
       </section>
 
+      {/* ══ VIDÉO PROMOTIONNELLE ══ */}
+      <section aria-labelledby="video-promotionnelle" style={{
+        padding: 'clamp(48px,8vw,76px) 5%',
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        background: 'radial-gradient(ellipse at 50% 10%, rgba(117,75,255,0.10) 0%, transparent 62%)'
+      }}>
+        <motion.div {...fadeUp} style={{ maxWidth: 860, margin: '0 auto' }}>
+          <p style={{ fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase', color: C.gold, marginBottom: 10 }}>
+            Découvrez l'offre en images
+          </p>
+          <h2 id="video-promotionnelle" style={{ fontSize: 'clamp(1.3rem,3.5vw,2rem)', fontWeight: 900, textTransform: 'uppercase', margin: '0 0 10px' }}>
+            Votre publicité sur <span style={{ color: C.cyan }}>l'écran géant de Dour</span>
+          </h2>
+          <p style={{ fontSize: '0.82rem', color: C.silver, lineHeight: 1.65, margin: '0 0 24px', maxWidth: 680 }}>
+            Découvrez le dispositif Pixelium à l'Espace C et la puissance d'une campagne diffusée avec SIGNELYA.
+          </p>
+          <div style={{
+            padding: 'clamp(10px,2vw,16px)', borderRadius: 24,
+            background: 'linear-gradient(145deg,rgba(0,180,216,0.10),rgba(117,75,255,0.10))',
+            border: '1px solid rgba(0,180,216,0.30)',
+            boxShadow: '0 20px 50px rgba(0,0,0,0.40), 0 0 34px rgba(0,180,216,0.12)'
+          }}>
+            <video
+              controls
+              playsInline
+              preload="metadata"
+              aria-label="Vidéo promotionnelle Pixelium — écran géant de l'Espace C à Dour"
+              style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'contain' }}
+            >
+              <source src="https://www.dropbox.com/scl/fi/l3k06nl6t5zzhcx9ytvuy/JS-Innov.IA-Pub-ecran-espace-dour-js-innov-ia-2026-09-01-68a14e6383.mp4?rlkey=vdfw6n1vlbcpd9vhm57nukuar&raw=1" type="video/mp4" />
+              Votre navigateur ne prend pas en charge la lecture vidéo.
+            </video>
+          </div>
+          <p style={{ fontSize: '0.66rem', color: C.muted, lineHeight: 1.5, margin: '14px 0 0', textAlign: 'center' }}>
+            Vidéo promotionnelle conçue par <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a>.
+          </p>
+        </motion.div>
+      </section>
+
       {/* ══ CHIFFRE CLÉ EXPLIQUÉ ══ */}
       <section aria-labelledby="chiffres-cles" style={{ padding: 'clamp(38px,6vw,56px) 5%', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <motion.div {...fadeUp} style={{ maxWidth: 860, margin: '0 auto' }}>
