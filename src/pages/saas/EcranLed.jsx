@@ -33,7 +33,7 @@ const PACKS = [
       'Paiement mensuel pendant 12 mois',
       'Spot de 10 secondes en rotation',
       '+300 passages/jour — Espace C, Dour',
-      'Visuel fourni par le client (JPEG/MP4)',
+      'Vidéo publicitaire offerte par Pixelium',
       'Activation sous 48h',
     ],
     note: null,
@@ -51,7 +51,7 @@ const PACKS = [
       'Diffusion intensive 7 jours consécutifs',
       'Fréquence de diffusion augmentée',
       'Trafic exceptionnel pendant les événements',
-      'Visuel fourni par le client (JPEG/MP4)',
+      'Vidéo publicitaire offerte par Pixelium',
       'Idéal : Dour Festival, Tour de Dour…',
     ],
     note: null,
@@ -76,7 +76,7 @@ const fadeUp = {
 
 export default function EcranLed() {
   const [selected, setSelected] = useState('mensuel');
-  const [form, setForm] = useState({ prenom: '', nom: '', entreprise: '', email: '', telephone: '', message: '', rgpd: false, creationVisuelle: false });
+  const [form, setForm] = useState({ prenom: '', nom: '', entreprise: '', email: '', telephone: '', message: '', rgpd: false, creationVisuelle: true });
   const [sent, setSent]       = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError]     = useState('');
@@ -181,17 +181,16 @@ export default function EcranLed() {
           </h1>
           <p style={{ fontSize: 'clamp(0.88rem,2.2vw,1.05rem)', color: C.silver, lineHeight: 1.7, maxWidth: 600, margin: '0 0 28px' }}>
             Touchez des milliers de passants chaque jour avec votre publicité diffusée en continu
-            sur le grand écran LED de l'Espace C. Choisissez votre forfait, fournissez votre visuel — c'est tout.
+            sur le grand écran LED de l'Espace C. Choisissez votre forfait : Pixelium vous offre la création de votre vidéo publicitaire.
           </p>
 
-          {/* Bandeau avertissement visuel */}
-          <div style={{ display: 'inline-flex', alignItems: 'flex-start', gap: 10, background: 'rgba(255,77,77,0.10)',
-            border: '1px solid rgba(255,77,77,0.35)', borderRadius: 10, padding: '10px 16px', marginBottom: 28, maxWidth: 560 }}>
-            <AlertTriangle size={16} color={C.red} style={{ marginTop: 2, flexShrink: 0 }} />
-            <p style={{ fontSize: '0.75rem', color: 'rgba(255,180,180,0.85)', margin: 0, lineHeight: 1.55 }}>
-              <strong style={{ color: '#FF7070' }}>Visuel non fourni.</strong> La création graphique ou vidéo de votre spot publicitaire est à votre charge.
-              Nous acceptons les formats JPEG, PNG et MP4.{' '}
-              <a href="mailto:info@jsinnovia.store" style={{ color: C.cyan, textDecoration: 'underline' }}>Besoin d'aide pour créer votre visuel ?</a>
+          {/* Création vidéo incluse */}
+          <div style={{ display: 'inline-flex', alignItems: 'flex-start', gap: 10, background: 'rgba(0,180,216,0.10)',
+            border: '1px solid rgba(0,180,216,0.35)', borderRadius: 10, padding: '10px 16px', marginBottom: 28, maxWidth: 600 }}>
+            <Sparkles size={16} color={C.gold} style={{ marginTop: 2, flexShrink: 0 }} />
+            <p style={{ fontSize: '0.75rem', color: C.silver, margin: 0, lineHeight: 1.55 }}>
+              <strong style={{ color: C.gold }}>Votre vidéo publicitaire est offerte par Pixelium.</strong>{' '}
+              Elle est conçue par JS-Innov.IA et optimisée pour la diffusion sur l'écran géant.
             </p>
           </div>
 
@@ -321,7 +320,7 @@ export default function EcranLed() {
             Apportez un véritable <span style={{ color: C.cyan }}>impact visuel</span> à votre campagne
           </h2>
           <p style={{ fontSize: 'clamp(0.82rem,2vw,0.95rem)', color: C.silver, lineHeight: 1.7, marginBottom: 'clamp(24px,4vw,36px)', maxWidth: 620 }}>
-            Nos créatifs conçoivent votre animation optimisée pour grand écran — qualité 4K, Full HD, percutante et mémorable.
+            Votre vidéo publicitaire est offerte par Pixelium et réalisée par JS-Innov.IA, puis optimisée pour une diffusion percutante sur grand écran.
           </p>
 
           {/* Bloc premium */}
@@ -389,7 +388,7 @@ export default function EcranLed() {
                       transition: 'all 0.3s',
                     }}>
                     <Sparkles size={14} />
-                    Ajouter la création visuelle à ma demande
+                    Création offerte incluse dans ma demande
                   </a>
                 </div>
               </div>
@@ -513,18 +512,15 @@ export default function EcranLed() {
                       onBlur={e => e.target.style.borderColor  = 'rgba(0,180,216,0.18)'} />
                   </div>
 
-                  {/* Checkbox création visuelle */}
-                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer',
-                    background: form.creationVisuelle ? 'rgba(212,175,55,0.07)' : 'transparent',
-                    border: form.creationVisuelle ? '1px solid rgba(212,175,55,0.25)' : '1px solid transparent',
-                    borderRadius: 10, padding: '10px 12px', transition: 'all 0.3s' }}>
-                    <input type="checkbox" checked={form.creationVisuelle}
-                      onChange={e => setForm({ ...form, creationVisuelle: e.target.checked })}
-                      style={{ marginTop: 2, accentColor: C.gold, flexShrink: 0, width: 15, height: 15 }} />
-                    <span style={{ fontSize: '0.72rem', color: form.creationVisuelle ? C.gold : C.muted, lineHeight: 1.5, transition: 'color 0.3s' }}>
-                      Je souhaite également une création visuelle animée
+                  {/* Création vidéo incluse */}
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10,
+                    background: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.25)',
+                    borderRadius: 10, padding: '10px 12px' }}>
+                    <CheckCircle size={15} color={C.gold} style={{ marginTop: 2, flexShrink: 0 }} />
+                    <span style={{ fontSize: '0.72rem', color: C.gold, lineHeight: 1.5 }}>
+                      Création de votre vidéo publicitaire offerte par Pixelium et réalisée par JS-Innov.IA
                     </span>
-                  </label>
+                  </div>
 
                   <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer' }}>
                     <input type="checkbox" required checked={form.rgpd}
