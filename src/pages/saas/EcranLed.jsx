@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { platform } from '@/api/platformClient';
 import {
-  Monitor, Zap, Calendar, Star, CheckCircle, Send, Sparkles,
-  Phone, Mail, MapPin, AlertTriangle, ArrowRight, Clock,
-  BarChart2, Eye, Repeat
+  Monitor, Zap, Calendar, CheckCircle, Send, Sparkles,
+  Phone, Mail, MapPin, ArrowRight, Clock,
+  BarChart2, Repeat
 } from 'lucide-react';
 
 const C = {
@@ -33,7 +33,7 @@ const PACKS = [
       'Paiement mensuel pendant 12 mois',
       'Spot de 10 secondes en rotation',
       '+300 passages du spot par jour (+300 diffusions)',
-      'Vidéo publicitaire offerte par Pixelium',
+      'Visuel JPEG, PNG ou MP4 fourni par le client',
       'Activation sous 48h',
     ],
     note: null,
@@ -51,7 +51,7 @@ const PACKS = [
       'Diffusion intensive 7 jours consécutifs',
       'Fréquence de diffusion augmentée',
       'Trafic exceptionnel pendant les événements',
-      'Vidéo publicitaire offerte par Pixelium',
+      'Visuel JPEG, PNG ou MP4 fourni par le client',
       'Idéal : Dour Festival, Tour de Dour…',
     ],
     note: null,
@@ -68,7 +68,7 @@ const SPECS = [
 ];
 
 const fadeUp = {
-  initial:    { opacity: 0, y: 24 },
+  initial:    { opacity: 1, y: 18 },
   whileInView:{ opacity: 1, y: 0 },
   viewport:   { once: true },
   transition: { duration: 0.5 },
@@ -76,10 +76,11 @@ const fadeUp = {
 
 export default function EcranLed() {
   const [selected, setSelected] = useState('mensuel');
-  const [form, setForm] = useState({ prenom: '', nom: '', entreprise: '', email: '', telephone: '', message: '', rgpd: false, creationVisuelle: true });
+  const [form, setForm] = useState({ prenom: '', nom: '', entreprise: '', email: '', telephone: '', message: '', rgpd: false, creationVisuelle: false });
   const [sent, setSent]       = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError]     = useState('');
+  const [quoteStep, setQuoteStep] = useState(1);
 
   useEffect(() => {
     const previousTitle = document.title;
@@ -124,6 +125,15 @@ export default function EcranLed() {
     setSending(false);
   };
 
+  const goToSummary = () => {
+    if (!form.prenom.trim() || !form.nom.trim() || !form.email.trim() || !form.telephone.trim()) {
+      setError('Complétez les champs obligatoires avant de continuer.');
+      return;
+    }
+    setError('');
+    setQuoteStep(3);
+  };
+
   return (
     <div className="pixelium-signage-page" style={{ fontFamily: "'Inter','Segoe UI',sans-serif", background: C.bg, color: C.white, minHeight: '100vh', overflowX: 'hidden' }}>
       <style>{`
@@ -156,6 +166,18 @@ export default function EcranLed() {
           overflow: hidden;
           background: #03050A;
         }
+        @keyframes statusPulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(67, 255, 177, 0.40); }
+          50% { box-shadow: 0 0 0 7px rgba(67, 255, 177, 0); }
+        }
+        @keyframes dataSweep {
+          0% { transform: translateX(-105%); }
+          100% { transform: translateX(340%); }
+        }
+        @keyframes gridDrift {
+          from { background-position: 0 0, 0 0; }
+          to { background-position: 42px 42px, 42px 42px; }
+        }
         .brand-zigzag {
           width: 100%;
           max-width: 1280px;
@@ -172,6 +194,50 @@ export default function EcranLed() {
         .brand-zigzag-media {
           width: 100%;
         }
+        .hero-tech-surface {
+          background-image:
+            linear-gradient(rgba(0,217,255,0.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,217,255,0.035) 1px, transparent 1px);
+          background-size: 42px 42px;
+          animation: gridDrift 18s linear infinite;
+        }
+        .tech-status-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #43FFB1;
+          animation: statusPulse 2.2s ease-in-out infinite;
+        }
+        .tech-data-line {
+          position: relative;
+          height: 3px;
+          overflow: hidden;
+          border-radius: 10px;
+          background: linear-gradient(90deg, rgba(0,217,255,0.12), rgba(128,73,255,0.30));
+        }
+        .tech-data-line::after {
+          content: '';
+          position: absolute;
+          inset: 0 auto 0 0;
+          width: 32%;
+          background: linear-gradient(90deg, transparent, #61E6FF, #F251FF, transparent);
+          animation: dataSweep 3.4s linear infinite;
+        }
+        .nav-links {
+          display: flex;
+          align-items: center;
+          gap: clamp(12px,2vw,26px);
+        }
+        .nav-links a {
+          color: rgba(255,255,255,0.62);
+          text-decoration: none;
+          text-transform: uppercase;
+          letter-spacing: 0.10em;
+          font-size: 0.60rem;
+          font-weight: 800;
+        }
+        .nav-links a:hover { color: #61E6FF; }
+        .mobile-tech-cta { display: none; }
         .brand-video-grid .brand-zigzag-media {
           grid-column: 1;
           grid-row: 1;
@@ -201,6 +267,28 @@ export default function EcranLed() {
           .brand-zigzag-media img,
           .brand-zigzag-media video { width: 100% !important; }
           .jsinnovia-footer-grid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+          .nav-links { display: none; }
+          .mobile-tech-cta {
+            position: fixed;
+            display: flex;
+            left: 14px;
+            right: 14px;
+            bottom: 12px;
+            z-index: 120;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 18px;
+            border-radius: 999px;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 0.74rem;
+            font-weight: 900;
+            background: linear-gradient(135deg,#007FA0,#7353FF,#C535FF);
+            box-shadow: 0 14px 38px rgba(36,72,255,0.42);
+          }
         }
         @media (max-width: 420px) {
           .pixelium-main-nav {
@@ -213,7 +301,10 @@ export default function EcranLed() {
         }
         @media (prefers-reduced-motion: reduce) {
           .pixelium-signage-page img,
-          .pixelium-signage-page video { animation: none; }
+          .pixelium-signage-page video,
+          .hero-tech-surface,
+          .tech-status-dot,
+          .tech-data-line::after { animation: none; }
         }
       `}</style>
 
@@ -232,6 +323,12 @@ export default function EcranLed() {
             <div style={{ fontSize: '0.58rem', color: C.muted, letterSpacing: '0.11em', textTransform: 'uppercase' }}>Diffusion digitale · Dour</div>
           </div>
         </a>
+        <div className="nav-links" aria-label="Accès rapides">
+          <a href="#experience">Expérience</a>
+          <a href="#technologie">Technologie</a>
+          <a href="#forfaits">Forfaits</a>
+          <a href="#devis">Devis</a>
+        </div>
         <div style={{
           width: 'min(44vw, 270px)', padding: '7px 10px', borderRadius: 18,
           display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 10,
@@ -247,7 +344,7 @@ export default function EcranLed() {
       </nav>
 
       {/* ══ HERO ══ */}
-      <section style={{ position: 'relative', padding: 'clamp(80px,12vw,120px) 5% clamp(52px,8vw,80px)', overflow: 'hidden',
+      <section id="experience" className="hero-tech-surface" style={{ position: 'relative', padding: 'clamp(72px,10vw,112px) 5% clamp(52px,8vw,80px)', overflow: 'hidden',
         borderBottom: '1px solid rgba(0,180,216,0.14)' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 20% 50%, rgba(0,180,216,0.12) 0%, transparent 60%)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 80% 20%, rgba(212,175,55,0.08) 0%, transparent 55%)', pointerEvents: 'none' }} />
@@ -277,16 +374,16 @@ export default function EcranLed() {
           </h1>
           <p style={{ fontSize: 'clamp(0.88rem,2.2vw,1.05rem)', color: C.silver, lineHeight: 1.7, maxWidth: 600, margin: '0 0 28px' }}>
             Touchez des milliers de passants chaque jour avec votre publicité diffusée en continu
-            sur le grand écran LED de l'Espace C. Choisissez votre forfait : Pixelium vous offre la création de votre vidéo publicitaire.
+            sur le grand écran LED de l'Espace C. Choisissez votre forfait et fournissez votre visuel prêt à diffuser.
           </p>
 
-          {/* Création vidéo incluse */}
+          {/* Information sur le visuel */}
           <div style={{ display: 'inline-flex', alignItems: 'flex-start', gap: 10, background: 'rgba(0,180,216,0.10)',
             border: '1px solid rgba(0,180,216,0.35)', borderRadius: 10, padding: '10px 16px', marginBottom: 28, maxWidth: 600 }}>
             <Sparkles size={16} color={C.gold} style={{ marginTop: 2, flexShrink: 0 }} />
             <p style={{ fontSize: '0.75rem', color: C.silver, margin: 0, lineHeight: 1.55 }}>
-              <strong style={{ color: C.gold }}>Votre vidéo publicitaire est offerte par Pixelium.</strong>{' '}
-              Elle est conçue par <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a> et optimisée pour la diffusion sur l'écran géant.
+              <strong style={{ color: C.gold }}>Visuel non fourni.</strong>{' '}
+              La création graphique ou vidéo de votre spot publicitaire est à votre charge. Formats acceptés : JPEG, PNG et MP4. Besoin d'aide ? <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a> peut vous accompagner sur devis.
             </p>
           </div>
 
@@ -299,26 +396,63 @@ export default function EcranLed() {
           </div>
           <div className="brand-zigzag-media" style={{
             padding: 'clamp(10px,2vw,18px)', borderRadius: 28,
-            background: 'linear-gradient(145deg,rgba(0,217,255,0.10),rgba(117,75,255,0.12))',
+            background: 'linear-gradient(145deg,rgba(8,21,38,0.96),rgba(15,9,38,0.96))',
             border: '1px solid rgba(0,217,255,0.30)',
             boxShadow: '0 24px 64px rgba(0,0,0,0.44), 0 0 40px rgba(117,75,255,0.14)'
           }}>
-            <img
-              src="/branding/signelya-officiel-jsinnovia.png"
-              alt="SIGNELYA by JS-Innov.IA — application de diffusion utilisée par Pixelium"
-              width="1672"
-              height="941"
-              style={{ display: 'block', width: '100%', height: 'auto', objectFit: 'cover', borderRadius: 22 }}
-            />
-            <p style={{ fontSize: '0.68rem', color: C.silver, lineHeight: 1.5, margin: '14px 6px 2px', textAlign: 'center' }}>
-              SIGNELYA — application de diffusion digitale conçue par <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a> et utilisée par Pixelium.
-            </p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '4px 4px 14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+                <img src="/branding/signelya-logo-carre.png" alt="" width="40" height="40" style={{ width: 40, height: 40, objectFit: 'contain', borderRadius: 11 }} />
+                <div>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 900, letterSpacing: '0.10em' }}>SIGNELYA</div>
+                  <div style={{ fontSize: '0.54rem', color: C.muted, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Console de démonstration</div>
+                </div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', borderRadius: 50, background: 'rgba(67,255,177,0.08)', border: '1px solid rgba(67,255,177,0.24)' }}>
+                <span className="tech-status-dot" />
+                <span style={{ color: '#71FFC0', fontSize: '0.56rem', fontWeight: 900, letterSpacing: '0.10em', textTransform: 'uppercase' }}>Écran en ligne</span>
+              </div>
+            </div>
+            <div style={{ position: 'relative', overflow: 'hidden', borderRadius: 22, border: '1px solid rgba(97,230,255,0.22)' }}>
+              <img
+                src="/branding/signelya-officiel-jsinnovia.png"
+                alt="Aperçu SIGNELYA — pilotage de la diffusion digitale"
+                width="1672"
+                height="941"
+                style={{ display: 'block', width: '100%', height: 'auto', objectFit: 'cover', borderRadius: 22 }}
+              />
+              <div style={{ position: 'absolute', left: 12, right: 12, bottom: 12, display: 'flex', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
+                <span style={{ padding: '7px 10px', borderRadius: 50, background: 'rgba(2,7,15,0.86)', border: '1px solid rgba(0,217,255,0.30)', backdropFilter: 'blur(10px)', fontSize: '0.56rem', fontWeight: 800 }}>Espace C · Dour</span>
+                <span style={{ padding: '7px 10px', borderRadius: 50, background: 'rgba(2,7,15,0.86)', border: '1px solid rgba(197,53,255,0.30)', backdropFilter: 'blur(10px)', fontSize: '0.56rem', fontWeight: 800 }}>Pilotage à distance</span>
+              </div>
+            </div>
+            <div style={{ padding: '16px 4px 4px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginBottom: 9, fontSize: '0.58rem', color: C.silver }}>
+                <span>Flux de programmation</span><span style={{ color: C.cyan }}>Synchronisé</span>
+              </div>
+              <div className="tech-data-line" />
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,minmax(0,1fr))', gap: 8, marginTop: 14 }}>
+                {[
+                  ['+300', 'diffusions / jour'],
+                  ['10 s', 'spot en rotation'],
+                  ['24/7', 'diffusion continue'],
+                ].map(([value, label]) => (
+                  <div key={label} style={{ padding: '11px 8px', textAlign: 'center', borderRadius: 13, background: 'rgba(255,255,255,0.035)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div style={{ color: C.cyan, fontSize: 'clamp(0.86rem,2vw,1.08rem)', fontWeight: 950 }}>{value}</div>
+                    <div style={{ color: C.muted, fontSize: '0.50rem', lineHeight: 1.35 }}>{label}</div>
+                  </div>
+                ))}
+              </div>
+              <p style={{ fontSize: '0.56rem', color: C.muted, lineHeight: 1.5, margin: '12px 2px 0', textAlign: 'center' }}>
+                Aperçu de démonstration — SIGNELYA est conçue par <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a> et utilisée par Pixelium.
+              </p>
+            </div>
           </div>
         </motion.div>
       </section>
 
       {/* ══ VIDÉO PROMOTIONNELLE ══ */}
-      <section aria-labelledby="video-promotionnelle" style={{
+      <section id="technologie" aria-labelledby="video-promotionnelle" style={{
         padding: 'clamp(48px,8vw,76px) 5%',
         borderBottom: '1px solid rgba(255,255,255,0.05)',
         background: 'radial-gradient(ellipse at 50% 10%, rgba(117,75,255,0.10) 0%, transparent 62%)'
@@ -334,6 +468,13 @@ export default function EcranLed() {
           <p style={{ fontSize: '0.82rem', color: C.silver, lineHeight: 1.65, margin: '0 0 24px', maxWidth: 680 }}>
             Découvrez le dispositif Pixelium à l'Espace C et la puissance d'une campagne diffusée avec SIGNELYA.
           </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {['Programmation distante', 'Surveillance de diffusion', 'Calendrier automatisé'].map(item => (
+              <span key={item} style={{ padding: '8px 10px', borderRadius: 50, border: '1px solid rgba(0,217,255,0.22)', background: 'rgba(0,217,255,0.06)', color: C.silver, fontSize: '0.60rem', fontWeight: 750 }}>
+                {item}
+              </span>
+            ))}
+          </div>
           </div>
           <div className="brand-zigzag-media">
           <div style={{
@@ -346,6 +487,7 @@ export default function EcranLed() {
               controls
               playsInline
               preload="metadata"
+              poster="/branding/signelya-officiel-jsinnovia.png"
               aria-label="Vidéo promotionnelle Pixelium — écran géant de l'Espace C à Dour"
               style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'contain' }}
             >
@@ -408,7 +550,7 @@ export default function EcranLed() {
       </section>
 
       {/* ══ FORFAITS ══ */}
-      <section style={{ padding: 'clamp(52px,8vw,80px) 5%', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+      <section id="forfaits" style={{ padding: 'clamp(52px,8vw,80px) 5%', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <motion.div {...fadeUp} style={{ maxWidth: 920, margin: '0 auto' }}>
           <p style={{ fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase', color: C.gold, marginBottom: 10 }}>Tarifs</p>
           <h2 style={{ fontSize: 'clamp(1.3rem,3.5vw,2.2rem)', fontWeight: 900, textTransform: 'uppercase', marginBottom: 12 }}>
@@ -452,6 +594,9 @@ export default function EcranLed() {
 
                 <h3 style={{ fontSize: 'clamp(0.95rem,2.5vw,1.05rem)', fontWeight: 900, textTransform: 'uppercase', color: C.white, margin: '0 0 6px' }}>{pack.label}</h3>
                 <p style={{ fontSize: '0.78rem', color: C.silver, lineHeight: 1.6, margin: '0 0 16px' }}>{pack.desc}</p>
+                <div style={{ display: 'inline-flex', padding: '6px 10px', marginBottom: 14, borderRadius: 50, background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.22)', color: C.gold, fontSize: '0.58rem', fontWeight: 850, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                  Tarif communiqué dans le devis
+                </div>
                 <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', margin: '0 0 14px' }} />
                 <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 7 }}>
                   {pack.features.map(f => (
@@ -503,7 +648,7 @@ export default function EcranLed() {
             Apportez un véritable <span style={{ color: C.cyan }}>impact visuel</span> à votre campagne
           </h2>
           <p style={{ fontSize: 'clamp(0.82rem,2vw,0.95rem)', color: C.silver, lineHeight: 1.7, marginBottom: 'clamp(24px,4vw,36px)', maxWidth: 620 }}>
-            Votre vidéo publicitaire est offerte par Pixelium et réalisée par <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a>, puis optimisée pour une diffusion percutante sur grand écran.
+            Le visuel n'est pas inclus dans l'abonnement. Vous pouvez fournir votre fichier JPEG, PNG ou MP4, ou demander à <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a> un accompagnement créatif distinct, établi sur devis.
           </p>
 
           {/* Bloc premium */}
@@ -535,7 +680,7 @@ export default function EcranLed() {
               {/* Texte */}
               <div style={{ flex: 1, minWidth: 260 }}>
                 <h3 style={{ fontSize: 'clamp(1rem,2.5vw,1.15rem)', fontWeight: 900, textTransform: 'uppercase', color: C.white, margin: '0 0 4px' }}>
-                  Création Visuelle Animée — Impact 4K
+                  Accompagnement créatif — Impact 4K
                 </h3>
                 <p style={{ fontSize: '0.82rem', color: C.silver, lineHeight: 1.65, margin: '0 0 16px' }}>
                   Motion design professionnel pensé pour l'écran LED 4m × 2m. Formats optimisés grand écran, rendu Full HD / 4K, animation fluide et percutante. Votre marque sous son meilleur jour.
@@ -571,7 +716,7 @@ export default function EcranLed() {
                       transition: 'all 0.3s',
                     }}>
                     <Sparkles size={14} />
-                    Création offerte incluse dans ma demande
+                    Demander une aide créative
                   </a>
                 </div>
               </div>
@@ -644,90 +789,92 @@ export default function EcranLed() {
                   background: C.card, border: '1px solid rgba(0,180,216,0.22)', borderRadius: 18,
                   padding: 'clamp(22px,4vw,32px) clamp(18px,3.5vw,28px)' }}>
                   <h3 style={{ fontSize: '0.80rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: C.cyan, margin: '0 0 4px' }}>
-                    Formulaire de demande
+                    Votre devis en 3 étapes
                   </h3>
-
-                  {/* Sélecteur forfait inline */}
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.60rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.silver, marginBottom: 6 }}>Forfait *</label>
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                      {PACKS.map(p => (
-                        <button key={p.id} type="button" onClick={() => setSelected(p.id)}
-                          style={{ flex: 1, minWidth: 80, padding: '8px 10px', textAlign: 'center',
-                            background: selected === p.id ? 'rgba(0,180,216,0.18)' : 'rgba(10,22,40,0.6)',
-                            border: `1px solid ${selected === p.id ? C.cyan : 'rgba(0,180,216,0.18)'}`,
-                            borderRadius: 8, color: selected === p.id ? C.cyan : C.muted,
-                            fontSize: '0.68rem', fontWeight: 800, cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                          {p.label}
-                        </button>
-                      ))}
-                    </div>
+                  <div role="progressbar" aria-label={`Étape ${quoteStep} sur 3`} aria-valuemin="1" aria-valuemax="3" aria-valuenow={quoteStep}
+                    style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 6, marginBottom: 8 }}>
+                    {[1, 2, 3].map(step => (
+                      <div key={step} style={{ height: 4, borderRadius: 10, background: step <= quoteStep ? 'linear-gradient(90deg,#00B4D8,#8C55FF)' : 'rgba(255,255,255,0.08)' }} />
+                    ))}
                   </div>
 
-                  {[
-                    { name: 'prenom',     label: 'Prénom *',          type: 'text'  },
-                    { name: 'nom',        label: 'Nom *',              type: 'text'  },
-                    { name: 'entreprise', label: 'Entreprise / Asso.', type: 'text'  },
-                    { name: 'email',      label: 'Email *',            type: 'email' },
-                    { name: 'telephone',  label: 'Téléphone *',        type: 'tel'   },
-                  ].map(({ name, label, type }) => (
-                    <div key={name}>
-                      <label style={{ display: 'block', fontSize: '0.60rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.silver, marginBottom: 4 }}>{label}</label>
-                      <input name={name} type={type} required={label.includes('*')} value={form[name]}
-                        onChange={e => setForm({ ...form, [name]: e.target.value })}
-                        style={{ width: '100%', padding: '10px 12px', background: 'rgba(6,9,15,0.7)',
-                          border: '1px solid rgba(0,180,216,0.18)', borderRadius: 8,
-                          color: C.white, fontSize: '0.84rem', outline: 'none', boxSizing: 'border-box' }}
-                        onFocus={e => e.target.style.borderColor = C.cyan}
-                        onBlur={e => e.target.style.borderColor  = 'rgba(0,180,216,0.18)'} />
-                    </div>
-                  ))}
-
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.60rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.silver, marginBottom: 4 }}>Message (optionnel)</label>
-                    <textarea name="message" rows={3} value={form.message}
-                      onChange={e => setForm({ ...form, message: e.target.value })}
-                      placeholder="Décrivez brièvement votre activité ou votre campagne..."
-                      style={{ width: '100%', padding: '10px 12px', background: 'rgba(6,9,15,0.7)',
-                        border: '1px solid rgba(0,180,216,0.18)', borderRadius: 8,
-                        color: C.white, fontSize: '0.82rem', outline: 'none', resize: 'vertical', boxSizing: 'border-box' }}
-                      onFocus={e => e.target.style.borderColor = C.cyan}
-                      onBlur={e => e.target.style.borderColor  = 'rgba(0,180,216,0.18)'} />
-                  </div>
-
-                  {/* Création vidéo incluse */}
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10,
-                    background: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.25)',
-                    borderRadius: 10, padding: '10px 12px' }}>
-                    <CheckCircle size={15} color={C.gold} style={{ marginTop: 2, flexShrink: 0 }} />
-                    <span style={{ fontSize: '0.72rem', color: C.gold, lineHeight: 1.5 }}>
-                      Création de votre vidéo publicitaire offerte par Pixelium et réalisée par <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a>
-                    </span>
-                  </div>
-
-                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer' }}>
-                    <input type="checkbox" required checked={form.rgpd}
-                      onChange={e => setForm({ ...form, rgpd: e.target.checked })}
-                      style={{ marginTop: 3, accentColor: C.cyan, flexShrink: 0, width: 15, height: 15 }} />
-                    <span style={{ fontSize: '0.62rem', color: C.muted, lineHeight: 1.5 }}>
-                      J'accepte que mes données soient utilisées pour répondre à ma demande. Données non revendues ni partagées. (RGPD UE 2016/679) *
-                    </span>
-                  </label>
-
-                  {error && (
-                    <p style={{ fontSize: '0.70rem', color: C.red, margin: 0 }}>{error}</p>
+                  {quoteStep === 1 && (
+                    <motion.div initial={{ opacity: 0.7, x: 8 }} animate={{ opacity: 1, x: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                      <div style={{ fontSize: '0.64rem', color: C.silver, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.10em' }}>1 · Choisissez votre formule</div>
+                      <div style={{ display: 'grid', gap: 9 }}>
+                        {PACKS.map(p => (
+                          <button key={p.id} type="button" onClick={() => setSelected(p.id)}
+                            style={{ padding: '14px', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10,
+                              background: selected === p.id ? 'rgba(0,180,216,0.14)' : 'rgba(6,9,15,0.55)',
+                              border: `1px solid ${selected === p.id ? C.cyan : 'rgba(255,255,255,0.09)'}`,
+                              borderRadius: 12, color: selected === p.id ? C.white : C.silver, cursor: 'pointer' }}>
+                            <span><strong style={{ display: 'block', fontSize: '0.76rem' }}>{p.label}</strong><small style={{ color: C.muted }}>{p.tag}</small></span>
+                            {selected === p.id && <CheckCircle size={18} color={C.cyan} />}
+                          </button>
+                        ))}
+                      </div>
+                      <p style={{ margin: 0, color: C.muted, fontSize: '0.64rem', lineHeight: 1.55 }}>Le prix exact et les conditions détaillées seront indiqués dans votre devis.</p>
+                      <button type="button" onClick={() => { setError(''); setQuoteStep(2); }} style={{ padding: 13, borderRadius: 50, border: 'none', color: '#fff', fontWeight: 900, cursor: 'pointer', background: 'linear-gradient(135deg,#007FA0,#7353FF)' }}>
+                        Continuer <ArrowRight size={15} style={{ display: 'inline', marginLeft: 7 }} />
+                      </button>
+                    </motion.div>
                   )}
 
-                  <button type="submit" disabled={sending}
-                    style={{ padding: '13px', background: sending ? 'rgba(0,180,216,0.25)' : 'linear-gradient(135deg,#007FA0,#00B4D8)',
-                      color: '#fff', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.80rem',
-                      borderRadius: 50, border: 'none', cursor: sending ? 'wait' : 'pointer',
-                      boxShadow: sending ? 'none' : '0 6px 24px rgba(0,180,216,0.50)' }}>
-                    {sending ? 'Envoi en cours…' : <><Send size={14} style={{ display: 'inline', marginRight: 8 }} />Recevoir mon devis</>}
-                  </button>
-                  <p style={{ fontSize: '0.60rem', color: C.muted, textAlign: 'center', margin: 0 }}>
-                    Devis gratuit · Abonnement annuel · Paiement mensuel
-                  </p>
+                  {quoteStep === 2 && (
+                    <motion.div initial={{ opacity: 0.7, x: 8 }} animate={{ opacity: 1, x: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
+                      <div style={{ fontSize: '0.64rem', color: C.silver, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.10em' }}>2 · Vos coordonnées</div>
+                      {[
+                        { name: 'prenom', label: 'Prénom *', type: 'text' },
+                        { name: 'nom', label: 'Nom *', type: 'text' },
+                        { name: 'entreprise', label: 'Entreprise / Asso.', type: 'text' },
+                        { name: 'email', label: 'Email *', type: 'email' },
+                        { name: 'telephone', label: 'Téléphone *', type: 'tel' },
+                      ].map(({ name, label, type }) => (
+                        <div key={name}>
+                          <label style={{ display: 'block', fontSize: '0.60rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.silver, marginBottom: 4 }}>{label}</label>
+                          <input name={name} type={type} value={form[name]} onChange={e => setForm({ ...form, [name]: e.target.value })}
+                            style={{ width: '100%', padding: '11px 12px', background: 'rgba(6,9,15,0.7)', border: '1px solid rgba(0,180,216,0.18)', borderRadius: 9, color: C.white, fontSize: '0.84rem', outline: 'none', boxSizing: 'border-box' }} />
+                        </div>
+                      ))}
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.60rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.silver, marginBottom: 4 }}>Message (optionnel)</label>
+                        <textarea name="message" rows={3} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} placeholder="Décrivez votre campagne..."
+                          style={{ width: '100%', padding: '11px 12px', background: 'rgba(6,9,15,0.7)', border: '1px solid rgba(0,180,216,0.18)', borderRadius: 9, color: C.white, fontSize: '0.82rem', outline: 'none', resize: 'vertical', boxSizing: 'border-box' }} />
+                      </div>
+                      <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, background: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.25)', borderRadius: 10, padding: '10px 12px', cursor: 'pointer' }}>
+                        <input type="checkbox" checked={form.creationVisuelle} onChange={e => setForm({ ...form, creationVisuelle: e.target.checked })} style={{ marginTop: 3, accentColor: C.gold }} />
+                        <span style={{ fontSize: '0.70rem', color: C.gold, lineHeight: 1.5 }}>Je souhaite aussi recevoir une proposition distincte de <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a> pour créer mon visuel.</span>
+                      </label>
+                      {error && <p style={{ fontSize: '0.70rem', color: C.red, margin: 0 }}>{error}</p>}
+                      <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 9 }}>
+                        <button type="button" onClick={() => { setError(''); setQuoteStep(1); }} style={{ padding: '12px 15px', borderRadius: 50, border: '1px solid rgba(255,255,255,0.14)', color: C.silver, background: 'transparent', cursor: 'pointer' }}>Retour</button>
+                        <button type="button" onClick={goToSummary} style={{ padding: 12, borderRadius: 50, border: 'none', color: '#fff', fontWeight: 900, cursor: 'pointer', background: 'linear-gradient(135deg,#007FA0,#7353FF)' }}>Voir le récapitulatif</button>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {quoteStep === 3 && (
+                    <motion.div initial={{ opacity: 0.7, x: 8 }} animate={{ opacity: 1, x: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: 13 }}>
+                      <div style={{ fontSize: '0.64rem', color: C.silver, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.10em' }}>3 · Vérifiez votre demande</div>
+                      <div style={{ padding: 16, borderRadius: 13, background: 'linear-gradient(145deg,rgba(0,180,216,0.09),rgba(117,75,255,0.07))', border: '1px solid rgba(0,180,216,0.22)' }}>
+                        <div style={{ color: C.cyan, fontSize: '0.72rem', fontWeight: 900, marginBottom: 8 }}>{PACKS.find(p => p.id === selected)?.label}</div>
+                        <div style={{ color: C.silver, fontSize: '0.70rem', lineHeight: 1.65 }}>{form.prenom} {form.nom}<br />{form.entreprise || 'Sans entreprise renseignée'}<br />{form.email}<br />{form.telephone}</div>
+                        <div style={{ marginTop: 10, color: form.creationVisuelle ? C.gold : C.muted, fontSize: '0.64rem' }}>{form.creationVisuelle ? 'Aide créative demandée sur devis distinct' : 'Visuel fourni par le client'}</div>
+                      </div>
+                      <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer' }}>
+                        <input type="checkbox" required checked={form.rgpd} onChange={e => setForm({ ...form, rgpd: e.target.checked })} style={{ marginTop: 3, accentColor: C.cyan, width: 15, height: 15 }} />
+                        <span style={{ fontSize: '0.64rem', color: C.muted, lineHeight: 1.5 }}>J'accepte que mes données soient utilisées pour répondre à ma demande. Données non revendues ni partagées. (RGPD UE 2016/679) *</span>
+                      </label>
+                      {error && <p style={{ fontSize: '0.70rem', color: C.red, margin: 0 }}>{error}</p>}
+                      <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 9 }}>
+                        <button type="button" onClick={() => { setError(''); setQuoteStep(2); }} style={{ padding: '12px 15px', borderRadius: 50, border: '1px solid rgba(255,255,255,0.14)', color: C.silver, background: 'transparent', cursor: 'pointer' }}>Modifier</button>
+                        <button type="submit" disabled={sending} style={{ padding: 13, borderRadius: 50, border: 'none', color: '#fff', fontWeight: 900, cursor: sending ? 'wait' : 'pointer', background: sending ? 'rgba(0,180,216,0.25)' : 'linear-gradient(135deg,#007FA0,#00B4D8,#7353FF)', boxShadow: sending ? 'none' : '0 8px 28px rgba(0,180,216,0.38)' }}>
+                          {sending ? 'Envoi en cours…' : <><Send size={14} style={{ display: 'inline', marginRight: 7 }} />Envoyer ma demande</>}
+                        </button>
+                      </div>
+                      <p style={{ fontSize: '0.60rem', color: C.muted, textAlign: 'center', margin: 0 }}>Devis gratuit · Abonnement annuel · Paiement mensuel</p>
+                    </motion.div>
+                  )}
                 </form>
               )}
             </div>
@@ -825,6 +972,10 @@ export default function EcranLed() {
           </div>
         </div>
       </footer>
+
+      <a className="mobile-tech-cta" href="#devis" aria-label="Accéder au devis gratuit">
+        Devis gratuit <ArrowRight size={15} />
+      </a>
 
     </div>
   );

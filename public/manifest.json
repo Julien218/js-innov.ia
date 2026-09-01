@@ -1,7 +1,7 @@
 {
-  "name": "Pixelium — Diffusion digitale avec SYNELYA",
+  "name": "Pixelium — Diffusion digitale avec SIGNELYA",
   "short_name": "Pixelium",
-  "description": "Publicité sur écran géant à Dour. SYNELYA est l’application de diffusion digitale utilisée par Pixelium.",
+  "description": "Publicité sur écran géant à Dour. SIGNELYA est l’application de diffusion digitale utilisée par Pixelium.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#06090F",
