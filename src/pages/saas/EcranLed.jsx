@@ -100,7 +100,7 @@ export default function EcranLed() {
 
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = 'Signelya — Vos écrans prennent vie | JS-Innov.IA';
+    document.title = 'PIXELIUM — Publicité sur écran géant à Dour | SYNELYA';
     return () => { document.title = previousTitle; };
   }, []);
 
@@ -144,6 +144,30 @@ export default function EcranLed() {
   return (
     <div style={{ fontFamily: "'Inter','Segoe UI',sans-serif", background: C.bg, color: C.white, minHeight: '100vh', overflowX: 'hidden' }}>
 
+      {/* ══ IDENTITÉ PIXELIUM ══ */}
+      <nav aria-label="Navigation principale" style={{
+        position: 'sticky', top: 0, zIndex: 100, minHeight: 72, padding: '8px 5%',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,
+        background: 'rgba(2,5,9,0.94)', backdropFilter: 'blur(14px)',
+        borderBottom: '1px solid rgba(0,180,216,0.18)'
+      }}>
+        <a href="#" aria-label="Pixelium — accueil" style={{ display: 'flex', alignItems: 'center', gap: 12, color: C.white, textDecoration: 'none' }}>
+          <img src="/pixelium-logo.png" alt="" width="52" height="52"
+            style={{ width: 52, height: 52, borderRadius: 12, objectFit: 'cover', boxShadow: '0 0 22px rgba(80,65,255,0.22)' }} />
+          <div>
+            <div style={{ fontSize: 'clamp(0.92rem,2.6vw,1.08rem)', fontWeight: 900, letterSpacing: '0.16em' }}>PIXELIUM</div>
+            <div style={{ fontSize: '0.58rem', color: C.muted, letterSpacing: '0.11em', textTransform: 'uppercase' }}>Diffusion digitale · Dour</div>
+          </div>
+        </a>
+        <div style={{
+          maxWidth: 250, padding: '7px 12px', borderRadius: 50, textAlign: 'right',
+          background: 'rgba(0,180,216,0.08)', border: '1px solid rgba(0,180,216,0.20)'
+        }}>
+          <div style={{ fontSize: '0.62rem', color: C.cyan, fontWeight: 900, letterSpacing: '0.12em' }}>SYNELYA</div>
+          <div style={{ fontSize: '0.56rem', color: C.muted }}>Application de diffusion utilisée par Pixelium</div>
+        </div>
+      </nav>
+
       {/* ══ HERO ══ */}
       <section style={{ position: 'relative', padding: 'clamp(80px,12vw,120px) 5% clamp(52px,8vw,80px)', overflow: 'hidden',
         borderBottom: '1px solid rgba(0,180,216,0.14)' }}>
@@ -152,15 +176,20 @@ export default function EcranLed() {
         <motion.div initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
           style={{ maxWidth: 860, margin: '0 auto', position: 'relative', zIndex: 2 }}>
           <img
-            src="/signelya-brand.png"
-            alt="Signelya — Vos écrans prennent vie"
-            style={{ display: 'block', width: 'min(100%, 680px)', aspectRatio: '3 / 2', objectFit: 'contain', margin: '0 auto 28px' }}
+            src="/pixelium-logo.png"
+            alt="Pixelium — entreprise de diffusion digitale"
+            width="512"
+            height="512"
+            style={{ display: 'block', width: 'min(78vw, 360px)', height: 'auto', objectFit: 'contain', margin: '0 auto 20px' }}
           />
+          <p style={{ margin: '0 auto 24px', textAlign: 'center', color: C.muted, fontSize: '0.68rem', letterSpacing: '0.10em', textTransform: 'uppercase' }}>
+            SYNELYA · application de diffusion digitale
+          </p>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(0,180,216,0.10)',
             border: '1px solid rgba(0,180,216,0.28)', borderRadius: 50, padding: '6px 16px', marginBottom: 20 }}>
             <Monitor size={14} color={C.cyan} />
             <span style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.cyan }}>
-              Signelya · by JS-Innov.IA — Espace C · Dour
+              PIXELIUM — Écran géant · Espace C · Dour
             </span>
           </div>
           <h1 style={{ fontSize: 'clamp(2rem,6vw,3.8rem)', fontWeight: 900, textTransform: 'uppercase', lineHeight: 1.05, margin: '0 0 18px' }}>
@@ -424,17 +453,6 @@ export default function EcranLed() {
                 </a>
               </div>
 
-              {/* Rappel visuel client */}
-              <div style={{ background: 'rgba(255,77,77,0.07)', border: '1px solid rgba(255,77,77,0.30)', borderRadius: 10, padding: '12px 16px' }}>
-                <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                  <AlertTriangle size={14} color="#FF7070" style={{ marginTop: 2, flexShrink: 0 }} />
-                  <p style={{ fontSize: '0.70rem', color: 'rgba(255,180,180,0.80)', margin: 0, lineHeight: 1.55 }}>
-                    <strong style={{ color: '#FF8080' }}>Rappel :</strong> vous devez fournir votre propre visuel (JPEG, PNG ou MP4). La création n'est pas incluse dans le forfait.
-                  </p>
-                </div>
-              </div>
-            </div>
-
             {/* Formulaire */}
             <div>
               {sent ? (
@@ -552,15 +570,26 @@ export default function EcranLed() {
       </section>
 
       {/* ══ FOOTER ══ */}
-      <footer style={{ background: '#020509', borderTop: '1px solid rgba(255,255,255,0.06)', padding: 'clamp(28px,5vw,40px) 5%' }}>
-        <div style={{ maxWidth: 860, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-          <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+      <footer style={{ background: '#020509', borderTop: '1px solid rgba(255,255,255,0.06)', padding: 'clamp(30px,5vw,44px) 5%' }}>
+        <div style={{ maxWidth: 860, margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18, textAlign: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
+            <img src="/pixelium-logo.png" alt="Pixelium" width="64" height="64"
+              style={{ width: 64, height: 64, borderRadius: 14, objectFit: 'cover' }} />
+            <div style={{ textAlign: 'left' }}>
+              <div style={{ fontSize: '1rem', fontWeight: 900, letterSpacing: '0.16em', color: C.white }}>PIXELIUM</div>
+              <div style={{ fontSize: '0.62rem', color: C.muted }}>Entreprise de diffusion digitale</div>
+            </div>
+          </div>
+          <p style={{ fontSize: '0.72rem', color: C.silver, margin: 0 }}>
+            <strong style={{ color: C.cyan }}>Synelya</strong> — application de diffusion digitale utilisée par Pixelium.
+          </p>
+          <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', justifyContent: 'center' }}>
             <a href="tel:+32494119090" style={{ fontSize: '0.72rem', color: C.muted, textDecoration: 'none', fontWeight: 600 }}>0494 11 90 90</a>
             <a href="mailto:info@jsinnovia.com" style={{ fontSize: '0.72rem', color: C.cyan, textDecoration: 'none', fontWeight: 600 }}>info@jsinnovia.com</a>
-            <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.20)' }}>Espace C · 7370 Dour · Belgique</span>
+            <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.28)' }}>Espace C · 7370 Dour · Belgique</span>
           </div>
-          <p style={{ fontSize: '0.60rem', color: 'rgba(255,255,255,0.18)', margin: 0 }}>
-            {`© ${new Date().getFullYear()} JS-Innov.IA® — JY-Trix.AI — Tous droits réservés`}
+          <p style={{ fontSize: '0.60rem', color: 'rgba(255,255,255,0.24)', margin: 0 }}>
+            {`© ${new Date().getFullYear()} Pixelium — Tous droits réservés`}
           </p>
         </div>
       </footer>
