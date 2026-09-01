@@ -543,7 +543,7 @@ export default function EcranLed() {
                     {sending ? 'Envoi en cours…' : <><Send size={14} style={{ display: 'inline', marginRight: 8 }} />Recevoir mon devis</>}
                   </button>
                   <p style={{ fontSize: '0.60rem', color: C.muted, textAlign: 'center', margin: 0 }}>
-                    Gratuit · Sans engagement
+                    Devis gratuit · Abonnement annuel · Paiement mensuel
                   </p>
                 </form>
               )}
@@ -571,15 +571,38 @@ export default function EcranLed() {
             <a href="mailto:info@jsinnovia.store" style={{ fontSize: '0.72rem', color: C.cyan, textDecoration: 'none', fontWeight: 600 }}>info@jsinnovia.store</a>
             <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.28)' }}>Espace C · 7370 Dour · Belgique</span>
           </div>
-          <div style={{ fontSize: '0.60rem', color: 'rgba(255,255,255,0.38)', lineHeight: 1.7 }}>
-            <div>{`© ${new Date().getFullYear()} Pixelium — Tous droits réservés`}</div>
+          <div>{`© ${new Date().getFullYear()} Pixelium — Tous droits réservés`}</div>
+
+          {/* Carte flottante de conception JS-Innov.IA */}
+          <a href="mailto:info@jsinnovia.store" aria-label="Contacter JS-Innov.IA, concepteur du site et des créations visuelles"
+            style={{
+              width: 'min(100%, 480px)', boxSizing: 'border-box',
+              display: 'flex', alignItems: 'center', gap: 16, textAlign: 'left',
+              padding: '14px 18px', borderRadius: 18, textDecoration: 'none',
+              background: 'linear-gradient(145deg, rgba(19,27,43,0.98), rgba(6,13,24,0.98))',
+              border: '1px solid rgba(0,180,216,0.38)',
+              boxShadow: '0 16px 44px rgba(0,0,0,0.48), 0 0 30px rgba(0,180,216,0.10)',
+              transform: 'translateY(-2px)'
+            }}>
+            <img src="/brand/companion/companion-avatar-256.webp"
+              alt="Logo JS-Innov.IA" width="76" height="76"
+              style={{
+                width: 76, height: 76, flexShrink: 0, objectFit: 'contain',
+                borderRadius: 16, background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(212,175,55,0.28)'
+              }} />
             <div>
-              Site conçu et développé par{' '}
-              <a href="mailto:info@jsinnovia.store" style={{ color: C.cyan, textDecoration: 'none', fontWeight: 700 }}>
+              <div style={{ fontSize: '0.60rem', color: C.gold, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>
+                Conception & création
+              </div>
+              <div style={{ fontSize: '1rem', color: C.white, fontWeight: 900, letterSpacing: '0.06em', marginBottom: 4 }}>
                 JS-Innov.IA
-              </a>
+              </div>
+              <div style={{ fontSize: '0.68rem', color: C.silver, lineHeight: 1.5 }}>
+                Site, applications, images, vidéos et logos conçus par JS-Innov.IA
+              </div>
             </div>
-          </div>
+          </a>
         </div>
       </footer>
 
