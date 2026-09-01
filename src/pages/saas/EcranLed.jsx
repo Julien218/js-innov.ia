@@ -22,36 +22,19 @@ const PACKS = [
   {
     id: 'mensuel',
     icon: <Calendar size={28} />,
-    label: 'Mensuel',
+    label: 'Abonnement annuel',
     price: '',
     unit: '',
-    tag: 'Flexibilité',
+    tag: 'Paiement mensuel',
     highlight: false,
-    desc: 'Idéal pour tester ou lancer une campagne courte. Renouvelable chaque mois.',
+    desc: 'Engagement de 12 mois avec un règlement réparti en mensualités.',
     features: [
-      'Diffusion 24h/7j pendant 30 jours',
+      'Diffusion 24h/7j pendant 12 mois',
+      'Paiement mensuel pendant 12 mois',
       'Spot de 10 secondes en rotation',
       '+300 passages/jour — Espace C, Dour',
       'Visuel fourni par le client (JPEG/MP4)',
       'Activation sous 48h',
-    ],
-    note: null,
-  },
-  {
-    id: 'annuel',
-    icon: <Star size={28} />,
-    label: 'Annuel',
-    price: '',
-    unit: '',
-    tag: 'Meilleur tarif',
-    highlight: true,
-    desc: 'Le meilleur rapport qualité-prix. Visibilité continue toute l\'année.',
-    features: [
-      'Diffusion 24h/7j pendant 12 mois',
-      'Spot de 10 secondes en rotation',
-      '+300 passages/jour — Espace C, Dour',
-      'Visuel fourni par le client (JPEG/MP4)',
-      'Priorité de programmation',
     ],
     note: null,
   },
@@ -246,9 +229,12 @@ export default function EcranLed() {
       <section style={{ padding: 'clamp(52px,8vw,80px) 5%', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <motion.div {...fadeUp} style={{ maxWidth: 920, margin: '0 auto' }}>
           <p style={{ fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase', color: C.gold, marginBottom: 10 }}>Tarifs</p>
-          <h2 style={{ fontSize: 'clamp(1.3rem,3.5vw,2.2rem)', fontWeight: 900, textTransform: 'uppercase', marginBottom: 'clamp(28px,4vw,44px)' }}>
+          <h2 style={{ fontSize: 'clamp(1.3rem,3.5vw,2.2rem)', fontWeight: 900, textTransform: 'uppercase', marginBottom: 12 }}>
             Choisissez votre <span style={{ color: C.cyan }}>forfait</span>
           </h2>
+          <p style={{ fontSize: '0.82rem', color: C.silver, lineHeight: 1.65, margin: '0 0 clamp(28px,4vw,44px)', maxWidth: 660 }}>
+            L'abonnement de diffusion est conclu pour 12 mois. Le paiement est effectué mensuellement pendant toute la durée de l'abonnement.
+          </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,270px),1fr))', gap: 'clamp(14px,2.5vw,22px)' }}>
             {PACKS.map((pack) => (
               <motion.div key={pack.id} {...fadeUp}
