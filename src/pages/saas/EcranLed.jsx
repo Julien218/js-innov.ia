@@ -81,11 +81,19 @@ export default function EcranLed() {
   const [sending, setSending] = useState(false);
   const [error, setError]     = useState('');
   const [quoteStep, setQuoteStep] = useState(1);
+  const [showMobileCta, setShowMobileCta] = useState(false);
 
   useEffect(() => {
     const previousTitle = document.title;
     document.title = 'PIXELIUM — Publicité sur écran géant à Dour | SIGNELYA';
     return () => { document.title = previousTitle; };
+  }, []);
+
+  useEffect(() => {
+    const updateMobileCta = () => setShowMobileCta(window.scrollY > 560);
+    updateMobileCta();
+    window.addEventListener('scroll', updateMobileCta, { passive: true });
+    return () => window.removeEventListener('scroll', updateMobileCta);
   }, []);
 
   const handleSubmit = async (e) => {
@@ -266,9 +274,10 @@ export default function EcranLed() {
           .brand-video-grid .brand-zigzag-media { grid-column: 1; grid-row: auto; order: 2; }
           .brand-zigzag-media img,
           .brand-zigzag-media video { width: 100% !important; }
+          .hero-pixelium-logo { width: min(64vw, 270px) !important; }
           .jsinnovia-footer-grid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
           .nav-links { display: none; }
-          .mobile-tech-cta {
+          .mobile-tech-cta.is-visible {
             position: fixed;
             display: flex;
             left: 14px;
@@ -352,6 +361,7 @@ export default function EcranLed() {
           style={{ position: 'relative', zIndex: 2 }}>
           <div className="brand-zigzag-copy">
           <img
+            className="hero-pixelium-logo"
             src="/pixelium-logo.png"
             alt="Pixelium — entreprise de diffusion digitale"
             width="512"
@@ -973,7 +983,7 @@ export default function EcranLed() {
         </div>
       </footer>
 
-      <a className="mobile-tech-cta" href="#devis" aria-label="Accéder au devis gratuit">
+      <a className={`mobile-tech-cta${showMobileCta ? ' is-visible' : ''}`} href="#devis" aria-label="Accéder au devis gratuit">
         Devis gratuit <ArrowRight size={15} />
       </a>
 
