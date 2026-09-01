@@ -190,7 +190,7 @@ export default function EcranLed() {
             <Sparkles size={16} color={C.gold} style={{ marginTop: 2, flexShrink: 0 }} />
             <p style={{ fontSize: '0.75rem', color: C.silver, margin: 0, lineHeight: 1.55 }}>
               <strong style={{ color: C.gold }}>Votre vidéo publicitaire est offerte par Pixelium.</strong>{' '}
-              Elle est conçue par JS-Innov.IA et optimisée pour la diffusion sur l'écran géant.
+              Elle est conçue par <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a> et optimisée pour la diffusion sur l'écran géant.
             </p>
           </div>
 
@@ -320,7 +320,7 @@ export default function EcranLed() {
             Apportez un véritable <span style={{ color: C.cyan }}>impact visuel</span> à votre campagne
           </h2>
           <p style={{ fontSize: 'clamp(0.82rem,2vw,0.95rem)', color: C.silver, lineHeight: 1.7, marginBottom: 'clamp(24px,4vw,36px)', maxWidth: 620 }}>
-            Votre vidéo publicitaire est offerte par Pixelium et réalisée par JS-Innov.IA, puis optimisée pour une diffusion percutante sur grand écran.
+            Votre vidéo publicitaire est offerte par Pixelium et réalisée par <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a>, puis optimisée pour une diffusion percutante sur grand écran.
           </p>
 
           {/* Bloc premium */}
@@ -518,7 +518,7 @@ export default function EcranLed() {
                     borderRadius: 10, padding: '10px 12px' }}>
                     <CheckCircle size={15} color={C.gold} style={{ marginTop: 2, flexShrink: 0 }} />
                     <span style={{ fontSize: '0.72rem', color: C.gold, lineHeight: 1.5 }}>
-                      Création de votre vidéo publicitaire offerte par Pixelium et réalisée par JS-Innov.IA
+                      Création de votre vidéo publicitaire offerte par Pixelium et réalisée par <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 700, textDecoration: 'none' }}>JS-Innov.IA</a>
                     </span>
                   </div>
 
@@ -574,7 +574,7 @@ export default function EcranLed() {
           <div>{`© ${new Date().getFullYear()} Pixelium — Tous droits réservés`}</div>
 
           {/* Carte flottante de conception JS-Innov.IA */}
-          <a href="mailto:info@jsinnovia.store" aria-label="Contacter JS-Innov.IA, concepteur du site et des créations visuelles"
+          <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" aria-label="Visiter le site JS-Innov.IA, concepteur du site et des créations visuelles"
             style={{
               width: 'min(100%, 480px)', boxSizing: 'border-box',
               display: 'flex', alignItems: 'center', gap: 16, textAlign: 'left',
