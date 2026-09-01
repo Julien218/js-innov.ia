@@ -180,6 +180,17 @@ export default function EcranLed() {
           grid-column: 2;
           grid-row: 1;
         }
+        .jsinnovia-footer-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+          align-items: center;
+          gap: clamp(32px, 6vw, 88px);
+        }
+        .jsinnovia-services-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 12px;
+        }
         @media (max-width: 760px) {
           .brand-zigzag {
             grid-template-columns: minmax(0, 1fr);
@@ -189,6 +200,7 @@ export default function EcranLed() {
           .brand-video-grid .brand-zigzag-media { grid-column: 1; grid-row: auto; order: 2; }
           .brand-zigzag-media img,
           .brand-zigzag-media video { width: 100% !important; }
+          .jsinnovia-footer-grid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
         }
         @media (max-width: 420px) {
           .pixelium-main-nav {
@@ -197,6 +209,7 @@ export default function EcranLed() {
             align-items: stretch !important;
           }
           .pixelium-main-nav > div { width: 100% !important; box-sizing: border-box; justify-content: center !important; }
+          .jsinnovia-services-grid { grid-template-columns: minmax(0, 1fr); }
         }
         @media (prefers-reduced-motion: reduce) {
           .pixelium-signage-page img,
@@ -722,57 +735,94 @@ export default function EcranLed() {
         </motion.div>
       </section>
 
-      {/* ══ FOOTER ══ */}
-      <footer style={{ background: '#020509', borderTop: '1px solid rgba(255,255,255,0.06)', padding: 'clamp(30px,5vw,44px) 5%' }}>
-        <div style={{ maxWidth: 860, margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18, textAlign: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
-            <img src="/pixelium-logo.png" alt="Pixelium" width="64" height="64"
-              style={{ width: 64, height: 64, borderRadius: 14, objectFit: 'cover' }} />
-            <div style={{ textAlign: 'left' }}>
-              <div style={{ fontSize: '1rem', fontWeight: 900, letterSpacing: '0.16em', color: C.white }}>PIXELIUM</div>
-              <div style={{ fontSize: '0.62rem', color: C.muted }}>Entreprise de diffusion digitale</div>
-            </div>
-          </div>
-          <p style={{ fontSize: '0.72rem', color: C.silver, margin: 0 }}>
-            <strong style={{ color: C.cyan }}>Signelya</strong> — application de diffusion digitale utilisée par Pixelium.
-          </p>
-          <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', justifyContent: 'center' }}>
-            <a href="tel:+32494119090" style={{ fontSize: '0.72rem', color: C.muted, textDecoration: 'none', fontWeight: 600 }}>0494 11 90 90</a>
-            <a href="mailto:info@jsinnovia.com" style={{ fontSize: '0.72rem', color: C.cyan, textDecoration: 'none', fontWeight: 600 }}>info@jsinnovia.com</a>
-            <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.28)' }}>Espace C · 7370 Dour · Belgique</span>
-          </div>
-          <div>{`© ${new Date().getFullYear()} Pixelium — Tous droits réservés`}</div>
-
-          {/* Carte flottante de conception JS-Innov.IA */}
-          <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" aria-label="Visiter le site JS-Innov.IA, concepteur du site et des créations visuelles"
-            style={{
-              width: 'min(100%, 560px)', boxSizing: 'border-box',
-              display: 'flex', alignItems: 'center', gap: 16, textAlign: 'left',
-              padding: '14px 18px', borderRadius: 18, textDecoration: 'none',
-              background: 'linear-gradient(145deg, rgba(19,27,43,0.98), rgba(6,13,24,0.98))',
-              border: '1px solid rgba(0,180,216,0.38)',
-              boxShadow: '0 16px 44px rgba(0,0,0,0.48), 0 0 30px rgba(0,180,216,0.10)',
-              transform: 'translateY(-2px)'
-            }}>
-            <img src="https://raw.githubusercontent.com/Julien218/jsinnovia-assets-/main/logo-complet-800.png"
-              alt="Logo officiel JS-Innov.IA" width="112" height="112"
-              style={{
-                width: 112, height: 112, flexShrink: 0, objectFit: 'cover',
-                borderRadius: 16, background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(212,175,55,0.28)'
-              }} />
+      {/* ══ FOOTER PREMIUM JS-INNOV.IA ══ */}
+      <footer style={{
+        position: 'relative', overflow: 'hidden',
+        background: 'linear-gradient(145deg,#02040A 0%,#07101F 42%,#09051A 100%)',
+        borderTop: '1px solid rgba(0,217,255,0.28)',
+        padding: 'clamp(64px,9vw,112px) 5% clamp(30px,5vw,48px)'
+      }}>
+        <div aria-hidden="true" style={{ position: 'absolute', width: '52vw', height: '52vw', minWidth: 360, minHeight: 360, left: '-18vw', top: '-24vw', borderRadius: '50%', background: 'radial-gradient(circle,rgba(0,217,255,0.16),transparent 68%)', filter: 'blur(8px)' }} />
+        <div aria-hidden="true" style={{ position: 'absolute', width: '48vw', height: '48vw', minWidth: 340, minHeight: 340, right: '-16vw', bottom: '-25vw', borderRadius: '50%', background: 'radial-gradient(circle,rgba(197,53,255,0.16),transparent 68%)', filter: 'blur(8px)' }} />
+        <div style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto' }}>
+          <div className="jsinnovia-footer-grid">
             <div>
-              <div style={{ fontSize: '0.60rem', color: C.gold, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>
-                Conception & création
-              </div>
-              <div style={{ fontSize: '1rem', color: C.white, fontWeight: 900, letterSpacing: '0.06em', marginBottom: 4 }}>
-                JS-Innov.IA
-              </div>
-              <div style={{ fontSize: '0.68rem', color: C.silver, lineHeight: 1.5 }}>
-                Site, applications, images, vidéos et logos conçus par JS-Innov.IA
+              <p style={{ margin: '0 0 14px', color: C.gold, fontSize: '0.64rem', fontWeight: 900, letterSpacing: '0.28em', textTransform: 'uppercase' }}>
+                Agence digitale premium · Belgique
+              </p>
+              <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 16, color: C.white, textDecoration: 'none', marginBottom: 22 }}>
+                <span aria-hidden="true" style={{
+                  width: 72, height: 72, borderRadius: 22, display: 'grid', placeItems: 'center',
+                  background: 'linear-gradient(145deg,rgba(0,217,255,0.18),rgba(151,55,255,0.24))',
+                  border: '1px solid rgba(0,217,255,0.46)',
+                  boxShadow: '0 18px 48px rgba(0,0,0,0.46),0 0 34px rgba(0,217,255,0.18)',
+                  fontSize: '1.55rem', fontWeight: 950, letterSpacing: '-0.08em'
+                }}>JS</span>
+                <span style={{
+                  fontSize: 'clamp(1.8rem,5vw,3.4rem)', fontWeight: 950, letterSpacing: '-0.04em', lineHeight: 1,
+                  background: 'linear-gradient(90deg,#FFFFFF 0%,#61E6FF 42%,#8E6BFF 72%,#F251FF 100%)',
+                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'
+                }}>JS-Innov.IA</span>
+              </a>
+              <h2 style={{ margin: '0 0 18px', maxWidth: 720, fontSize: 'clamp(1.5rem,3.4vw,2.65rem)', lineHeight: 1.12, fontWeight: 900 }}>
+                Nous transformons les idées ambitieuses en expériences digitales remarquables.
+              </h2>
+              <p style={{ margin: '0 0 28px', maxWidth: 660, color: C.silver, fontSize: 'clamp(0.84rem,1.7vw,1rem)', lineHeight: 1.75 }}>
+                Stratégie, identité, sites, applications, intelligence artificielle et contenus visuels : une réalisation sur mesure, pensée pour conjuguer impact, élégance et performance.
+              </p>
+              <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+                <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 9, padding: '13px 22px', borderRadius: 50,
+                  color: '#fff', textDecoration: 'none', fontSize: '0.76rem', fontWeight: 900, letterSpacing: '0.08em', textTransform: 'uppercase',
+                  background: 'linear-gradient(135deg,#007FA0,#7353FF,#C535FF)',
+                  boxShadow: '0 12px 34px rgba(85,70,255,0.34)'
+                }}>
+                  Découvrir JS-Innov.IA <ArrowRight size={15} />
+                </a>
+                <a href="mailto:info@jsinnovia.com" style={{ color: C.cyan, textDecoration: 'none', fontSize: '0.78rem', fontWeight: 750 }}>
+                  info@jsinnovia.com
+                </a>
               </div>
             </div>
-          </a>
+
+            <div className="jsinnovia-services-grid">
+              {[
+                ['01', 'Sites haut de gamme', 'Design, développement et conversion.'],
+                ['02', 'Applications & IA', 'Outils intelligents et automatisations.'],
+                ['03', 'Identités visuelles', 'Marques fortes, cohérentes et mémorables.'],
+                ['04', 'Images & vidéos', 'Créations premium pensées pour la diffusion.'],
+              ].map(([number, title, description]) => (
+                <div key={number} style={{
+                  minHeight: 145, padding: '20px 18px', borderRadius: 20,
+                  background: 'linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,255,255,0.018))',
+                  border: '1px solid rgba(255,255,255,0.10)',
+                  boxShadow: '0 18px 42px rgba(0,0,0,0.24)', backdropFilter: 'blur(14px)'
+                }}>
+                  <div style={{ color: C.gold, fontSize: '0.58rem', fontWeight: 900, letterSpacing: '0.18em', marginBottom: 18 }}>{number}</div>
+                  <div style={{ color: C.white, fontSize: '0.88rem', fontWeight: 900, marginBottom: 7 }}>{title}</div>
+                  <div style={{ color: C.muted, fontSize: '0.68rem', lineHeight: 1.55 }}>{description}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{
+            marginTop: 'clamp(48px,7vw,76px)', paddingTop: 24,
+            borderTop: '1px solid rgba(255,255,255,0.09)',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20, flexWrap: 'wrap'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+              <img src="/pixelium-logo.png" alt="Pixelium" width="42" height="42" style={{ width: 42, height: 42, objectFit: 'cover', borderRadius: 11 }} />
+              <div style={{ fontSize: '0.66rem', color: C.silver, lineHeight: 1.55 }}>
+                <strong style={{ color: C.white }}>PIXELIUM</strong> — entreprise de diffusion digitale<br />
+                <strong style={{ color: C.cyan }}>SIGNELYA</strong> — application de diffusion utilisée par Pixelium
+              </div>
+            </div>
+            <div style={{ fontSize: '0.64rem', color: C.muted, textAlign: 'right', lineHeight: 1.6 }}>
+              Conception de cette expérience par <a href="https://www.jsinnovia.com" target="_blank" rel="noopener noreferrer" style={{ color: C.cyan, fontWeight: 800, textDecoration: 'none' }}>JS-Innov.IA</a><br />
+              {`© ${new Date().getFullYear()} Pixelium — Tous droits réservés`}
+            </div>
+          </div>
         </div>
       </footer>
 
