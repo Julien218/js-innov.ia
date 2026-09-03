@@ -33,3 +33,14 @@ test('les coques HTML Signelya et Pixelium sont compilées séparément', () => 
   assert.match(signelyaShell, /SIGNELYA by JS-Innov\.IA/);
   assert.doesNotMatch(signelyaShell, /rel="manifest"/);
 });
+
+test('chaque bouton tarifaire présélectionne la bonne offre dans le configurateur', () => {
+  const landing = read('src/pages/signelya/SignelyaLanding.jsx');
+  const configurator = read('src/pages/saas/SignageProduct.jsx');
+
+  assert.match(landing, /package=\$\{packageId\}#configuration/);
+  assert.match(configurator, /new URLSearchParams\(window\.location\.search\)\.get\('package'\)/);
+  assert.match(configurator, /PACKS\.some\(\(pack\) => pack\.id === requestedPackage\)/);
+  assert.match(configurator, /id="configuration"/);
+  assert.match(configurator, /aria-pressed=\{active\}/);
+});
