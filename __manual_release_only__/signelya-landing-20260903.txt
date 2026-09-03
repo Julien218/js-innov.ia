@@ -1,0 +1,8 @@
+SIGNELYA landing release — 2026-09-03
+
+- Landing publique réservée au host signelya.jsinnovia.com
+- Pixelium conservé sur les autres domaines du service
+- Application Signelya conservée sur le service cockpit séparé
+- Installation mobile et ordinateur via la PWA existante
+- Tarifs, FAQ, sécurité, mentions légales, confidentialité et conditions
+- Validation : ESLint, tests d’isolation, build Vite multi-page, git diff check
