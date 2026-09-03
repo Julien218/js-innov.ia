@@ -243,7 +243,7 @@ const PAGES = {
 };
 
 function BrandLogo() {
-  return <img className="sy-legal-logo" src="/signelya-lockup-horizontal.svg" alt="SIGNELYA — Vos écrans prennent vie." />;
+  return <img className="sy-legal-logo" src="/branding/signelya-officiel-jsinnovia.png?v=20260903-official-2" alt="SIGNELYA by JS-Innov.IA" />;
 }
 
 export default function SignelyaLegal({ type = 'mentions' }) {

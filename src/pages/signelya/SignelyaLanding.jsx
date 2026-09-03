@@ -26,9 +26,12 @@ import {
 } from 'lucide-react';
 import './signelya.css';
 
-const APP_URL = 'https://olivier-signage-cockpit-production.up.railway.app/ecran-geant';
+const APP_URL = 'https://app.signelya.jsinnovia.com/ecran-geant';
 const SUPPORT_EMAIL = 'info@jsinnovia.com';
 const SUPPORT_PHONE = '+32 494 11 90 90';
+const OFFICIAL_LOCKUP = '/branding/signelya-officiel-jsinnovia.png?v=20260903-official-2';
+const OFFICIAL_ICON = '/branding/signelya-logo-carre.png?v=20260903-official-2';
+const OFFICIAL_SOCIAL = 'https://signelya.jsinnovia.com/branding/signelya-officiel-jsinnovia.png?v=20260903-official-2';
 
 const PRICES = {
   signage: { setup: 449, monthly: 69 },
@@ -141,7 +144,7 @@ function updateMeta(selector, attributes) {
 function BrandLogo({ compact = false }) {
   return (
     <span className={`sy-brand ${compact ? 'sy-brand--compact' : ''}`}>
-      <img src="/signelya-lockup-horizontal.svg" alt="SIGNELYA — Vos écrans prennent vie." />
+      <img src={OFFICIAL_LOCKUP} alt="SIGNELYA by JS-Innov.IA — Vos écrans prennent vie." />
     </span>
   );
 }
@@ -238,13 +241,13 @@ export default function SignelyaLanding() {
     updateMeta('meta[property="og:title"]', { property: 'og:title', content: 'SIGNELYA — Vos écrans prennent vie.' });
     updateMeta('meta[property="og:description"]', { property: 'og:description', content: 'Pilotez vos écrans, médias et programmations depuis une application installable sur mobile et ordinateur.' });
     updateMeta('meta[property="og:url"]', { property: 'og:url', content: 'https://signelya.jsinnovia.com/' });
-    updateMeta('meta[property="og:image"]', { property: 'og:image', content: 'https://olivier-signage-cockpit-production.up.railway.app/signelya-social-share.jpg' });
+    updateMeta('meta[property="og:image"]', { property: 'og:image', content: OFFICIAL_SOCIAL });
     updateMeta('meta[name="twitter:card"]', { name: 'twitter:card', content: 'summary_large_image' });
     updateMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: 'SIGNELYA — Vos écrans prennent vie.' });
     updateMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: 'L’application de pilotage digital conçue par JS-Innov.IA.' });
-    updateMeta('meta[name="twitter:image"]', { name: 'twitter:image', content: 'https://olivier-signage-cockpit-production.up.railway.app/signelya-social-share.jpg' });
+    updateMeta('meta[name="twitter:image"]', { name: 'twitter:image', content: OFFICIAL_SOCIAL });
     updateMeta('link[rel="canonical"]', { rel: 'canonical', href: 'https://signelya.jsinnovia.com/' });
-    updateMeta('link[rel="icon"]', { rel: 'icon', type: 'image/svg+xml', href: '/signelya-symbol.svg' });
+    updateMeta('link[rel="icon"]', { rel: 'icon', type: 'image/png', href: OFFICIAL_ICON });
 
     const existing = document.getElementById('signelya-structured-data');
     if (existing) existing.remove();
@@ -361,7 +364,7 @@ export default function SignelyaLanding() {
             <div className="sy-hero__visual" aria-label="Aperçu du cockpit Signelya">
               <div className="sy-dashboard-shell">
                 <div className="sy-dashboard-topbar">
-                  <div className="sy-dashboard-brand"><img src="/signelya-symbol.svg" alt="" /><span>SIGNELYA</span></div>
+                  <div className="sy-dashboard-brand"><img src={OFFICIAL_ICON} alt="" /><span>SIGNELYA</span></div>
                   <span className="sy-status"><i /> Système opérationnel</span>
                 </div>
                 <div className="sy-dashboard-body">
@@ -549,7 +552,7 @@ export default function SignelyaLanding() {
           <span className="sy-orb sy-orb--cyan" aria-hidden="true" />
           <span className="sy-orb sy-orb--pink" aria-hidden="true" />
           <div className="sy-container sy-final-cta__inner">
-            <img src="/signelya-symbol.svg" alt="" />
+            <img src={OFFICIAL_ICON} alt="" />
             <p className="sy-eyebrow">Prêt à centraliser vos diffusions ?</p>
             <h2>Installez Signelya et prenez le contrôle de vos écrans.</h2>
             <p>L’application fonctionne sur téléphone, tablette, Windows et macOS depuis un navigateur compatible.</p>
