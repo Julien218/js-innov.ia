@@ -51,6 +51,14 @@ const initialForm = {
   privacyAccepted: false,
 };
 
+const getInitialForm = () => {
+  const requestedPackage = typeof window !== 'undefined'
+    ? new URLSearchParams(window.location.search).get('package')
+    : '';
+  const packageId = PACKS.some((pack) => pack.id === requestedPackage) ? requestedPackage : initialForm.packageId;
+  return { ...initialForm, packageId };
+};
+
 function Field({ label, children, help }) {
   return (
     <label className="block space-y-1.5">
@@ -64,7 +72,7 @@ function Field({ label, children, help }) {
 const inputClass = 'w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/15';
 
 export default function SignageProduct() {
-  const [form, setForm] = useState(initialForm);
+  const [form, setForm] = useState(getInitialForm);
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -125,7 +133,7 @@ export default function SignageProduct() {
         </div>
       </section>
 
-      <section className="px-5 py-12 md:py-16">
+      <section id="configuration" className="scroll-mt-24 px-5 py-12 md:py-16">
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="space-y-4">
             <div>
@@ -137,7 +145,7 @@ export default function SignageProduct() {
               const Icon = pack.icon;
               const active = form.packageId === pack.id;
               return (
-                <button key={pack.id} type="button" onClick={() => set('packageId', pack.id)} className={`w-full rounded-2xl border p-5 text-left transition ${active ? 'border-cyan-400 bg-cyan-400/10' : 'border-white/10 bg-white/5 hover:border-white/20'}`}>
+                <button key={pack.id} type="button" aria-pressed={active} onClick={() => set('packageId', pack.id)} className={`w-full rounded-2xl border p-5 text-left transition ${active ? 'border-cyan-400 bg-cyan-400/10' : 'border-white/10 bg-white/5 hover:border-white/20'}`}>
                   <div className="flex items-start gap-4">
                     <div className="rounded-xl bg-white/10 p-3"><Icon className="h-6 w-6 text-cyan-300" /></div>
                     <div className="flex-1">
