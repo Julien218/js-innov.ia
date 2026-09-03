@@ -1,0 +1,710 @@
+.sy-floating-card b,
+.sy-floating-card span {
+  display: block;
+}
+
+.sy-floating-card b {
+  font-size: 0.69rem;
+}
+
+.sy-floating-card span {
+  margin-top: 2px;
+  color: #8b96ad;
+  font-size: 0.56rem;
+}
+
+.sy-floating-card--alert {
+  top: 3px;
+  right: -5px;
+}
+
+.sy-floating-card--mobile {
+  bottom: 3px;
+  left: -3px;
+}
+
+.sy-logo-strip {
+  border-block: 1px solid var(--sy-line);
+  background: #070b18;
+}
+
+.sy-logo-strip .sy-container {
+  display: flex;
+  min-height: 86px;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  color: #77839c;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.sy-logo-strip p {
+  margin: 0;
+  color: #566178;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.sy-logo-strip i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(0, 217, 255, 0.55);
+}
+
+.sy-section {
+  position: relative;
+  padding: 104px 0;
+}
+
+.sy-section--panel {
+  border-block: 1px solid var(--sy-line);
+  background: var(--sy-bg-soft);
+}
+
+.sy-section--pricing {
+  background: #060a18;
+}
+
+.sy-section-heading {
+  max-width: 760px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.sy-section-heading--split {
+  display: grid;
+  max-width: none;
+  grid-template-columns: 1fr 0.78fr;
+  align-items: end;
+  gap: 60px;
+  margin-bottom: 48px;
+  text-align: left;
+}
+
+.sy-section-heading--split > div:last-child {
+  padding-bottom: 5px;
+}
+
+.sy-eyebrow {
+  margin: 0 0 13px;
+  color: var(--sy-cyan) !important;
+  font-size: 0.72rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.18em !important;
+  line-height: 1.4 !important;
+  text-transform: uppercase;
+}
+
+.sy-section-heading h2,
+.sy-workflow h2,
+.sy-security h2,
+.sy-faq-layout h2,
+.sy-final-cta h2 {
+  margin: 0;
+  font-family: "Exo 2", Inter, sans-serif;
+  font-size: clamp(2.25rem, 4.4vw, 3.65rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+}
+
+.sy-section-heading > p:last-child,
+.sy-section-heading--split > div:last-child > p,
+.sy-workflow__copy > p,
+.sy-security__copy > p,
+.sy-faq-layout__intro > p,
+.sy-final-cta__inner > p:not(.sy-eyebrow) {
+  color: var(--sy-muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.sy-section-heading > p:last-child {
+  margin: 19px auto 0;
+}
+
+.sy-section-heading--split > div:last-child > p {
+  margin: 0 0 20px;
+}
+
+.sy-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.sy-feature-card {
+  min-height: 280px;
+  border: 1px solid var(--sy-line);
+  border-radius: 19px;
+  background: var(--sy-panel);
+  padding: 28px;
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.sy-feature-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 217, 255, 0.3);
+  background: var(--sy-panel-strong);
+}
+
+.sy-icon-box {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid rgba(0, 217, 255, 0.22);
+  border-radius: 13px;
+  background: rgba(0, 217, 255, 0.08);
+  color: var(--sy-cyan);
+}
+
+.sy-icon-box svg {
+  width: 22px;
+  height: 22px;
+}
+
+.sy-icon-box--small {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+}
+
+.sy-icon-box--small svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sy-feature-card h3 {
+  margin: 24px 0 10px;
+  font-size: 1.08rem;
+  font-weight: 850;
+}
+
+.sy-feature-card p {
+  margin: 0;
+  color: #929eb5;
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
+.sy-workflow {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  align-items: center;
+  gap: 80px;
+}
+
+.sy-workflow__copy > p {
+  margin: 22px 0 22px;
+}
+
+.sy-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #82ecfb !important;
+  font-size: 0.9rem;
+  font-weight: 850;
+}
+
+.sy-text-link svg {
+  width: 17px;
+  height: 17px;
+  transition: transform 160ms ease;
+}
+
+.sy-text-link:hover svg {
+  transform: translateX(3px);
+}
+
+.sy-workflow__steps {
+  position: relative;
+  display: grid;
+  gap: 13px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sy-workflow__steps::before {
+  position: absolute;
+  top: 55px;
+  bottom: 55px;
+  left: 38px;
+  width: 1px;
+  background: rgba(0, 217, 255, 0.2);
+  content: "";
+}
+
+.sy-workflow__steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+  border: 1px solid var(--sy-line);
+  border-radius: 18px;
+  background: var(--sy-panel);
+  padding: 23px;
+}
+
+.sy-workflow__steps li > span {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid rgba(0, 217, 255, 0.35);
+  border-radius: 14px;
+  background: #0d1730;
+  color: var(--sy-cyan);
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.sy-workflow__steps h3 {
+  margin: 0;
+  font-size: 1.03rem;
+}
+
+.sy-workflow__steps p {
+  margin: 7px 0 0;
+  color: #8995ad;
+  font-size: 0.87rem;
+  line-height: 1.65;
+}
+
+.sy-install-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.sy-install-card {
+  min-height: 300px;
+  border: 1px solid var(--sy-line);
+  border-radius: 18px;
+  background: var(--sy-panel);
+  padding: 24px;
+}
+
+.sy-install-card__head {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.sy-install-card__head p {
+  margin: 0 0 2px;
+  color: #7c88a0;
+  font-size: 0.67rem;
+  font-weight: 850;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.sy-install-card__head h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.sy-install-card ol {
+  display: grid;
+  gap: 14px;
+  margin: 25px 0 0;
+  padding: 0;
+  counter-reset: install-step;
+  list-style: none;
+}
+
+.sy-install-card li {
+  position: relative;
+  min-height: 26px;
+  padding-left: 35px;
+  color: #9aa5bb;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  counter-increment: install-step;
+}
+
+.sy-install-card li::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(0, 217, 255, 0.09);
+  color: var(--sy-cyan);
+  content: counter(install-step);
+  font-size: 0.65rem;
+  font-weight: 900;
+}
+
+.sy-install-callout {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  margin-top: 20px;
+  border: 1px solid rgba(0, 217, 255, 0.2);
+  border-radius: 16px;
+  background: rgba(0, 217, 255, 0.055);
+  padding: 20px 24px;
+}
+
+.sy-install-callout > svg {
+  width: 27px;
+  height: 27px;
+  flex: 0 0 auto;
+  color: var(--sy-cyan);
+}
+
+.sy-install-callout strong,
+.sy-install-callout p {
+  display: block;
+}
+
+.sy-install-callout p {
+  margin: 3px 0 0;
+  color: #8f9ab1;
+  font-size: 0.83rem;
+}
+
+.sy-pricing-grid {
+  display: grid;
+  max-width: 980px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0 auto;
+}
+
+.sy-price-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  border: 1px solid var(--sy-line);
+  border-radius: 23px;
+  background: var(--sy-panel);
+  padding: 34px;
+}
+
+.sy-price-card--featured {
+  border-color: rgba(0, 217, 255, 0.44);
+  box-shadow: 0 30px 65px rgba(0, 217, 255, 0.08);
+}
+
+.sy-price-card__flag {
+  position: absolute;
+  top: 17px;
+  right: 18px;
+  border-radius: 999px;
+  background: var(--sy-cyan);
+  padding: 6px 10px;
+  color: #03101a;
+  font-size: 0.61rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.sy-price-card h3 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+}
+
+.sy-price-card__intro {
+  min-height: 76px;
+  margin: 13px 0 0;
+  color: #97a2b8;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.sy-price-block {
+  margin-top: 25px;
+  border-block: 1px solid var(--sy-line);
+  padding: 24px 0;
+}
+
+.sy-price-block > div {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.sy-price-block strong {
+  font-family: "Exo 2", Inter, sans-serif;
+  font-size: 3.1rem;
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+}
+
+.sy-price-block span {
+  padding-bottom: 4px;
+  color: #758198;
+  font-size: 0.74rem;
+  font-weight: 750;
+}
+
+.sy-price-block p {
+  margin: 15px 0 0;
+  color: #8995ac;
+  font-size: 0.78rem;
+}
+
+.sy-price-block b {
+  color: #e8edf7;
+}
+
+.sy-price-card ul {
+  display: grid;
+  flex: 1;
+  gap: 12px;
+  margin: 24px 0 28px;
+  padding: 0;
+  list-style: none;
+}
+
+.sy-price-card li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #c3ccdc;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+.sy-price-card li svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: var(--sy-cyan);
+}
+
+.sy-pricing-note {
+  max-width: 920px;
+  margin: 25px auto 0;
+  color: #707c94;
+  font-size: 0.74rem;
+  line-height: 1.65;
+  text-align: center;
+}
+
+.sy-security {
+  display: grid;
+  grid-template-columns: 0.88fr 1.12fr;
+  align-items: center;
+  gap: 90px;
+}
+
+.sy-security__visual {
+  position: relative;
+  min-height: 430px;
+}
+
+.sy-security-core {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 112px;
+  height: 112px;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(0, 217, 255, 0.48);
+  border-radius: 32px;
+  background: #0c1730;
+  color: var(--sy-cyan);
+  box-shadow: 0 0 65px rgba(0, 217, 255, 0.13);
+}
+
+.sy-security-core svg {
+  width: 42px;
+  height: 42px;
+}
+
+.sy-security-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgba(0, 217, 255, 0.16);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.sy-security-ring--one {
+  width: 245px;
+  height: 245px;
+}
+
+.sy-security-ring--two {
+  width: 390px;
+  height: 390px;
+  border-color: rgba(117, 75, 255, 0.15);
+}
+
+.sy-security-tag {
+  position: absolute;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--sy-line);
+  border-radius: 12px;
+  background: rgba(11, 17, 37, 0.95);
+  padding: 10px 13px;
+  color: #b9c3d7;
+  font-size: 0.73rem;
+  font-weight: 850;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.27);
+}
+
+.sy-security-tag svg {
+  width: 17px;
+  height: 17px;
+  color: var(--sy-cyan);
+}
+
+.sy-security-tag--top {
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.sy-security-tag--left {
+  top: 54%;
+  left: 0;
+}
+
+.sy-security-tag--right {
+  right: 0;
+  bottom: 16%;
+}
+
+.sy-security__copy > p {
+  margin: 23px 0 26px;
+}
+
+.sy-security__copy ul {
+  display: grid;
+  gap: 14px;
+  margin: 0 0 26px;
+  padding: 0;
+  list-style: none;
+}
+
+.sy-security__copy li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: #98a4ba;
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.sy-security__copy li > svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  margin-top: 4px;
+  color: var(--sy-cyan);
+}
+
+.sy-security__copy b {
+  color: #e9edf6;
+}
+
+.sy-faq-layout {
+  display: grid;
+  grid-template-columns: 0.72fr 1.28fr;
+  align-items: start;
+  gap: 80px;
+}
+
+.sy-faq-layout__intro {
+  position: sticky;
+  top: 116px;
+}
+
+.sy-faq-layout__intro > p {
+  margin: 22px 0 25px;
+}
+
+.sy-faq-list {
+  display: grid;
+  gap: 10px;
+}
+
+.sy-faq-item {
+  overflow: hidden;
+  border: 1px solid var(--sy-line);
+  border-radius: 16px;
+  background: var(--sy-panel);
+}
+
+.sy-faq-item.is-open {
+  border-color: rgba(0, 217, 255, 0.3);
+}
+
+.sy-faq-item > button {
+  display: flex;
+  width: 100%;
+  min-height: 72px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border: 0;
+  background: transparent;
+  padding: 20px 22px;
+  color: #eef2fb;
+  font-weight: 820;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sy-faq-item > button svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  color: var(--sy-cyan);
+  transition: transform 180ms ease;
+}
+
+.sy-faq-item.is-open > button svg {
+  transform: rotate(180deg);
+}
+
+.sy-faq-item__answer {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0 22px 22px;
+}
+
+.sy-faq-item__answer p {
+  margin: 18px 0 0;
+  color: #929db4;
+  font-size: 0.88rem;
+  line-height: 1.78;
+}
+
+.sy-final-cta {
+  position: relative;
+  overflow: hidden;
+  border-block: 1px solid var(--sy-line);
+  background: #071022;
+  padding: 100px 0;
+}
