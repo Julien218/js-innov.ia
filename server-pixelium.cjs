@@ -54,8 +54,10 @@ function normalize(body, req) {
   const message = clean(body.message, 4000);
   const visualCreation = body.visualCreation === true || body.creationVisuelle === true || message.includes('Création Visuelle Animée demandée');
   const rgpdAccepted = body.rgpdAccepted === true || body.rgpd === true || body.consentRgpd === true;
+  const externalId = clean(body.externalId || body.submissionId, 120);
 
   return {
+    externalId,
     firstName,
     lastName,
     company: clean(body.company || body.entreprise, 180),
