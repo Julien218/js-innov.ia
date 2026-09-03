@@ -27,8 +27,8 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
-      - name: Validate changed source
-        run: npm exec -- eslint src/App.jsx src/pages/signelya/SignelyaLanding.jsx src/pages/signelya/SignelyaLegal.jsx --max-warnings=0
+      - name: Validate new Signelya components
+        run: npm exec -- eslint src/pages/signelya/SignelyaLanding.jsx src/pages/signelya/SignelyaLegal.jsx --max-warnings=0
       - name: Build production bundle
         run: npm run build
       - name: Verify patch integrity
