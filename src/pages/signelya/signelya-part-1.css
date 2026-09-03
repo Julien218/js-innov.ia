@@ -95,12 +95,16 @@
 
 .sy-brand img {
   display: block;
-  width: 250px;
+  width: 190px;
+  max-width: 100%;
   height: auto;
+  object-fit: contain;
+  object-position: left center;
+  filter: none;
 }
 
 .sy-brand--compact img {
-  width: 190px;
+  width: 140px;
 }
 
 .sy-nav {

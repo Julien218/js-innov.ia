@@ -36,7 +36,7 @@
 }
 
 .sy-footer__brand .sy-brand img {
-  width: 245px;
+  width: 190px;
 }
 
 .sy-footer__brand > p {
@@ -164,7 +164,7 @@
   }
 
   .sy-brand--compact img {
-    width: 160px;
+    width: 130px;
   }
 
   .sy-header__actions .sy-button--ghost {
@@ -249,7 +249,7 @@
   }
 
   .sy-brand--compact img {
-    width: 145px;
+    width: 120px;
   }
 
   .sy-hero {
@@ -478,7 +478,7 @@
 
 .sy-legal-logo {
   display: block;
-  width: 205px;
+  width: 145px;
   height: auto;
 }
 
@@ -711,7 +711,7 @@
   }
 
   .sy-legal-logo {
-    width: 155px;
+    width: 120px;
   }
 
   .sy-legal-header .sy-button {
