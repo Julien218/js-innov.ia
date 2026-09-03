@@ -35,6 +35,8 @@ import EcranLed from './pages/saas/EcranLed';
 import EcranEspaceC from './pages/saas/EcranEspaceC';
 import SignageProduct from './pages/saas/SignageProduct';
 import SignageSuccess from './pages/saas/SignageSuccess';
+import SignelyaLanding from './pages/signelya/SignelyaLanding';
+import SignelyaLegal from './pages/signelya/SignelyaLegal';
 import Ps from './pages/Ps';
 import CockpitConnectedSite from './pages/CockpitConnectedSite';
 import __Layout from './Layout.jsx';
@@ -49,6 +51,12 @@ const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
 const LayoutWrapper = ({ children, currentPageName }) => Layout ?
   <Layout currentPageName={currentPageName}>{children}</Layout>
   : <>{children}</>;
+
+const SiteHome = () => {
+  const hostname = typeof window !== 'undefined' ? window.location.hostname.toLowerCase() : '';
+  const isSignelyaDomain = hostname === 'signelya.jsinnovia.com' || hostname === 'www.signelya.jsinnovia.com';
+  return isSignelyaDomain ? <SignelyaLanding /> : <EcranLed />;
+};
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, isAuthenticated, navigateToLogin } = useAuth();
@@ -72,7 +80,11 @@ const AuthenticatedApp = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<EcranLed />} />
+      <Route path="/" element={<SiteHome />} />
+      <Route path="/signelya" element={<SignelyaLanding />} />
+      <Route path="/signelya/mentions-legales" element={<SignelyaLegal type="mentions" />} />
+      <Route path="/signelya/confidentialite" element={<SignelyaLegal type="confidentialite" />} />
+      <Route path="/signelya/conditions" element={<SignelyaLegal type="conditions" />} />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
