@@ -44,10 +44,16 @@ function normalize(body, req) {
   if (!firstName || !lastName || !email || !phone) throw new Error('Coordonnées incomplètes');
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('Adresse e-mail invalide');
 
-  const legacyPack = clean(body.pack || body.offerCode || body.offer, 40).toLowerCase();
+  const need = clean(body.need, 180).toLowerCase();
+  const rawPack = clean(body.pack || body.offerCode || body.offer, 40).toLowerCase();
+  const legacyPack = rawPack || (need.includes('festival') ? 'festival' : 'annual');
   const offerCode = legacyPack === 'festival' ? 'festival' : 'annual';
   let billingMode = clean(body.billingMode, 40).toLowerCase();
   if (!billingMode) billingMode = offerCode === 'festival' ? 'one_off' : 'monthly';
+
+  const message = clean(body.message, 4000);
+  const visualCreation = body.visualCreation === true || body.creationVisuelle === true || message.includes('Création Visuelle Animée demandée');
+  const rgpdAccepted = body.rgpdAccepted === true || body.rgpd === true || body.consentRgpd === true;
 
   return {
     firstName,
@@ -55,11 +61,11 @@ function normalize(body, req) {
     company: clean(body.company || body.entreprise, 180),
     email,
     phone,
-    message: clean(body.message, 4000),
+    message,
     offerCode,
     billingMode,
-    visualCreation: body.visualCreation === true || body.creationVisuelle === true,
-    rgpdAccepted: body.rgpdAccepted === true || body.rgpd === true,
+    visualCreation,
+    rgpdAccepted,
     commercialCode: DEFAULT_COMMERCIAL_CODE,
     page: '/#devis',
     referral: 'pixelium-espace-c',
