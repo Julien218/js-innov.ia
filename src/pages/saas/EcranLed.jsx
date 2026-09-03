@@ -118,7 +118,7 @@ export default function EcranLed() {
       });
       setSent(true);
     } catch (err) {
-      setError('Votre demande n'a pas pu être enregistrée. Merci de réessayer.');
+      setError("Votre demande n'a pas pu être enregistrée. Merci de réessayer.");
     }
     setSending(false);
   };
