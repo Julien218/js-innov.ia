@@ -106,6 +106,10 @@ createServer(async (request, response) => {
   } catch {
     return json(response, 400, { error: 'URL invalide' });
   }
+
+  const hostname = String(request.headers.host || '').split(':')[0].toLowerCase();
+  const isSignelyaHost = hostname === 'signelya.jsinnovia.com' || hostname === 'www.signelya.jsinnovia.com';
+
   if (pathname === '/api/health') return json(response, 200, { status: 'ok', service: 'js-innovia-site', backend: 'nova' });
   if (await handleCommerceRequest(request, response, pathname, requestUrl)) return;
   if (pathname.startsWith('/api/platform/')) {
@@ -153,15 +157,18 @@ createServer(async (request, response) => {
     }
   }
   if (pathname.startsWith('/api/')) return json(response, 404, { error: 'Route API inconnue' });
+
   const relativePath = normalize(pathname).replace(/^([/\\])+/, '');
   let filePath = join(dist, relativePath);
 
   if (!filePath.startsWith(dist) || !existsSync(filePath) || !statSync(filePath).isFile()) {
-    filePath = join(dist, 'index.html');
+    filePath = join(dist, isSignelyaHost ? 'signelya.html' : 'index.html');
   }
 
+  const isHtml = filePath.endsWith('.html');
   response.setHeader('Content-Type', mime[extname(filePath).toLowerCase()] || 'application/octet-stream');
-  response.setHeader('Cache-Control', filePath.endsWith('index.html') ? 'no-cache' : 'public, max-age=31536000, immutable');
+  response.setHeader('Cache-Control', isHtml ? 'no-cache' : 'public, max-age=31536000, immutable');
+  if (isHtml) response.setHeader('Vary', 'Host');
   createReadStream(filePath).pipe(response);
 }).listen(port, '0.0.0.0', () => {
   console.log(`JS-Innov.IA listening on 0.0.0.0:${port}`);
