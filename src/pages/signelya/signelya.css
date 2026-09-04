@@ -24,3 +24,25 @@
 @keyframes syLogoBreath{0%,100%{filter:drop-shadow(0 0 9px rgba(0,229,255,.12)) drop-shadow(0 0 14px rgba(255,43,214,.07))}50%{filter:drop-shadow(0 0 15px rgba(0,229,255,.25)) drop-shadow(0 0 24px rgba(138,43,226,.16))}}
 @media(prefers-reduced-motion:reduce){.sy-button--primary,.sy-price-card__flag,.sy-hero h1 strong,.sy-gradient-text,.sy-brand::after,.sy-brand img{animation:none!important}}
 @media(max-width:760px){.sy-page{background:radial-gradient(circle at 50% 0,rgba(0,229,255,.11),transparent 24rem),linear-gradient(180deg,#03050d,#080719)}.sy-mobile-nav{background:rgba(4,7,18,.96)!important;border-color:rgba(90,122,230,.18)!important;backdrop-filter:blur(22px)}.sy-feature-card,.sy-install-card,.sy-price-card,.sy-faq-item{border-radius:18px!important}.sy-brand::after{filter:blur(12px);opacity:.30}}
+
+/* 04/09/2026 — même ADN lumineux que l'application SIGNELYA.
+   Le fichier officiel n'est ni redessiné, ni déformé : un reflet passe au-dessus. */
+.sy-brand{border-radius:18px}
+.sy-brand::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;background:linear-gradient(105deg,transparent 0%,transparent 38%,rgba(0,229,255,.05) 44%,rgba(0,229,255,.30) 48%,rgba(255,255,255,.48) 50%,rgba(157,78,255,.32) 53%,rgba(255,43,214,.16) 57%,transparent 63%,transparent 100%);background-repeat:no-repeat;background-size:30% 100%;background-position:-55% 50%;mix-blend-mode:screen;opacity:.88;animation:syOfficialLogoSweep 4.2s ease-in-out infinite;will-change:background-position,opacity}
+.sy-header__brand .sy-brand--compact img{width:205px!important}
+.sy-footer__brand .sy-brand img{width:300px!important}
+
+/* Le lockup complet validé devient le premier repère visuel du hero. */
+.sy-hero__copy::before{content:'';display:block;width:min(520px,100%);aspect-ratio:3/1;margin:0 0 20px;border-radius:20px;background-color:#000;background-image:linear-gradient(105deg,transparent 0%,transparent 39%,rgba(0,229,255,.05) 44%,rgba(0,229,255,.30) 48%,rgba(255,255,255,.45) 50%,rgba(157,78,255,.30) 53%,rgba(255,43,214,.15) 57%,transparent 63%,transparent 100%),url('/branding/signelya-officiel-jsinnovia.png?v=20260904-adn-3');background-repeat:no-repeat,no-repeat;background-size:28% 100%,contain;background-position:-48% 50%,50% 50%;box-shadow:0 0 0 1px rgba(0,229,255,.10),0 0 34px rgba(0,229,255,.09),0 0 48px rgba(138,43,226,.08);animation:syOfficialHeroSweep 4.2s ease-in-out infinite;will-change:background-position,filter}
+
+.sy-hero h1>span{background:linear-gradient(100deg,var(--sy-cyan),#3b8cff 36%,#a14aff 68%,var(--sy-magenta));background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent!important;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 12px rgba(0,229,255,.18));animation:syTextLightRun 3.6s linear infinite}
+.sy-dashboard-brand span{background:linear-gradient(100deg,var(--sy-cyan),#418cff 38%,#a14aff 68%,var(--sy-magenta));background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent!important;-webkit-text-fill-color:transparent;text-shadow:none;animation:syTextLightRun 3.6s linear infinite}
+.sy-dashboard-shell{border-color:rgba(0,229,255,.34)!important;box-shadow:0 0 0 1px rgba(0,229,255,.06),0 24px 74px rgba(0,0,0,.42),0 0 42px rgba(0,229,255,.10),0 0 58px rgba(138,43,226,.08)!important}
+
+@keyframes syOfficialLogoSweep{0%,12%{background-position:-55% 50%;opacity:.38}43%{opacity:.94}72%,100%{background-position:155% 50%;opacity:.42}}
+@keyframes syOfficialHeroSweep{0%,12%{background-position:-48% 50%,50% 50%;filter:brightness(.97) saturate(1.02) drop-shadow(0 0 10px rgba(0,229,255,.10))}46%{background-position:62% 50%,50% 50%;filter:brightness(1.09) saturate(1.10) drop-shadow(0 0 20px rgba(0,229,255,.22)) drop-shadow(0 0 15px rgba(255,43,214,.12))}72%,100%{background-position:148% 50%,50% 50%;filter:brightness(.99) saturate(1.04) drop-shadow(0 0 12px rgba(74,106,255,.14))}}
+
+@media(max-width:1080px){.sy-hero__copy::before{width:min(560px,100%)}}
+@media(max-width:820px){.sy-header__brand .sy-brand--compact img{width:170px!important}.sy-hero{padding-top:46px!important}.sy-hero__copy::before{width:min(500px,100%);margin-bottom:16px}}
+@media(max-width:620px){.sy-header__brand .sy-brand--compact img{width:148px!important}.sy-brand::before{background-size:38% 100%;animation-duration:3.7s}.sy-hero__copy::before{width:100%;margin-bottom:14px;border-radius:15px;background-size:36% 100%,contain;animation-duration:3.7s}.sy-footer__brand .sy-brand img{width:min(290px,100%)!important}}
+@media(prefers-reduced-motion:reduce){.sy-brand::before,.sy-hero__copy::before,.sy-hero h1>span,.sy-dashboard-brand span{animation:none!important}.sy-brand::before{display:none}.sy-hero__copy::before{background-image:url('/branding/signelya-officiel-jsinnovia.png?v=20260904-adn-3');background-size:contain;background-position:center;filter:brightness(1.03) saturate(1.05) drop-shadow(0 0 13px rgba(0,229,255,.16))}}
