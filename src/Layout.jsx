@@ -4,6 +4,7 @@ import { createPageUrl } from './utils';
 import { Menu, X, ShoppingCart, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AIChatbot from './components/chatbot/AIChatbot';
+import VoiceCompanion from './components/chatbot/VoiceCompanion';
 import SalesAgent from './components/agent/SalesAgent';
 import SEOMetaTags from './components/seo/SEOMetaTags';
 import { CartProvider, useCart } from './components/cart/CartContext';
@@ -78,7 +79,7 @@ function LayoutContent({ children, currentPageName }) {
       <AnimatePresence>{mobileMenuOpen&&<motion.div initial={{opacity:0,height:0}} animate={{opacity:1,height:'auto'}} exit={{opacity:0,height:0}} className="lg:hidden border-t border-white/10 bg-[#060612]"><div className="px-4 py-4 space-y-1 max-h-[80vh] overflow-y-auto">{navItems.map(item=>item.submenu?<div key={item.name}><button onClick={()=>setOpenSubmenu(openSubmenu===item.name?null:item.name)} className="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold flex justify-between" style={{color:GOLD}}>{item.name}<ChevronDown className="w-4 h-4"/></button>{openSubmenu===item.name&&<div className="ml-4">{item.submenu.map(sub=><Link key={sub.path} to={createPageUrl(sub.path)} onClick={()=>setMobileMenuOpen(false)} className="block px-4 py-2.5 text-sm text-white/60">{sub.name}</Link>)}</div>}</div>:<Link key={item.dynamicSlug||item.path} to={item.dynamicSlug?`/page/${item.dynamicSlug}`:createPageUrl(item.path)} onClick={()=>setMobileMenuOpen(false)} className="block px-4 py-3 rounded-xl text-sm font-semibold" style={navLinkStyle(item)}>{item.name}</Link>)}</div></motion.div>}</AnimatePresence>
     </nav>
     <main className="pt-28"><PageTransition>{children}</PageTransition></main>
-    <AIChatbot /><SalesAgent />
+    <VoiceCompanion /><AIChatbot /><SalesAgent />
   </div>;
 }
 
