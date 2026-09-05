@@ -33,7 +33,7 @@ const json = (response, status, value) => {
 
 const setSecurityHeaders = (response) => {
   response.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-  response.setHeader('Permissions-Policy', 'camera=(), geolocation=(), microphone=()');
+  response.setHeader('Permissions-Policy', 'camera=(), geolocation=(), microphone=(self)');
   response.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -164,6 +164,15 @@ const safeCommercialMessage = (value, messages, qualification = {}) => {
   return answer;
 };
 
+const sanitizeRealtimePageContext = (value = {}) => ({
+  path: String(value.path || '/').slice(0, 180),
+  pageTitle: String(value.pageTitle || '').slice(0, 180),
+  recentPaths: Array.isArray(value.recentPaths)
+    ? value.recentPaths.map((item) => String(item || '').slice(0, 180)).filter(Boolean).slice(-8)
+    : [],
+  visitSeconds: Math.max(0, Math.min(7200, Number(value.visitSeconds) || 0)),
+});
+
 const serveStaticFile = (request, response, filePath) => {
   const size = statSync(filePath).size;
   const contentType = mime[extname(filePath).toLowerCase()] || 'application/octet-stream';
@@ -243,6 +252,20 @@ createServer(async (request, response) => {
       }
       if (request.method !== 'POST') { response.setHeader('Allow', 'POST'); return json(response, 405, { error: 'Méthode non autorisée' }); }
       const body = await readJson(request);
+      if (pathname === '/api/platform/functions/realtimeCall') {
+        const sdp = String(body.sdp || '');
+        if (!sdp || sdp.length > 200_000 || !sdp.includes('v=0')) return json(response, 400, { error: 'Offre WebRTC invalide' });
+        const upstream = await agentFetch('/realtime/call', {
+          method: 'POST',
+          body: JSON.stringify({
+            sdp,
+            economy: body.economy === true,
+            pageContext: sanitizeRealtimePageContext(body.pageContext),
+          }),
+        });
+        const data = await upstream.json().catch(() => ({}));
+        return json(response, upstream.ok ? 200 : 502, upstream.ok ? data : { error: data.error || 'Connexion vocale indisponible' });
+      }
       if (pathname === '/api/platform/functions/analyzeSEO') {
         try {
           return json(response, 200, await auditSeo({
