@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-05T16:46:00+02:00",
+  "highlights": [
+    {
+      "id": "signelya-launch",
+      "active": true,
+      "kind": "application",
+      "name": "Signelya",
+      "publishedAt": "2026-09-03T00:00:00+02:00",
+      "eyebrow": "NOUVEAUTÉ JS-Innov.IA",
+      "title": "Découvrez notre nouvelle APP",
+      "description": "Signelya — conçue pour vous simplifier la vie et rendre votre communication plus fluide au quotidien.",
+      "cta": "Découvrir Signelya",
+      "url": "https://signelya.jsinnovia.com/"
+    }
+  ]
+}
