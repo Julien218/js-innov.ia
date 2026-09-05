@@ -118,17 +118,7 @@ export default function EcranLed() {
       });
       setSent(true);
     } catch (err) {
-      // Fallback mailto si Supabase KO
-      const subject = encodeURIComponent(`Demande écran LED — Forfait ${pack.label}`);
-      const body = encodeURIComponent(
-        `Forfait : ${pack.label}\n` +
-        `Prénom : ${form.prenom}\nNom : ${form.nom}\n` +
-        `Entreprise : ${form.entreprise || '—'}\n` +
-        `Email : ${form.email}\nTél : ${form.telephone}\n` +
-        `Message : ${form.message || '—'}`
-      );
-      window.location.href = `mailto:info@jsinnovia.com?subject=${subject}&body=${body}`;
-      setSent(true);
+      setError("Votre demande n'a pas pu être enregistrée. Merci de réessayer.");
     }
     setSending(false);
   };

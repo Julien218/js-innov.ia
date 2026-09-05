@@ -6,6 +6,7 @@ import { extname, join, normalize } from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { handleCommerceRequest } = require('./server.cjs');
+const { handlePixeliumRequest } = require('./server-pixelium.cjs');
 
 const dist = join(process.cwd(), 'dist');
 const port = Number.parseInt(process.env.PORT || '8080', 10);
@@ -112,6 +113,7 @@ createServer(async (request, response) => {
 
   if (pathname === '/api/health') return json(response, 200, { status: 'ok', service: 'js-innovia-site', backend: 'nova' });
   if (await handleCommerceRequest(request, response, pathname, requestUrl)) return;
+  if (await handlePixeliumRequest(request, response, pathname)) return;
   if (pathname.startsWith('/api/platform/')) {
     if (!allow(request)) return json(response, 429, { error: 'Trop de requêtes. Réessayez dans une minute.' });
     try {
