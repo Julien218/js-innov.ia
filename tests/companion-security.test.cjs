@@ -6,12 +6,15 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const client = fs.readFileSync(path.join(root, 'src/components/chatbot/AIChatbot.jsx'), 'utf8');
+const voice = fs.readFileSync(path.join(root, 'src/components/chatbot/VoiceCompanion.jsx'), 'utf8');
 const avatar = fs.readFileSync(path.join(root, 'src/components/chatbot/AIAvatar.jsx'), 'utf8');
 const renderer3d = fs.readFileSync(path.join(root, 'src/components/chatbot/ElynaAvatar3D.jsx'), 'utf8');
 const validator3d = fs.readFileSync(path.join(root, 'scripts/validate-elyna-vrm.mjs'), 'utf8');
 const endpoint = fs.readFileSync(path.join(root, 'server.mjs'), 'utf8');
 const platformClient = fs.readFileSync(path.join(root, 'src/api/platformClient.js'), 'utf8');
 const app = fs.readFileSync(path.join(root, 'src/App.jsx'), 'utf8');
+const layout = fs.readFileSync(path.join(root, 'src/Layout.jsx'), 'utf8');
+const saasLayout = fs.readFileSync(path.join(root, 'src/components/saas/SaasLayout.jsx'), 'utf8');
 const packageJson = fs.readFileSync(path.join(root, 'package.json'), 'utf8');
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'public/brand/companion/manifest.json'), 'utf8'));
 
@@ -21,9 +24,39 @@ test('the browser delegates AI requests to the server function', () => {
   assert.match(platformClient, /\/api\/platform\/functions/);
 });
 
-test('the branded companion is mounted on the active SaaS landing routes', () => {
+test('the branded chat companion is mounted on the active SaaS landing routes', () => {
   assert.match(app, /SaasChatbot from '.\/components\/chatbot\/AIChatbot'/);
   assert.match(app, /<SaasChatbot\s*\/>/);
+});
+
+test('the Realtime voice companion is mounted once globally inside the router', () => {
+  assert.match(app, /VoiceCompanion from '.\/components\/chatbot\/VoiceCompanion'/);
+  assert.match(app, /<VoiceCompanion\s*\/>/);
+  assert.doesNotMatch(layout, /VoiceCompanion/);
+  assert.doesNotMatch(saasLayout, /VoiceButton/);
+});
+
+test('the voice navigation bridge uses an explicit allowlist and never arbitrary URLs', () => {
+  assert.match(voice, /const SITE_DESTINATIONS = Object\.freeze/);
+  for (const destination of ['home', 'creative_studio', 'agents', 'automations', 'packs', 'pricing', 'showcase', 'seo', 'contact']) {
+    assert.match(voice, new RegExp(`${destination}:`));
+  }
+  assert.match(voice, /response\.function_call_arguments\.done/);
+  assert.match(voice, /type: 'function_call_output'/);
+  assert.match(voice, /destination_not_allowed/);
+  assert.match(voice, /handledToolCallsRef/);
+  assert.match(voice, /useNavigate/);
+  assert.doesNotMatch(voice, /window\.location\s*=/);
+  assert.doesNotMatch(voice, /args\.(url|href|path)/);
+});
+
+test('the voice companion remains public-site only and sends bounded navigation context', () => {
+  assert.match(voice, /isMainPublicHost/);
+  assert.match(voice, /www\.jsinnovia\.com/);
+  assert.match(voice, /PRIVATE_PATH_PREFIXES/);
+  assert.match(voice, /interestHint: inferInterest\(history\)/);
+  assert.match(voice, /recentPaths: history/);
+  assert.match(voice, /visitSeconds:/);
 });
 
 test('the public endpoint bounds input and rate limits requests', () => {
