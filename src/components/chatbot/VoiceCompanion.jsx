@@ -218,7 +218,7 @@ export default function VoiceCompanion() {
 
   return (
     <>
-      <audio ref={audioRef} autoPlay playsInline className="hidden" aria-hidden="true" />
+      <audio ref={audioRef} autoPlay className="hidden" aria-hidden="true" />
 
       {!isOpen && (
         <motion.button
