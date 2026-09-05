@@ -3,16 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, MessageCircle } from 'lucide-react';
 import { platform } from '@/api/platformClient';
-import VoiceButton from '@/components/voice/VoiceButton';
 
 const GOLD = '#D4AF37';
-const GOLD_L = '#F5CF41';
 const PURPLE = '#7C3AED';
-const PURPLE_S = '#8B5CF6';
 const CYAN = '#06B6D4';
-const MAGENTA = '#FF1B47';
 const NOIR = '#0B0B0F';
-const BLEU_NUIT = '#0F172A';
 const WA_LINK = 'https://wa.me/32494119090?text=Bonjour%20Julien%2C%20je%20viens%20du%20site%20Js-Innov.IA%20et%20je%20souhaite%20parler%20de%20mon%20projet.';
 
 function PhoenixLogo({ size = 36 }) {
@@ -49,7 +44,7 @@ export default function SaasLayout({ children }) {
       </nav>
       <main className="pt-16 relative z-10">{children}</main>
       <footer className="relative z-10 border-t mt-16 py-12 px-4" style={{background:NOIR,borderColor:'rgba(212,175,55,0.12)',fontFamily:"'Poppins', sans-serif"}}><div className="max-w-7xl mx-auto"><div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10"><div className="col-span-2"><div className="flex items-center gap-3 mb-4"><PhoenixLogo size={40}/><div><div className="font-cinzel font-bold text-lg text-gold-gradient">Js-Innov.IA</div><div className="text-xs" style={{color:'rgba(212,175,55,0.35)'}}>Solutions Premium</div></div></div><p className="text-xs leading-relaxed" style={{color:'rgba(255,255,255,0.3)'}}>Votre problème devient notre point de départ.<br/>Votre solution devient notre création.</p></div><div><p className="text-xs font-bold tracking-widest uppercase mb-3" style={{color:GOLD}}>Navigation</p>{navItems.map(item=><Link key={item.path} to={item.path} className="block text-xs py-1" style={{color:'rgba(255,255,255,0.3)'}}>{item.label}</Link>)}</div><div><p className="text-xs font-bold tracking-widest uppercase mb-3" style={{color:GOLD}}>Informations légales</p><Link to="/saas-mentions" className="block text-xs py-1" style={{color:'rgba(255,255,255,0.3)'}}>Mentions légales</Link><Link to="/saas-confidentialite" className="block text-xs py-1" style={{color:'rgba(255,255,255,0.3)'}}>Confidentialité</Link><Link to="/saas-cgv" className="block text-xs py-1" style={{color:'rgba(255,255,255,0.3)'}}>Conditions générales</Link></div></div><div className="border-t pt-6 text-xs" style={{borderColor:'rgba(212,175,55,0.08)',color:'rgba(255,255,255,0.18)'}}>© 2026 Js-Innov.IA · info@jsinnovia.store · 0494/11.90.90</div></div></footer>
-      <VoiceButton/><a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-2xl transition-all hover:scale-110" style={{background:'#25D366',boxShadow:'0 4px 30px rgba(37,211,102,0.4)'}}><MessageCircle className="w-7 h-7 text-white"/></a>
+      <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-2xl transition-all hover:scale-110" style={{background:'#25D366',boxShadow:'0 4px 30px rgba(37,211,102,0.4)'}}><MessageCircle className="w-7 h-7 text-white"/></a>
     </div>
   );
 }

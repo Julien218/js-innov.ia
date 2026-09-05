@@ -1,12 +1,44 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Loader2, Mic, MicOff, Radio, X } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ElynaAvatar3D from './ElynaAvatar3D';
 
 const AVATAR = '/brand/companion/companion-avatar-256.webp';
 const HISTORY_KEY = 'jsinnovia-voice-navigation-history';
 const MAX_HISTORY = 8;
+
+const SITE_DESTINATIONS = Object.freeze({
+  home: '/',
+  creative_studio: '/CreativeStudio',
+  agents: '/saas-agents',
+  automations: '/Automations',
+  packs: '/saas-packs',
+  pricing: '/Pricing',
+  showcase: '/Showcase',
+  seo: '/SEOAudit',
+  contact: '/saas-contact',
+});
+
+const PRIVATE_PATH_PREFIXES = [
+  '/admin',
+  '/crm',
+  '/blogadmin',
+  '/quotedashboard',
+  '/formbuilder',
+  '/pagemanager',
+  '/saas-admin',
+  '/saas-chatbot-admin',
+  '/saas-client',
+  '/cart',
+  '/checkout',
+  '/orderconfirmation',
+  '/paymentsuccess',
+  '/paymentcancel',
+  '/cockpit',
+  '/site-cockpit',
+  '/catalogue-tarifs-brouillon',
+];
 
 function readHistory() {
   try {
@@ -25,6 +57,31 @@ function writePath(path) {
   } catch {
     // La voix reste fonctionnelle lorsque le stockage de session est indisponible.
   }
+}
+
+function inferInterest(paths) {
+  const text = paths.join(' ').toLowerCase();
+  if (text.includes('creative') || text.includes('contentstudio') || text.includes('aimusic')) return 'création de contenu et studio créatif';
+  if (text.includes('saas-agents') || text.includes('automations') || text.includes('applications')) return 'agents IA et automatisations';
+  if (text.includes('saas-packs') || text.includes('pricing')) return 'offres et tarifs';
+  if (text.includes('showcase') || text.includes('portfolio')) return 'réalisations et preuves';
+  if (text.includes('seoaudit') || text.includes('seo')) return 'référencement et audit SEO';
+  if (text.includes('contact') || text.includes('devis')) return 'prise de contact et projet';
+  return 'découverte générale de JS-Innov.IA';
+}
+
+function isMainPublicHost(hostname) {
+  const host = String(hostname || '').toLowerCase();
+  return host === 'www.jsinnovia.com'
+    || host === 'jsinnovia.com'
+    || host === 'localhost'
+    || host === '127.0.0.1'
+    || host.endsWith('.up.railway.app');
+}
+
+function isPublicVoicePath(pathname) {
+  const path = String(pathname || '/').toLowerCase();
+  return !PRIVATE_PATH_PREFIXES.some((prefix) => path === prefix || path.startsWith(`${prefix}/`));
 }
 
 function waitForIceGathering(peerConnection, timeout = 2200) {
@@ -58,6 +115,7 @@ function statusLabel(status) {
 export default function VoiceCompanion() {
   const reduceMotion = useReducedMotion();
   const location = useLocation();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
@@ -67,10 +125,95 @@ export default function VoiceCompanion() {
   const dataChannelRef = useRef(null);
   const streamRef = useRef(null);
   const audioRef = useRef(null);
+  const handledToolCallsRef = useRef(new Set());
+
+  const currentPath = `${location.pathname}${location.search || ''}`;
+  const available = typeof window !== 'undefined'
+    && isMainPublicHost(window.location.hostname)
+    && isPublicVoicePath(location.pathname);
+
+  function sendDataChannelEvent(payload) {
+    const channel = dataChannelRef.current;
+    if (!channel || channel.readyState !== 'open') return false;
+    channel.send(JSON.stringify(payload));
+    return true;
+  }
+
+  function sendToolOutput(callId, output) {
+    if (!callId) return false;
+    return sendDataChannelEvent({
+      type: 'conversation.item.create',
+      item: {
+        type: 'function_call_output',
+        call_id: callId,
+        output: JSON.stringify(output),
+      },
+    });
+  }
+
+  function executeToolCall(call) {
+    const callId = String(call?.call_id || '');
+    if (!callId || handledToolCallsRef.current.has(callId)) return;
+    handledToolCallsRef.current.add(callId);
+
+    const name = String(call?.name || '');
+    let args = {};
+    try {
+      args = JSON.parse(call?.arguments || '{}');
+    } catch {
+      args = {};
+    }
+
+    if (name !== 'navigate_site') {
+      sendToolOutput(callId, { ok: false, error: 'tool_not_allowed' });
+      sendDataChannelEvent({ type: 'response.create' });
+      return;
+    }
+
+    const destination = String(args.destination || '');
+    const path = SITE_DESTINATIONS[destination];
+    if (!path) {
+      sendToolOutput(callId, { ok: false, error: 'destination_not_allowed' });
+      sendDataChannelEvent({ type: 'response.create' });
+      return;
+    }
+
+    setStatus('thinking');
+    const outputSent = sendToolOutput(callId, { ok: true, destination, path });
+    navigate(path);
+    writePath(path);
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+    if (outputSent) sendDataChannelEvent({ type: 'response.create' });
+  }
 
   useEffect(() => {
-    writePath(`${location.pathname}${location.search || ''}`);
-  }, [location.pathname, location.search]);
+    writePath(currentPath);
+
+    if (dataChannelRef.current?.readyState === 'open') {
+      const history = readHistory();
+      sendDataChannelEvent({
+        type: 'conversation.item.create',
+        item: {
+          type: 'message',
+          role: 'system',
+          content: [{
+            type: 'input_text',
+            text: `Contexte interface actualisé : page ${currentPath}. Intérêt local : ${inferInterest(history)}.`,
+          }],
+        },
+      });
+    }
+  }, [currentPath]);
+
+  useEffect(() => {
+    if (!available) {
+      stopVoice();
+      setError('');
+      setIsOpen(false);
+    }
+  }, [available]);
 
   useEffect(() => () => stopVoice(), []);
 
@@ -90,6 +233,7 @@ export default function VoiceCompanion() {
     streamRef.current?.getTracks?.().forEach((track) => track.stop());
     streamRef.current = null;
     if (audioRef.current) audioRef.current.srcObject = null;
+    handledToolCallsRef.current.clear();
     setModel('');
     setStatus('idle');
   }
@@ -106,6 +250,14 @@ export default function VoiceCompanion() {
     if (type === 'error') {
       setError('La conversation vocale a rencontré un problème.');
       setStatus('error');
+      return;
+    }
+    if (type === 'response.function_call_arguments.done') {
+      executeToolCall(payload);
+      return;
+    }
+    if (type === 'response.output_item.done' && payload?.item?.type === 'function_call') {
+      executeToolCall(payload.item);
       return;
     }
     if (type.includes('speech_started')) {
@@ -126,7 +278,7 @@ export default function VoiceCompanion() {
   }
 
   async function startVoice() {
-    if (status !== 'idle' && status !== 'error') return;
+    if (!available || (status !== 'idle' && status !== 'error')) return;
     setError('');
     setIsOpen(true);
     setStatus('connecting');
@@ -177,15 +329,17 @@ export default function VoiceCompanion() {
       await pc.setLocalDescription(offer);
       await waitForIceGathering(pc);
 
+      const history = readHistory();
       const response = await fetch('/api/platform/functions/realtimeCall', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           sdp: pc.localDescription?.sdp || offer.sdp,
           pageContext: {
-            path: `${location.pathname}${location.search || ''}`,
+            path: currentPath,
             pageTitle: document.title,
-            recentPaths: readHistory(),
+            recentPaths: history,
+            interestHint: inferInterest(history),
             visitSeconds: Math.round((Date.now() - visitStartedRef.current) / 1000),
           },
         }),
@@ -215,6 +369,8 @@ export default function VoiceCompanion() {
     setError('');
     setIsOpen(false);
   }
+
+  if (!available) return null;
 
   return (
     <>
@@ -273,7 +429,7 @@ export default function VoiceCompanion() {
                 <p className="mt-3 rounded-xl border border-red-300/15 bg-red-400/[0.06] px-3 py-2 text-xs leading-relaxed text-red-100">{error}</p>
               ) : (
                 <p className="mt-3 max-w-xs text-xs leading-relaxed text-slate-400">
-                  Le micro s’active uniquement après votre clic. Vous pouvez m’interrompre naturellement pendant la conversation.
+                  Le micro s’active uniquement après votre clic. Je peux aussi vous guider directement vers les pages publiques adaptées à votre besoin.
                 </p>
               )}
 
