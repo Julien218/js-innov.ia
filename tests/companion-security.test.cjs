@@ -82,11 +82,16 @@ test('the public assistant is explicitly isolated from the cockpit', () => {
   assert.doesNotMatch(endpoint, /fetch\(elyneaUrl[^]*x-agent-key/);
 });
 
-test('the application has no runtime dependency on Base44', () => {
+test('the production runtime has no Base44 dependency', () => {
   const viteConfig = fs.readFileSync(path.join(root, 'vite.config.js'), 'utf8');
-  assert.doesNotMatch(packageJson, /@base44/);
+  const dockerfile = fs.readFileSync(path.join(root, 'Dockerfile'), 'utf8');
   assert.doesNotMatch(viteConfig, /base44/i);
+  assert.doesNotMatch(client, /@base44|base44Client/);
+  assert.doesNotMatch(platformClient, /@base44|base44Client/);
   assert.equal(fs.existsSync(path.join(root, 'src/api/base44Client.js')), false);
+  assert.doesNotMatch(dockerfile, /COPY --from=build \/app\/node_modules/);
+  assert.match(dockerfile, /COPY --from=build \/app\/dist \.\/dist/);
+  assert.match(dockerfile, /CMD \["node", "server\.mjs"\]/);
 });
 
 test('Elyna keeps the premium local visual pack as a production fallback', () => {
