@@ -143,11 +143,17 @@ const DECLINE_HANDOFF = /\b(?:non merci|pas maintenant|plus tard|je ne souhaite 
 
 const latestUserMessage = (messages = []) => String([...messages].reverse().find(({ role }) => role === 'user')?.content || '');
 
+const normalizeCommercialIntent = (value) => String(value || '')
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .toLowerCase();
+
 const commercialFallback = (messages = []) => {
-  const request = String(messages.at(-1)?.content || '').toLowerCase();
-  if (DECLINE_HANDOFF.test(request)) return "Bien compris. Aucune demande n’a été transmise. Vous pourrez reprendre la conversation plus tard si vous le souhaitez.";
-  if (/site|seo|référencement/.test(request)) return "Nous pouvons vous accompagner pour créer un site ou améliorer l’existant, avec une attention particulière portée à l’image, aux conversions et au référencement. Souhaitez-vous créer un nouveau site ou optimiser celui que vous avez déjà ?";
-  if (/automat|tâche|workflow|processus/.test(request)) return "Nous pouvons identifier et automatiser les tâches répétitives afin de vous faire gagner du temps. Quelle opération vous prend aujourd’hui le plus de temps ?";
+  const request = normalizeCommercialIntent(latestUserMessage(messages));
+  if (DECLINE_HANDOFF.test(latestUserMessage(messages))) return "Bien compris. Aucune demande n’a été transmise. Vous pourrez reprendre la conversation plus tard si vous le souhaitez.";
+  if (/\b(?:factur\w*|fatur\w*|e[- ]?factur\w*|peppol)\b/.test(request)) return "Oui. Pour un programme de facturation, la solution JS-Innov.IA à regarder en priorité est HainoFlow. Le périmètre actuellement confirmé couvre la gestion des clients, devis, factures, documents/archivage et le suivi des envois. Vous facturez en tant qu’indépendant, société ou ASBL ?";
+  if (/site|seo|referencement/.test(request)) return "Nous pouvons vous accompagner pour créer un site ou améliorer l’existant, avec une attention particulière portée à l’image, aux conversions et au référencement. Souhaitez-vous créer un nouveau site ou optimiser celui que vous avez déjà ?";
+  if (/automat|tache|workflow|processus/.test(request)) return "Nous pouvons identifier et automatiser les tâches répétitives afin de vous faire gagner du temps. Quelle opération vous prend aujourd’hui le plus de temps ?";
   if (/assistant|chatbot|agent ia|intelligence artificielle/.test(request)) return "Nous pouvons concevoir un assistant adapté à votre activité pour informer, qualifier les demandes ou faciliter le suivi client. Votre priorité concerne-t-elle l’accueil, la vente ou le support ?";
   return "Merci pour votre message. Je peux vous orienter vers la solution JS-Innov.IA la plus adaptée : quel résultat souhaitez-vous obtenir en priorité pour votre entreprise ?";
 };
