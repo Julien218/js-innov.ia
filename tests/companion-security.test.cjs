@@ -94,10 +94,10 @@ test('the production runtime has no Base44 dependency', () => {
   assert.match(dockerfile, /CMD \["node", "server\.mjs"\]/);
 });
 
-test('Elyna keeps the premium local visual pack as a production fallback', () => {
+test('Elynea keeps the premium local visual pack as a production fallback', () => {
   assert.match(client, /\/brand\/companion\/companion-avatar-256\.webp/);
   assert.match(avatar, /\/brand\/companion\/companion-launcher-256\.webp/);
-  assert.equal(manifest.assistant, 'Elyna');
+  assert.equal(manifest.assistant, 'Elynea');
   assert.equal(manifest.role, 'Compagnon JS-Innov.IA');
   assert.equal(manifest.version, '1.2.0');
   assert.equal(manifest.threeD.enabled, false);
