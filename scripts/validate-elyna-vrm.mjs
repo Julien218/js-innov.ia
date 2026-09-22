@@ -10,7 +10,7 @@ const GLB_MAGIC = 0x46546c67;
 const JSON_CHUNK = 0x4e4f534a;
 
 function fail(message) {
-  throw new Error(`[Elyna VRM] ${message}`);
+  throw new Error(`[Elynea VRM] ${message}`);
 }
 
 function publicAssetPath(assetUrl) {
@@ -94,7 +94,7 @@ function main() {
   if (!fs.existsSync(manifestPath)) fail('manifest.json is missing');
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 
-  if (manifest.assistant !== 'Elyna') fail('manifest assistant must be Elyna');
+  if (manifest.assistant !== 'Elynea') fail('manifest assistant must be Elynea');
   if (manifest.role !== 'Compagnon JS-Innov.IA') fail('manifest role is incorrect');
   if (manifest.threeD?.format !== 'vrm') fail('threeD.format must be vrm');
   if (manifest.threeD?.fallbackRequired !== true) fail('3D fallback must remain mandatory');
@@ -111,7 +111,7 @@ function main() {
 
   if (!modelExists) {
     if (manifest.threeD.enabled) fail(`3D is enabled but model is missing: ${manifest.threeD.model}`);
-    console.log('[Elyna VRM] OK — 3D disabled; validated 2D fallbacks; master model not delivered yet.');
+    console.log('[Elynea VRM] OK — 3D disabled; validated 2D fallbacks; master model not delivered yet.');
     return;
   }
 
@@ -124,7 +124,7 @@ function main() {
   const gltf = parseGlbJson(buffer);
   const result = validateVrmJson(gltf, manifest);
 
-  console.log(`[Elyna VRM] OK — ${result.vrmVersion}, ${result.nodeCount} nodes, ${(stat.size / 1024 / 1024).toFixed(2)} MiB, enabled=${Boolean(manifest.threeD.enabled)}.`);
+  console.log(`[Elynea VRM] OK — ${result.vrmVersion}, ${result.nodeCount} nodes, ${(stat.size / 1024 / 1024).toFixed(2)} MiB, enabled=${Boolean(manifest.threeD.enabled)}.`);
 }
 
 try {
