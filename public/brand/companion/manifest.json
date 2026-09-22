@@ -1,7 +1,7 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "brand": "JS-Innov.IA",
-  "assistant": "Elyna",
+  "assistant": "Elynea",
   "role": "Compagnon JS-Innov.IA",
   "primaryAvatar": "/brand/companion/companion-avatar-256.webp",
   "launcher": "/brand/companion/companion-launcher-256.webp",
@@ -38,7 +38,9 @@
   "usage": {
     "launcherMinPx": 56,
     "avatarMinPx": 32,
-    "preferredBackground": "dark"
+    "preferredBackground": "dark",
+    "canonicalAvatar": "/brand/companion/companion-avatar-256.webp",
+    "canonicalLauncher": "/brand/companion/companion-launcher-256.webp"
   },
-  "generatedAt": "2026-08-16"
+  "generatedAt": "2026-09-22"
 }
