@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "brand": "SIGNELYA",
+  "status": "production",
+  "locale": "fr-BE",
+  "lastAligned": "2026-09-23",
+  "repository": {
+    "fullName": "Julien218/js-innov.ia",
+    "productionBranch": "feature/digital-signage-product-release"
+  },
+  "canonicalSources": {
+    "bible": "brand/BRAND_ADN.md",
+    "siteAssets": "public/branding"
+  },
+  "identity": {
+    "name": "SIGNELYA",
+    "fullName": "SIGNELYA by JS-Innov.IA",
+    "tagline": "Vos écrans prennent vie"
+  },
+  "wordmarkLetters": {
+    "S": "#00D4FF",
+    "I": "#20B8FF",
+    "G": "#4E8BFF",
+    "N": "#755BFF",
+    "E": "#9E35F3",
+    "L": "#CA1EE4",
+    "Y": "#EA12D8",
+    "A": "#FF00CC"
+  },
+  "assets": {
+    "squareLogo": "public/branding/signelya-logo-carre.png",
+    "officialLockup": "public/branding/signelya-officiel-jsinnovia.png"
+  },
+  "agentPolicy": {
+    "mode": "fail-closed",
+    "readOrder": [
+      "brand/brand.manifest.json",
+      "brand/BRAND_ADN.md"
+    ],
+    "forbidden": [
+      "generate-logo",
+      "redraw-symbol",
+      "recolor-master",
+      "use-simplified-unapproved-icon",
+      "mix-hainoflow-adn",
+      "mix-pilotyasign-adn"
+    ],
+    "qualityGate": [
+      "signelya-scope-confirmed",
+      "approved-export-used",
+      "wordmark-gradient-respected",
+      "dark-premium-context",
+      "no-cross-brand-contamination"
+    ]
+  }
+}
