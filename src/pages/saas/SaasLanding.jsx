@@ -1,4 +1,4 @@
-import LandingHero from '@/components/landing/LandingHero';
+import { AdaptiveHero } from '@/components/web-studio/WebStudioExperience';
 import LandingDifferentiator from '@/components/landing/LandingDifferentiator';
 import LandingServices from '@/components/landing/LandingServices';
 import LandingProducts from '@/components/landing/LandingProducts';
@@ -9,7 +9,7 @@ import LandingCTA from '@/components/landing/LandingCTA';
 export default function SaasLanding() {
   return (
     <div className="min-h-screen overflow-x-hidden" style={{ color: 'white' }}>
-      <LandingHero />
+      <AdaptiveHero />
       <LandingDifferentiator />
       <LandingServices />
       <LandingProducts />
