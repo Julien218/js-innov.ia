@@ -7,6 +7,7 @@ const output='artifacts/web-studio';
 await mkdir(output,{recursive:true});
 const server=spawn('npm',['run','preview','--','--host','127.0.0.1','--port','4173'],{stdio:'inherit'});
 let browser;
+let page;
 const errors=[];
 const submissions=[];
 try {
@@ -20,7 +21,7 @@ try {
   const context=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
   // Suppress the pre-existing automatic chat popup during focused, deterministic UI tests.
   await context.addInitScript(()=>localStorage.setItem('jsinnovia-elynea-welcomed-at',String(Date.now())));
-  const page=await context.newPage();
+  page=await context.newPage();
   page.on('pageerror',error=>errors.push(error.message));
   await page.route('**/*',async route=>{
     const url=new URL(route.request().url());
@@ -43,13 +44,13 @@ try {
   await page.waitForFunction(()=>document.querySelector('.ws-demo-nav strong')?.textContent.includes('<script>'));
   assert.equal(await page.locator('.ws-demo script').count(),0);
   await page.getByLabel('Nom de votre entreprise',{exact:true}).fill('Maison des idées');
-  await page.getByLabel('Votre activité',{exact:true}).selectOption('immobilier');
+  await page.getByRole('combobox',{name:/^Votre activité/}).selectOption('immobilier');
   await page.waitForFunction(()=>document.querySelector('.ws-recommendations .ws-card-info h3')?.textContent.includes('Zenith'));
   await page.getByText('Aidez-moi à trouver ma direction',{exact:true}).click();
   await page.getByLabel('Adresse de votre site public',{exact:true}).fill('example.com');
   await page.getByRole('button',{name:'Analyser ce site',exact:true}).click();
   await page.getByRole('button',{name:'Utiliser cette activité',exact:true}).waitFor();
-  assert.equal(await page.getByLabel('Votre activité',{exact:true}).inputValue(),'immobilier');
+  assert.equal(await page.getByRole('combobox',{name:/^Votre activité/}).inputValue(),'immobilier');
   await page.getByRole('button',{name:'Utiliser cette activité',exact:true}).click();
   await page.waitForFunction(()=>document.querySelector('.ws-recommendations .ws-card-info h3')?.textContent.includes('Aura'));
   await page.getByRole('button',{name:'Voir la démo Aura',exact:true}).first().click();
@@ -87,7 +88,7 @@ try {
   await page.reload();
   await page.getByLabel('Nom de votre entreprise',{exact:true}).waitFor();
   assert.equal(await page.getByLabel('Nom de votre entreprise',{exact:true}).inputValue(),'');
-  assert.equal(await page.getByLabel('Votre activité',{exact:true}).inputValue(),'horeca');
+  assert.equal(await page.getByRole('combobox',{name:/^Votre activité/}).inputValue(),'horeca');
   await page.getByRole('button',{name:'Réinitialiser mes choix',exact:true}).click();
   assert.equal(await page.evaluate(()=>localStorage.getItem('jsinnovia:visitor-choices:v1')),null);
   await page.screenshot({path:`${output}/web-studio-desktop.png`,fullPage:true});
@@ -109,6 +110,10 @@ try {
   await writeFile(`${output}/results.json`,JSON.stringify({success:true,checks:['18 models','manual priority','conservative analysis','escaped input','interactive demo','responsive modal','explicit persistence','no PII persisted','verified handoff','idempotent retry','reset','adaptive home','mobile overflow','legacy route'],mockedSubmissions:submissions.length,liveSubmissions:0,errors},null,2));
   console.log('Web Studio browser checks passed. All network submissions were mocked.');
 }catch(error){
+  if(page){
+    await page.screenshot({path:`${output}/failure.png`,fullPage:true}).catch(()=>{});
+    await writeFile(`${output}/failure-page.txt`,await page.locator('body').innerText().catch(()=>''));
+  }
   await writeFile(`${output}/failure.json`,JSON.stringify({error:error.stack,errors,mockedSubmissions:submissions.length,liveSubmissions:0},null,2));
   throw error;
 }finally{
