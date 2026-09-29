@@ -1,0 +1,46 @@
+name: Web Studio browser checks
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/components/web-studio/**'
+      - 'src/lib/webStudio.mjs'
+      - 'src/lib/visitorExperienceStore.mjs'
+      - 'src/hooks/useVisitorExperience.js'
+      - 'src/pages/saas/SaasLanding.jsx'
+      - 'src/components/saas/SaasLayout.jsx'
+      - 'src/App.jsx'
+      - 'scripts/web-studio-browser.mjs'
+      - '.github/workflows/web-studio-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: web-studio-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Install disposable browser-test tooling (not production dependencies)
+        run: |
+          npm install --no-save --package-lock=false --ignore-scripts playwright
+          npx playwright --version
+          npx playwright install --with-deps chromium
+      - name: Check adaptation, previews, privacy, handoff and mobile layout
+        run: node scripts/web-studio-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: web-studio-browser-results
+          path: artifacts/web-studio/
+          if-no-files-found: warn

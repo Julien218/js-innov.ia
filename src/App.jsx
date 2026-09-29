@@ -1,4 +1,4 @@
-// Build trigger: force rebuild for /ecranespacec route
+// Public routes are isolated from product-specific home experiences.
 import { lazy, Suspense } from 'react';
 import './App.css'
 import { Toaster } from "@/components/ui/toaster"
@@ -8,7 +8,7 @@ import VisualEditAgent from '@/lib/VisualEditAgent'
 import NavigationTracker from '@/lib/NavigationTracker'
 import VoiceCompanion from './components/chatbot/VoiceCompanion';
 import { lazyPagesConfig as pagesConfig } from './config/lazyPages'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import SaasLayout from './components/saas/SaasLayout';
 import SaasLanding from './pages/saas/SaasLanding';
 import SaasChatbot from './components/chatbot/AIChatbot';
@@ -37,6 +37,7 @@ const Ps = lazy(() => import('./pages/Ps'));
 const CockpitConnectedSite = lazy(() => import('./pages/CockpitConnectedSite'));
 const CataloguePricingDraft = lazy(() => import('./pages/CataloguePricingDraft'));
 const HainoFlowLanding = lazy(() => import('./pages/HainoFlowLanding'));
+const WebStudio = lazy(() => import('./components/web-studio/WebStudioExperience'));
 
 const { Pages, Layout } = pagesConfig;
 
@@ -46,25 +47,20 @@ const LayoutWrapper = ({ children, currentPageName }) => Layout ?
 
 const DomainAwareHome = () => {
   const experience = resolveProductExperience(window.location.hostname);
-
   if (experience === 'hainoflow') {
     return <SaasLayout><HainoFlowLanding /><SaasChatbot /></SaasLayout>;
   }
-
   if (experience === 'signage') {
     return <EcranLed />;
   }
-
   if (experience === 'cockpit') {
     return <CockpitConnectedSite />;
   }
-
   return <SaasLayout><SaasLanding /><SaasChatbot /></SaasLayout>;
 };
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
-
   if (isLoadingPublicSettings || isLoadingAuth) {
     return (
       <div className="fixed inset-0 flex items-center justify-center">
@@ -72,7 +68,6 @@ const AuthenticatedApp = () => {
       </div>
     );
   }
-
   if (authError) {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
@@ -81,31 +76,16 @@ const AuthenticatedApp = () => {
       return null;
     }
   }
-
   return (
     <Routes>
       <Route path="/" element={<DomainAwareHome />} />
+      <Route path="/web-studio" element={<SaasLayout><WebStudio /></SaasLayout>} />
+      <Route path="/web-studio.html" element={<Navigate to="/web-studio" replace />} />
       {Object.entries(Pages).map(([path, Page]) => (
-        <Route
-          key={path}
-          path={`/${path}`}
-          element={
-            <LayoutWrapper currentPageName={path}>
-              <Page />
-            </LayoutWrapper>
-          }
-        />
+        <Route key={path} path={`/${path}`} element={<LayoutWrapper currentPageName={path}><Page /></LayoutWrapper>} />
       ))}
-      <Route path="/Visuels" element={
-        <__Layout currentPageName="Visuels">
-          <Visuels />
-        </__Layout>
-      } />
-      <Route path="/page/:slug" element={
-        <__Layout currentPageName="DynamicPageView">
-          <DynamicPageView />
-        </__Layout>
-      } />
+      <Route path="/Visuels" element={<__Layout currentPageName="Visuels"><Visuels /></__Layout>} />
+      <Route path="/page/:slug" element={<__Layout currentPageName="DynamicPageView"><DynamicPageView /></__Layout>} />
       <Route path="/saas" element={<SaasLayout><SaasHome /><SaasChatbot /></SaasLayout>} />
       <Route path="/saas-packs" element={<SaasLayout><SaasPacks /><SaasChatbot /></SaasLayout>} />
       <Route path="/saas-analyse" element={<SaasLayout><SaasAnalyse /></SaasLayout>} />
