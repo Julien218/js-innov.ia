@@ -17,6 +17,9 @@ const agentKey = process.env.AGENT_API_KEY || process.env.JSINNOVIA_AGENT_KEY ||
 const rateLimits = new Map();
 const MAX_RATE_LIMIT_CLIENTS = 5_000;
 const AGENT_TIMEOUT_MS = 20_000;
+const LLM_LIMIT_PER_WINDOW = 10;
+const LLM_WINDOW_MS = 10 * 60_000;
+const LLM_MAX_PROMPT_CHARS = 8_000;
 const publicReadTables = new Set(['Application', 'Automation', 'BlogPost', 'DynamicPage', 'Event', 'Innovation', 'MusicProduct', 'News', 'Showcase', 'Template']);
 const publicWriteTables = new Set(['Contact', 'EventTicket', 'FormSubmission', 'Lead', 'LogoSubmission', 'ProjectRequest']);
 const mime = {
@@ -68,8 +71,14 @@ const readJson = async (request) => {
   return chunks.length ? JSON.parse(Buffer.concat(chunks).toString('utf8')) : {};
 };
 
-const allow = (request) => {
-  const key = request.headers['x-forwarded-for']?.split(',')[0]?.trim() || request.socket.remoteAddress || 'anonymous';
+// Le proxy Railway ajoute l'adresse réelle en fin de X-Forwarded-For ; les premières
+// entrées sont fournies par le client et ne doivent jamais servir d'identité.
+const clientAddress = (request) => request.headers['x-forwarded-for']?.split(',').map((part) => part.trim()).filter(Boolean).at(-1)
+  || request.socket?.remoteAddress
+  || 'anonymous';
+
+const allow = (request, bucket = 'platform', limit = 30, windowMs = 60_000) => {
+  const key = `${bucket}:${clientAddress(request)}`;
   const now = Date.now();
   const current = rateLimits.get(key);
   if (!current || current.resetAt <= now) {
@@ -77,11 +86,11 @@ const allow = (request) => {
       for (const [client, entry] of rateLimits) if (entry.resetAt <= now) rateLimits.delete(client);
       while (rateLimits.size >= MAX_RATE_LIMIT_CLIENTS) rateLimits.delete(rateLimits.keys().next().value);
     }
-    rateLimits.set(key, { count: 1, resetAt: now + 60_000 });
+    rateLimits.set(key, { count: 1, resetAt: now + windowMs });
     return true;
   }
   current.count += 1;
-  return current.count <= 30;
+  return current.count <= limit;
 };
 
 const agentFetch = async (path, options = {}) => fetch(`${agentUrl}${path}`, {
@@ -118,7 +127,7 @@ const recordPrivacyConsent = async (body, request) => {
     headers: {
       'Content-Type': 'application/json',
       'x-elynea-site-key': elyneaSiteKey,
-      'x-forwarded-for': request.headers['x-forwarded-for']?.split(',')[0]?.trim() || request.socket.remoteAddress || '',
+      'x-forwarded-for': clientAddress(request),
       'user-agent': request.headers['user-agent'] || '',
     },
     body: JSON.stringify({
@@ -349,7 +358,12 @@ createServer(async (request, response) => {
         return json(response, upstream.ok ? 200 : 502, await upstream.json().catch(() => ({})));
       }
       if (pathname === '/api/platform/llm') {
-        const upstream = await agentFetch('/chat', { method: 'POST', body: JSON.stringify({ message: String(body.prompt || ''), session_id: `site-${randomUUID()}` }) });
+        // Générations publiques payées par le compte serveur : quota serré et taille bornée.
+        if (!allow(request, 'llm', LLM_LIMIT_PER_WINDOW, LLM_WINDOW_MS)) return json(response, 429, { error: 'Limite de générations atteinte. Réessayez plus tard.' });
+        const prompt = String(body.prompt || '').trim();
+        if (!prompt) return json(response, 400, { error: 'Demande vide' });
+        if (prompt.length > LLM_MAX_PROMPT_CHARS) return json(response, 413, { error: 'Demande trop longue' });
+        const upstream = await agentFetch('/chat', { method: 'POST', body: JSON.stringify({ message: prompt, session_id: `site-${randomUUID()}` }) });
         const data = await upstream.json().catch(() => ({}));
         return json(response, upstream.ok ? 200 : 502, data.response || data.reply || data.message ? { response: data.response || data.reply || data.message } : data);
       }

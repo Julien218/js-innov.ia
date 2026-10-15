@@ -62,7 +62,8 @@ test('the voice companion remains public-site only and sends bounded navigation 
 test('the public endpoint bounds input and rate limits requests', () => {
   assert.match(endpoint, /slice\(-10\)/);
   assert.match(endpoint, /slice\(0, 1000\)/);
-  assert.match(endpoint, /current\.count <= 30/);
+  assert.match(endpoint, /limit = 30/);
+  assert.match(endpoint, /current\.count <= limit/);
   assert.match(endpoint, /response, 429/);
   assert.match(endpoint, /MAX_RATE_LIMIT_CLIENTS/);
   assert.match(endpoint, /AbortSignal\.timeout\(AGENT_TIMEOUT_MS\)/);
