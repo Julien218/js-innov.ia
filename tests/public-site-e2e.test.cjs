@@ -88,3 +88,52 @@ test('a visitor declining the handoff gets a truthful closure', () => {
   assert.match(server, /Aucune demande n’a été transmise/);
   assert.doesNotMatch(server.slice(server.indexOf('const commercialFallback'), server.indexOf('const safeCommercialMessage')), /environnement interne/);
 });
+
+test('public LLM proxy has its own quota that a spoofed X-Forwarded-For cannot bypass', async () => {
+  const http = require('node:http');
+  const { spawn } = require('node:child_process');
+  let agentCalls = 0;
+  const agent = http.createServer((req, res) => {
+    agentCalls += 1;
+    req.resume();
+    req.on('end', () => { res.setHeader('content-type', 'application/json'); res.end('{"response":"ok"}'); });
+  });
+  await new Promise((resolve) => agent.listen(0, '127.0.0.1', resolve));
+  const port = 20000 + Math.floor(Math.random() * 20000);
+  const child = spawn(process.execPath, ['server.mjs'], {
+    cwd: root,
+    env: { ...process.env, PORT: String(port), JSINNOVIA_AGENT_URL: `http://127.0.0.1:${agent.address().port}`, AGENT_API_KEY: 'test' },
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+  try {
+    await new Promise((resolve, reject) => {
+      child.stdout.on('data', (chunk) => { if (String(chunk).includes('listening')) resolve(); });
+      child.on('exit', () => reject(new Error('server exited')));
+    });
+    const call = (prompt, spoofed) => fetch(`http://127.0.0.1:${port}/api/platform/llm`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-forwarded-for': `${spoofed}, 203.0.113.7` },
+      body: JSON.stringify({ prompt }),
+    });
+    assert.equal((await call('', '198.51.100.1')).status, 400);
+    assert.equal((await call('x'.repeat(8001), '198.51.100.2')).status, 413);
+    const statuses = [];
+    // 10 demandes par fenêtre, les deux refus ci-dessus compris.
+    for (let i = 0; i < 9; i += 1) statuses.push((await call('Bonjour', `198.51.100.${10 + i}`)).status);
+    assert.deepEqual(statuses.slice(0, 8), Array(8).fill(200));
+    assert.equal(statuses[8], 429);
+    assert.equal(agentCalls, 8);
+  } finally {
+    child.kill();
+    await new Promise((resolve) => agent.close(resolve));
+  }
+});
+
+test('cockpit lead form goes through the server with RGPD consent, never browser storage', () => {
+  const source = read('src/pages/CockpitConnectedSite.jsx');
+  assert.match(source, /functions\.invoke\('receiveLead'/);
+  assert.match(source, /consentRgpd/);
+  assert.match(source, /PrivacyConsentNotice/);
+  assert.doesNotMatch(source, /localStorage|VITE_COCKPIT_API_KEY/);
+  assert.equal(fs.existsSync(path.join(root, 'src/lib/cockpitClient.js')), false);
+});

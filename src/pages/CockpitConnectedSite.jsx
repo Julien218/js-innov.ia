@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   ArrowRight,
@@ -18,7 +18,8 @@ import {
   Workflow,
   Zap,
 } from 'lucide-react';
-import { sendToCockpit, getCockpitStatus } from '@/lib/cockpitClient';
+import { platform } from '@/api/platformClient';
+import PrivacyConsentNotice from '@/components/legal/PrivacyConsentNotice';
 
 const GOLD = '#D4AF37';
 const GOLD_LIGHT = '#F5CF41';
@@ -134,9 +135,8 @@ function LeadForm() {
     need: 'site-cockpit',
     budget: 'à définir',
     message: '',
+    consentRgpd: false,
   });
-
-  const status = useMemo(() => getCockpitStatus(), []);
 
   const inputClass = 'w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/25 focus:border-[#D4AF37]/60';
 
@@ -146,10 +146,18 @@ function LeadForm() {
     setLoading(true);
 
     try {
-      await sendToCockpit({
-        type: 'lead_site_cockpit',
+      // Même circuit serveur que les autres formulaires : preuve RGPD puis création du contact dans NOVA.
+      await platform.functions.invoke('receiveLead', {
+        firstName: form.name,
+        email: form.email,
+        phone: form.phone,
+        company: form.company,
+        need: form.need,
+        budget: form.budget,
+        message: form.message,
         priority: form.budget.includes('3000') || form.need.includes('saas') ? 'high' : 'normal',
-        form,
+        consentRgpd: form.consentRgpd,
+        source: 'site_cockpit',
       });
       setDone(true);
     } catch (err) {
@@ -165,7 +173,7 @@ function LeadForm() {
         <CheckCircle2 className="mx-auto h-12 w-12" style={{ color: GREEN }} />
         <h3 className="mt-4 text-2xl font-black text-white">Projet envoyé au cockpit.</h3>
         <p className="mt-3 text-sm leading-6 text-white/55">
-          Le lead est capturé avec sa source, son contexte et son besoin. Mode actuel : {status}.
+          Le lead est capturé avec sa source, son contexte et son besoin.
         </p>
       </div>
     );
@@ -176,7 +184,6 @@ function LeadForm() {
       <div className="mb-6 flex items-center justify-between gap-4">
         <div>
           <h3 className="text-2xl font-black text-white">Créer un lead cockpit</h3>
-          <p className="mt-1 text-sm text-white/45">Connexion : {status}</p>
         </div>
         <div className="rounded-2xl border border-white/10 bg-black/30 p-3">
           <PlugZap className="h-6 w-6" style={{ color: GOLD }} />
@@ -206,9 +213,14 @@ function LeadForm() {
 
       <textarea className={`${inputClass} mt-3 min-h-28 resize-none`} placeholder="Explique le projet, les outils à connecter, les réseaux, le CRM, le site ou le client visé…" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
 
+      <label className="mt-4 flex items-start gap-3 text-xs leading-5 text-white/50">
+        <input type="checkbox" required checked={form.consentRgpd} onChange={(e) => setForm({ ...form, consentRgpd: e.target.checked })} className="mt-1" aria-label="Consentement RGPD" />
+        <PrivacyConsentNotice />
+      </label>
+
       {error && <p className="mt-3 rounded-xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-sm text-red-200">{error}</p>}
 
-      <button disabled={loading} className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-4 text-sm font-black text-black transition hover:scale-[1.01] disabled:opacity-60" style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})` }}>
+      <button disabled={loading || !form.consentRgpd} className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-4 text-sm font-black text-black transition hover:scale-[1.01] disabled:opacity-60" style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})` }}>
         {loading ? 'Connexion au cockpit…' : 'Envoyer dans le cockpit'}
         <ArrowRight className="h-4 w-4" />
       </button>
