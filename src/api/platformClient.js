@@ -37,12 +37,92 @@ const entity = (name) => ({
 
 const entities = new Proxy({}, { get: (_, name) => entity(String(name)) });
 
+const PIXELIUM_OUTBOX_KEY = 'pixelium_quote_outbox_v1';
+
+const makeSubmissionId = () => {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+  return `pix-${Date.now()}-${Math.random().toString(36).slice(2, 12)}`;
+};
+
+const readPixeliumOutbox = () => {
+  if (typeof window === 'undefined') return [];
+  try {
+    const value = JSON.parse(window.localStorage.getItem(PIXELIUM_OUTBOX_KEY) || '[]');
+    return Array.isArray(value) ? value : [];
+  } catch {
+    return [];
+  }
+};
+
+const writePixeliumOutbox = (items) => {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(PIXELIUM_OUTBOX_KEY, JSON.stringify(items.slice(-20)));
+  } catch {
+    // Le stockage local est une sécurité supplémentaire, jamais une dépendance bloquante.
+  }
+};
+
+const removeFromPixeliumOutbox = (submissionId) => {
+  writePixeliumOutbox(readPixeliumOutbox().filter((item) => item.submissionId !== submissionId));
+};
+
+const sendPixeliumQuoteRequest = async (payload) => jsonRequest('/api/pixelium/quote-request', {
+  method: 'POST',
+  body: JSON.stringify(payload),
+});
+
+const queuePixeliumLead = async (payload = {}) => {
+  const submissionId = payload.submissionId || makeSubmissionId();
+  const queuedPayload = { ...payload, submissionId };
+  const existing = readPixeliumOutbox().filter((item) => item.submissionId !== submissionId);
+  writePixeliumOutbox([...existing, queuedPayload]);
+
+  try {
+    const data = await sendPixeliumQuoteRequest(queuedPayload);
+    removeFromPixeliumOutbox(submissionId);
+    return { data };
+  } catch (pixeliumError) {
+    // Continuité métier : conserver la demande localement et tenter aussi l'ancien registre Contact.
+    try {
+      await jsonRequest('/api/platform/functions/receiveLead', {
+        method: 'POST',
+        body: JSON.stringify({ ...payload, pixeliumPending: true, submissionId }),
+      });
+    } catch {
+      // La demande reste dans l'outbox locale et sera rejouée au retour du réseau/backend.
+    }
+    console.warn('[Pixelium] demande conservée dans l’outbox locale:', pixeliumError.message);
+    return { data: { success: true, queuedLocally: true, submissionId } };
+  }
+};
+
+const flushPixeliumOutbox = async () => {
+  const pending = readPixeliumOutbox();
+  for (const item of pending) {
+    try {
+      await sendPixeliumQuoteRequest(item);
+      removeFromPixeliumOutbox(item.submissionId);
+    } catch {
+      break;
+    }
+  }
+};
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('online', () => { flushPixeliumOutbox().catch(() => {}); });
+  setTimeout(() => { flushPixeliumOutbox().catch(() => {}); }, 1500);
+}
+
 export const platform = {
   entities,
   functions: {
-    invoke: (name, payload = {}) => jsonRequest(`/api/platform/functions/${encodeURIComponent(name)}`, {
-      method: 'POST', body: JSON.stringify(payload),
-    }).then((data) => ({ data })),
+    invoke: (name, payload = {}) => {
+      if (name === 'receiveLead' && payload?.source === 'ecran-led') return queuePixeliumLead(payload);
+      return jsonRequest(`/api/platform/functions/${encodeURIComponent(name)}`, {
+        method: 'POST', body: JSON.stringify(payload),
+      }).then((data) => ({ data }));
+    },
   },
   integrations: {
     Core: {
