@@ -229,6 +229,10 @@ const serveStaticFile = (request, response, filePath) => {
 
 createServer(async (request, response) => {
   setSecurityHeaders(response);
+  if (String(request.headers.host || '').toLowerCase().split(':')[0] === 'www.jsinnovia.com') {
+    response.writeHead(308, { Location: 'https://jsinnovia.com' + request.url });
+    return response.end();
+  }
   let pathname;
   try { pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname); }
   catch { return json(response, 400, { error: 'URL invalide' }); }
