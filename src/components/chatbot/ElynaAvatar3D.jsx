@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const DEFAULT_FALLBACK = '/brand/companion/companion-avatar-256.webp';
+const DEFAULT_FALLBACK = '/brand/companion/companion-avatar-256.webp?v=20261112';
 const MANIFEST_URL = '/brand/companion/manifest.json';
 
 let manifestPromise;

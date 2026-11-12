@@ -18,9 +18,12 @@ export default function SaasContact() {
 
   // Pre-fill from landing page form data passed via query params
   const prefillRaw = urlParams.get('prefill');
-  const prefill = prefillRaw ? JSON.parse(decodeURIComponent(prefillRaw)) : null;
+  let prefill = null;
+  try { prefill = prefillRaw ? JSON.parse(prefillRaw) : null; } catch { /* Invalid optional prefill must not break contact. */ }
+  const product = urlParams.get('produit') === 'villeconnect-os' ? 'VilleConnect OS' : '';
+  const partner = urlParams.get('partenariat') === 'oui';
 
-  const [step, setStep] = useState('configure'); // 'configure' | 'form'
+  const [step, setStep] = useState(packParam ? 'configure' : 'form'); // 'configure' | 'form'
   const [packSummary, setPackSummary] = useState(null);
   const [form, setForm] = useState({
     firstName: prefill?.name?.split(' ')[0] || '',
@@ -28,11 +31,12 @@ export default function SaasContact() {
     email: prefill?.email || '',
     phone: prefill?.phone || '',
     company: prefill?.activity || '',
-    message: prefill?.message || '',
+    message: prefill?.message || (product ? 'Je souhaite en savoir plus sur VilleConnect OS.' : partner ? 'Je souhaite proposer un partenariat avec JS-Innov.IA.' : ''),
     consentRgpd: false
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleConfiguratorComplete = (summary) => {
     setPackSummary(summary);
@@ -43,6 +47,8 @@ export default function SaasContact() {
     e.preventDefault();
     if (!form.consentRgpd) return alert('Consentement RGPD obligatoire.');
     setLoading(true);
+    setError('');
+    try {
     await platform.functions.invoke('receiveLead', {
       ...form,
       name: `${form.firstName} ${form.lastName}`,
@@ -54,7 +60,8 @@ export default function SaasContact() {
       consentRgpd: true,
     });
     setSubmitted(true);
-    setLoading(false);
+    } catch { setError('Votre demande n’a pas été envoyée. Réessayez ou contactez-nous par e-mail.'); }
+    finally { setLoading(false); }
   };
 
   if (submitted) return (
@@ -73,7 +80,7 @@ export default function SaasContact() {
           </div>
         )}
         <p className="text-base mb-6" style={{ color: 'rgba(255,255,255,0.55)' }}>
-          Julien vous répondra personnellement sous 24h avec une proposition adaptée à votre configuration.
+          Julien vous recontactera avec une proposition adaptée à votre projet.
         </p>
         <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-bold"
@@ -96,7 +103,7 @@ export default function SaasContact() {
             <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
               style={{ background: 'rgba(34,197,94,0.15)' }}>✅</div>
             <div>
-              <p className="text-sm font-black text-white">Votre projet a bien été reçu{prefill.name ? `, ${prefill.name.split(' ')[0]}` : ''} !</p>
+              <p className="text-sm font-black text-white">Vos informations sont préremplies{prefill.name ? `, ${prefill.name.split(' ')[0]}` : ''} !</p>
               <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.45)' }}>Configurez maintenant votre pack — vos infos sont déjà pré-remplies.</p>
             </div>
           </motion.div>
@@ -200,6 +207,7 @@ export default function SaasContact() {
 
               <form onSubmit={handleSubmit} className="p-7 rounded-3xl relative overflow-hidden space-y-4"
                 style={{ background: 'rgba(10,8,22,0.9)', border: `1px solid rgba(212,175,55,0.18)` }}>
+                <p role="alert" className="text-red-300">{error}</p>
                 <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${PURPLE}, ${GOLD}, transparent)` }} />
 
                 <div className="grid grid-cols-2 gap-4">
@@ -245,6 +253,7 @@ export default function SaasContact() {
                   <PrivacyConsentNotice className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }} />
                 </label>
 
+                <p role="alert" className="text-red-300">{error}</p>
                 <motion.button type="submit" disabled={loading || !form.consentRgpd || !form.email}
                   whileHover={{ scale: 1.03, boxShadow: '0 0 50px rgba(212,175,55,0.45)' }} whileTap={{ scale: 0.97 }}
                   className="w-full py-4 rounded-2xl font-black text-black flex items-center justify-center gap-2 disabled:opacity-40 text-sm"
@@ -255,7 +264,7 @@ export default function SaasContact() {
                 </motion.button>
 
                 <p className="text-center text-xs" style={{ color: 'rgba(255,255,255,0.22)' }}>
-                  Réponse sous 24h · RGPD · BCE 0877926214
+                  Délai selon disponibilité · RGPD · BCE 0877926214
                 </p>
               </form>
             </motion.div>

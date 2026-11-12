@@ -12,6 +12,7 @@ export default function NavigationTracker() {
 
     // Post navigation changes to parent window
     useEffect(() => {
+        if (location.pathname.startsWith('/espace-video') || location.pathname.startsWith('/commander-video')) return;
         window.parent?.postMessage({
             type: "app_changed_url",
             url: window.location.href

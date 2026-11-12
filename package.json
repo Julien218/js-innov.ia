@@ -73,10 +73,11 @@
     "react-router-dom": "^7.18.2",
     "recharts": "^2.15.4",
     "sonner": "^2.0.1",
+    "stripe": "^23.1.0",
     "tailwind-merge": "^3.0.2",
     "three": "^0.171.0",
     "vaul": "^1.1.2",
-    "zod": "^3.24.2"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
@@ -98,6 +99,6 @@
     "vite": "^6.1.0"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.13.0"
   }
 }

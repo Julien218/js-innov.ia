@@ -4,7 +4,7 @@ import { Loader2, Mic, MicOff, Radio, X } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ElynaAvatar3D from './ElynaAvatar3D';
 
-const AVATAR = '/brand/companion/companion-avatar-256.webp';
+const AVATAR = '/brand/companion/companion-avatar-256.webp?v=20261112';
 const HISTORY_KEY = 'jsinnovia-voice-navigation-history';
 const MAX_HISTORY = 8;
 
@@ -21,6 +21,9 @@ const SITE_DESTINATIONS = Object.freeze({
 });
 
 const PRIVATE_PATH_PREFIXES = [
+  '/espace-video',
+  '/commander-video',
+  '/studio-review',
   '/admin',
   '/crm',
   '/blogadmin',
@@ -81,6 +84,7 @@ function isMainPublicHost(hostname) {
 
 function isPublicVoicePath(pathname) {
   const path = String(pathname || '/').toLowerCase();
+  if (['/','/videos','/solutions','/partenaires','/web-studio','/saas-contact','/saas-packs','/saas-agents','/creativestudio'].includes(path) || path.startsWith('/videos/')) return false;
   return !PRIVATE_PATH_PREFIXES.some((prefix) => path === prefix || path.startsWith(`${prefix}/`));
 }
 

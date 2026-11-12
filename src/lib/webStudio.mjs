@@ -15,7 +15,7 @@ const rows = [
   ['nova','Nova','services','tech','dark','#8BDDDC','#0A2029','La clarté fait avancer.','Des solutions pensées pour votre quotidien.',['Expertises','Projets','Échangeons']],
   ['elegance','Élégance','beaute','editorial','light','#965D60','#F2E8E3','L’élégance vous ressemble.','Une attention singulière, jusque dans les détails.',['Prestations','Rendez-vous','L’équipe']],
   ['pulse','Pulse','evenement','poster','dark','#B2A0FF','#20112F','Vivez ce qui vous rassemble.','Un programme à explorer. Des instants à vivre.',['Programme','Inscriptions','Infos pratiques']],
-  ['atelier','Atelier','artisan','craft','dark','#D4AF37','#201D16','Le détail change tout.','Du premier croquis à la dernière finition.',['Réalisations','Savoir-faire','Votre projet']],
+  ['atelier','Atelier','artisan','craft','light','#8A542B','#F4E5D3','Le détail change tout.','Du premier croquis à la dernière finition.',['Réalisations','Savoir-faire','Votre projet']],
   ['zenith','Zenith','immobilier','architecture','light','#486957','#E7EBE4','Des lieux à vivre. Vraiment.','Trouvons l’espace qui donne du sens à vos envies.',['Les biens','Visites','Notre approche']],
   ['grain','Grain','commerce','craft','light','#99582E','#F4EDDD','Le bon. Le frais. Le proche.','Une sélection attentive et le plaisir de vous accueillir.',['La sélection','Notre histoire','Nous trouver']],
   ['studio','Studio','creation','editorial','light','#73598D','#EEE9F1','Des idées qui prennent forme.','Un regard singulier sur vos projets.',['Portfolio','Démarche','Collaborons']],

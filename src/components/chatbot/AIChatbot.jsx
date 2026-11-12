@@ -7,9 +7,7 @@ import AIAvatar from './AIAvatar';
 import ElynaAvatar3D from './ElynaAvatar3D';
 import PrivacyConsentNotice from '@/components/legal/PrivacyConsentNotice';
 
-const AVATAR = '/brand/companion/companion-avatar-256.webp';
-const AUTO_WELCOME_STORAGE_KEY = 'jsinnovia-elynea-welcomed-at';
-const AUTO_WELCOME_COOLDOWN = 7 * 24 * 60 * 60 * 1000;
+const AVATAR = '/brand/companion/companion-avatar-256.webp?v=20261112';
 const WELCOME = {
   role: 'assistant',
   content: 'Bonjour 👋 Je suis Elynea, votre guide JS-Innov.IA. Dites-moi ce que vous aimeriez améliorer dans votre entreprise : je vous orienterai vers la solution adaptée, sans engagement.'
@@ -49,27 +47,6 @@ export default function AIChatbot() {
   const handoffIdRef = useRef(null);
   const avatarState = status === 'loading' ? 'thinking' : status === 'error' ? 'error' : 'idle';
 
-  useEffect(() => {
-    let shouldWelcome = true;
-    try {
-      const welcomedAt = Number(window.localStorage.getItem(AUTO_WELCOME_STORAGE_KEY) || 0);
-      shouldWelcome = !welcomedAt || Date.now() - welcomedAt > AUTO_WELCOME_COOLDOWN;
-    } catch {
-      // Elynea remains manually accessible when storage is unavailable.
-    }
-    if (!shouldWelcome) return undefined;
-
-    const welcomeTimer = window.setTimeout(() => {
-      setIsOpen(true);
-      try {
-        window.localStorage.setItem(AUTO_WELCOME_STORAGE_KEY, String(Date.now()));
-      } catch {
-        // Automatic guidance must not depend on storage access.
-      }
-    }, reduceMotion ? 300 : 1200);
-
-    return () => window.clearTimeout(welcomeTimer);
-  }, [reduceMotion]);
 
   useEffect(() => {
     if (!isOpen) return undefined;

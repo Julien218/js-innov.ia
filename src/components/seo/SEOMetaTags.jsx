@@ -66,6 +66,10 @@ const SEO_CONFIG = {
 
 export default function SEOMetaTags({ pageName, customTitle, customDescription, customKeywords }) {
   useEffect(() => {
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
+    canonical.href = 'https://jsinnovia.com' + window.location.pathname;
+
     const config = SEO_CONFIG[pageName] || SEO_CONFIG.default;
     
     // Titre optimisé
@@ -153,6 +157,7 @@ export default function SEOMetaTags({ pageName, customTitle, customDescription, 
     schemaScript.type = 'application/ld+json';
     schemaScript.text = JSON.stringify(schema);
     document.head.appendChild(schemaScript);
+    return () => schemaScript.remove();
 
   }, [pageName, customTitle, customDescription, customKeywords]);
 

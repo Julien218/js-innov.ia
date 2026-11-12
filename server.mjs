@@ -1,11 +1,15 @@
-import { createReadStream, existsSync, statSync } from 'node:fs';
+import { createReadStream, existsSync, statSync, readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
+import { siteSeo } from './server-site-seo.mjs';
+import { createCommerce } from './server-commerce.mjs';
+const commerce = createCommerce();
 import { randomUUID } from 'node:crypto';
 import { extname, join, normalize } from 'node:path';
 import { auditSeo, SeoAuditError } from './server-seo-audit.mjs';
 import { PRIVACY_CONSENT_TEXT, PRIVACY_NOTICE_VERSION, PRIVACY_POLICY_PATH, purposeForSource } from './privacy-consent.mjs';
 
 const dist = join(process.cwd(), 'dist');
+const knownPages = new Set(JSON.parse(readFileSync(new URL('./public-routes.json', import.meta.url), 'utf8')));
 const port = Number.parseInt(process.env.PORT || '8080', 10);
 const agentUrl = (process.env.JSINNOVIA_AGENT_URL || 'https://jsinnovia-agent-production.up.railway.app').replace(/\/$/, '');
 const elyneaUrl = (process.env.ELYNEA_NOVA_URL || 'https://cockpit.jsinnovia.com/api/public/elynea/chat').trim();
@@ -41,6 +45,7 @@ const setSecurityHeaders = (response) => {
   response.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   response.setHeader('X-Content-Type-Options', 'nosniff');
   response.setHeader('X-Frame-Options', 'DENY');
+  response.setHeader('Content-Security-Policy', "object-src 'none'; base-uri 'self'; frame-ancestors 'none'");
 };
 
 const isSensitiveProbePath = (pathname) => {
@@ -244,6 +249,10 @@ createServer(async (request, response) => {
     return response.end();
   }
 
+  if (pathname.startsWith('/api/video/')) {
+    if (!pathname.endsWith('/webhook') && !allow(request, 'video', request.method === 'GET' ? 60 : 20)) return json(response, 429, { error: 'Trop de demandes. Réessayez dans une minute.' });
+    if (await commerce(request, response, pathname)) return;
+  }
   if (pathname === '/api/health') return json(response, 200, { status: 'ok', service: 'js-innovia-site', backend: 'nova' });
   if (pathname.startsWith('/api/platform/')) {
     if (!allow(request)) return json(response, 429, { error: 'Trop de requêtes. Réessayez dans une minute.' });
@@ -374,10 +383,17 @@ createServer(async (request, response) => {
     }
   }
 
+  if (siteSeo(request, response, pathname, dist, knownPages)) return;
+  if (!['GET','HEAD'].includes(request.method)) return json(response,405,{error:'Méthode non autorisée'});
   const relativePath = normalize(pathname).replace(/^([/\\])+/, '');
   let filePath = join(dist, relativePath);
-  if (!filePath.startsWith(dist) || !existsSync(filePath) || !statSync(filePath).isFile()) filePath = join(dist, 'index.html');
+  if (!filePath.startsWith(dist) || !existsSync(filePath) || !statSync(filePath).isFile()) {
+    const known = knownPages.has(pathname.toLowerCase()) || /^\/page\/[^/]+$/.test(pathname);
+    if (!known) return json(response, 404, { error: 'Page introuvable' });
+    filePath = join(dist, 'index.html');
+  }
 
+  if (['/espace-video','/commander-video','/studio-review'].includes(pathname)) { response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive'); response.setHeader('Referrer-Policy', 'no-referrer'); response.setHeader('Cache-Control', 'no-store'); }
   if (pathname === '/catalogue-tarifs-brouillon') {
     response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
   }
