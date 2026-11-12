@@ -1,0 +1,52 @@
+﻿id,priority,control,production,local,evidence,remaining
+WEB01,P0,HTTPS site et santé,PASS,PASS,public-http.json;ionos-evidence.json,Surveillance après un futur déploiement
+WEB02,P0,Version déployée identifiée,PASS,PASS,ionos-evidence.json;pr43.json,"Digest image identifié ; égalité du serveur vérifiée, pas tous les assets"
+WEB03,P0,Configurateur public vidéo,FAIL,BLOCKED,public-browser.json,Intégrer le chantier commerce en recette
+WEB04,P0,API commerce disponible,FAIL,BLOCKED,public-http.json,Module absent ; fallback HTTP corrigé séparément
+PAY01,P0,Ancien checkout sans collecte carte simulée,FAIL,PASS,diff Checkout.jsx;critical-audit.test.cjs,Déployer seulement après confirmation
+PAY02,P0,Aucune fausse confirmation sans preuve serveur,FAIL,PASS,legacy-success.png;corrected-success.png,Retester en recette puis après déploiement autorisé
+PAY03,P0,Tarif serveur 1 min 4999 centimes,BLOCKED,PASS,prototype-video-tests.log,PASS limité au prototype avec Stripe simulé
+PAY04,P0,Tarif serveur 3 min 10000 centimes,BLOCKED,PASS,prototype-video-tests.log,PASS limité au prototype avec Stripe simulé
+PAY05,P0,Refus clé LIVE dans prototype,BLOCKED,PASS,prototype-video-tests.log,Refus clé sk_live testé ; autre modes et environnement distant à vérifier
+PAY06,P0,Paiements distants Stripe sandbox réussis,BLOCKED,BLOCKED,ionos-evidence.json,Compte TEST et clés restreintes disponibles en recette
+PAY07,P0,Paiement carte refusé et abandon navigateur,BLOCKED,BLOCKED,docs/critical-audit-2026-11-12.md,Exécuter avec vrai Stripe TEST
+PAY08,P0,Signature webhook invalide rejetée,BLOCKED,PASS,prototype-video-tests.log,Signature de fixture ; livraison Stripe distante non testée
+PAY09,P0,Montant altéré rejeté,BLOCKED,PASS,prototype-video-tests.log,Recette distante à effectuer
+PAY10,P0,Événement impayé ne lance pas production,BLOCKED,PASS,prototype-video-tests.log,Recette distante à effectuer
+PAY11,P0,Succès différé traité,BLOCKED,PASS,prototype-video-tests.log,Recette distante à effectuer
+PAY12,P0,Doublon événement traité une seule fois,BLOCKED,PASS,prototype-video-tests.log,Concurrence distante et multiples instances BLOCKED
+PAY13,P0,Reprise webhook après crash/redémarrage réel,BLOCKED,BLOCKED,docs/critical-audit-2026-11-12.md,Test crash et réconciliation en recette
+UP01,P0,Fichiers privés et accès croisé A/B,BLOCKED,PASS,prototype-video-tests.log,Fixtures locales seulement ; stockage distant et RLS à tester
+UP02,P0,Faux format rejeté,BLOCKED,PASS,prototype-video-tests.log,Rejet script testé ; décodage et corruption média BLOCKED
+UP03,P0,Fichier trop gros et quota total,BLOCKED,BLOCKED,server-commerce.mjs prototype,Tests de limites réelles à ajouter en recette
+UP04,P0,"Expiration lien, rétention et révocation",BLOCKED,BLOCKED,docs/critical-audit-2026-11-12.md,Ne pas considérer token permanent du prototype comme conforme
+OPS01,P0,Commande reçue par Cockpit/Elynea,FAIL,BLOCKED,ionos-evidence.json,Adapter commerce vers module Cockpit absent du déploiement
+OPS02,P0,Production réelle et reprise après erreur,BLOCKED,BLOCKED,docs/critical-audit-2026-11-12.md,Worker de recette et médias réels requis
+VAL01,P0,Blocage avant validation interne,BLOCKED,PASS,prototype-video-tests.log,Validé sur prototype ; raccordement page existante requis
+VAL02,P0,Page validation client existante présente,PASS,BLOCKED,validation-live.html,Ne pas créer de doublon concurrent
+VAL03,P0,API page validation client raccordée,FAIL,BLOCKED,validation-browser.json;security-http.json,Module absent et échec navigateur/CORS
+VAL04,P0,Lien incomplet refusé,PASS,BLOCKED,invalid.png;validation-browser.json,Lien complet réel de recette reste à tester
+VAL05,P0,Correction client puis nouvelle revue humaine,BLOCKED,PASS,prototype-video-tests.log,Test local isolé ; pas la page client existante
+VAL06,P0,Lien expiré et réponse unique page existante,BLOCKED,BLOCKED,docs/critical-audit-2026-11-12.md,"Créer liens de recette, avancer horloge, rejeu"
+DEL01,P0,Téléchargement avant approbation refusé,BLOCKED,PASS,prototype-video-tests.log,Prototype uniquement
+DEL02,P0,Livraison d’un vrai film lisible au bon client,BLOCKED,BLOCKED,docs/critical-audit-2026-11-12.md,"Film réel, intégrité et lecture requises"
+MAIL01,P1,Emails reçus une fois après validation,BLOCKED,BLOCKED,docs/critical-audit-2026-11-12.md,"Boîte dédiée, outbox et preuve de réception requises"
+SEC01,P0,Probes .env et .git non accessibles,PASS,PASS,security-http.json;public-http.json;critical-audit.test.cjs,Contrôle limité aux chemins testés
+SEC02,P0,"Données Contact, Lead, User, ClientOrder privées",PASS,BLOCKED,security-http.json,GET publics 403 ; isolation complète authentifiée à tester
+SEC03,P0,Dépendances sans vulnérabilité élevée connue,FAIL,PASS,dependency-audit-before.json;dependency-audit-after.json,Audit production de la branche seulement
+SEC04,P1,Query/token exclus du postMessage parent,FAIL,PASS,critical-audit.test.cjs,Chemin toujours transmis ; aucun secret/query
+SEO01,P1,robots.txt texte valide,FAIL,PASS,public-http.json;critical-audit.test.cjs,Correction locale non déployée
+SEO02,P1,sitemap XML des pages commerciales,FAIL,PASS,public-http.json;critical-audit.test.cjs,Sitemap volontairement limité ; compléter après revue éditoriale
+SEO03,P1,404 HTTP pour URL et asset absents,FAIL,PASS,public-browser.json;critical-audit.test.cjs,Slugs dynamiques non vérifiés
+SEO04,P1,Canonical par chemin sans query,FAIL,PASS,local-browser.json;critical-audit.test.cjs,Revue éditoriale titres/description restant à poursuivre
+SEO05,P1,Pages transactionnelles noindex,FAIL,PASS,critical-audit.test.cjs,Aucun contrôle Search Console effectué
+SEO06,P1,Redirection www conservée,PASS,PASS,security-http.json;critical-audit.test.cjs,Préserver PR43 dans la release
+UI01,P1,52 routes sur desktop/mobile,PASS,BLOCKED,public-route-crawl.json,"PASS de navigation, pas de tous les métiers ; HTTP429 annotés"
+UI02,P1,Absence débordement musique/fidélité à390px,FAIL,PASS,public-route-crawl.json;local-critical-ui.json,Vérifier autres tailles avant release complète
+UI03,P1,Données fidélité signalées fictives,FAIL,PASS,diff Fidelite.jsx,Raccorder vraie fidélité séparément si souhaité
+UI04,P1,Accessibilité automatique,FAIL,PASS,lighthouse-mobile.report.json;lighthouse-local-mobile.report.json,PASS limité aux défauts corrigés ; clavier et lecteur écran BLOCKED
+UI05,P1,Safari/iOS et Android physiques,BLOCKED,BLOCKED,docs/critical-audit-2026-11-12.md,Appareils et environnement dédiés requis
+PERF01,P1,LCP mobile laboratoire <=2.5s,FAIL,BLOCKED,lighthouse-mobile.report.json,Public3.0s ; optimiser puis retester ; local non comparable au réseau public
+BRAND01,P0,Promesse24h seulement démontrée,FAIL,PASS,legacy-success.png;diff PaymentSuccess.jsx,Ancienne promesse supprimée ; capacité de livraison toujours BLOCKED
+E2E01,P0,Parcours distant complet avec correction et livraison,BLOCKED,BLOCKED,docs/critical-audit-2026-11-12.md,Tous les prérequis P0 du rapport
+ROLL01,P0,Rollback exécutable et restauration répétée,BLOCKED,BLOCKED,docs/critical-audit-2026-11-12.md,Procédure rédigée ; répétition sur recette requise

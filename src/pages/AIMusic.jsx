@@ -89,7 +89,7 @@ export default function AIMusic() {
           </p>
           <Button
             onClick={() => setShowModal(true)}
-            className="px-8 py-6 text-lg bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-600 hover:shadow-2xl hover:shadow-pink-500/50 transition-all"
+            className="h-auto w-full whitespace-normal px-4 py-6 text-base sm:w-auto sm:px-8 sm:text-lg bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-600 hover:shadow-2xl hover:shadow-pink-500/50 transition-all"
           >
             <Sparkles className="w-5 h-5 mr-2" />
             Créer Ma Musique Personnalisée
@@ -222,7 +222,7 @@ export default function AIMusic() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-br from-pink-600/20 via-purple-600/20 to-cyan-600/20 border-2 border-pink-500/40 rounded-3xl p-12 text-center"
+          className="bg-gradient-to-br from-pink-600/20 via-purple-600/20 to-cyan-600/20 border-2 border-pink-500/40 rounded-3xl p-5 sm:p-12 text-center"
         >
           <Sparkles className="w-16 h-16 text-pink-400 mx-auto mb-6" />
           <h2 className="text-3xl font-bold text-white mb-4">
@@ -233,7 +233,7 @@ export default function AIMusic() {
           </p>
           <Button
             onClick={() => setShowModal(true)}
-            className="px-10 py-6 text-lg bg-gradient-to-r from-pink-600 to-purple-600 hover:shadow-2xl hover:shadow-pink-500/50 transition-all"
+            className="h-auto w-full whitespace-normal px-4 py-6 text-base sm:w-auto sm:px-10 sm:text-lg bg-gradient-to-r from-pink-600 to-purple-600 hover:shadow-2xl hover:shadow-pink-500/50 transition-all"
           >
             <Music2 className="w-5 h-5 mr-2" />
             Démarrer Mon Projet Musical

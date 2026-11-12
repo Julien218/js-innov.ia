@@ -82,7 +82,11 @@ export default function SEOMetaTags({ pageName, customTitle, customDescription, 
 
     // Viewport et charset
     updateOrCreateMeta('viewport', 'width=device-width, initial-scale=1.0');
-    updateOrCreateMeta('robots', 'index, follow');
+    const privateRoute = /(?:admin|dashboard|checkout|payment|confirmation|catalogue-tarifs-brouillon|\/CRM$|\/ContentStudio$|\/FormBuilder$|\/PageManager$|\/PublicForm$|\/saas-client$)/i.test(window.location.pathname);
+    updateOrCreateMeta('robots', privateRoute ? 'noindex, nofollow' : 'index, follow');
+    const canonicalUrl = `https://jsinnovia.com${window.location.pathname}`;
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.href = canonicalUrl;
     updateOrCreateMeta('author', 'JS-INNOV.IA');
     updateOrCreateMeta('geo.region', 'BE-WHT');
     updateOrCreateMeta('geo.placename', 'Dour, Hainaut, Belgique');
@@ -92,7 +96,7 @@ export default function SEOMetaTags({ pageName, customTitle, customDescription, 
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       { property: 'og:type', content: 'website' },
-      { property: 'og:url', content: window.location.href },
+      { property: 'og:url', content: canonicalUrl },
       { property: 'og:site_name', content: 'JS-INNOV.IA' },
       { property: 'og:locale', content: 'fr_BE' },
       { property: 'og:image', content: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png' },

@@ -11,6 +11,9 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server.mjs ./server.mjs
+COPY --from=build /app/server-discovery.mjs ./server-discovery.mjs
+COPY --from=build /app/src/App.jsx ./src/App.jsx
+COPY --from=build /app/src/config/lazyPages.js ./src/config/lazyPages.js
 COPY --from=build /app/server-seo-audit.mjs ./server-seo-audit.mjs
 COPY --from=build /app/privacy-consent.mjs ./privacy-consent.mjs
 EXPOSE 8080

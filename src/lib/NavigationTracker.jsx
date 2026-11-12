@@ -12,9 +12,14 @@ export default function NavigationTracker() {
 
     // Post navigation changes to parent window
     useEffect(() => {
+        const canonicalUrl = `https://jsinnovia.com${location.pathname}`;
+        const canonical = document.querySelector('link[rel="canonical"]');
+        if (canonical) canonical.href = canonicalUrl;
+        const ogUrl = document.querySelector('meta[property="og:url"]');
+        if (ogUrl) ogUrl.content = canonicalUrl;
         window.parent?.postMessage({
             type: "app_changed_url",
-            url: window.location.href
+            url: window.location.origin + window.location.pathname
         }, '*');
     }, [location]);
 

@@ -383,7 +383,7 @@ export default function VoiceCompanion() {
           whileHover={reduceMotion ? undefined : { y: -2, scale: 1.02 }}
           whileTap={reduceMotion ? undefined : { scale: 0.98 }}
           className="fixed bottom-[7.25rem] right-5 z-[69] flex items-center gap-2.5 rounded-full border border-cyan-300/25 bg-[#080b1f]/95 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_12px_42px_rgba(0,0,0,.45),0_0_28px_rgba(0,180,255,.12)] backdrop-blur-xl transition-colors hover:border-amber-300/40 sm:bottom-[8rem] sm:right-7"
-          aria-label="Parler avec Elynea"
+          aria-label="Parler à Elynea"
         >
           <span className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-cyan-400/20 via-violet-500/20 to-amber-300/20">
             <Mic className="h-4 w-4 text-amber-200" aria-hidden="true" />

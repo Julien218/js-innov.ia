@@ -1,0 +1,2671 @@
+{
+  "date": "2026-11-12",
+  "decision": "NO-GO",
+  "deploymentPerformed": false,
+  "livePaymentsEnabled": false,
+  "baseCommit": "1da347c41a5c4f3f40ae0b62cbcadf5b60bab540",
+  "branch": "codex/critical-audit-20261112",
+  "unitTests": {
+    "total": 75,
+    "pass": 75,
+    "fail": 0
+  },
+  "productionDependencyAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "containers": [
+    {
+      "name": "jsinnovia-production-candidate-website-1",
+      "image": "jsinnovia-site:ionos-canonical",
+      "imageId": "sha256:07cc677d2bfd1d0de76ee4cf3db76cdf447ada6e3f8bc3b5aa95ad3fee33e5c4",
+      "startedAt": "2026-11-11T18:11:15.809825441Z",
+      "health": "healthy",
+      "mounts": [],
+      "commerceEnv": {},
+      "code": [
+        {
+          "path": "/app/server.mjs",
+          "sha256": "f0c3926611aadcbaac88fef35b50b6bb91595a02ce613611e3773cbd952c2440",
+          "clientVideoRoute": false,
+          "commerceRoute": false
+        },
+        {
+          "path": "/app/server.cjs",
+          "missing": true
+        },
+        {
+          "path": "/app/server-client-videos.cjs",
+          "missing": true
+        },
+        {
+          "path": "/app/server-commerce.mjs",
+          "missing": true
+        },
+        {
+          "path": "/app/dist/index.html",
+          "sha256": "e1ec93e86cd8332726f4a4a7e160a78337208dd2c2986a58ee6032aebd772cab",
+          "clientVideoRoute": false,
+          "commerceRoute": false
+        }
+      ]
+    },
+    {
+      "name": "jsinnovia-production-candidate-cockpit-1",
+      "image": "jsinnovia-cockpit:cosmic-709f5a2",
+      "imageId": "sha256:dbd745d7d5d39ece653423fab3a23638bfefa67fc495a443d29da38e2f19f5c6",
+      "startedAt": "2026-11-11T22:31:52.96816423Z",
+      "health": "healthy",
+      "mounts": [
+        {
+          "source": "/srv/jsinnovia/cockpit-validation/music-motion",
+          "target": "/data/music-motion",
+          "rw": true
+        }
+      ],
+      "commerceEnv": {},
+      "code": [
+        {
+          "path": "/app/server.mjs",
+          "missing": true
+        },
+        {
+          "path": "/app/server.cjs",
+          "sha256": "1f2d0caa5376a0d246f3ab046d4090d1ec0f3ed39f413e2256b157c94c7372a7",
+          "clientVideoRoute": false,
+          "commerceRoute": false
+        },
+        {
+          "path": "/app/server-client-videos.cjs",
+          "missing": true
+        },
+        {
+          "path": "/app/server-commerce.mjs",
+          "missing": true
+        },
+        {
+          "path": "/app/dist/index.html",
+          "sha256": "b72e6c640075969a0c1e9d3898a0c18fb2109fb14cc3210f46792eb7ec1285f5",
+          "clientVideoRoute": false,
+          "commerceRoute": false
+        }
+      ]
+    }
+  ],
+  "publicRoutes": [
+    {
+      "route": "/",
+      "width": 1440,
+      "at": "2026-11-12T08:57:02.533Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Votre ambition.Une expÃ©rience Ã  part."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 1300793,
+      "timing": [
+        {
+          "duration": 1938.2999999970198,
+          "domContentLoaded": 1934.8999999910593
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/web-studio",
+      "width": 1440,
+      "at": "2026-11-12T08:57:03.425Z",
+      "status": 200,
+      "title": "Web Studio â€” Votre site Ã  votre image | JS-Innov.IA",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Ne choisissez pas un site.Reconnaissez le vÃ´tre."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 0,
+      "timing": [
+        {
+          "duration": 75.79999999701977,
+          "domContentLoaded": 73.1000000089407
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/web-studio.html",
+      "width": 1440,
+      "at": "2026-11-12T08:57:04.149Z",
+      "status": 200,
+      "title": "Web Studio â€” Votre site Ã  votre image | JS-Innov.IA",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Ne choisissez pas un site.Reconnaissez le vÃ´tre."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 0,
+      "timing": [
+        {
+          "duration": 110.29999999701977,
+          "domContentLoaded": 107.3999999910593
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Visuels",
+      "width": 1440,
+      "at": "2026-11-12T08:57:05.143Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Visuels qui captivent & convertissent"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 522525,
+      "timing": [
+        {
+          "duration": 99,
+          "domContentLoaded": 96.6000000089407
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas",
+      "width": 1440,
+      "at": "2026-11-12T08:57:06.022Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Votre problÃ¨me devientnotre point de dÃ©part.AUTOMATISATION INTELLIGENTE, AMPLIFIÃ‰E PAR L'HUMAIN"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 55521,
+      "timing": [
+        {
+          "duration": 87.59999999403954,
+          "domContentLoaded": 85.09999999403954
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-packs",
+      "width": 1440,
+      "at": "2026-11-12T08:57:06.775Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "La solution adaptÃ©e Ã  votre objectif"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 40599,
+      "timing": [
+        {
+          "duration": 73.70000000298023,
+          "domContentLoaded": 70.59999999403954
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-analyse",
+      "width": 1440,
+      "at": "2026-11-12T08:57:07.511Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Analysons votre projet"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 11757,
+      "timing": [
+        {
+          "duration": 89.6000000089407,
+          "domContentLoaded": 86.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-agents",
+      "width": 1440,
+      "at": "2026-11-12T08:57:08.265Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "L'IA travaille. Julien valide."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 43737,
+      "timing": [
+        {
+          "duration": 83.5,
+          "domContentLoaded": 80.29999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-contact",
+      "width": 1440,
+      "at": "2026-11-12T08:57:08.992Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Construisez votre pack"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 24591,
+      "timing": [
+        {
+          "duration": 79.40000000596046,
+          "domContentLoaded": 76.6000000089407
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-mentions",
+      "width": 1440,
+      "at": "2026-11-12T08:57:09.730Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Mentions lÃ©gales"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 14362,
+      "timing": [
+        {
+          "duration": 84.1000000089407,
+          "domContentLoaded": 81
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-confidentialite",
+      "width": 1440,
+      "at": "2026-11-12T08:57:10.392Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Politique de confidentialitÃ©"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 0,
+      "timing": [
+        {
+          "duration": 79.5,
+          "domContentLoaded": 76.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-cgv",
+      "width": 1440,
+      "at": "2026-11-12T08:57:11.068Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Conditions gÃ©nÃ©rales de vente"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 0,
+      "timing": [
+        {
+          "duration": 83.29999999701977,
+          "domContentLoaded": 79.59999999403954
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/mentions",
+      "width": 1440,
+      "at": "2026-11-12T08:57:11.734Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Mentions lÃ©gales"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 0,
+      "timing": [
+        {
+          "duration": 73,
+          "domContentLoaded": 69.69999998807907
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/confidentialite",
+      "width": 1440,
+      "at": "2026-11-12T08:57:12.403Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Politique de confidentialitÃ©"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 0,
+      "timing": [
+        {
+          "duration": 83,
+          "domContentLoaded": 79.70000000298023
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-devis",
+      "width": 1440,
+      "at": "2026-11-12T08:57:13.129Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Construisez votre solution IA"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 29029,
+      "timing": [
+        {
+          "duration": 74.19999998807907,
+          "domContentLoaded": 71.19999998807907
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-landing",
+      "width": 1440,
+      "at": "2026-11-12T08:57:14.457Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Votre ambition.Une expÃ©rience Ã  part."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 2247161,
+      "timing": [
+        {
+          "duration": 81.29999999701977,
+          "domContentLoaded": 78.29999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-client",
+      "width": 1440,
+      "at": "2026-11-12T08:57:16.613Z",
+      "status": 200,
+      "title": "JS-Innov.IA Cockpit | Pilotage IA & Automatisation",
+      "canonical": "https://cockpit.jsinnovia.com/",
+      "h1": [
+        "JS-Innov.IA"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 6973881,
+      "timing": [
+        {
+          "duration": 1088.5999999940395,
+          "domContentLoaded": 1087.2000000029802
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-events",
+      "width": 1440,
+      "at": "2026-11-12T08:57:17.443Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "CrÃ©ez et gÃ©rez vos Ã©vÃ©nements"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 13386,
+      "timing": [
+        {
+          "duration": 101.40000000596046,
+          "domContentLoaded": 98.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/cockpit",
+      "width": 1440,
+      "at": "2026-11-12T08:57:18.169Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Le site vitrine qui pilote tout ton business."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 19845,
+      "timing": [
+        {
+          "duration": 75.09999999403954,
+          "domContentLoaded": 72.59999999403954
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/site-cockpit",
+      "width": 1440,
+      "at": "2026-11-12T08:57:18.785Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Le site vitrine qui pilote tout ton business."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 0,
+      "timing": [
+        {
+          "duration": 77.90000000596046,
+          "domContentLoaded": 75.09999999403954
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/hainoflow",
+      "width": 1440,
+      "at": "2026-11-12T08:57:19.664Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "La facturation belgesimple, fluide et humaine."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 43781,
+      "timing": [
+        {
+          "duration": 120.70000000298023,
+          "domContentLoaded": 117.8999999910593
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/catalogue-tarifs-brouillon",
+      "width": 1440,
+      "at": "2026-11-12T08:57:20.406Z",
+      "status": 200,
+      "title": "Brouillon interne â€” Catalogue JSâ€‘Innov.IA",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Catalogue tarifaire 2026"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 9150,
+      "timing": [
+        {
+          "duration": 114.5,
+          "domContentLoaded": 111.79999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/ecran",
+      "width": 1440,
+      "at": "2026-11-12T08:57:21.254Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Diffusez votre pubsur l'Ã©cran gÃ©antde Dour"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 26928,
+      "timing": [
+        {
+          "duration": 131.29999999701977,
+          "domContentLoaded": 128.59999999403954
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/ecranespacec",
+      "width": 1440,
+      "at": "2026-11-12T08:57:21.980Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Sites web, logos &automatisations IApour indÃ©pendants belges"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 28853,
+      "timing": [
+        {
+          "duration": 90.1000000089407,
+          "domContentLoaded": 87.20000000298023
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/ps",
+      "width": 1440,
+      "at": "2026-11-12T08:57:22.844Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "GÃ©nÃ¨re ton script GPC en secondes"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 137529,
+      "timing": [
+        {
+          "duration": 85.8999999910593,
+          "domContentLoaded": 81.8999999910593
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/AIMusic",
+      "width": 1440,
+      "at": "2026-11-12T08:57:23.676Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Musique Par IAPour Votre Commerce"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 105757,
+      "timing": [
+        {
+          "duration": 74,
+          "domContentLoaded": 70.69999998807907
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Applications",
+      "width": 1440,
+      "at": "2026-11-12T08:57:24.493Z",
+      "status": 200,
+      "title": "Applications IA Sur Mesure | JS-INNOV.IA - DÃ©veloppement",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 50976,
+      "timing": [
+        {
+          "duration": 82.29999999701977,
+          "domContentLoaded": 77.79999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Automations",
+      "width": 1440,
+      "at": "2026-11-12T08:57:25.314Z",
+      "status": 200,
+      "title": "Automatisations IA | JS-INNOV.IA - Solutions ProductivitÃ©",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 65142,
+      "timing": [
+        {
+          "duration": 81.30000001192093,
+          "domContentLoaded": 78.40000000596046
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Blog",
+      "width": 1440,
+      "at": "2026-11-12T08:57:26.113Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Nos articles & insights"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 43717,
+      "timing": [
+        {
+          "duration": 71.6000000089407,
+          "domContentLoaded": 68.79999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/BlogPost",
+      "width": 1440,
+      "at": "2026-11-12T08:57:26.853Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Article non trouvÃ©"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 39532,
+      "timing": [
+        {
+          "duration": 76.79999999701977,
+          "domContentLoaded": 72.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Cart",
+      "width": 1440,
+      "at": "2026-11-12T08:57:27.613Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 37621,
+      "timing": [
+        {
+          "duration": 79.40000000596046,
+          "domContentLoaded": 76.1000000089407
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Checkout",
+      "width": 1440,
+      "at": "2026-11-12T08:57:28.585Z",
+      "status": 200,
+      "title": "Musiques Libres de Droits | JS-INNOV.IA - Bandes Sonores Commerciales",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 57104,
+      "timing": [
+        {
+          "duration": 77.40000000596046,
+          "domContentLoaded": 73.70000000298023
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Contact",
+      "width": 1440,
+      "at": "2026-11-12T08:57:29.326Z",
+      "status": 200,
+      "title": "Contact | JS-INNOV.IA - Devis Gratuit Automatisation & IA",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 38761,
+      "timing": [
+        {
+          "duration": 73.70000000298023,
+          "domContentLoaded": 71.1000000089407
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/CreativeStudio",
+      "width": 1440,
+      "at": "2026-11-12T08:57:30.065Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Des contenus qui continuent Ã  travailler aprÃ¨s leur premiÃ¨re diffusion."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 39700,
+      "timing": [
+        {
+          "duration": 75,
+          "domContentLoaded": 72.6000000089407
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/DevisWebsite",
+      "width": 1440,
+      "at": "2026-11-12T08:57:30.948Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Demande de devis personnalisÃ©"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 59253,
+      "timing": [
+        {
+          "duration": 73.6000000089407,
+          "domContentLoaded": 70.90000000596046
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/ExperimentalHome",
+      "width": 1440,
+      "at": "2026-11-12T08:57:31.702Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 40996,
+      "timing": [
+        {
+          "duration": 80.20000000298023,
+          "domContentLoaded": 77.3999999910593
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Home",
+      "width": 1440,
+      "at": "2026-11-12T08:57:32.599Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Ã  Dour, Belgique",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "L'intelligence artificielleau service de votre activitÃ©"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 75373,
+      "timing": [
+        {
+          "duration": 81.20000000298023,
+          "domContentLoaded": 78.90000000596046
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Innovations",
+      "width": 1440,
+      "at": "2026-11-12T08:57:33.397Z",
+      "status": 200,
+      "title": "Innovations IA | JS-INNOV.IA - Projets & IdÃ©es RÃ©volutionnaires",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 70450,
+      "timing": [
+        {
+          "duration": 76.29999999701977,
+          "domContentLoaded": 73.40000000596046
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/LogoSenergieDour",
+      "width": 1440,
+      "at": "2026-11-12T08:57:34.232Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Construisons ensemble le logo de Synergie Dour"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 23954,
+      "timing": [
+        {
+          "duration": 89.90000000596046,
+          "domContentLoaded": 87.29999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/MusicShop",
+      "width": 1440,
+      "at": "2026-11-12T08:57:34.944Z",
+      "status": 200,
+      "title": "Musiques Libres de Droits | JS-INNOV.IA - Bandes Sonores Commerciales",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 31202,
+      "timing": [
+        {
+          "duration": 99.5,
+          "domContentLoaded": 97.20000000298023
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/News",
+      "width": 1440,
+      "at": "2026-11-12T08:57:35.688Z",
+      "status": 200,
+      "title": "ActualitÃ©s IA | JS-INNOV.IA - Veille Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 40431,
+      "timing": [
+        {
+          "duration": 81,
+          "domContentLoaded": 78.20000000298023
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/OrderConfirmation",
+      "width": 1440,
+      "at": "2026-11-12T08:57:36.970Z",
+      "status": 200,
+      "title": "Musiques Libres de Droits | JS-INNOV.IA - Bandes Sonores Commerciales",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 37482,
+      "timing": [
+        {
+          "duration": 83,
+          "domContentLoaded": 80.30000001192093
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Partners",
+      "width": 1440,
+      "at": "2026-11-12T08:57:37.882Z",
+      "status": 200,
+      "title": "Partenaires | JS-INNOV.IA - RÃ©seau IA Belgique",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 39965,
+      "timing": [
+        {
+          "duration": 71.09999999403954,
+          "domContentLoaded": 68.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/PaymentCancel",
+      "width": 1440,
+      "at": "2026-11-12T08:57:38.638Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Paiement annulÃ©"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 34522,
+      "timing": [
+        {
+          "duration": 86.3999999910593,
+          "domContentLoaded": 83.3999999910593
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/PaymentSuccess",
+      "width": 1440,
+      "at": "2026-11-12T08:57:39.379Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Paiement rÃ©ussi !"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 35423,
+      "timing": [
+        {
+          "duration": 90.69999998807907,
+          "domContentLoaded": 87.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/PublicForm",
+      "width": 1440,
+      "at": "2026-11-12T08:57:40.124Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Formulaire introuvable"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 37760,
+      "timing": [
+        {
+          "duration": 77.90000000596046,
+          "domContentLoaded": 74.80000001192093
+        }
+      ],
+      "errors": [],
+      "failed": [
+        {
+          "url": "https://jsinnovia.com/api/platform/data/DynamicPage",
+          "status": 429
+        }
+      ]
+    },
+    {
+      "route": "/SEOAudit",
+      "width": 1440,
+      "at": "2026-11-12T08:57:41.030Z",
+      "status": 200,
+      "title": "Audit SEO Gratuit | JS-INNOV.IA - Analyse de RÃ©fÃ©rencement",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 65879,
+      "timing": [
+        {
+          "duration": 82.90000000596046,
+          "domContentLoaded": 79.79999999701977
+        }
+      ],
+      "errors": [],
+      "failed": [
+        {
+          "url": "https://jsinnovia.com/api/platform/data/DynamicPage",
+          "status": 429
+        }
+      ]
+    },
+    {
+      "route": "/Showcase",
+      "width": 1440,
+      "at": "2026-11-12T08:57:42.065Z",
+      "status": 200,
+      "title": "Portfolio IA | RÃ©alisations JS-INNOV.IA - Automatisation & IA",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Portfolio & Realisations"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 599994,
+      "timing": [
+        {
+          "duration": 76.20000000298023,
+          "domContentLoaded": 72.20000000298023
+        }
+      ],
+      "errors": [],
+      "failed": [
+        {
+          "url": "https://jsinnovia.com/api/platform/data/Showcase",
+          "status": 429
+        },
+        {
+          "url": "https://jsinnovia.com/api/platform/data/DynamicPage",
+          "status": 429
+        }
+      ]
+    },
+    {
+      "route": "/Templates",
+      "width": 1440,
+      "at": "2026-11-12T08:57:42.807Z",
+      "status": 200,
+      "title": "Templates VidÃ©o IA | JS-INNOV.IA - ModÃ¨les Motion Design",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 36279,
+      "timing": [
+        {
+          "duration": 78,
+          "domContentLoaded": 75.09999999403954
+        }
+      ],
+      "errors": [],
+      "failed": [
+        {
+          "url": "https://jsinnovia.com/api/platform/data/Template",
+          "status": 429
+        },
+        {
+          "url": "https://jsinnovia.com/api/platform/data/DynamicPage",
+          "status": 429
+        }
+      ]
+    },
+    {
+      "route": "/Pricing",
+      "width": 1440,
+      "at": "2026-11-12T08:57:43.559Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Ce que vous payez, c'est votre croissance."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 45579,
+      "timing": [
+        {
+          "duration": 78,
+          "domContentLoaded": 74
+        }
+      ],
+      "errors": [],
+      "failed": [
+        {
+          "url": "https://jsinnovia.com/api/platform/data/DynamicPage",
+          "status": 429
+        }
+      ]
+    },
+    {
+      "route": "/Commande",
+      "width": 1440,
+      "at": "2026-11-12T08:57:44.361Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Commander mon site"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 60836,
+      "timing": [
+        {
+          "duration": 78.8999999910593,
+          "domContentLoaded": 74.29999999701977
+        }
+      ],
+      "errors": [],
+      "failed": [
+        {
+          "url": "https://jsinnovia.com/api/platform/data/DynamicPage",
+          "status": 429
+        }
+      ]
+    },
+    {
+      "route": "/Fidelite",
+      "width": 1440,
+      "at": "2026-11-12T08:57:45.178Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Bonjour, Julien ðŸ‘‹"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 50883,
+      "timing": [
+        {
+          "duration": 84.90000000596046,
+          "domContentLoaded": 82.30000001192093
+        }
+      ],
+      "errors": [],
+      "failed": [
+        {
+          "url": "https://jsinnovia.com/api/platform/data/DynamicPage",
+          "status": 429
+        }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "at": "2026-11-12T08:57:47.277Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Votre ambition.Une expÃ©rience Ã  part."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 1300793,
+      "timing": [
+        {
+          "duration": 897.0999999940395,
+          "domContentLoaded": 893.5999999940395
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/web-studio",
+      "width": 390,
+      "at": "2026-11-12T08:57:48.031Z",
+      "status": 200,
+      "title": "Web Studio â€” Votre site Ã  votre image | JS-Innov.IA",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Ne choisissez pas un site.Reconnaissez le vÃ´tre."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 0,
+      "timing": [
+        {
+          "duration": 79.59999999403954,
+          "domContentLoaded": 77.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/web-studio.html",
+      "width": 390,
+      "at": "2026-11-12T08:57:48.706Z",
+      "status": 200,
+      "title": "Web Studio â€” Votre site Ã  votre image | JS-Innov.IA",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Ne choisissez pas un site.Reconnaissez le vÃ´tre."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 0,
+      "timing": [
+        {
+          "duration": 80.70000000298023,
+          "domContentLoaded": 78.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Visuels",
+      "width": 390,
+      "at": "2026-11-12T08:57:49.570Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Visuels qui captivent & convertissent"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 522581,
+      "timing": [
+        {
+          "duration": 76,
+          "domContentLoaded": 73.8999999910593
+        }
+      ],
+      "errors": [],
+      "failed": [
+        {
+          "url": "https://jsinnovia.com/api/platform/data/DynamicPage",
+          "status": 429
+        }
+      ]
+    },
+    {
+      "route": "/saas",
+      "width": 390,
+      "at": "2026-11-12T08:57:50.418Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Votre problÃ¨me devientnotre point de dÃ©part.AUTOMATISATION INTELLIGENTE, AMPLIFIÃ‰E PAR L'HUMAIN"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 70820,
+      "timing": [
+        {
+          "duration": 73.09999999403954,
+          "domContentLoaded": 70.59999999403954
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-packs",
+      "width": 390,
+      "at": "2026-11-12T08:57:51.164Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "La solution adaptÃ©e Ã  votre objectif"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 40599,
+      "timing": [
+        {
+          "duration": 71.69999998807907,
+          "domContentLoaded": 68.59999999403954
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-analyse",
+      "width": 390,
+      "at": "2026-11-12T08:57:51.876Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Analysons votre projet"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 11757,
+      "timing": [
+        {
+          "duration": 74.1000000089407,
+          "domContentLoaded": 71.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-agents",
+      "width": 390,
+      "at": "2026-11-12T08:57:52.623Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "L'IA travaille. Julien valide."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 43737,
+      "timing": [
+        {
+          "duration": 90,
+          "domContentLoaded": 87.3999999910593
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-contact",
+      "width": 390,
+      "at": "2026-11-12T08:57:53.364Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Construisez votre pack"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 24591,
+      "timing": [
+        {
+          "duration": 84.20000000298023,
+          "domContentLoaded": 80.79999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-mentions",
+      "width": 390,
+      "at": "2026-11-12T08:57:54.091Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Mentions lÃ©gales"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 14362,
+      "timing": [
+        {
+          "duration": 81.1000000089407,
+          "domContentLoaded": 78.29999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-confidentialite",
+      "width": 390,
+      "at": "2026-11-12T08:57:54.781Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Politique de confidentialitÃ©"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 0,
+      "timing": [
+        {
+          "duration": 78.40000000596046,
+          "domContentLoaded": 74.79999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-cgv",
+      "width": 390,
+      "at": "2026-11-12T08:57:55.468Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Conditions gÃ©nÃ©rales de vente"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 0,
+      "timing": [
+        {
+          "duration": 81.59999999403954,
+          "domContentLoaded": 78.3999999910593
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/mentions",
+      "width": 390,
+      "at": "2026-11-12T08:57:56.147Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Mentions lÃ©gales"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 0,
+      "timing": [
+        {
+          "duration": 73,
+          "domContentLoaded": 69.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/confidentialite",
+      "width": 390,
+      "at": "2026-11-12T08:57:56.815Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Politique de confidentialitÃ©"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 0,
+      "timing": [
+        {
+          "duration": 78.09999999403954,
+          "domContentLoaded": 74.79999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-devis",
+      "width": 390,
+      "at": "2026-11-12T08:57:57.559Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Construisez votre solution IA"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 29029,
+      "timing": [
+        {
+          "duration": 95.09999999403954,
+          "domContentLoaded": 91.69999998807907
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-landing",
+      "width": 390,
+      "at": "2026-11-12T08:57:58.872Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Votre ambition.Une expÃ©rience Ã  part."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 2247161,
+      "timing": [
+        {
+          "duration": 83,
+          "domContentLoaded": 79.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-client",
+      "width": 390,
+      "at": "2026-11-12T08:58:01.447Z",
+      "status": 200,
+      "title": "JS-Innov.IA Cockpit | Pilotage IA & Automatisation",
+      "canonical": "https://cockpit.jsinnovia.com/",
+      "h1": [
+        "JS-Innov.IA"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 6973881,
+      "timing": [
+        {
+          "duration": 1296.199999988079,
+          "domContentLoaded": 1295
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/saas-events",
+      "width": 390,
+      "at": "2026-11-12T08:58:02.264Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "CrÃ©ez et gÃ©rez vos Ã©vÃ©nements"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 13442,
+      "timing": [
+        {
+          "duration": 97.80000001192093,
+          "domContentLoaded": 94.80000001192093
+        }
+      ],
+      "errors": [],
+      "failed": [
+        {
+          "url": "https://jsinnovia.com/api/platform/data/Event",
+          "status": 429
+        }
+      ]
+    },
+    {
+      "route": "/cockpit",
+      "width": 390,
+      "at": "2026-11-12T08:58:02.974Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Le site vitrine qui pilote tout ton business."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 19845,
+      "timing": [
+        {
+          "duration": 71.79999999701977,
+          "domContentLoaded": 68.8999999910593
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/site-cockpit",
+      "width": 390,
+      "at": "2026-11-12T08:58:03.580Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Le site vitrine qui pilote tout ton business."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 0,
+      "timing": [
+        {
+          "duration": 72.8999999910593,
+          "domContentLoaded": 70.29999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/hainoflow",
+      "width": 390,
+      "at": "2026-11-12T08:58:04.363Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "La facturation belgesimple, fluide et humaine."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 43781,
+      "timing": [
+        {
+          "duration": 81.20000000298023,
+          "domContentLoaded": 77.79999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/catalogue-tarifs-brouillon",
+      "width": 390,
+      "at": "2026-11-12T08:58:05.064Z",
+      "status": 200,
+      "title": "Brouillon interne â€” Catalogue JSâ€‘Innov.IA",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Catalogue tarifaire 2026"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 9150,
+      "timing": [
+        {
+          "duration": 92.09999999403954,
+          "domContentLoaded": 88.59999999403954
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/ecran",
+      "width": 390,
+      "at": "2026-11-12T08:58:05.793Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Diffusez votre pubsur l'Ã©cran gÃ©antde Dour"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 26928,
+      "timing": [
+        {
+          "duration": 81.5,
+          "domContentLoaded": 78.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/ecranespacec",
+      "width": 390,
+      "at": "2026-11-12T08:58:06.537Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Sites web, logos &automatisations IApour indÃ©pendants belges"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 28853,
+      "timing": [
+        {
+          "duration": 79.70000000298023,
+          "domContentLoaded": 77.1000000089407
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/ps",
+      "width": 390,
+      "at": "2026-11-12T08:58:07.371Z",
+      "status": 200,
+      "title": "JS-Innov.IA | Automatisation & Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "GÃ©nÃ¨re ton script GPC en secondes"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 137529,
+      "timing": [
+        {
+          "duration": 76.5,
+          "domContentLoaded": 73.70000000298023
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/AIMusic",
+      "width": 390,
+      "at": "2026-11-12T08:58:08.237Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Musique Par IAPour Votre Commerce"
+      ],
+      "overflow": true,
+      "blank": false,
+      "resources": 105757,
+      "timing": [
+        {
+          "duration": 83,
+          "domContentLoaded": 80.3999999910593
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Applications",
+      "width": 390,
+      "at": "2026-11-12T08:58:09.046Z",
+      "status": 200,
+      "title": "Applications IA Sur Mesure | JS-INNOV.IA - DÃ©veloppement",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 50976,
+      "timing": [
+        {
+          "duration": 91.1000000089407,
+          "domContentLoaded": 87.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Automations",
+      "width": 390,
+      "at": "2026-11-12T08:58:09.843Z",
+      "status": 200,
+      "title": "Automatisations IA | JS-INNOV.IA - Solutions ProductivitÃ©",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 65142,
+      "timing": [
+        {
+          "duration": 73.1000000089407,
+          "domContentLoaded": 69.79999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Blog",
+      "width": 390,
+      "at": "2026-11-12T08:58:10.698Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Nos articles & insights"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 43717,
+      "timing": [
+        {
+          "duration": 90.3999999910593,
+          "domContentLoaded": 85.79999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/BlogPost",
+      "width": 390,
+      "at": "2026-11-12T08:58:11.455Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Article non trouvÃ©"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 39532,
+      "timing": [
+        {
+          "duration": 79.1000000089407,
+          "domContentLoaded": 75.80000001192093
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Cart",
+      "width": 390,
+      "at": "2026-11-12T08:58:12.226Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 37621,
+      "timing": [
+        {
+          "duration": 88.6000000089407,
+          "domContentLoaded": 84.6000000089407
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Checkout",
+      "width": 390,
+      "at": "2026-11-12T08:58:13.324Z",
+      "status": 200,
+      "title": "Musiques Libres de Droits | JS-INNOV.IA - Bandes Sonores Commerciales",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 57104,
+      "timing": [
+        {
+          "duration": 91.19999998807907,
+          "domContentLoaded": 87.8999999910593
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Contact",
+      "width": 390,
+      "at": "2026-11-12T08:58:14.093Z",
+      "status": 200,
+      "title": "Contact | JS-INNOV.IA - Devis Gratuit Automatisation & IA",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 38761,
+      "timing": [
+        {
+          "duration": 88.29999999701977,
+          "domContentLoaded": 85.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/CreativeStudio",
+      "width": 390,
+      "at": "2026-11-12T08:58:14.851Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Des contenus qui continuent Ã  travailler aprÃ¨s leur premiÃ¨re diffusion."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 39700,
+      "timing": [
+        {
+          "duration": 84.3999999910593,
+          "domContentLoaded": 81.59999999403954
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/DevisWebsite",
+      "width": 390,
+      "at": "2026-11-12T08:58:15.714Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Demande de devis personnalisÃ©"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 59253,
+      "timing": [
+        {
+          "duration": 88.09999999403954,
+          "domContentLoaded": 85.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/ExperimentalHome",
+      "width": 390,
+      "at": "2026-11-12T08:58:16.489Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 40996,
+      "timing": [
+        {
+          "duration": 95.59999999403954,
+          "domContentLoaded": 92.79999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Home",
+      "width": 390,
+      "at": "2026-11-12T08:58:17.383Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Ã  Dour, Belgique",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "L'intelligence artificielleau service de votre activitÃ©"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 75373,
+      "timing": [
+        {
+          "duration": 76.59999999403954,
+          "domContentLoaded": 73.90000000596046
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Innovations",
+      "width": 390,
+      "at": "2026-11-12T08:58:18.511Z",
+      "status": 200,
+      "title": "Innovations IA | JS-INNOV.IA - Projets & IdÃ©es RÃ©volutionnaires",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 70450,
+      "timing": [
+        {
+          "duration": 160.29999999701977,
+          "domContentLoaded": 155.1000000089407
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/LogoSenergieDour",
+      "width": 390,
+      "at": "2026-11-12T08:58:19.450Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Construisons ensemble le logo de Synergie Dour"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 23954,
+      "timing": [
+        {
+          "duration": 142.90000000596046,
+          "domContentLoaded": 137.90000000596046
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/MusicShop",
+      "width": 390,
+      "at": "2026-11-12T08:58:20.216Z",
+      "status": 200,
+      "title": "Musiques Libres de Droits | JS-INNOV.IA - Bandes Sonores Commerciales",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 31202,
+      "timing": [
+        {
+          "duration": 97.70000000298023,
+          "domContentLoaded": 93.20000000298023
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/News",
+      "width": 390,
+      "at": "2026-11-12T08:58:21.073Z",
+      "status": 200,
+      "title": "ActualitÃ©s IA | JS-INNOV.IA - Veille Intelligence Artificielle",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 40431,
+      "timing": [
+        {
+          "duration": 119,
+          "domContentLoaded": 114.1000000089407
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/OrderConfirmation",
+      "width": 390,
+      "at": "2026-11-12T08:58:22.398Z",
+      "status": 200,
+      "title": "Musiques Libres de Droits | JS-INNOV.IA - Bandes Sonores Commerciales",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 37482,
+      "timing": [
+        {
+          "duration": 100.1000000089407,
+          "domContentLoaded": 95.79999999701977
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Partners",
+      "width": 390,
+      "at": "2026-11-12T08:58:23.350Z",
+      "status": 200,
+      "title": "Partenaires | JS-INNOV.IA - RÃ©seau IA Belgique",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 39965,
+      "timing": [
+        {
+          "duration": 99,
+          "domContentLoaded": 95.40000000596046
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/PaymentCancel",
+      "width": 390,
+      "at": "2026-11-12T08:58:24.119Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Paiement annulÃ©"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 34522,
+      "timing": [
+        {
+          "duration": 89.20000000298023,
+          "domContentLoaded": 85.20000000298023
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/PaymentSuccess",
+      "width": 390,
+      "at": "2026-11-12T08:58:24.872Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Paiement rÃ©ussi !"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 35423,
+      "timing": [
+        {
+          "duration": 92.3999999910593,
+          "domContentLoaded": 89.3999999910593
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/PublicForm",
+      "width": 390,
+      "at": "2026-11-12T08:58:25.642Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Formulaire introuvable"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 37704,
+      "timing": [
+        {
+          "duration": 92.5,
+          "domContentLoaded": 89.5
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/SEOAudit",
+      "width": 390,
+      "at": "2026-11-12T08:58:26.519Z",
+      "status": 200,
+      "title": "Audit SEO Gratuit | JS-INNOV.IA - Analyse de RÃ©fÃ©rencement",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 65823,
+      "timing": [
+        {
+          "duration": 85.79999999701977,
+          "domContentLoaded": 82
+        }
+      ],
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/Showcase",
+      "width": 390,
+      "at": "2026-11-12T08:58:27.603Z",
+      "status": 200,
+      "title": "Portfolio IA | RÃ©alisations JS-INNOV.IA - Automatisation & IA",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Portfolio & Realisations"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 555660,
+      "timing": [
+        {
+          "duration": 113.20000000298023,
+          "domContentLoaded": 110.70000000298023
+        }
+      ],
+      "errors": [],
+      "failed": [
+        {
+          "url": "https://jsinnovia.com/api/platform/data/Showcase",
+          "status": 429
+        },
+        {
+          "url": "https://jsinnovia.com/api/platform/data/DynamicPage",
+          "status": 429
+        }
+      ]
+    },
+    {
+      "route": "/Templates",
+      "width": 390,
+      "at": "2026-11-12T08:58:28.344Z",
+      "status": 200,
+      "title": "Templates VidÃ©o IA | JS-INNOV.IA - ModÃ¨les Motion Design",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [],
+      "overflow": false,
+      "blank": false,
+      "resources": 36279,
+      "timing": [
+        {
+          "duration": 83.20000000298023,
+          "domContentLoaded": 80.40000000596046
+        }
+      ],
+      "errors": [],
+      "failed": [
+        {
+          "url": "https://jsinnovia.com/api/platform/data/Template",
+          "status": 429
+        },
+        {
+          "url": "https://jsinnovia.com/api/platform/data/DynamicPage",
+          "status": 429
+        }
+      ]
+    },
+    {
+      "route": "/Pricing",
+      "width": 390,
+      "at": "2026-11-12T08:58:29.241Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Ce que vous payez, c'est votre croissance."
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 45579,
+      "timing": [
+        {
+          "duration": 86.5,
+          "domContentLoaded": 83.1000000089407
+        }
+      ],
+      "errors": [],
+      "failed": [
+        {
+          "url": "https://jsinnovia.com/api/platform/data/DynamicPage",
+          "status": 429
+        }
+      ]
+    },
+    {
+      "route": "/Commande",
+      "width": 390,
+      "at": "2026-11-12T08:58:30.215Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Commander mon site"
+      ],
+      "overflow": false,
+      "blank": false,
+      "resources": 60836,
+      "timing": [
+        {
+          "duration": 93.3999999910593,
+          "domContentLoaded": 89.69999998807907
+        }
+      ],
+      "errors": [],
+      "failed": [
+        {
+          "url": "https://jsinnovia.com/api/platform/data/DynamicPage",
+          "status": 429
+        }
+      ]
+    },
+    {
+      "route": "/Fidelite",
+      "width": 390,
+      "at": "2026-11-12T08:58:31.018Z",
+      "status": 200,
+      "title": "JS-INNOV.IA | Automatisation & Intelligence Artificielle Locale",
+      "canonical": "https://jsinnovia.com/",
+      "h1": [
+        "Bonjour, Julien ðŸ‘‹"
+      ],
+      "overflow": true,
+      "blank": false,
+      "resources": 50883,
+      "timing": [
+        {
+          "duration": 84.1000000089407,
+          "domContentLoaded": 80.6000000089407
+        }
+      ],
+      "errors": [],
+      "failed": [
+        {
+          "url": "https://jsinnovia.com/api/platform/data/DynamicPage",
+          "status": 429
+        }
+      ]
+    }
+  ],
+  "localCriticalUI": [
+    {
+      "path": "/AIMusic",
+      "width": 390,
+      "viewport": 390,
+      "h1": "Musique Par IA\nPour Votre Commerce",
+      "inputs": 0
+    },
+    {
+      "path": "/Fidelite",
+      "width": 390,
+      "viewport": 390,
+      "h1": "Bonjour, Julien ðŸ‘‹",
+      "inputs": 0
+    },
+    {
+      "path": "/Checkout",
+      "width": 390,
+      "viewport": 390,
+      "h1": "Paiement en ligne indisponible",
+      "inputs": 0
+    },
+    {
+      "path": "/PaymentSuccess",
+      "width": 390,
+      "viewport": 390,
+      "h1": "Paiement en ligne indisponible",
+      "inputs": 0
+    },
+    {
+      "path": "/OrderConfirmation",
+      "width": 390,
+      "viewport": 390,
+      "h1": "Paiement en ligne indisponible",
+      "inputs": 0
+    }
+  ],
+  "http": [
+    {
+      "path": "/api/health",
+      "status": 200
+    },
+    {
+      "path": "/api/video/catalog",
+      "status": 200
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200
+    },
+    {
+      "path": "/.env",
+      "status": 404
+    },
+    {
+      "path": "/.git/config",
+      "status": 404
+    },
+    {
+      "path": "/missing.js",
+      "status": 200
+    },
+    {
+      "url": "https://validation.jsinnovia.com/",
+      "status": 200
+    },
+    {
+      "url": "https://validation.jsinnovia.com/v/",
+      "status": 200
+    },
+    {
+      "url": "https://cockpit.jsinnovia.com/api/health",
+      "status": 200
+    },
+    {
+      "url": "https://cockpit.jsinnovia.com/api/client-videos/public/validation/audit-invalid-token",
+      "status": 404
+    },
+    {
+      "url": "http://jsinnovia.com/",
+      "status": 302
+    },
+    {
+      "url": "https://www.jsinnovia.com/saas-contact?audit=1",
+      "status": 308
+    },
+    {
+      "url": "https://jsinnovia.com/api/platform/data/ClientOrder",
+      "status": 403
+    },
+    {
+      "url": "https://jsinnovia.com/api/platform/data/Contact",
+      "status": 403
+    },
+    {
+      "url": "https://jsinnovia.com/api/platform/data/Lead",
+      "status": 403
+    },
+    {
+      "url": "https://jsinnovia.com/api/platform/data/User",
+      "status": 403
+    },
+    {
+      "url": "https://cockpit.jsinnovia.com/api/client-videos/projects",
+      "status": 404
+    },
+    {
+      "url": "https://cockpit.jsinnovia.com/api/client-videos/public/validation/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "status": 404
+    }
+  ],
+  "lighthouse": {
+    "mobile": {
+      "version": "13.6.0",
+      "date": "2026-11-12T08:59:34.580Z",
+      "scores": {
+        "performance": 0.88,
+        "accessibility": 0.91,
+        "best-practices": 1,
+        "seo": 0.92,
+        "agentic-browsing": 0.25
+      },
+      "metrics": {
+        "largest-contentful-paint": 2950.4929999999995,
+        "first-contentful-paint": 2950.4929999999995,
+        "total-blocking-time": 86,
+        "cumulative-layout-shift": 0.0008514311791259692
+      },
+      "runtimeError": null
+    },
+    "desktop": {
+      "version": "13.6.0",
+      "date": "2026-11-12T08:59:49.042Z",
+      "scores": {
+        "performance": 0.95,
+        "accessibility": 0.91,
+        "best-practices": 1,
+        "seo": 0.92,
+        "agentic-browsing": 0.25
+      },
+      "metrics": {
+        "largest-contentful-paint": 1001.9359999999999,
+        "first-contentful-paint": 1001.9359999999999,
+        "total-blocking-time": 0,
+        "cumulative-layout-shift": 0.023085840145829352
+      },
+      "runtimeError": null
+    },
+    "local-mobile": {
+      "version": "13.6.0",
+      "date": "2026-11-12T09:04:26.101Z",
+      "scores": {
+        "performance": 0.93,
+        "accessibility": 1,
+        "best-practices": 1,
+        "seo": 1,
+        "agentic-browsing": 1
+      },
+      "metrics": {
+        "largest-contentful-paint": 2539.392,
+        "first-contentful-paint": 2539.392,
+        "total-blocking-time": 79,
+        "cumulative-layout-shift": 0.0008514311791259692
+      },
+      "runtimeError": null
+    }
+  },
+  "testNames": [
+    "a product is commercial-ready only after every mandatory gate is approved",
+    "HainoFlow remains distinct from service packs and FacturaPro remains its module",
+    "the public pricing page uses the canonical project prices and separates recurring costs",
+    "Locelya is only an internal candidate and has no public commercial identity",
+    "retired names cannot be active portfolio identities",
+    "every externally branded product carries the JS-Innov.IA endorsement",
+    "the private catalogue stays noindex while the published HainoFlow page is indexable",
+    "the public homepage exposes HainoFlow and Signelya through dedicated subdomains",
+    "secondary pages remain code-split for a fast mobile-first initial load",
+    "the browser delegates AI requests to the server function",
+    "the branded chat companion is mounted on the active SaaS landing routes",
+    "the Realtime voice companion is mounted once globally inside the router",
+    "the voice navigation bridge uses an explicit allowlist and never arbitrary URLs",
+    "the voice companion remains public-site only and sends bounded navigation context",
+    "the public endpoint bounds input and rate limits requests",
+    "the public server applies baseline security headers and rejects unsupported methods",
+    "the public assistant is explicitly isolated from the cockpit",
+    "the production runtime has no Base44 dependency",
+    "Elynea keeps the premium local visual pack as a production fallback",
+    "the Elyna 3D runtime is lazy, stateful and fails safely to the 2D asset",
+    "the public chat drives the 3D header state without spawning extra WebGL avatars per message",
+    "the Elyna production validator passes while 3D is disabled and the master model is absent",
+    "the chat remains accessible and respects reduced motion",
+    "legacy checkout and confirmation routes cannot collect cards or assert a browser-only payment",
+    "canonical URLs and parent-frame navigation messages exclude tokens and query parameters",
+    "HTTP discovery returns truthful statuses, private noindex, canonical metadata and proper robots formats",
+    "publishes exactly the eight approved NOVA videos",
+    "deduplicates media by integrity hash and rejects unsafe drafts",
+    "loads videos only after a visitor click",
+    "uses real local captures and official logos for website projects",
+    "serves byte ranges required by HTML video players",
+    "keeps Showcase read-only on the public server",
+    "product subdomains resolve to one unique product",
+    "hostname normalization removes whitespace and development ports",
+    "unknown domains safely fall back to the main experience",
+    "published product subdomains activate their dedicated experience",
+    "retired or conflicting product names are not reserved as public subdomains",
+    "services remain routes on the main domain instead of separate subdomains",
+    "pack CTAs use implemented public routes instead of a missing Stripe function",
+    "public client area redirects to the secure Cockpit",
+    "public voice launcher exposes no browser agent credential",
+    "landing portfolio cards link to the real public projects",
+    "public chatbot is proxied server-side to NOVA",
+    "Elynea handoff is server-only and requires Cockpit proof before success",
+    "Elynea never displays a false transmission confirmation",
+    "the secure form opens and scrolls into view as soon as the request is qualified",
+    "a visitor declining the handoff gets a truthful closure",
+    "public LLM proxy has its own quota that a spoofed X-Forwarded-For cannot bypass",
+    "cockpit lead form goes through the server with RGPD consent, never browser storage",
+    "chaque consentement envoyé porte une preuve versionnée unique",
+    "le serveur inscrit la preuve au registre avant de créer le contact",
+    "les formulaires affichent le texte enregistré et donnent accès à la politique",
+    "la politique publique couvre les informations RGPD et la durée comptable belge",
+    "les promesses publiques de conformité absolue ont été retirées",
+    "SEO measurements are deterministic and derived from HTML evidence",
+    "missing SEO elements produce measured deductions instead of invented findings",
+    "SEO target validation rejects private networks and unsafe protocols",
+    "the public SEO screens call the live server and make no false email promise",
+    "the production image includes the SEO audit runtime module",
+    "downloaded SEO report escapes remote text before creating HTML",
+    "18 distinct original concepts, all sectors and valid themes",
+    "declared activity wins and recommendation explains itself",
+    "unknown visitor is not identified, weak and tied evidence abstain",
+    "reliable sector clues and accents are interpreted as suggestions",
+    "only live successful audit metadata can drive suggestions",
+    "manual correction overrides classification; selected style remains intentional",
+    "no unsafe or credentialed URLs enter the audit request",
+    "untrusted campaign and profile data are allowlisted and bounded",
+    "preferences are persisted only after explicit opt-in, without identifying fields",
+    "expired, malformed and revoked preferences do not identify a visitor",
+    "blocked browser storage is handled without crashing",
+    "brief discloses provisional activity and never constitutes an order",
+    "a submission never succeeds without both verified Cockpit references",
+    "missing HTTP status and empty proof identifiers are rejected",
+    "controlled text inputs preserve spaces between keystrokes"
+  ]
+}
