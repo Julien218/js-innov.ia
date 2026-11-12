@@ -15,6 +15,7 @@ import {
 import './video-commerce.css';
 import { SocialLinks } from './StudioContent';
 import AIChatbot from '../components/chatbot/AIChatbot';
+import WebsiteExamples from '../components/web-studio/WebsiteExamples';
 const offers = [
   {
     id: 'video-1',
@@ -203,9 +204,9 @@ export function CommerceHome() {
             qui font avancer votre activité.
           </p>
           <div className="vc-actions">
-            <Action to="/videos">Créer mon film · dès 49,99 €</Action>
-            <Link className="vc-textlink" to="/web-studio">
-              Imaginer mon site <ArrowUpRight size={17} />
+            <Action to="/web-studio">Découvrir les exemples de sites</Action>
+            <Link className="vc-textlink" to="/videos">
+              Créer mon film · dès 49,99 € <ArrowUpRight size={17} />
             </Link>
           </div>
           <p className="vc-note">
@@ -229,6 +230,7 @@ export function CommerceHome() {
         <span>03 / Validez</span>
         <span>04 / Partagez</span>
       </section>
+      <WebsiteExamples />
       <section className="vc-section">
         <Tag>CE QUE NOUS CRÉONS</Tag>
         <h2>

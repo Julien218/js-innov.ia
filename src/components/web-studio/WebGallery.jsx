@@ -9,35 +9,87 @@ const categories = [
   ['immobilier', 'Architecture'],
   ['evenement', 'Événement'],
 ];
+export const WEBSITE_CONCEPTS = [
+  {
+    id: 'atelier',
+    sector: 'artisan',
+    name: 'Atelier',
+    label: 'Artisan',
+    title: 'Le détail change tout.',
+    description:
+      'Mobilier sur mesure, agencement, pièces uniques en bois massif.',
+    image: '/concepts/atelier-photo.webp',
+    cta: 'Parlons de votre projet',
+    nav: ['Réalisations', 'Savoir-faire', 'L’atelier'],
+  },
+  {
+    id: 'aura',
+    sector: 'horeca',
+    name: 'Aura',
+    label: 'Restaurant',
+    title: 'Une table. Mille histoires.',
+    description:
+      'Cuisine de saison, produits d’exception et inspirations d’ici et d’ailleurs.',
+    image: '/concepts/aura-photo.webp',
+    cta: 'Découvrir la carte',
+    nav: ['La carte', 'Notre maison', 'Réserver'],
+  },
+];
+
+export function WebsiteConceptContent({ concept: c, heading: Heading = 'h2' }) {
+  return (
+    <>
+      {' '}
+      <div className="wg-demo-nav">
+        <strong>
+          {c.name}
+          <small>
+            {c.id === 'atelier'
+              ? 'ÉBÉNISTERIE SUR MESURE'
+              : 'RESTAURANT CONTEMPORAIN'}
+          </small>
+        </strong>
+        <span>
+          {c.nav.map((n) => (
+            <i key={n}>{n}</i>
+          ))}
+        </span>
+      </div>
+      <div className="wg-photo">
+        <img
+          src={c.image}
+          alt={
+            c.id === 'atelier'
+              ? 'Artisan dans un atelier de bois — illustration IA de démonstration'
+              : 'Table gastronomique dans un restaurant — illustration IA de démonstration'
+          }
+          width="900"
+          height="1000"
+          loading="eager"
+        />
+      </div>
+      <div className="wg-demo-copy">
+        <Heading>{c.title}</Heading>
+        <p>{c.description}</p>
+        <span>
+          {c.cta} <b>→</b>
+        </span>
+        {c.id === 'atelier' && (
+          <small>
+            MATIÈRES NOBLES
+            <br />& SAVOIR-FAIRE
+          </small>
+        )}
+      </div>
+    </>
+  );
+}
+
 export default function WebGallery({ onExplore, onCategory }) {
   const [category, setCategory] = useState('');
-  const concepts = [
-    {
-      id: 'atelier',
-      sector: 'artisan',
-      name: 'Atelier',
-      label: 'Artisan',
-      title: 'Le détail change tout.',
-      description:
-        'Mobilier sur mesure, agencement, pièces uniques en bois massif.',
-      image: '/concepts/atelier-photo.webp',
-      cta: 'Parlons de votre projet',
-      nav: ['Réalisations', 'Savoir-faire', 'L’atelier'],
-    },
-    {
-      id: 'aura',
-      sector: 'horeca',
-      name: 'Aura',
-      label: 'Restaurant',
-      title: 'Une table. Mille histoires.',
-      description:
-        'Cuisine de saison, produits d’exception et inspirations d’ici et d’ailleurs.',
-      image: '/concepts/aura-photo.webp',
-      cta: 'Découvrir la carte',
-      nav: ['La carte', 'Notre maison', 'Réserver'],
-    },
-  ];
-  const visible = concepts.filter((c) => !category || c.sector === category);
+  const visible = WEBSITE_CONCEPTS.filter(
+    (c) => !category || c.sector === category,
+  );
   return (
     <section className="wg" aria-labelledby="wg-title">
       <div className="wg-intro">
@@ -74,47 +126,7 @@ export default function WebGallery({ onExplore, onCategory }) {
               onClick={(e) => onExplore(modelById(c.id), e.currentTarget)}
               aria-label={`Explorer le concept ${c.name}`}
             >
-              <div className="wg-demo-nav">
-                <strong>
-                  {c.name}
-                  <small>
-                    {c.id === 'atelier'
-                      ? 'ÉBÉNISTERIE SUR MESURE'
-                      : 'RESTAURANT CONTEMPORAIN'}
-                  </small>
-                </strong>
-                <span>
-                  {c.nav.map((n) => (
-                    <i key={n}>{n}</i>
-                  ))}
-                </span>
-              </div>
-              <div className="wg-photo">
-                <img
-                  src={c.image}
-                  alt={
-                    c.id === 'atelier'
-                      ? 'Artisan dans un atelier de bois — illustration IA de démonstration'
-                      : 'Table gastronomique dans un restaurant — illustration IA de démonstration'
-                  }
-                  width="900"
-                  height="1000"
-                  loading="eager"
-                />
-              </div>
-              <div className="wg-demo-copy">
-                <h2>{c.title}</h2>
-                <p>{c.description}</p>
-                <span>
-                  {c.cta} <b>→</b>
-                </span>
-                {c.id === 'atelier' && (
-                  <small>
-                    MATIÈRES NOBLES
-                    <br />& SAVOIR-FAIRE
-                  </small>
-                )}
-              </div>
+              <WebsiteConceptContent concept={c} />
             </button>
             <div className="wg-caption">
               <div>

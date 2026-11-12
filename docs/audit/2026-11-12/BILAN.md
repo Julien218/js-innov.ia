@@ -129,3 +129,9 @@ Ces points empêchent de présenter la plateforme comme prête à vendre en prod
 Les contenus, liens, métadonnées et informations d’organisation ont été renforcés. Il n’existe pas de garantie d’apparition dans toutes les IA, ni de balisage magique assurant une citation. Le suivi dans les outils propriétaires des moteurs restera à effectuer après une publication autorisée.
 
 Références : [guide Google sur la recherche générative](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide), [fonctionnalités IA et sites web](https://developers.google.com/search/docs/appearance/ai-features), [création de Checkout Sessions Stripe](https://docs.stripe.com/api/checkout/sessions/create), [vérification et traitement des webhooks](https://docs.stripe.com/events/manage-webhook-endpoints).
+
+## Ajustement : orienter l’accueil vers les sites web
+
+Le bouton principal de l’accueil devient « Découvrir les exemples de sites ». Une section Atelier / Aura présente deux aperçus cliquables et deux accès à la collection complète. Le clic mène au Web Studio avec le modèle et l’activité présélectionnés, sans créer de demande ni envoyer de coordonnées. Les aperçus réutilisent le même contenu que la galerie.
+
+Les redirections Atelier, Aura et le bouton principal ont été vérifiés dans le navigateur ; Aura a également été testé à 390 px, sans débordement. Le parcours est couvert par le test navigateur GitHub. Cette modification reste dans la proposition en branche : aucun déploiement public.

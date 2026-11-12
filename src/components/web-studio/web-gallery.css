@@ -459,6 +459,191 @@
 }
 
 /* Match the supplied editorial reference within the shared brand navigation. */
-.ws-experience .wg{padding-top:28px}.ws-experience .wg .wg-overline{display:none}.ws-experience .wg h1{font-family:Georgia,serif;font-weight:400;line-height:1.15}.vc .wg h1 em{font-style:italic;color:inherit}.ws-experience .wg button{font-weight:400}.ws-experience .wg .wg-demo-copy{box-sizing:border-box;width:45%;padding-left:6%;padding-right:4%}.ws-experience .wg .wg-demo-copy h2{font-weight:400}.wg-atelier .wg-demo-copy p{max-width:100%}.ws-experience .wg .wg-demo-nav{height:76px}.wg-aura .wg-demo-nav>span{background:#140f0bb8;padding:5px;border-radius:3px}@media(max-width:480px){.ws-experience .wg{padding-top:30px}.ws-experience .wg .wg-demo-nav{height:68px}.ws-experience .wg .wg-demo-copy{width:48%;padding-left:5%;padding-right:4%}}
+.ws-experience .wg {
+  padding-top: 28px;
+}
+.ws-experience .wg .wg-overline {
+  display: none;
+}
+.ws-experience .wg h1 {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  line-height: 1.15;
+}
+.vc .wg h1 em {
+  font-style: italic;
+  color: inherit;
+}
+.ws-experience .wg button {
+  font-weight: 400;
+}
+.ws-experience .wg .wg-demo-copy {
+  box-sizing: border-box;
+  width: 45%;
+  padding-left: 6%;
+  padding-right: 4%;
+}
+.ws-experience .wg .wg-demo-copy h2 {
+  font-weight: 400;
+}
+.wg-atelier .wg-demo-copy p {
+  max-width: 100%;
+}
+.ws-experience .wg .wg-demo-nav {
+  height: 76px;
+}
+.wg-aura .wg-demo-nav > span {
+  background: #140f0bb8;
+  padding: 5px;
+  border-radius: 3px;
+}
+@media (max-width: 480px) {
+  .ws-experience .wg {
+    padding-top: 30px;
+  }
+  .ws-experience .wg .wg-demo-nav {
+    height: 68px;
+  }
+  .ws-experience .wg .wg-demo-copy {
+    width: 48%;
+    padding-left: 5%;
+    padding-right: 4%;
+  }
+}
 
-.ws-experience .wg .wg-aura .wg-demo-copy{width:60%}@media(max-width:480px){.ws-experience .wg .wg-aura .wg-demo-copy{width:65%}}
+.ws-experience .wg .wg-aura .wg-demo-copy {
+  width: 60%;
+}
+@media (max-width: 480px) {
+  .ws-experience .wg .wg-aura .wg-demo-copy {
+    width: 65%;
+  }
+}
+
+.vc .vc-home-examples {
+  padding: 64px 5%;
+  border-top: 1px solid #ffffff20;
+  max-width: 1280px;
+}
+.vc-example-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 36px;
+  align-items: flex-end;
+  margin-bottom: 32px;
+}
+.vc-example-heading > div {
+  max-width: 760px;
+}
+.vc-example-heading h2 {
+  font:
+    400 clamp(30px, 3.4vw, 46px) / 1.15 Georgia,
+    serif;
+  margin: 0 0 18px;
+}
+.vc-example-heading p {
+  font:
+    14px/1.8 Inter,
+    system-ui,
+    sans-serif;
+  margin: 0;
+  color: #c5c0bd;
+}
+.vc-example-heading > .vc-outline {
+  flex-shrink: 0;
+}
+.vc-home-examples .wg-preview h3 {
+  font:
+    400 clamp(25px, 3.1vw, 49px) / 1.05 Georgia,
+    serif;
+  letter-spacing: -0.045em;
+  margin: 0 0 16px;
+}
+.vc-home-examples .wg-demo-copy {
+  box-sizing: border-box;
+  width: 45%;
+  padding-left: 6%;
+  padding-right: 4%;
+}
+.vc-home-examples .wg-aura .wg-demo-copy {
+  width: 60%;
+}
+.vc-home-examples .wg-demo-nav {
+  height: 76px;
+}
+.vc-home-examples .wg-caption h3 {
+  font:
+    400 34px/1.1 Georgia,
+    serif;
+  margin: 7px 0 0;
+}
+.vc-home-examples .wg-caption > a {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: #e6b45c;
+  border-bottom: 1px solid #d4a55a;
+  padding: 6px 0;
+  font:
+    italic 14px Georgia,
+    serif;
+  white-space: nowrap;
+}
+.vc-example-next {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 28px;
+}
+.vc-example-next p {
+  font:
+    14px/1.7 Inter,
+    system-ui,
+    sans-serif;
+  max-width: 650px;
+}
+.vc-example-next .vc-primary {
+  flex-shrink: 0;
+}
+@media (max-width: 760px) {
+  .vc-example-heading,
+  .vc-example-next {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .vc .vc-home-examples {
+    padding: 48px 6%;
+  }
+  .vc-home-examples .wg-preview h3 {
+    font-size: clamp(29px, 5.3vw, 42px);
+  }
+  .vc-home-examples .wg-caption > a {
+    font-size: 12px;
+  }
+  .vc-home-examples .wg-caption h3 {
+    font-size: 30px;
+  }
+}
+@media (max-width: 480px) {
+  .vc-home-examples .wg-demo-copy {
+    width: 48%;
+    padding-left: 5%;
+    padding-right: 4%;
+  }
+  .vc-home-examples .wg-aura .wg-demo-copy {
+    width: 65%;
+  }
+  .vc-home-examples .wg-preview h3 {
+    font-size: 29px;
+  }
+  .vc-home-examples .wg-demo-nav {
+    height: 68px;
+  }
+}
+
+.vc .vc-home-examples a.wg-atelier{color:#2c1c10}.vc-home-examples .wg-preview h3{font-size:clamp(25px,2.8vw,42px)}.vc-home-examples .wg-caption{padding-right:40px}
+@media(max-width:480px){.vc-home-examples .wg-preview h3{font-size:29px}.vc-home-examples .wg-caption{flex-direction:column;align-items:flex-start;padding-right:0;gap:12px}}
+
+.vc-example-next{justify-content:flex-start}
