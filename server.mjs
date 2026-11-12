@@ -1,9 +1,10 @@
-import { createReadStream, existsSync, statSync } from 'node:fs';
+import { createReadStream, existsSync, statSync, readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { extname, join, normalize } from 'node:path';
 import { auditSeo, SeoAuditError } from './server-seo-audit.mjs';
 import { PRIVACY_CONSENT_TEXT, PRIVACY_NOTICE_VERSION, PRIVACY_POLICY_PATH, purposeForSource } from './privacy-consent.mjs';
+import { routeInfo, renderMetadata, robots, sitemap } from './server-discovery.mjs';
 
 const dist = join(process.cwd(), 'dist');
 const port = Number.parseInt(process.env.PORT || '8080', 10);
@@ -191,7 +192,7 @@ const sanitizeRealtimePageContext = (value = {}) => ({
 const serveStaticFile = (request, response, filePath) => {
   const size = statSync(filePath).size;
   const contentType = mime[extname(filePath).toLowerCase()] || 'application/octet-stream';
-  const cacheControl = filePath.endsWith('index.html') ? 'no-cache' : 'public, max-age=31536000, immutable';
+  const cacheControl = /[/\\]assets[/\\].+-[A-Za-z0-9_-]{8,}\.[^.]+$/.test(filePath) ? 'public, max-age=31536000, immutable' : 'no-cache';
   const range = request.headers.range;
 
   response.setHeader('Accept-Ranges', 'bytes');
@@ -229,11 +230,23 @@ const serveStaticFile = (request, response, filePath) => {
 
 createServer(async (request, response) => {
   setSecurityHeaders(response);
+  // Preserve the canonical redirect already deployed by migration/ionos-hosting.
+  if (String(request.headers.host || '').toLowerCase().split(':')[0] === 'www.jsinnovia.com') {
+    response.writeHead(308, { Location: 'https://jsinnovia.com' + request.url });
+    return response.end();
+  }
   let pathname;
   try { pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname); }
   catch { return json(response, 400, { error: 'URL invalide' }); }
 
   if (isSensitiveProbePath(pathname)) return json(response, 404, { error: 'Not found' });
+
+  if (pathname === '/robots.txt' || pathname === '/sitemap.xml') {
+    if (!['GET', 'HEAD'].includes(request.method)) return json(response, 405, { error: 'Méthode non autorisée' });
+    const data = pathname === '/robots.txt' ? robots : sitemap;
+    response.writeHead(200, { 'Content-Type': pathname === '/robots.txt' ? 'text/plain; charset=utf-8' : 'application/xml; charset=utf-8', 'Cache-Control': 'no-cache', 'Content-Length': Buffer.byteLength(data) });
+    return response.end(request.method === 'HEAD' ? undefined : data);
+  }
 
   if (pathname === '/p' || pathname === '/player') {
     if (!['GET', 'HEAD'].includes(request.method)) {
@@ -374,9 +387,23 @@ createServer(async (request, response) => {
     }
   }
 
+  if (pathname.startsWith('/api/')) return json(response, 404, { error: 'API introuvable' });
   const relativePath = normalize(pathname).replace(/^([/\\])+/, '');
   let filePath = join(dist, relativePath);
-  if (!filePath.startsWith(dist) || !existsSync(filePath) || !statSync(filePath).isFile()) filePath = join(dist, 'index.html');
+  if (!filePath.startsWith(dist + '/') && !filePath.startsWith(dist + '\\')) filePath = join(dist, 'index.html');
+  if (!existsSync(filePath) || !statSync(filePath).isFile()) filePath = join(dist, 'index.html');
+
+  if (filePath === join(dist, 'index.html')) {
+    if (!['GET', 'HEAD'].includes(request.method)) return json(response, 405, { error: 'Méthode non autorisée' });
+    const info = routeInfo(pathname);
+    const html = renderMetadata(readFileSync(filePath, 'utf8'), pathname);
+    response.writeHead(info.known ? 200 : 404, {
+      'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache',
+      'Content-Length': Buffer.byteLength(html),
+      ...(!info.indexable ? { 'X-Robots-Tag': 'noindex, nofollow, noarchive' } : {}),
+    });
+    return response.end(request.method === 'HEAD' ? undefined : html);
+  }
 
   if (pathname === '/catalogue-tarifs-brouillon') {
     response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');

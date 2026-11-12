@@ -106,6 +106,7 @@ export default function Fidelite() {
   return (
     <div className="min-h-screen py-12 px-4" style={{ color: '#fff' }}>
       <div className="max-w-2xl mx-auto">
+        <p role="note" className="mb-6 rounded-xl border border-amber-400/40 p-4 text-sm text-amber-200">Démonstration : les personnes, points, commandes et récompenses affichés sont fictifs. Aucune récompense réelle ne peut être demandée ici.</p>
 
         {/* ── HEADER ── */}
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
@@ -173,7 +174,7 @@ export default function Fidelite() {
         </motion.div>
 
         {/* ── STATS RAPIDES ── */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
           <StatTile icon={Trophy} label="Points dispo" value={client.points} color={GOLD} sub="utilisables" />
           <StatTile icon={Users} label="Filleuls" value={client.referrals_count} color={CYAN} sub="+200 pts chacun" />
           <StatTile icon={Award} label="Récompenses" value={client.rewards_claimed.length} color={PURPLE} sub="utilisées" />
