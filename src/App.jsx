@@ -34,6 +34,7 @@ const SaasChatbotAdmin = lazy(() => import('./pages/saas/SaasChatbotAdmin'));
 const EcranLed = lazy(() => import('./pages/saas/EcranLed'));
 const EcranEspaceC = lazy(() => import('./pages/saas/EcranEspaceC'));
 const Ps = lazy(() => import('./pages/Ps'));
+const Validation = lazy(() => import('./pages/Validation'));
 const CockpitConnectedSite = lazy(() => import('./pages/CockpitConnectedSite'));
 const CataloguePricingDraft = lazy(() => import('./pages/CataloguePricingDraft'));
 const HainoFlowLanding = lazy(() => import('./pages/HainoFlowLanding'));
@@ -109,6 +110,7 @@ const AuthenticatedApp = () => {
       <Route path="/ecran" element={<EcranLed />} />
       <Route path="/ecranespacec" element={<EcranEspaceC />} />
       <Route path="/ps" element={<Ps />} />
+      <Route path="/validation" element={<Validation />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
