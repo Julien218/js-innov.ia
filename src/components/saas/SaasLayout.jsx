@@ -5,6 +5,7 @@ import { Menu, X, MessageCircle } from 'lucide-react';
 import { platform } from '@/api/platformClient';
 import { resolveProductExperience } from '@/lib/productHostRouter';
 
+import { CommerceLayout } from '../../pages/VideoCommerce';
 const GOLD = '#D4AF37';
 const PURPLE = '#7C3AED';
 const CYAN = '#06B6D4';
@@ -12,7 +13,7 @@ const NOIR = '#0B0B0F';
 const WA_LINK = 'https://wa.me/32494119090?text=Bonjour%20Julien%2C%20je%20viens%20du%20site%20Js-Innov.IA%20et%20je%20souhaite%20parler%20de%20mon%20projet.';
 
 function PhoenixLogo({ size = 36 }) {
-  return <div style={{ width: size, height: size, position: 'relative', flexShrink: 0 }}><img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png" alt="Js-Innov.IA Phoenix" style={{ width:'100%', height:'100%', objectFit:'contain', filter:'drop-shadow(0 0 8px rgba(212,175,55,0.5))' }} /></div>;
+  return <div style={{ width: size, height: size, position: 'relative', flexShrink: 0 }}><img src="/brand/jsinnovia-official.png" alt="Js-Innov.IA Phoenix" style={{ width:'100%', height:'100%', objectFit:'contain', filter:'drop-shadow(0 0 8px rgba(212,175,55,0.5))' }} /></div>;
 }
 const navItems = [
   { label: 'Accueil', path: '/' },
@@ -37,6 +38,7 @@ export default function SaasLayout({ children }) {
   const path=location.pathname;
   const product=resolveProductExperience(window.location.hostname);
   const items=['hainoflow','signage','cockpit'].includes(product) ? navItems : [navItems[0],{label:'Web Studio',path:'/web-studio'},...navItems.slice(1)];
+  if (!['hainoflow','signage','cockpit'].includes(product)) return <CommerceLayout>{children}</CommerceLayout>;
   return (
     <div className="min-h-screen bg-adn" style={{color:'white'}}>
       <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{zIndex:0}}><div className="absolute top-0 left-1/4 w-96 h-96 rounded-full blur-[160px] opacity-12" style={{background:`radial-gradient(circle, ${PURPLE}, transparent)`}}/><div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full blur-[140px] opacity-08" style={{background:`radial-gradient(circle, ${CYAN}, transparent)`}}/><div className="absolute top-1/2 left-3/4 w-64 h-64 rounded-full blur-[120px] opacity-06" style={{background:`radial-gradient(circle, ${GOLD}, transparent)`}}/></div>

@@ -2,7 +2,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import ElynaAvatar3D from './ElynaAvatar3D';
 
-const LAUNCHER = '/brand/companion/companion-launcher-256.webp';
+const LAUNCHER = '/brand/companion/companion-launcher-256.webp?v=20261112';
 const HINT_STORAGE_KEY = 'jsinnovia-companion-hint-seen';
 
 export default function AIAvatar({ onClick, showWelcome }) {

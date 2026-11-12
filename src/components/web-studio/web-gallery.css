@@ -1,0 +1,649 @@
+.wg {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: #f8eddf;
+  padding: 52px max(4%, calc((100% - 1400px) / 2)) 60px;
+  background: #080c14;
+}
+.wg .wg-overline {
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: #d9ae63;
+  margin: 0 0 22px;
+}
+.wg h1 {
+  font:
+    400 clamp(38px, 4.7vw, 66px) / 1.15 Georgia,
+    serif;
+  letter-spacing: -0.035em;
+  margin: 0;
+}
+.wg h1 em {
+  font-weight: 400;
+  color: inherit;
+}
+.wg h1 span {
+  color: #dfae5d;
+}
+.wg-intro > p:last-child {
+  font:
+    italic 22px/1.5 Georgia,
+    serif;
+  color: #f1e1ca;
+  margin: 6px 0 30px;
+}
+.wg-filters {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 28px 0 38px;
+}
+.wg-filters button {
+  background: transparent;
+  color: #f1e1ca;
+  border: 1px solid #907c65;
+  border-radius: 30px;
+  padding: 8px 24px;
+  min-height: 42px;
+  font:
+    14px Georgia,
+    serif;
+}
+.wg-filters button[aria-pressed='true'] {
+  background: #e5b563;
+  color: #211306;
+  border-color: #e5b563;
+}
+.wg-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+.wg-preview {
+  display: block;
+  position: relative;
+  aspect-ratio: 1.32;
+  width: 100%;
+  overflow: hidden;
+  text-align: left;
+  border: 1px solid #9b8065;
+  border-radius: 15px;
+  padding: 0;
+  font-family: Georgia, serif;
+  isolation: isolate;
+}
+.wg-preview h2 {
+  font:
+    400 clamp(25px, 3.1vw, 49px) / 1.05 Georgia,
+    serif;
+  letter-spacing: -0.045em;
+  margin: 0 0 16px;
+}
+.wg-preview .wg-demo-copy p {
+  font:
+    400 clamp(10px, 1.08vw, 16px) / 1.5 Georgia,
+    serif;
+  color: inherit;
+  margin: 0 0 20px;
+}
+.wg-demo-nav {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 6%;
+  gap: 16px;
+}
+.wg-demo-nav strong {
+  text-transform: uppercase;
+  font-size: clamp(14px, 1.6vw, 24px);
+  letter-spacing: 0.3em;
+  font-weight: 400;
+}
+.wg-demo-nav small {
+  display: block;
+  font-size: 7px;
+  letter-spacing: 0.2em;
+  margin-top: 5px;
+  max-width: 160px;
+}
+.wg-demo-nav > span {
+  display: flex;
+  gap: 18px;
+}
+.wg-demo-nav i {
+  font:
+    10px Georgia,
+    serif;
+  white-space: nowrap;
+}
+.wg-demo-copy {
+  position: relative;
+  z-index: 2;
+  width: 45%;
+  padding: 30px 6% 5%;
+  box-sizing: content-box;
+}
+.wg-demo-copy > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid #ab7e40;
+  padding: 10px 16px;
+  font:
+    12px Georgia,
+    serif;
+  background: #50321b;
+  color: #fff3df;
+  white-space: nowrap;
+}
+.wg-demo-copy > span b {
+  font-weight: 400;
+}
+.wg-demo-copy > small {
+  display: block;
+  font:
+    8px/1.8 Georgia,
+    serif;
+  letter-spacing: 0.12em;
+  margin-top: 24px;
+}
+.wg-atelier {
+  background: #f4e5d3;
+  color: #2c1c10;
+}
+.wg-atelier .wg-demo-nav {
+  background: #f4e5d3;
+}
+.wg-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.wg-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.wg-atelier .wg-photo {
+  left: 45%;
+  top: 76px;
+}
+.wg-aura {
+  color: #f7e8d0;
+  background: #140f0b;
+}
+.wg-aura .wg-demo-copy {
+  padding-top: 45px;
+}
+.wg-aura .wg-demo-copy p {
+  max-width: 190px;
+  text-shadow: 0 2px 4px #000;
+}
+.wg-aura .wg-demo-copy > span {
+  background: #e6bf7f;
+  color: #291c0c;
+}
+.wg-aura .wg-photo img {
+  object-position: center;
+}
+.wg-aura .wg-demo-nav strong,
+.wg-aura .wg-demo-copy h2 {
+  text-shadow: 0 2px 8px #000;
+}
+.wg-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 20px 28px;
+  border-bottom: 1px solid #9d7a47;
+  gap: 20px;
+}
+.wg-caption small {
+  font:
+    italic 15px Georgia,
+    serif;
+  color: #f6e3c6;
+}
+.wg-caption h2 {
+  font:
+    400 36px/1.1 Georgia,
+    serif;
+  margin: 7px 0 0;
+  letter-spacing: -0.025em;
+}
+.wg-caption button {
+  background: none;
+  color: #e6b45c;
+  border: 0;
+  border-bottom: 1px solid #d4a55a;
+  padding: 6px 0;
+  font:
+    italic 15px Georgia,
+    serif;
+  white-space: nowrap;
+}
+.wg .wg-disclaimer {
+  font:
+    italic 12px/1.5 Georgia,
+    serif;
+  text-align: right;
+  margin-top: 12px;
+  color: #d0c1ad;
+}
+.wg-depth {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  padding: 65px 0 20px;
+  border-bottom: 1px solid #ffffff20;
+}
+.wg-depth h2 {
+  font:
+    400 40px/1.2 Georgia,
+    serif;
+  letter-spacing: -0.02em;
+}
+.wg-depth h3 {
+  font:
+    400 24px/1.2 Georgia,
+    serif;
+  margin: 0 0 12px;
+}
+.wg-depth p {
+  font:
+    14px/1.8 Inter,
+    system-ui,
+    sans-serif;
+  color: #c5c0bd;
+  max-width: 550px;
+}
+.wg-links {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  padding-top: 25px;
+  font:
+    13px Inter,
+    system-ui,
+    sans-serif;
+}
+.wg-more {
+  padding: 35px;
+  border: 1px solid #907c65;
+  border-radius: 12px;
+}
+.wg-more h2 {
+  font:
+    32px Georgia,
+    serif;
+}
+.wg-more p {
+  color: #bfb9b1;
+}
+.wg-more button {
+  background: none;
+  border: 1px solid #907c65;
+  padding: 12px 22px;
+  color: #f8e6cb;
+  margin: 12px 12px 0 0;
+  border-radius: 6px;
+}
+.ws-studio-page > .ws-studio-intro {
+  padding-top: 65px;
+}
+.ws-studio-page > .ws-studio-intro h2 {
+  font-size: 30px;
+}
+.wg-preview:focus-visible,
+.wg button:focus-visible {
+  outline: 3px solid #80e7f5;
+  outline-offset: 5px;
+}
+@media (max-width: 850px) {
+  .wg-grid {
+    grid-template-columns: 1fr;
+  }
+  .wg-preview h2 {
+    font-size: clamp(29px, 5.3vw, 52px);
+  }
+  .wg-demo-copy p {
+    font-size: 13px !important;
+  }
+  .wg-demo-nav strong {
+    font-size: 23px;
+  }
+  .wg-demo-nav i {
+    font-size: 11px;
+  }
+  .wg-intro > p:last-child {
+    font-size: 19px;
+  }
+  .wg-depth {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+@media (max-width: 480px) {
+  .wg {
+    padding: 38px 5%;
+  }
+  .wg h1 {
+    font-size: 39px;
+  }
+  .wg-filters {
+    gap: 8px;
+  }
+  .wg-filters button {
+    padding: 8px 15px;
+    font-size: 12px;
+  }
+  .wg-preview {
+    aspect-ratio: 1.05;
+  }
+  .wg-demo-nav {
+    padding: 18px 5%;
+    gap: 8px;
+  }
+  .wg-demo-nav strong {
+    font-size: 17px;
+  }
+  .wg-demo-nav small {
+    font-size: 5px;
+    max-width: 120px;
+  }
+  .wg-demo-nav > span {
+    gap: 8px;
+  }
+  .wg-demo-nav i {
+    font-size: 8px;
+  }
+  .wg-demo-copy {
+    padding: 30px 5%;
+    width: 47%;
+  }
+  .wg-preview h2 {
+    font-size: 31px;
+  }
+  .wg-demo-copy p {
+    font-size: 10px !important;
+  }
+  .wg-demo-copy > span {
+    padding: 9px 10px;
+    font-size: 10px;
+    gap: 6px;
+  }
+  .wg-demo-copy > small {
+    display: none;
+  }
+  .wg-atelier .wg-photo {
+    top: 68px;
+    left: 48%;
+  }
+  .wg-aura .wg-demo-copy {
+    padding-top: 30px;
+  }
+  .wg-caption {
+    padding: 20px 0;
+    gap: 10px;
+  }
+  .wg-caption h2 {
+    font-size: 30px;
+  }
+  .wg-caption button {
+    font-size: 12px;
+  }
+  .wg-caption small {
+    font-size: 12px;
+  }
+  .wg-depth h2 {
+    font-size: 33px;
+  }
+  .wg-links {
+    flex-direction: column;
+    gap: 17px;
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .wg-photo img {
+    transition: transform 0.7s;
+  }
+  .wg-preview:hover .wg-photo img {
+    transform: scale(1.025);
+  }
+}
+
+.ws-demo[data-model='atelier'] .ws-demo-hero,
+.ws-demo[data-model='aura'] .ws-demo-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.ws-demo-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.ws-demo[data-model='atelier'] .ws-demo-photo {
+  left: 50%;
+  width: 50%;
+}
+.ws-demo[data-model='atelier'] .ws-demo-copy,
+.ws-demo[data-model='aura'] .ws-demo-copy {
+  position: relative;
+  z-index: 1;
+}
+.ws-demo[data-model='aura'] .ws-demo-copy {
+  text-shadow: 0 2px 7px #000;
+}
+.ws-demo[data-model='atelier'] h3,
+.ws-demo[data-model='aura'] h3 {
+  font-family: Georgia, serif;
+  font-weight: 400;
+}
+.ws-device-frame[data-device='mobile'] .ws-demo-photo {
+  position: relative;
+  left: auto;
+  width: 100%;
+  height: 250px;
+}
+.ws-device-frame[data-device='mobile']
+  .ws-demo[data-model='aura']
+  .ws-demo-copy {
+  text-shadow: none;
+}
+
+/* Match the supplied editorial reference within the shared brand navigation. */
+.ws-experience .wg {
+  padding-top: 28px;
+}
+.ws-experience .wg .wg-overline {
+  display: none;
+}
+.ws-experience .wg h1 {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  line-height: 1.15;
+}
+.vc .wg h1 em {
+  font-style: italic;
+  color: inherit;
+}
+.ws-experience .wg button {
+  font-weight: 400;
+}
+.ws-experience .wg .wg-demo-copy {
+  box-sizing: border-box;
+  width: 45%;
+  padding-left: 6%;
+  padding-right: 4%;
+}
+.ws-experience .wg .wg-demo-copy h2 {
+  font-weight: 400;
+}
+.wg-atelier .wg-demo-copy p {
+  max-width: 100%;
+}
+.ws-experience .wg .wg-demo-nav {
+  height: 76px;
+}
+.wg-aura .wg-demo-nav > span {
+  background: #140f0bb8;
+  padding: 5px;
+  border-radius: 3px;
+}
+@media (max-width: 480px) {
+  .ws-experience .wg {
+    padding-top: 30px;
+  }
+  .ws-experience .wg .wg-demo-nav {
+    height: 68px;
+  }
+  .ws-experience .wg .wg-demo-copy {
+    width: 48%;
+    padding-left: 5%;
+    padding-right: 4%;
+  }
+}
+
+.ws-experience .wg .wg-aura .wg-demo-copy {
+  width: 60%;
+}
+@media (max-width: 480px) {
+  .ws-experience .wg .wg-aura .wg-demo-copy {
+    width: 65%;
+  }
+}
+
+.vc .vc-home-examples {
+  padding: 64px 5%;
+  border-top: 1px solid #ffffff20;
+  max-width: 1280px;
+}
+.vc-example-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 36px;
+  align-items: flex-end;
+  margin-bottom: 32px;
+}
+.vc-example-heading > div {
+  max-width: 760px;
+}
+.vc-example-heading h2 {
+  font:
+    400 clamp(30px, 3.4vw, 46px) / 1.15 Georgia,
+    serif;
+  margin: 0 0 18px;
+}
+.vc-example-heading p {
+  font:
+    14px/1.8 Inter,
+    system-ui,
+    sans-serif;
+  margin: 0;
+  color: #c5c0bd;
+}
+.vc-example-heading > .vc-outline {
+  flex-shrink: 0;
+}
+.vc-home-examples .wg-preview h3 {
+  font:
+    400 clamp(25px, 3.1vw, 49px) / 1.05 Georgia,
+    serif;
+  letter-spacing: -0.045em;
+  margin: 0 0 16px;
+}
+.vc-home-examples .wg-demo-copy {
+  box-sizing: border-box;
+  width: 45%;
+  padding-left: 6%;
+  padding-right: 4%;
+}
+.vc-home-examples .wg-aura .wg-demo-copy {
+  width: 60%;
+}
+.vc-home-examples .wg-demo-nav {
+  height: 76px;
+}
+.vc-home-examples .wg-caption h3 {
+  font:
+    400 34px/1.1 Georgia,
+    serif;
+  margin: 7px 0 0;
+}
+.vc-home-examples .wg-caption > a {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: #e6b45c;
+  border-bottom: 1px solid #d4a55a;
+  padding: 6px 0;
+  font:
+    italic 14px Georgia,
+    serif;
+  white-space: nowrap;
+}
+.vc-example-next {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 28px;
+}
+.vc-example-next p {
+  font:
+    14px/1.7 Inter,
+    system-ui,
+    sans-serif;
+  max-width: 650px;
+}
+.vc-example-next .vc-primary {
+  flex-shrink: 0;
+}
+@media (max-width: 760px) {
+  .vc-example-heading,
+  .vc-example-next {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .vc .vc-home-examples {
+    padding: 48px 6%;
+  }
+  .vc-home-examples .wg-preview h3 {
+    font-size: clamp(29px, 5.3vw, 42px);
+  }
+  .vc-home-examples .wg-caption > a {
+    font-size: 12px;
+  }
+  .vc-home-examples .wg-caption h3 {
+    font-size: 30px;
+  }
+}
+@media (max-width: 480px) {
+  .vc-home-examples .wg-demo-copy {
+    width: 48%;
+    padding-left: 5%;
+    padding-right: 4%;
+  }
+  .vc-home-examples .wg-aura .wg-demo-copy {
+    width: 65%;
+  }
+  .vc-home-examples .wg-preview h3 {
+    font-size: 29px;
+  }
+  .vc-home-examples .wg-demo-nav {
+    height: 68px;
+  }
+}
+
+.vc .vc-home-examples a.wg-atelier{color:#2c1c10}.vc-home-examples .wg-preview h3{font-size:clamp(25px,2.8vw,42px)}.vc-home-examples .wg-caption{padding-right:40px}
+@media(max-width:480px){.vc-home-examples .wg-preview h3{font-size:29px}.vc-home-examples .wg-caption{flex-direction:column;align-items:flex-start;padding-right:0;gap:12px}}
+
+.vc-example-next{justify-content:flex-start}

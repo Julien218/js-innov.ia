@@ -95,19 +95,25 @@ try {
   await page.setViewportSize({width:390,height:844});
   await page.screenshot({path:`${output}/web-studio-mobile.png`,fullPage:true});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Mobile page must not overflow horizontally');
-  await page.goto(`${base}/?objectif=automate`);
-  await page.getByRole('heading',{level:1,name:'Moins de tâches. Plus de temps pour votre métier.',exact:true}).waitFor();
-  await page.getByRole('button',{name:/^Créer mon site/}).click();
-  await page.getByRole('heading',{level:1,name:'Votre prochain site. Déjà un peu le vôtre.',exact:true}).waitFor();
+  await page.goto(`${base}/`);
+  await page.getByRole('heading',{level:1,name:'Vos idées méritent de prendre vie.',exact:true}).waitFor();
   await page.screenshot({path:`${output}/home-mobile.png`});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Mobile home must not overflow horizontally');
+  await page.getByRole('link',{name:'Découvrir l’exemple Atelier dans le Web Studio',exact:true}).click();
+  await page.waitForURL(`${base}/web-studio?modele=atelier&secteur=artisan`);
+  await page.getByRole('heading',{name:'Direction Atelier',exact:true}).waitFor();
+  await page.goto(`${base}/`);
+  await page.getByRole('link',{name:'Créer mon film · dès 49,99 €',exact:true}).click();
+  await page.getByRole('heading',{level:1,name:'Les moments passent. L’émotion reste.',exact:true}).waitFor();
+  await page.goto(`${base}/`);
   await page.setViewportSize({width:1440,height:1000});
   await page.screenshot({path:`${output}/home-desktop.png`});
   await page.goto(`${base}/web-studio.html`);
   await page.waitForURL(`${base}/web-studio`);
-  await page.getByRole('heading',{level:1,name:/Ne choisissez pas un site/}).waitFor();
+  await page.getByRole('heading',{level:1,name:/Des sites qui ont du caractère/}).waitFor();
+  assert.equal(await page.getByRole('heading',{level:1}).count(),1);
   assert.deepEqual(errors,[],'No JavaScript runtime errors');
-  await writeFile(`${output}/results.json`,JSON.stringify({success:true,checks:['18 models','manual priority','conservative analysis','escaped input','interactive demo','responsive modal','explicit persistence','no PII persisted','verified handoff','idempotent retry','reset','adaptive home','mobile overflow','legacy route'],mockedSubmissions:submissions.length,liveSubmissions:0,errors},null,2));
+  await writeFile(`${output}/results.json`,JSON.stringify({success:true,checks:['18 models','manual priority','conservative analysis','escaped input','interactive demo','responsive modal','explicit persistence','no PII persisted','verified handoff','idempotent retry','reset','homepage examples link to selected web concept','commercial home and video navigation','mobile overflow','legacy route'],mockedSubmissions:submissions.length,liveSubmissions:0,errors},null,2));
   console.log('Web Studio browser checks passed. All network submissions were mocked.');
 }catch(error){
   if(page){

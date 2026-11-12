@@ -10,6 +10,7 @@ import { CartProvider, useCart } from './components/cart/CartContext';
 import { platform } from '@/api/platformClient';
 import PageTransition from './components/shared/PageTransition';
 
+import { CommerceLayout } from './pages/VideoCommerce';
 const GOLD = '#D4AF37';
 const GOLD_L = '#F5CF41';
 const PURPLE = '#8B5CF6';
@@ -71,7 +72,7 @@ function LayoutContent({ children, currentPageName }) {
     <div className="fixed top-0 left-0 right-0 h-px z-[60]" style={{ background: `linear-gradient(90deg, transparent, ${GOLD}, ${PURPLE}, ${CYAN}, transparent)` }} />
     <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-2xl border-b" style={{ background: 'rgba(6,6,18,0.94)', borderColor: 'rgba(212,175,55,0.15)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div className="flex justify-between items-center h-28">
-        <Link to={createPageUrl('Home')} className="group flex-shrink-0"><motion.div className="relative w-24 h-24 mt-20" animate={{ y:[0,-8,0] }} transition={{duration:3.5,repeat:Infinity}}><img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_68ae1c019dacc474a322f2b2/f9316a8c1_Js-innovIA.png" alt="JS-INNOV.IA" className="w-full h-full object-contain" /></motion.div></Link>
+        <Link to={createPageUrl('Home')} className="group flex-shrink-0"><motion.div className="relative w-24 h-24 mt-20" animate={{ y:[0,-8,0] }} transition={{duration:3.5,repeat:Infinity}}><img src="/brand/jsinnovia-official.png" alt="JS-INNOV.IA" className="w-full h-full object-contain" /></motion.div></Link>
         <div className="hidden lg:flex items-center gap-2">{navItems.map(item => item.submenu ? <div key={item.name} className="relative" onMouseEnter={()=>setOpenSubmenu(item.name)} onMouseLeave={()=>setOpenSubmenu(null)}><button className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold" style={navLinkStyle(item)}>{item.name}<ChevronDown className="w-3 h-3" /></button><AnimatePresence>{openSubmenu===item.name&&<motion.div initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} exit={{opacity:0,y:8}} className="absolute top-full left-0 mt-2 w-64 rounded-2xl overflow-hidden z-50" style={submenuStyle}>{item.submenu.map(sub=><Link key={sub.path} to={createPageUrl(sub.path)} className="block px-4 py-3 border-b border-white/5"><div className="text-sm font-semibold" style={{color:'rgba(212,175,55,.85)'}}>{sub.name}</div><div className="text-xs mt-0.5 text-white/30">{sub.desc}</div></Link>)}</motion.div>}</AnimatePresence></div> : <Link key={item.dynamicSlug||item.path} to={item.dynamicSlug?`/page/${item.dynamicSlug}`:createPageUrl(item.path)} className="block px-4 py-2 rounded-full text-sm font-semibold" style={navLinkStyle(item)}>{item.name}</Link>)}</div>
         <div className="flex items-center gap-2"><Link to={createPageUrl('Cart')} className="relative hidden lg:block p-2" style={{color:GOLD}}><ShoppingCart className="w-6 h-6" />{getCartCount()>0&&<div className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-black" style={{background:GOLD}}>{getCartCount()}</div>}</Link><button onClick={()=>setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden p-2" style={{color:GOLD}}>{mobileMenuOpen?<X/>:<Menu/>}</button></div>
       </div></div>
@@ -82,4 +83,4 @@ function LayoutContent({ children, currentPageName }) {
   </div>;
 }
 
-export default function Layout({ children, currentPageName }) { return <CartProvider><LayoutContent currentPageName={currentPageName}>{children}</LayoutContent></CartProvider>; }
+export default function Layout({ children, currentPageName }) { return <CartProvider>{['Admin','CRM','QuoteDashboard','BlogAdmin','PageManager','FormBuilder','SEODashboard'].includes(currentPageName) ? <LayoutContent currentPageName={currentPageName}>{children}</LayoutContent> : <CommerceLayout><SEOMetaTags pageName={currentPageName} />{children}</CommerceLayout>}</CartProvider>; }

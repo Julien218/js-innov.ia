@@ -1,23 +1,26 @@
 // Public routes are isolated from product-specific home experiences.
 import { lazy, Suspense } from 'react';
 import './App.css'
+import { WorkPage, SocialPage, EcosystemPage, EditorialPage } from './pages/StudioContent';
+import { CommerceLayout, CommerceHome, VideoShop, VideoProduct, VideoConfigure, VideoSpace, Solutions, PartnerPage } from './pages/VideoCommerce';
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
 import VisualEditAgent from '@/lib/VisualEditAgent'
+import SiteMetadata from './components/SiteMetadata';
 import NavigationTracker from '@/lib/NavigationTracker'
 import VoiceCompanion from './components/chatbot/VoiceCompanion';
 import { lazyPagesConfig as pagesConfig } from './config/lazyPages'
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import SaasLayout from './components/saas/SaasLayout';
 import SaasLanding from './pages/saas/SaasLanding';
-import SaasChatbot from './components/chatbot/AIChatbot';
 import { resolveProductExperience } from './lib/productHostRouter';
 import __Layout from './Layout.jsx';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
+const VideoReview = lazy(() => import('./pages/VideoReview'));
 const DynamicPageView = lazy(() => import('./pages/DynamicPageView'));
 const Visuels = lazy(() => import('./pages/Visuels'));
 const SaasHome = lazy(() => import('./pages/saas/SaasHome'));
@@ -48,7 +51,7 @@ const LayoutWrapper = ({ children, currentPageName }) => Layout ?
 const DomainAwareHome = () => {
   const experience = resolveProductExperience(window.location.hostname);
   if (experience === 'hainoflow') {
-    return <SaasLayout><HainoFlowLanding /><SaasChatbot /></SaasLayout>;
+    return <SaasLayout><HainoFlowLanding /></SaasLayout>;
   }
   if (experience === 'signage') {
     return <EcranLed />;
@@ -56,7 +59,7 @@ const DomainAwareHome = () => {
   if (experience === 'cockpit') {
     return <CockpitConnectedSite />;
   }
-  return <SaasLayout><SaasLanding /><SaasChatbot /></SaasLayout>;
+  return <CommerceLayout><CommerceHome /></CommerceLayout>;
 };
 
 const AuthenticatedApp = () => {
@@ -79,6 +82,13 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route path="/" element={<DomainAwareHome />} />
+      <Route path="/Home" element={<Navigate to="/" replace />} />
+      <Route path="/Partners" element={<Navigate to="/partenaires" replace />} />
+      <Route path="/Commande" element={<Navigate to="/saas-contact" replace />} />
+      <Route path="/Pricing" element={<Navigate to="/saas-packs" replace />} />
+      <Route path="/PaymentSuccess" element={<Navigate to="/espace-video" replace />} />
+      <Route path="/OrderConfirmation" element={<Navigate to="/espace-video" replace />} />
+      {[['/realisations', <WorkPage />], ['/reseaux', <SocialPage />], ['/ecosysteme', <EcosystemPage />], ['/le-studio', <EditorialPage />], ['/guides/preparer-sa-video', <EditorialPage />], ['/guides/site-web-local', <EditorialPage />], ['/studio-review', <VideoReview />], ['/videos', <VideoShop />], ['/videos/:offer', <VideoProduct />], ['/commander-video', <VideoConfigure />], ['/espace-video', <VideoSpace />], ['/solutions', <Solutions />], ['/partenaires', <PartnerPage />]].map(([path, element]) => <Route key={path} path={path} element={<CommerceLayout>{element}</CommerceLayout>} />)}
       <Route path="/web-studio" element={<SaasLayout><WebStudio /></SaasLayout>} />
       <Route path="/web-studio.html" element={<Navigate to="/web-studio" replace />} />
       {Object.entries(Pages).map(([path, Page]) => (
@@ -86,11 +96,11 @@ const AuthenticatedApp = () => {
       ))}
       <Route path="/Visuels" element={<__Layout currentPageName="Visuels"><Visuels /></__Layout>} />
       <Route path="/page/:slug" element={<__Layout currentPageName="DynamicPageView"><DynamicPageView /></__Layout>} />
-      <Route path="/saas" element={<SaasLayout><SaasHome /><SaasChatbot /></SaasLayout>} />
-      <Route path="/saas-packs" element={<SaasLayout><SaasPacks /><SaasChatbot /></SaasLayout>} />
+      <Route path="/saas" element={<SaasLayout><SaasHome /></SaasLayout>} />
+      <Route path="/saas-packs" element={<SaasLayout><SaasPacks /></SaasLayout>} />
       <Route path="/saas-analyse" element={<SaasLayout><SaasAnalyse /></SaasLayout>} />
       <Route path="/saas-admin" element={<SaasLayout><SaasAdmin /></SaasLayout>} />
-      <Route path="/saas-agents" element={<SaasLayout><SaasAgents /><SaasChatbot /></SaasLayout>} />
+      <Route path="/saas-agents" element={<SaasLayout><SaasAgents /></SaasLayout>} />
       <Route path="/saas-contact" element={<SaasLayout><SaasContact /></SaasLayout>} />
       <Route path="/saas-mentions" element={<SaasLayout><SaasLegal type="mentions" /></SaasLayout>} />
       <Route path="/saas-confidentialite" element={<SaasLayout><SaasLegal type="confidentialite" /></SaasLayout>} />
@@ -104,7 +114,7 @@ const AuthenticatedApp = () => {
       <Route path="/saas-chatbot-admin" element={<SaasLayout><SaasChatbotAdmin /></SaasLayout>} />
       <Route path="/cockpit" element={<CockpitConnectedSite />} />
       <Route path="/site-cockpit" element={<CockpitConnectedSite />} />
-      <Route path="/hainoflow" element={<SaasLayout><HainoFlowLanding /><SaasChatbot /></SaasLayout>} />
+      <Route path="/hainoflow" element={<SaasLayout><HainoFlowLanding /></SaasLayout>} />
       <Route path="/catalogue-tarifs-brouillon" element={<SaasLayout><CataloguePricingDraft /></SaasLayout>} />
       <Route path="/ecran" element={<EcranLed />} />
       <Route path="/ecranespacec" element={<EcranEspaceC />} />
@@ -119,6 +129,7 @@ function App() {
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
         <Router>
+          <SiteMetadata />
           <NavigationTracker />
           <Suspense fallback={<div className="fixed inset-0 grid place-items-center bg-[#060610] text-sm font-bold text-white/60">Chargement sécurisé…</div>}>
             <AuthenticatedApp />
@@ -126,7 +137,7 @@ function App() {
           <VoiceCompanion />
         </Router>
         <Toaster />
-        <VisualEditAgent />
+        {import.meta.env.DEV && <VisualEditAgent />}
       </QueryClientProvider>
     </AuthProvider>
   )

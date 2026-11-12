@@ -24,9 +24,11 @@ test('the browser delegates AI requests to the server function', () => {
   assert.match(platformClient, /\/api\/platform\/functions/);
 });
 
-test('the branded chat companion is mounted on the active SaaS landing routes', () => {
-  assert.match(app, /SaasChatbot from '.\/components\/chatbot\/AIChatbot'/);
-  assert.match(app, /<SaasChatbot\s*\/>/);
+test('the branded companion belongs to the shared public layout', () => {
+  const commerce = fs.readFileSync(path.join(root, 'src/pages/VideoCommerce.jsx'), 'utf8');
+  assert.match(commerce, /AIChatbot from/);
+  assert.match(commerce, /<AIChatbot/);
+  assert.match(saasLayout, /CommerceLayout/);
 });
 
 test('the Realtime voice companion is mounted once globally inside the router', () => {
@@ -90,7 +92,8 @@ test('the production runtime has no Base44 dependency', () => {
   assert.doesNotMatch(client, /@base44|base44Client/);
   assert.doesNotMatch(platformClient, /@base44|base44Client/);
   assert.equal(fs.existsSync(path.join(root, 'src/api/base44Client.js')), false);
-  assert.doesNotMatch(dockerfile, /COPY --from=build \/app\/node_modules/);
+  assert.doesNotMatch(dockerfile, /COPY --from=build \/app\/node_modules\s/);
+  assert.match(dockerfile, /node_modules\/stripe/);
   assert.match(dockerfile, /COPY --from=build \/app\/dist \.\/dist/);
   assert.match(dockerfile, /CMD \["node", "server\.mjs"\]/);
 });
@@ -100,7 +103,7 @@ test('Elynea keeps the premium local visual pack as a production fallback', () =
   assert.match(avatar, /\/brand\/companion\/companion-launcher-256\.webp/);
   assert.equal(manifest.assistant, 'Elynea');
   assert.equal(manifest.role, 'Compagnon JS-Innov.IA');
-  assert.equal(manifest.version, '1.3.0');
+  assert.equal(manifest.version, '1.3.1');
   assert.equal(manifest.threeD.enabled, false);
   assert.equal(manifest.threeD.format, 'vrm');
   assert.equal(manifest.threeD.model, '/brand/companion/elyna/elyna.vrm');
