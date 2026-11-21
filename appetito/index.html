@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Appetito · 3 propositions écran géant | JS-Innov.IA</title>
+<style>
+/* Layout: one night column (JS-Innov.IA brand bible): brand line, gold headline, three numbered spots stacked full width, validation block, signature footer. Deliberately single dark theme, as the brand is dark-only. */
+:root {
+  color-scheme: dark;
+  --night: #060610;
+  --gold: #D4AF37;
+  --gold-light: #F5CF41;
+  --purple: #7C3AED;
+  --cyan: #06B6D4;
+  --white: #FFFFFF;
+  --muted: #B9B9C8;
+  --card: rgba(255,255,255,0.03);
+  --line: rgba(255,255,255,0.08);
+  --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+html { background: var(--night); }
+body { margin: 0; background: var(--night); color: var(--white); font-family: var(--font); font-size: 17px; line-height: 1.6; }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse 60% 40% at 85% 0%, rgba(124,58,237,0.16), transparent 70%), radial-gradient(ellipse 50% 35% at 0% 100%, rgba(212,175,55,0.08), transparent 70%); z-index: -1; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 32px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 48px; }
+.top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 16px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.brand { font-weight: 800; font-size: 22px; letter-spacing: 0.01em; background: linear-gradient(90deg, var(--gold), var(--gold-light) 55%, var(--purple)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.tag { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-light); border: 1px solid rgba(212,175,55,0.35); padding: 4px 12px; border-radius: 999px; }
+header { display: flex; flex-direction: column; gap: 14px; }
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan); }
+h1 { margin: 0; font-weight: 800; font-size: clamp(34px, 6vw, 60px); line-height: 1.04; letter-spacing: -0.02em; text-wrap: balance; }
+h1 span { background: linear-gradient(90deg, var(--gold), var(--gold-light) 50%, var(--purple)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hello { margin: 12px 0 0; font-size: 22px; font-weight: 600; }
+.lede { margin: 0; max-width: 62ch; color: var(--muted); }
+.spots { display: flex; flex-direction: column; gap: 36px; }
+.spot { display: flex; flex-direction: column; gap: 16px; padding: 16px; background: var(--card); border: 1px solid var(--line); border-radius: 20px; }
+.frame { position: relative; border-radius: 14px; overflow: hidden; background: #000; }
+video { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; background: #000; }
+.holo { position: absolute; top: 12px; right: 12px; pointer-events: none; font-size: 11px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--night); padding: 5px 12px; border-radius: 999px; background: linear-gradient(110deg, var(--gold), var(--gold-light), var(--cyan), var(--purple), var(--gold)); background-size: 300% 100%; animation: holo 6s linear infinite; box-shadow: 0 0 14px rgba(124,58,237,0.45); }
+@keyframes holo { from { background-position: 0% 0; } to { background-position: 300% 0; } }
+.cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding-inline: 6px; }
+.num { font-size: 13px; font-weight: 800; letter-spacing: 0.06em; color: var(--night); background: var(--gold); padding: 3px 12px; border-radius: 999px; }
+.cap h2 { margin: 0; font-weight: 800; font-size: 26px; line-height: 1.2; }
+.spot p { margin: 0; padding-inline: 6px 6px; padding-bottom: 4px; max-width: 70ch; color: var(--muted); }
+.how { display: flex; flex-direction: column; gap: 12px; padding: 28px; border-radius: 20px; background: linear-gradient(135deg, rgba(212,175,55,0.10), rgba(124,58,237,0.10)); border: 1px solid rgba(212,175,55,0.35); }
+.how h2 { margin: 0; font-weight: 800; font-size: 26px; }
+.how p { margin: 0; max-width: 65ch; }
+.how strong { color: var(--gold-light); }
+.how .small { color: var(--muted); font-size: 15px; }
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+footer .sig { font-weight: 700; letter-spacing: 0.18em; color: var(--gold); }
+video:focus-visible { outline: 3px solid var(--cyan); outline-offset: -3px; }
+form { display: flex; flex-direction: column; gap: 20px; }
+.picks { margin: 0; padding: 0; border: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.picks legend { padding: 0; margin-bottom: 12px; font-weight: 600; }
+.pick { position: relative; display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 12px 16px; border-radius: 14px; background: rgba(6,6,16,0.55); border: 1px solid var(--line); cursor: pointer; transition: border-color .2s ease, background .2s ease; }
+.pick:hover { border-color: rgba(212,175,55,0.5); }
+.pick input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.pn { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--gold); font-weight: 800; font-size: 18px; color: var(--gold-light); }
+.pt { font-weight: 600; line-height: 1.3; }
+.pick:has(input:checked) { border-color: var(--gold); background: rgba(212,175,55,0.12); }
+.pick:has(input:checked) .pn { background: var(--gold); color: var(--night); }
+.pick:has(input:focus-visible) { outline: 3px solid var(--cyan); outline-offset: 2px; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field label { font-weight: 600; }
+.opt { font-weight: 400; color: var(--muted); }
+textarea, input[type="text"] { width: 100%; box-sizing: border-box; font: inherit; color: var(--white); background: rgba(6,6,16,0.6); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+textarea { resize: vertical; min-height: 110px; }
+textarea:focus, input[type="text"]:focus { outline: none; border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.3); }
+.hint { margin: 0; font-size: 15px; color: var(--muted); }
+.hint.ok { color: var(--gold-light); }
+.send { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border-radius: 12px; font: 700 16px var(--font); text-decoration: none; cursor: pointer; transition: filter .2s ease, opacity .2s ease; }
+.btn-gold { color: var(--night); background: linear-gradient(90deg, var(--gold), var(--gold-light)); border: 0; }
+.btn-line { color: var(--white); background: transparent; border: 1px solid rgba(255,255,255,0.25); }
+.btn:hover { filter: brightness(1.1); }
+.btn:focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
+.btn[aria-disabled="true"], .btn:disabled { opacity: .4; pointer-events: none; }
+.preview { margin: 0; white-space: pre-wrap; word-break: break-word; font: 14px/1.5 ui-monospace, "Cascadia Mono", Consolas, monospace; color: var(--muted); background: rgba(6,6,16,0.6); border: 1px dashed var(--line); border-radius: 12px; padding: 14px; }
+.sel { color: var(--white); font-weight: 600; user-select: all; white-space: nowrap; }
+.choose { align-self: flex-start; margin-inline: 6px; }
+@media (prefers-reduced-motion: reduce) { .holo { animation: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">JS-Innov.IA</div>
+    <div class="tag">Proposition confidentielle</div>
+  </div>
+
+  <header>
+    <div class="eyebrow">Pour validation · Appetito</div>
+    <h1>3 propositions pour <span>votre écran géant</span></h1>
+    <p class="hello">Bonjour,</p>
+    <p class="lede">Merci pour votre confiance. Nous avons préparé trois spots de 7 secondes pour l'écran géant, construits avec votre charte graphique, votre logo et vos propres images. Regardez-les, puis choisissez celui que vous retenez en bas de page, avec un commentaire si besoin.</p>
+  </header>
+
+  <section class="spots" aria-label="Les trois propositions">
+    <article class="spot">
+      <div class="frame">
+        <video controls muted loop playsinline preload="metadata" controlslist="nodownload noremoteplayback" disablepictureinpicture poster="poster-1.jpg" src="appetito-1.mp4" aria-label="Proposition 1 : Le plaisir, près de chez vous"></video>
+        <div class="holo" aria-hidden="true">JS-Innov.IA · Protégé</div>
+      </div>
+      <div class="cap"><span class="num">Proposition 1</span><h2>Le plaisir, près de chez vous</h2></div>
+      <p>Votre affiche de campagne en mouvement : le burger arrive sur l’aplat rose, les étiquettes BURGERS, SUSHIS, PIZZAS et MIAAAAM s’animent, et « vous » s’entoure à la main.</p>
+      <button class="btn btn-gold choose" type="button" data-choose="1">Choisir la proposition 1</button>
+    </article>
+    <article class="spot">
+      <div class="frame">
+        <video controls muted loop playsinline preload="metadata" controlslist="nodownload noremoteplayback" disablepictureinpicture poster="poster-2.jpg" src="appetito-2.mp4" aria-label="Proposition 2 : Quand on…"></video>
+        <div class="holo" aria-hidden="true">JS-Innov.IA · Protégé</div>
+      </div>
+      <div class="cap"><span class="num">Proposition 2</span><h2>Quand on…</h2></div>
+      <p>Tito entre en scène avec votre ligne « Quand on retrouve le goût d’à côté. », puis votre logo sur burgundy et « Le plaisir, près de chez vous. ».</p>
+      <button class="btn btn-gold choose" type="button" data-choose="2">Choisir la proposition 2</button>
+    </article>
+    <article class="spot">
+      <div class="frame">
+        <video controls muted loop playsinline preload="metadata" controlslist="nodownload noremoteplayback" disablepictureinpicture poster="poster-3.jpg" src="appetito-3.mp4" aria-label="Proposition 3 : Mosaïque"></video>
+        <div class="holo" aria-hidden="true">JS-Innov.IA · Protégé</div>
+      </div>
+      <div class="cap"><span class="num">Proposition 3</span><h2>Mosaïque gourmande</h2></div>
+      <p>Vos photos de plats et vos aplats de couleur s’assemblent en mosaïque, puis l’aplat orange s’ouvre sur votre logo et « Le plaisir, près de chez vous. ».</p>
+      <button class="btn btn-gold choose" type="button" data-choose="3">Choisir la proposition 3</button>
+    </article>
+  </section>
+
+  <section class="how" id="choix" aria-labelledby="choix-titre">
+    <h2 id="choix-titre">Votre choix</h2>
+    <form id="form" novalidate>
+      <fieldset class="picks">
+        <legend>Quelle proposition retenez-vous ?</legend>
+        <label class="pick"><input type="radio" name="prop" id="prop-1" value="1"><span class="pn">1</span><span class="pt">Le plaisir, près de chez vous</span></label>
+        <label class="pick"><input type="radio" name="prop" id="prop-2" value="2"><span class="pn">2</span><span class="pt">Quand on…</span></label>
+        <label class="pick"><input type="radio" name="prop" id="prop-3" value="3"><span class="pn">3</span><span class="pt">Mosaïque gourmande</span></label>
+      </fieldset>
+      <div class="field">
+        <label for="comment">Commentaire <span class="opt">(facultatif)</span></label>
+        <textarea id="comment" rows="4" placeholder="Un texte à changer, une image, une couleur, la durée…"></textarea>
+      </div>
+      <div class="field">
+        <label for="name">Votre nom <span class="opt">(facultatif)</span></label>
+        <input id="name" type="text" autocomplete="name">
+      </div>
+      <p class="hint" id="hint" role="status">Choisissez une proposition pour pouvoir l'envoyer.</p>
+      <div class="send">
+        <a class="btn btn-gold" id="send-wa" href="#choix" target="_blank" rel="noopener" aria-disabled="true">Envoyer par WhatsApp</a>
+        <a class="btn btn-line" id="send-mail" href="#choix" aria-disabled="true">Envoyer par e-mail</a>
+        <button class="btn btn-line" id="copy" type="button" disabled>Copier ma réponse</button>
+      </div>
+      <pre class="preview" id="preview" hidden></pre>
+      <p class="small">Si l'envoi ne s'ouvre pas, copiez votre réponse et envoyez-la par WhatsApp au <span class="sel">+32 494 11 90 90</span> ou par e-mail à <span class="sel">contact@jsinnovia.com</span>.</p>
+    </form>
+    <p class="small">Ces aperçus sont protégés et restent la propriété de JS-Innov.IA. La version validée sera diffusée sur l'écran géant, sans sceau. Les spots sont sans son, comme sur l'écran.</p>
+  </section>
+
+  <footer>
+    <span>© 2026 JS-Innov.IA · Automatisation intelligente amplifiée par l’humain</span>
+    <span class="sig">WHEN VISION MEETS INTELLIGENCE</span>
+  </footer>
+</div>
+<script>
+document.querySelectorAll('video').forEach(function (v) {
+  v.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+});
+(function () {
+  var TITLES = { '1': 'Le plaisir, près de chez vous', '2': 'Quand on…', '3': 'Mosaïque gourmande' };
+  var WA = '32494119090', MAIL = 'contact@jsinnovia.com';
+  var form = document.getElementById('form'), comment = document.getElementById('comment'), name = document.getElementById('name');
+  var wa = document.getElementById('send-wa'), mail = document.getElementById('send-mail'), copy = document.getElementById('copy');
+  var hint = document.getElementById('hint'), preview = document.getElementById('preview');
+  function picked() { var r = form.querySelector('input[name="prop"]:checked'); return r ? r.value : null; }
+  function message(p) {
+    var lines = ['Bonjour JS-Innov.IA,', '', 'Pour l’écran géant Appetito, je choisis la proposition ' + p + ' : ' + TITLES[p] + '.'];
+    var c = comment.value.trim(); if (c) { lines.push('', 'Commentaire : ' + c); }
+    var n = name.value.trim(); lines.push('', n ? n : 'Appetito');
+    return lines.join('\n');
+  }
+  function update() {
+    var p = picked(), on = !!p;
+    [wa, mail].forEach(function (a) { a.setAttribute('aria-disabled', on ? 'false' : 'true'); });
+    copy.disabled = !on;
+    if (!on) { wa.href = '#choix'; mail.href = '#choix'; preview.hidden = true; hint.className = 'hint'; hint.textContent = 'Choisissez une proposition pour pouvoir l’envoyer.'; return; }
+    var m = message(p);
+    wa.href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(m);
+    mail.href = 'mailto:' + MAIL + '?subject=' + encodeURIComponent('Appetito – choix de la proposition ' + p) + '&body=' + encodeURIComponent(m);
+    preview.textContent = m; preview.hidden = false;
+    hint.className = 'hint ok'; hint.textContent = 'Proposition ' + p + ' sélectionnée. Vérifiez votre message puis envoyez-le.';
+  }
+  form.addEventListener('change', update);
+  form.addEventListener('input', update);
+  form.addEventListener('submit', function (e) { e.preventDefault(); });
+  document.querySelectorAll('[data-choose]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var r = document.getElementById('prop-' + b.getAttribute('data-choose'));
+      r.checked = true; update();
+      document.getElementById('choix').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(function () { comment.focus({ preventScroll: true }); }, 450);
+    });
+  });
+  copy.addEventListener('click', function () {
+    var p = picked(); if (!p) return;
+    var m = message(p);
+    function fallback() {
+      var range = document.createRange(); range.selectNodeContents(preview);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      hint.textContent = 'Le texte est sélectionné : copiez-le avec Ctrl+C (ou appui long sur mobile).';
+    }
+    try {
+      navigator.clipboard.writeText(m).then(function () { copy.textContent = 'Réponse copiée'; setTimeout(function () { copy.textContent = 'Copier ma réponse'; }, 2200); }, fallback);
+    } catch (e) { fallback(); }
+  });
+  update();
+})();
+</script>
+
+</body>
+</html>
