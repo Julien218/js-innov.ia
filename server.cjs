@@ -160,11 +160,14 @@ async function resolvePrices(keys) {
   const fresh = Date.now() - priceCache.at < 10 * 60 * 1000;
   const missing = keys.filter((key) => !fresh || !priceCache.byKey.has(key));
   if (missing.length) {
-    const query = new URLSearchParams({ active: 'true', limit: '100' });
-    missing.forEach((key) => query.append('lookup_keys[]', key));
-    const list = await stripeGet(`prices?${query.toString()}`);
     if (!fresh) priceCache = { at: Date.now(), byKey: new Map() };
-    for (const price of list.data || []) priceCache.byKey.set(price.lookup_key, { id: price.id, amount: price.unit_amount, interval: price.recurring?.interval || null });
+    // Stripe accepte au maximum 10 lookup_keys par requête
+    for (let start = 0; start < missing.length; start += 10) {
+      const query = new URLSearchParams({ active: 'true', limit: '100' });
+      missing.slice(start, start + 10).forEach((key) => query.append('lookup_keys[]', key));
+      const list = await stripeGet(`prices?${query.toString()}`);
+      for (const price of list.data || []) priceCache.byKey.set(price.lookup_key, { id: price.id, amount: price.unit_amount, interval: price.recurring?.interval || null });
+    }
   }
   const resolved = keys.map((key) => priceCache.byKey.get(key));
   if (resolved.some((price) => !price)) return null;
