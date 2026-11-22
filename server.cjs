@@ -8,16 +8,33 @@ const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || '';
 const STRIPE_API_VERSION = '2026-06-24.dahlia';
 const checkoutRateLimits = new Map();
 
-const PRICE_MAP = {
-  signage: {
-    monthly: process.env.STRIPE_PRICE_SIGNAGE_MONTHLY || '',
-    setup: process.env.STRIPE_PRICE_SIGNAGE_SETUP || process.env.STRIPE_PRICE_INSTALLATION || '',
-  },
-  'signage-surveillance': {
-    monthly: process.env.STRIPE_PRICE_SIGNAGE_SURVEILLANCE_MONTHLY || '',
-    setup: process.env.STRIPE_PRICE_SIGNAGE_SURVEILLANCE_SETUP || process.env.STRIPE_PRICE_INSTALLATION || '',
-  },
+// Catalogue Signelya : les prix sont retrouvés dans Stripe par lookup_key
+// (créés le 22/11/2026). Les montants restent gérés dans Stripe.
+const PLANS = ['affichage', 'crea4', 'crea10', 'crea20', 'crea30'];
+const BILLINGS = ['year', 'month'];
+const LOOKUP = {
+  plan: (plan, billing) => `signelya_${plan}_${billing === 'year' ? 'yearly' : 'monthly'}`,
+  security: (billing) => `signelya_securite_${billing === 'year' ? 'yearly' : 'monthly'}`,
+  securitySetup: 'signelya_setup_securite_241',
+  setupMonthly: 'signelya_setup_449',
+  setupYearly: 'signelya_setup_yearly_199',
+  player: 'signelya_player_49',
 };
+// Offre de lancement : mise en service offerte en annuel jusqu'à la date indiquée,
+// ou jusqu'à ce que SIGNELYA_LAUNCH_OFFER=off soit défini (après les 10 premiers clients).
+const LAUNCH_OFFER_END = process.env.SIGNELYA_LAUNCH_OFFER_END || '2027-04-01T00:00:00+02:00';
+function launchOfferActive(now = new Date()) {
+  if (String(process.env.SIGNELYA_LAUNCH_OFFER || '').toLowerCase() === 'off') return false;
+  return now < new Date(LAUNCH_OFFER_END);
+}
+
+function lineItemLookups({ plan, billing, security }) {
+  const keys = [LOOKUP.plan(plan, billing)];
+  if (billing === 'month') keys.push(LOOKUP.setupMonthly, LOOKUP.player);
+  else if (!launchOfferActive()) keys.push(LOOKUP.setupYearly);
+  if (security) keys.push(LOOKUP.security(billing), LOOKUP.securitySetup);
+  return keys;
+}
 
 function json(res, status, body) {
   res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
@@ -57,8 +74,13 @@ function readBody(req, max = 256 * 1024) {
 }
 
 function validateQuestionnaire(input) {
-  const packageId = String(input.packageId || '');
-  if (!PRICE_MAP[packageId]) throw new Error('Offre inconnue');
+  const plan = String(input.plan || 'affichage');
+  const billing = String(input.billing || 'year');
+  if (!PLANS.includes(plan)) throw new Error('Offre inconnue');
+  if (!BILLINGS.includes(billing)) throw new Error('Mode de paiement inconnu');
+  const security = input.security === true || input.packageId === 'signage-surveillance';
+  // packageId conservé pour le cockpit : signage ou signage-surveillance
+  const packageId = security ? 'signage-surveillance' : 'signage';
   for (const key of ['company', 'contactName', 'email', 'phone', 'installationAddress']) {
     if (!String(input[key] || '').trim()) throw new Error(`Champ requis : ${key}`);
   }
@@ -73,6 +95,9 @@ function validateQuestionnaire(input) {
   return {
     ...input,
     packageId,
+    plan,
+    billing,
+    security,
     company: String(input.company).trim().slice(0, 160),
     contactName: String(input.contactName).trim().slice(0, 160),
     email: String(input.email).trim().toLowerCase().slice(0, 254),
@@ -130,6 +155,37 @@ async function stripeGet(resource) {
   return data;
 }
 
+let priceCache = { at: 0, byKey: new Map() };
+async function resolvePrices(keys) {
+  const fresh = Date.now() - priceCache.at < 10 * 60 * 1000;
+  const missing = keys.filter((key) => !fresh || !priceCache.byKey.has(key));
+  if (missing.length) {
+    const query = new URLSearchParams({ active: 'true', limit: '100' });
+    missing.forEach((key) => query.append('lookup_keys[]', key));
+    const list = await stripeGet(`prices?${query.toString()}`);
+    if (!fresh) priceCache = { at: Date.now(), byKey: new Map() };
+    for (const price of list.data || []) priceCache.byKey.set(price.lookup_key, { id: price.id, amount: price.unit_amount, interval: price.recurring?.interval || null });
+  }
+  const resolved = keys.map((key) => priceCache.byKey.get(key));
+  if (resolved.some((price) => !price)) return null;
+  return resolved;
+}
+
+async function handlePricing(req, res) {
+  try {
+    const keys = [
+      ...PLANS.flatMap((plan) => BILLINGS.map((billing) => LOOKUP.plan(plan, billing))),
+      LOOKUP.security('year'), LOOKUP.security('month'), LOOKUP.securitySetup, LOOKUP.setupMonthly, LOOKUP.setupYearly, LOOKUP.player,
+    ];
+    const resolved = await resolvePrices(keys);
+    if (!resolved) return json(res, 503, { ready: false });
+    const amounts = Object.fromEntries(keys.map((key, i) => [key, resolved[i].amount / 100]));
+    return json(res, 200, { ready: true, launchOffer: launchOfferActive(), amounts });
+  } catch (error) {
+    return json(res, 503, { ready: false, error: error.message });
+  }
+}
+
 function verifyStripeSignature(rawBody, header) {
   if (!STRIPE_WEBHOOK_SECRET) return false;
   const parts = String(header || '').split(',').map((p) => p.split('='));
@@ -152,8 +208,13 @@ async function handleCheckout(req, res) {
     if (!checkoutAllowed(req)) return json(res, 429, { error: 'Trop de tentatives. Réessayez dans 15 minutes.' });
     const raw = await readBody(req);
     const questionnaire = validateQuestionnaire(JSON.parse(raw.toString('utf8') || '{}'));
-    const prices = PRICE_MAP[questionnaire.packageId];
-    if (!prices.monthly || !prices.setup) return json(res, 503, { error: 'Tarification Stripe en cours de configuration. Votre demande peut déjà être enregistrée, mais le paiement ne peut pas encore être lancé.' });
+    const prices = await resolvePrices(lineItemLookups(questionnaire));
+    if (!prices) return json(res, 503, { error: 'Tarification Stripe en cours de configuration. Le paiement ne peut pas encore être lancé.' });
+    const lineItems = {};
+    prices.forEach((price, index) => {
+      lineItems[`line_items[${index}][price]`] = price.id;
+      lineItems[`line_items[${index}][quantity]`] = 1;
+    });
 
     const intake = await cockpitPost('/intake', { questionnaire, source: 'jsinnovia-site', submittedAt: new Date().toISOString() });
     const orderId = intake.orderId;
@@ -163,23 +224,25 @@ async function handleCheckout(req, res) {
       mode: 'subscription',
       integration_identifier: integrationIdentifier(),
       customer_email: questionnaire.email,
-      'line_items[0][price]': prices.monthly,
-      'line_items[0][quantity]': 1,
-      'line_items[1][price]': prices.setup,
-      'line_items[1][quantity]': 1,
+      ...lineItems,
       success_url: `${SITE_URL}/digital-signage/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${SITE_URL}/digital-signage?checkout=cancelled`,
       client_reference_id: orderId,
       'metadata[commerce_order_id]': orderId,
       'metadata[package_id]': questionnaire.packageId,
+      'metadata[plan]': questionnaire.plan,
+      'metadata[billing]': questionnaire.billing,
+      'metadata[security]': String(questionnaire.security),
       'subscription_data[metadata][commerce_order_id]': orderId,
       'subscription_data[metadata][package_id]': questionnaire.packageId,
+      'subscription_data[metadata][plan]': questionnaire.plan,
+      'subscription_data[metadata][billing]': questionnaire.billing,
       'tax_id_collection[enabled]': 'true',
       billing_address_collection: 'required',
       allow_promotion_codes: 'true',
     }, `signage-checkout-${orderId}`);
 
-    await cockpitPost('/checkout-created', { orderId, checkoutSessionId: session.id, packageId: questionnaire.packageId });
+    await cockpitPost('/checkout-created', { orderId, checkoutSessionId: session.id, packageId: questionnaire.packageId, plan: questionnaire.plan, billing: questionnaire.billing, security: questionnaire.security });
     return json(res, 201, { url: session.url, orderId });
   } catch (error) {
     console.error('[signage checkout]', error.message);
@@ -224,6 +287,10 @@ async function handleWebhook(req, res) {
 async function handleCommerceRequest(req, res, pathname, url) {
   if (req.method === 'POST' && pathname === '/api/signage/checkout') {
     await handleCheckout(req, res);
+    return true;
+  }
+  if (req.method === 'GET' && pathname === '/api/signage/pricing') {
+    await handlePricing(req, res);
     return true;
   }
   if (req.method === 'GET' && pathname === '/api/signage/session') {

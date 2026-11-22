@@ -1,25 +1,22 @@
 import { useMemo, useState } from 'react';
 import { Monitor, Camera, Wifi, HardDrive, CalendarDays, ShieldCheck, ArrowRight, CheckCircle2 } from 'lucide-react';
 
-const PACKS = [
-  {
-    id: 'signage',
-    title: 'Digital Signage',
-    description: 'Gestion distante de votre écran LED, playlists, programmation et Player local offline-first.',
-    icon: Monitor,
-    features: ['Médiathèque en ligne', 'Playlists et programmation', 'Player local + HDMI', 'Continuité hors connexion', 'Historique de diffusion'],
-  },
-  {
-    id: 'signage-surveillance',
-    title: 'Signage + Vidéosurveillance',
-    description: 'Le pilotage de l’écran complété par la consultation et l’archivage sécurisé des caméras.',
-    icon: Camera,
-    features: ['Toutes les fonctions Digital Signage', 'Vue multi-caméras', 'Historique des enregistrements', 'Archivage Dropbox', 'Alertes de disponibilité'],
-  },
+export const SIGNELYA_PLANS = [
+  { id: 'affichage', title: 'Affichage', spots: 0, monthly: 69, description: 'Vous créez vos contenus, Signelya les programme et les diffuse.' },
+  { id: 'crea4', title: 'Pack Créa 4', spots: 4, monthly: 119, description: 'Affichage + 4 spots vidéo de 7 s créés chaque mois.' },
+  { id: 'crea10', title: 'Pack Créa 10', spots: 10, monthly: 179, description: 'Affichage + 10 spots vidéo de 7 s créés chaque mois.' },
+  { id: 'crea20', title: 'Pack Créa 20', spots: 20, monthly: 279, description: 'Affichage + 20 spots vidéo de 7 s créés chaque mois.' },
+  { id: 'crea30', title: 'Pack Créa 30', spots: 30, monthly: 359, description: 'Affichage + 30 spots vidéo de 7 s créés chaque mois.' },
 ];
+const SECURITY = { monthly: 60, setup: 241 };
+const SETUP_MONTHLY = 449;
+const PLAYER = 49;
+const euro = (value) => `${value.toLocaleString('fr-BE')} €`;
 
 const initialForm = {
-  packageId: 'signage',
+  plan: 'affichage',
+  billing: 'year',
+  security: false,
   company: '',
   vatNumber: '',
   contactName: '',
@@ -52,11 +49,12 @@ const initialForm = {
 };
 
 const getInitialForm = () => {
-  const requestedPackage = typeof window !== 'undefined'
-    ? new URLSearchParams(window.location.search).get('package')
-    : '';
-  const packageId = PACKS.some((pack) => pack.id === requestedPackage) ? requestedPackage : initialForm.packageId;
-  return { ...initialForm, packageId };
+  const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
+  const requestedPlan = params.get('plan');
+  const plan = SIGNELYA_PLANS.some((item) => item.id === requestedPlan) ? requestedPlan : initialForm.plan;
+  const billing = params.get('billing') === 'month' ? 'month' : 'year';
+  const security = params.get('security') === '1' || params.get('package') === 'signage-surveillance';
+  return { ...initialForm, plan, billing, security };
 };
 
 function Field({ label, children, help }) {
@@ -77,8 +75,11 @@ export default function SignageProduct() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const selectedPack = useMemo(() => PACKS.find((p) => p.id === form.packageId) || PACKS[0], [form.packageId]);
-  const surveillance = form.packageId === 'signage-surveillance';
+  const selectedPlan = useMemo(() => SIGNELYA_PLANS.find((p) => p.id === form.plan) || SIGNELYA_PLANS[0], [form.plan]);
+  const surveillance = form.security;
+  const yearly = form.billing === 'year';
+  const recurring = selectedPlan.monthly + (surveillance ? SECURITY.monthly : 0);
+  const oneTime = (yearly ? 0 : SETUP_MONTHLY + PLAYER) + (surveillance ? SECURITY.setup : 0);
   const set = (key, value) => setForm((current) => ({ ...current, [key]: value }));
 
   const next = () => {
@@ -139,30 +140,44 @@ export default function SignageProduct() {
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-400">Votre solution</p>
               <h2 className="mt-2 text-2xl font-black">Choisissez le niveau de service</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-400">Les montants sont gérés dans Stripe et peuvent évoluer sans modifier le site. Le prix final est présenté dans le Checkout sécurisé avant paiement.</p>
+              <p className="mt-2 text-sm leading-6 text-slate-400">Choisissez votre formule et votre mode de paiement. Le prix final, TVA comprise, est présenté dans le paiement sécurisé Stripe.</p>
             </div>
-            {PACKS.map((pack) => {
-              const Icon = pack.icon;
-              const active = form.packageId === pack.id;
+            <div className="inline-flex w-full rounded-2xl border border-white/10 bg-white/5 p-1">
+              {[['year', 'Annuel', 'Player + mise en service offerts'], ['month', 'Mensuel', 'Sans engagement']].map(([id, label, sub]) => (
+                <button key={id} type="button" aria-pressed={form.billing === id} onClick={() => set('billing', id)} className={`flex-1 rounded-xl px-3 py-2.5 text-center text-sm font-bold transition ${form.billing === id ? 'bg-cyan-400 text-slate-950' : 'text-slate-300'}`}>
+                  {label}<span className="block text-[11px] font-semibold opacity-80">{sub}</span>
+                </button>
+              ))}
+            </div>
+            {SIGNELYA_PLANS.map((plan) => {
+              const active = form.plan === plan.id;
               return (
-                <button key={pack.id} type="button" aria-pressed={active} onClick={() => set('packageId', pack.id)} className={`w-full rounded-2xl border p-5 text-left transition ${active ? 'border-cyan-400 bg-cyan-400/10' : 'border-white/10 bg-white/5 hover:border-white/20'}`}>
-                  <div className="flex items-start gap-4">
-                    <div className="rounded-xl bg-white/10 p-3"><Icon className="h-6 w-6 text-cyan-300" /></div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between gap-3"><h3 className="font-bold">{pack.title}</h3>{active && <CheckCircle2 className="h-5 w-5 text-cyan-300" />}</div>
-                      <p className="mt-1 text-sm leading-6 text-slate-400">{pack.description}</p>
-                      <div className="mt-3 space-y-1">{pack.features.map((f) => <div key={f} className="text-xs text-slate-300">✓ {f}</div>)}</div>
+                <button key={plan.id} type="button" aria-pressed={active} onClick={() => set('plan', plan.id)} className={`w-full rounded-2xl border p-4 text-left transition ${active ? 'border-cyan-400 bg-cyan-400/10' : 'border-white/10 bg-white/5 hover:border-white/20'}`}>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-xl bg-white/10 p-2.5"><Monitor className="h-5 w-5 text-cyan-300" /></div>
+                      <div><h3 className="font-bold">{plan.title}</h3><p className="text-xs leading-5 text-slate-400">{plan.description}</p></div>
                     </div>
+                    <div className="text-right"><div className="font-black">{euro(plan.monthly)}</div><div className="text-[11px] text-slate-400">HTVA / mois</div>{active && <CheckCircle2 className="ml-auto mt-1 h-4 w-4 text-cyan-300" />}</div>
                   </div>
                 </button>
               );
             })}
+            <label className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-4 transition ${surveillance ? 'border-cyan-400 bg-cyan-400/10' : 'border-white/10 bg-white/5'}`}>
+              <input className="mt-1" type="checkbox" checked={surveillance} onChange={(e) => set('security', e.target.checked)} />
+              <span className="flex-1"><span className="flex items-center gap-2 font-bold"><Camera className="h-4 w-4 text-cyan-300" />Option Sécurité (vidéosurveillance)</span><span className="block text-xs leading-5 text-slate-400">+{euro(SECURITY.monthly)} HTVA / mois · mise en service {euro(SECURITY.setup)} · caméras non incluses</span></span>
+            </label>
+            <div className="rounded-2xl border border-white/10 bg-slate-900 p-4 text-sm">
+              <div className="flex justify-between"><span className="text-slate-400">{yearly ? 'Abonnement annuel' : 'Abonnement mensuel'}</span><b>{yearly ? `${euro(recurring * 12)} HTVA / an` : `${euro(recurring)} HTVA / mois`}</b></div>
+              <div className="mt-1 flex justify-between"><span className="text-slate-400">À payer en plus aujourd’hui</span><b>{oneTime ? `${euro(oneTime)} HTVA` : 'Rien'}</b></div>
+              <p className="mt-2 text-xs leading-5 text-slate-500">{yearly ? 'Engagement 12 mois, payé à l’année. Player offert. Mise en service offerte pendant l’offre de lancement.' : `Inclut mise en service ${euro(SETUP_MONTHLY)} et Player ${euro(PLAYER)}.`} La TVA et le total exact sont présentés dans le paiement sécurisé.</p>
+            </div>
           </div>
 
           <div className="rounded-3xl bg-white p-5 text-slate-900 shadow-2xl md:p-8">
             <div className="mb-6 flex items-center justify-between gap-3">
               <div><p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-700">Configuration</p><h2 className="mt-1 text-xl font-black">Questionnaire technique — étape {step}/4</h2></div>
-              <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold">{selectedPack.title}</span>
+              <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold">{selectedPlan.title}{surveillance ? ' + Sécurité' : ''}</span>
             </div>
 
             {step === 1 && <div className="grid gap-4 md:grid-cols-2">

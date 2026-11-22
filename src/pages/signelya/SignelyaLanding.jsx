@@ -6,7 +6,6 @@ import {
   BellRing,
   CalendarDays,
   Camera,
-  Check,
   ChevronDown,
   Cloud,
   Download,
@@ -25,6 +24,7 @@ import {
   X,
 } from 'lucide-react';
 import './signelya.css';
+import './signelya-pricing.css';
 
 const APP_URL = 'https://app.signelya.jsinnovia.com/ecran-geant';
 const SUPPORT_EMAIL = 'info@jsinnovia.com';
@@ -35,14 +35,16 @@ const OFFICIAL_SOCIAL = 'https://signelya.jsinnovia.com/branding/signelya-offici
 
 const PRICES = {
   signage: { setup: 449, monthly: 69 },
-  surveillance: { setup: 690, monthly: 129 },
+  security: { setup: 241, monthly: 60 },
 };
 
-const money = new Intl.NumberFormat('fr-BE', {
-  style: 'currency',
-  currency: 'EUR',
-  maximumFractionDigits: 0,
-});
+const CREA_PACKS = [
+  { spots: 4, plan: 'crea4', monthly: 119 },
+  { spots: 10, plan: 'crea10', monthly: 179 },
+  { spots: 20, plan: 'crea20', monthly: 279 },
+  { spots: 30, plan: 'crea30', monthly: 359 },
+];
+const LAUNCH_OFFER_LABEL = '10 premiers clients ou jusqu’au 31 mars 2027';
 
 const FEATURES = [
   {
@@ -119,7 +121,7 @@ const FAQ = [
   },
   {
     question: 'La création de vidéos publicitaires est-elle comprise ?',
-    answer: 'La plateforme gère la diffusion et la programmation. La création ou l’adaptation de contenus peut être ajoutée selon vos besoins et fait l’objet d’une offre distincte.',
+    answer: 'Oui, avec les Packs Créa : de 4 à 30 spots vidéo de 7 secondes créés chaque mois, prêts à diffuser. La formule Affichage seule gère la diffusion de vos propres contenus ; un spot supplémentaire peut être commandé à 19 € HTVA.',
   },
   {
     question: 'Les prix affichés comprennent-ils la TVA ?',
@@ -176,27 +178,96 @@ function InstallCard({ icon: Icon, label, title, steps }) {
   );
 }
 
-function PriceCard({ featured = false, title, intro, price, packageId, features }) {
+const euro = (value) => `${String(value).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f')} €`;
+
+function PricingList({ items, yearly }) {
   return (
-    <article className={`sy-price-card ${featured ? 'sy-price-card--featured' : ''}`}>
-      {featured && <span className="sy-price-card__flag">Solution complète</span>}
-      <p className="sy-eyebrow">{featured ? 'Signelya + sécurité' : 'Signelya affichage digital'}</p>
-      <h3>{title}</h3>
-      <p className="sy-price-card__intro">{intro}</p>
-      <div className="sy-price-block">
-        <div>
-          <strong>{money.format(price.monthly)}</strong>
-          <span>HTVA / mois</span>
+    <ul className="sgy-list">
+      {items.map((item) => <li key={item}>{item}</li>)}
+      {yearly && <li className="sgy-gift">Player offert</li>}
+      {yearly && <li className="sgy-gift">Mise en service <s>{euro(PRICES.signage.setup)}</s> offerte</li>}
+    </ul>
+  );
+}
+
+function SignelyaPricing() {
+  const [billing, setBilling] = useState('year');
+  const [spots, setSpots] = useState(10);
+  const yearly = billing === 'year';
+  const pack = CREA_PACKS.find((item) => item.spots === spots) || CREA_PACKS[1];
+  const sub = (monthly) => (yearly ? `soit ${euro(monthly * 12)} HTVA / an` : `Player ${euro(49)} · mise en service ${euro(PRICES.signage.setup)}`);
+  const configure = (plan, security = false) => `/digital-signage?plan=${plan}&billing=${billing}${security ? '&security=1' : ''}#configuration`;
+  return (
+    <section id="tarifs" className="sgy-pricing">
+      <div className="sgy-wrap">
+        <div className="sgy-head">
+          <span className="sgy-eyebrow"><i />TARIFS PROFESSIONNELS</span>
+          <h2>Vos écrans prennent vie.<br /><span className="sgy-grad">À un prix clair.</span></h2>
+          <p>Choisissez votre formule : pilotage seul, ou pilotage avec création de vos spots vidéo chaque mois.</p>
         </div>
-        <p><b>{money.format(price.setup)} HTVA</b> de mise en service initiale</p>
+        <div className="sgy-launch">
+          <b>🚀 Offre de lancement : <span className="sgy-grad">Player offert + mise en service offerte</span></b>
+          <span>Paiement annuel · {LAUNCH_OFFER_LABEL}</span>
+        </div>
+        <div className="sgy-toggle"><div>
+          <button type="button" className={yearly ? 'on' : ''} aria-pressed={yearly} onClick={() => setBilling('year')}>Annuel <small>Player offert</small></button>
+          <button type="button" className={!yearly ? 'on' : ''} aria-pressed={!yearly} onClick={() => setBilling('month')}>Mensuel <small>sans engagement</small></button>
+        </div></div>
+        <div className="sgy-grid">
+          <article className="sgy-card">
+            <span className="sgy-kicker">DIGITAL SIGNAGE</span>
+            <h3>Affichage</h3>
+            <p className="sgy-desc">Vous créez vos contenus, Signelya les programme et les diffuse.</p>
+            <div className="sgy-price"><strong>{euro(PRICES.signage.monthly)}</strong><em>HTVA / mois</em></div>
+            <div className="sgy-sub">{sub(PRICES.signage.monthly)}</div>
+            <PricingList yearly={yearly} items={['Médiathèque, playlists et programmation', 'Player local, diffusion même hors connexion', 'État des écrans en temps réel et historique', 'Cockpit sur téléphone, tablette et ordinateur', 'Support local en français']} />
+            <Link className="sgy-cta" to={configure('affichage')}>Choisir Affichage</Link>
+          </article>
+          <article className="sgy-card sgy-hot">
+            <span className="sgy-tag">LE PLUS COMPLET</span>
+            <span className="sgy-kicker">AFFICHAGE + CRÉATION</span>
+            <h3>Pack Créa</h3>
+            <p className="sgy-desc">On crée vos spots publicitaires chaque mois, prêts à diffuser.</p>
+            <div className="sgy-tabs" role="group" aria-label="Nombre de spots par mois">
+              {CREA_PACKS.map((item) => (
+                <button key={item.spots} type="button" className={item.spots === spots ? 'on' : ''} aria-pressed={item.spots === spots} onClick={() => setSpots(item.spots)}>{item.spots}<small>spots</small></button>
+              ))}
+            </div>
+            <div className="sgy-price"><strong>{euro(pack.monthly)}</strong><em>HTVA / mois</em></div>
+            <div className="sgy-sub">{sub(pack.monthly)}</div>
+            <PricingList yearly={yearly} items={[`${pack.spots} spots vidéo de 7 s créés chaque mois`, 'Toutes les fonctions Affichage incluses', '1 aller-retour de corrections par spot', 'Livraison sous 72 h ouvrables']} />
+            <Link className="sgy-cta" to={configure(pack.plan)}>Choisir le Pack Créa {pack.spots}</Link>
+          </article>
+          <article className="sgy-card">
+            <span className="sgy-kicker">OPTION</span>
+            <h3>Sécurité</h3>
+            <p className="sgy-desc">Ajoutez la vidéosurveillance à n’importe quelle formule.</p>
+            <div className="sgy-price"><strong>+{euro(PRICES.security.monthly)}</strong><em>HTVA / mois</em></div>
+            <div className="sgy-sub">mise en service {euro(PRICES.security.setup)} HTVA</div>
+            <ul className="sgy-list">
+              {['Vue multi-caméras selon compatibilité', 'Historique et durée de conservation configurés', 'Archivage Dropbox lorsque prévu', 'Alertes de disponibilité et supervision', 'Activable à tout moment'].map((item) => <li key={item}>{item}</li>)}
+            </ul>
+            <Link className="sgy-cta" to={configure('affichage', true)}>Ajouter la sécurité</Link>
+          </article>
+        </div>
+        <div className="sgy-extra">
+          <div className="sgy-box">
+            <h4>Bon à savoir</h4>
+            <ul>
+              <li><b>1 spot = 7 secondes.</b> Un spot de 15 s compte pour 2.</li>
+              <li><b>Spot supplémentaire :</b> {euro(19)} HTVA l’unité.</li>
+              <li>Spots non utilisés reportables 1 mois.</li>
+              <li>Caméras non incluses dans l’option Sécurité.</li>
+            </ul>
+          </div>
+          <div className="sgy-box">
+            <h4>Installation des écrans</h4>
+            <p>La fixation des écrans, les supports et le câblage sont réalisés par notre <b>installateur partenaire</b>, sur devis séparé. Nous vous mettons en contact.</p>
+          </div>
+        </div>
+        <p className="sgy-legal">Tarifs hors TVA. Formules annuelles : engagement et paiement pour 12 mois. Formules mensuelles : sans engagement, Player {euro(49)} et mise en service {euro(PRICES.signage.setup)}.<br />Le prix total et la TVA applicable sont confirmés avant tout paiement.</p>
       </div>
-      <ul>
-        {features.map((feature) => <li key={feature}><Check aria-hidden="true" />{feature}</li>)}
-      </ul>
-      <Link className={`sy-button ${featured ? 'sy-button--primary' : 'sy-button--secondary'} sy-button--full`} to={`/digital-signage?package=${packageId}#configuration`}>
-        Configurer cette offre <ArrowRight aria-hidden="true" />
-      </Link>
-    </article>
+    </section>
   );
 }
 
@@ -277,8 +348,8 @@ export default function SignelyaLanding() {
         },
         {
           '@type': 'Offer',
-          name: 'SIGNELYA Signage + Vidéosurveillance',
-          price: String(PRICES.surveillance.monthly),
+          name: 'SIGNELYA Option Sécurité',
+          price: String(PRICES.security.monthly),
           priceCurrency: 'EUR',
           category: 'subscription',
         },
@@ -467,45 +538,7 @@ export default function SignelyaLanding() {
           </div>
         </section>
 
-        <section id="tarifs" className="sy-section sy-section--pricing">
-          <div className="sy-container">
-            <div className="sy-section-heading">
-              <p className="sy-eyebrow">Tarifs professionnels</p>
-              <h2>Choisissez le niveau de pilotage adapté.</h2>
-              <p>Chaque activation commence par un questionnaire technique afin de vérifier l’écran, le Player, le réseau et les éventuelles caméras.</p>
-            </div>
-            <div className="sy-pricing-grid">
-              <PriceCard
-                title="Digital Signage"
-                intro="Pour programmer et piloter vos contenus à distance sur votre installation d’affichage."
-                price={PRICES.signage}
-                packageId="signage"
-                features={[
-                  'Médiathèque, playlists et programmation',
-                  'Player local avec continuité hors connexion',
-                  'État des écrans et historique opérationnel',
-                  'Accès au cockpit mobile et ordinateur',
-                  'Questionnaire technique avant activation',
-                ]}
-              />
-              <PriceCard
-                featured
-                title="Signage + Vidéosurveillance"
-                intro="Le pilotage des écrans complété par la consultation et l’archivage sécurisé des caméras compatibles."
-                price={PRICES.surveillance}
-                packageId="signage-surveillance"
-                features={[
-                  'Toutes les fonctions Digital Signage',
-                  'Vue multi-caméras selon compatibilité',
-                  'Historique et durée de conservation configurée',
-                  'Archivage Dropbox lorsque prévu',
-                  'Alertes de disponibilité et supervision',
-                ]}
-              />
-            </div>
-            <p className="sy-pricing-note">Tarifs hors TVA. Les options, la création de contenus, le matériel supplémentaire et les interventions particulières sont présentés séparément lorsqu’ils sont nécessaires. Le prix total et la TVA applicable sont confirmés avant paiement.</p>
-          </div>
-        </section>
+        <SignelyaPricing />
 
         <section id="securite" className="sy-section sy-section--panel">
           <div className="sy-container sy-security">

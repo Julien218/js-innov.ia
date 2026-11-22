@@ -8,7 +8,8 @@ const mainServer = fs.readFileSync(path.join(__dirname, '..', 'server.mjs'), 'ut
 
 test('Stripe Checkout uses subscription mode, Prices and dynamic payment methods', () => {
   assert.match(server, /mode: 'subscription'/);
-  assert.match(server, /line_items\[0\]\[price\]/);
+  assert.match(server, /line_items\[\$\{index\}\]\[price\]/);
+  assert.match(server, /lookup_keys\[\]/);
   assert.doesNotMatch(server, /payment_method_types/);
   assert.match(server, /integration_identifier/);
   assert.match(server, /2026-06-24\.dahlia/);
@@ -37,3 +38,11 @@ test('commerce is mounted in the current NOVA server and API errors stay JSON', 
   assert.match(mainServer, /Route API inconnue/);
 });
 
+
+test('la grille Signelya résout ses prix Stripe par lookup_key et respecte l’offre de lancement', () => {
+  assert.match(server, /signelya_\$\{plan\}_\$\{billing === 'year' \? 'yearly' : 'monthly'\}/);
+  assert.match(server, /signelya_setup_449/);
+  assert.match(server, /signelya_player_49/);
+  assert.match(server, /SIGNELYA_LAUNCH_OFFER/);
+  assert.match(server, /\/api\/signage\/pricing/);
+});
