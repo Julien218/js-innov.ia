@@ -4,9 +4,9 @@ import { ArrowUpRight, Clapperboard, MonitorPlay, ReceiptText } from 'lucide-rea
 
 const products = [
   {
-    name: 'Fabrique vidéo automatisée',
-    signature: 'Connectée au Cockpit Js‑Innov.IA',
-    description: 'Déposez vos rushs : vos Reels sont montés à l’image de votre marque, validés par vous sur WhatsApp puis publiés automatiquement sur Facebook et Instagram.',
+    name: 'Studio vidéo',
+    signature: 'Reels & spots by Js‑Innov.IA',
+    description: 'Envoyez vos rushs : nous créons vos Reels à l’image de votre marque, vous les validez sur WhatsApp et nous les publions sur Facebook et Instagram.',
     url: '/offres#video',
     action: 'Voir l’offre vidéo',
     icon: Clapperboard,

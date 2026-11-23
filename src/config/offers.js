@@ -16,12 +16,12 @@ export const BRAND = {
 export const OFFER_FAMILIES = [
   {
     id: 'video',
-    label: 'Fabrique vidéo automatisée',
+    label: 'Studio vidéo réseaux sociaux',
     kicker: 'Vidéos & réseaux sociaux',
     color: '#FF5A8A',
     description:
-      'Vous déposez vos photos et vidéos. Notre fabrique connectée au Cockpit Js-Innov.IA monte vos Reels selon l’ADN de votre marque (sous-titres, musique, générique), vous les validez sur WhatsApp, puis ils sont publiés automatiquement sur vos pages Facebook et Instagram.',
-    steps: ['Dépôt de vos rushs', 'Montage IA à votre image', 'Validation sur WhatsApp', 'Publication programmée'],
+      'Vous nous envoyez vos photos et vidéos. Le studio Js-Innov.IA crée vos Reels à l’image de votre marque (sous-titres, musique, générique), vous les validez sur WhatsApp, puis nous les publions pour vous sur Facebook et Instagram.',
+    steps: ['Dépôt de vos rushs', 'Création à votre image', 'Validation sur WhatsApp', 'Publication programmée'],
   },
   {
     id: 'signelya',
@@ -51,18 +51,18 @@ export const OFFER_FAMILIES = [
 
 // billing: 'monthly' = mensuel sans engagement ; 'yearly' = engagement 12 mois payé à l'année.
 export const OFFERS = [
-  // ── Fabrique vidéo : prix à valider, vendus sur devis tant qu'aucun prix Stripe n'existe.
+  // ── Studio vidéo : prix à valider, vendus sur devis tant qu'aucun prix Stripe n'existe.
   {
     id: 'video-reels',
     family: 'video',
     name: 'Reels pour vos réseaux',
-    tagline: 'Montage automatique + publication Facebook / Instagram',
+    tagline: 'Création + publication Facebook / Instagram',
     features: [
       'Vos vidéos montées selon l’ADN de votre marque',
       'Sous-titres dynamiques, musique, générique',
       'Textes des posts et premier commentaire rédigés',
       'Validation par lien WhatsApp avant publication',
-      'Publication immédiate ou programmée',
+      'Publication immédiate ou programmée par nos soins',
     ],
     priceLabel: 'Sur devis',
   },
@@ -71,7 +71,7 @@ export const OFFERS = [
     family: 'video',
     name: 'Spots pour écrans LED',
     tagline: '7 s en 1920 × 1080, 3 versions au choix',
-    features: ['Photos animées par IA', 'Logo, accroches et prix posés à l’écran', 'Diffusion directe sur Signelya'],
+    features: ['Vos photos mises en mouvement', 'Logo, accroches et prix posés à l’écran', 'Diffusion directe sur Signelya'],
     priceLabel: 'Inclus dans les Packs Créa Signelya',
     linkFamily: 'signelya',
   },
@@ -139,7 +139,7 @@ export const OFFERS = [
     family: 'signelya',
     name: 'Spot vidéo supplémentaire',
     tagline: 'Un spot de 7 s en plus de votre pack',
-    features: ['Créé par la fabrique vidéo', 'Livré dans votre médiathèque Signelya'],
+    features: ['Créé par le studio Js-Innov.IA', 'Livré dans votre médiathèque Signelya'],
     oneTime: 19,
     checkout: { oneTime: 'signelya_spot_19' },
     quantity: { min: 1, max: 30 },

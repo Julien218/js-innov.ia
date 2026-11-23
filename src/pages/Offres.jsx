@@ -142,7 +142,7 @@ export default function Offres() {
       <header className="mx-auto max-w-4xl text-center">
         <p className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-black uppercase tracking-[0.18em]" style={{ borderColor: `${GOLD}40`, color: GOLD }}><Sparkles className="h-3.5 w-3.5" /> Offres & tarifs</p>
         <h1 className="mt-6 text-4xl font-black tracking-tight md:text-6xl">Choisissez, payez, <span className="text-gold-gradient">c’est lancé.</span></h1>
-        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/55">Toutes les solutions {BRAND.name}, avec leurs prix. Les abonnements se paient en ligne par Stripe, la facture arrive automatiquement par e-mail et votre commande est transmise directement à notre Cockpit.</p>
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/55">Toutes les solutions {BRAND.name}, avec leurs prix. Les abonnements se paient en ligne par Stripe, la facture arrive par e-mail et notre équipe démarre aussitôt.</p>
       </header>
 
       {cancelled && <p role="status" className="mx-auto mt-8 max-w-xl rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-center text-sm text-white/60">Paiement annulé : rien n’a été débité. Vous pouvez reprendre quand vous voulez.</p>}
