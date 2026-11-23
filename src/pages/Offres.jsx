@@ -12,7 +12,7 @@ const GOLD = '#D4AF37';
 const quoteLink = (offer) => `${BRAND.whatsapp}?text=${encodeURIComponent(`Bonjour Julien, je souhaite un devis pour « ${offer.name} » (${OFFER_FAMILIES.find((f) => f.id === offer.family)?.label}).`)}`;
 
 function PriceBlock({ offer, billing }) {
-  if (offer.oneTime) return <p className="text-3xl font-black text-white">{formatPrice(offer.oneTime)}<span className="ml-1 text-sm font-semibold text-white/40">HTVA / unité</span></p>;
+  if (offer.oneTime) return <p className="text-3xl font-black text-white">{formatPrice(offer.oneTime)}<span className="ml-1 text-sm font-semibold text-white/40">HTVA{(offer.quantity?.max ?? 1) > 1 ? ' / unité' : ' · une fois'}</span></p>;
   if (offer.prices) {
     const value = offer.prices[billing] ?? offer.prices.monthly;
     const period = offer.prices[billing] && billing === 'yearly' ? '/an' : '/mois';
@@ -67,7 +67,7 @@ function CheckoutDialog({ offer, billing, onClose }) {
           {setup && <div className="flex justify-between"><dt className="text-white/55">{setup.label}</dt><dd>{formatPrice(setup.amount)}</dd></div>}
           {player && <div className="flex justify-between"><dt className="text-white/55">{player.label}</dt><dd>{formatPrice(player.amount)}</dd></div>}
           {billing === 'yearly' && offer.family === 'signelya' && !offer.setup && !offer.oneTime && <div className="flex justify-between"><dt className="text-white/55">Player Signelya</dt><dd className="text-emerald-300">offert</dd></div>}
-          {offer.oneTime && (
+          {offer.oneTime && (offer.quantity?.max ?? 1) > 1 && (
             <div className="flex items-center justify-between">
               <dt className="text-white/55"><label htmlFor="qty">Quantité</label></dt>
               <dd><input id="qty" type="number" min={offer.quantity?.min ?? 1} max={offer.quantity?.max ?? 1} value={quantity} onChange={(event) => setQuantity(Math.max(offer.quantity?.min ?? 1, Math.min(offer.quantity?.max ?? 1, Number(event.target.value) || 1)))} className="w-20 rounded-lg border border-white/15 bg-black px-2 py-1 text-right" /></dd>

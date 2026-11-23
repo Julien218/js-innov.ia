@@ -53,7 +53,7 @@ export const OFFER_FAMILIES = [
 export const OFFERS = [
   // ── Studio vidéo : packs Reels (prix Stripe live créés le 23/11/2026), mensuels sans engagement.
   ...[
-    [4, 149, false], [8, 259, true], [12, 349, false],
+    [4, 149, false], [8, 259, false], [12, 349, false],
   ].map(([count, monthly, popular]) => ({
     id: `video-reseaux-${count}`,
     family: 'video',
@@ -71,6 +71,45 @@ export const OFFERS = [
     checkout: { monthly: `studio_reseaux${count}_monthly` },
     popular,
   })),
+  {
+    id: 'video-visibilite',
+    family: 'video',
+    name: 'Pack Visibilité',
+    tagline: '8 Reels + stratégie mensuelle',
+    features: ['Tout le Pack Réseaux 8', 'Calendrier de publication du mois', 'Idées et scripts de vidéos', 'Rapport mensuel et appel de 30 min'],
+    prices: { monthly: 329 },
+    checkout: { monthly: 'studio_visibilite_monthly' },
+    popular: true,
+  },
+  {
+    id: 'video-presence',
+    family: 'video',
+    name: 'Pack Présence',
+    tagline: '12 Reels + stratégie + vos messages',
+    features: ['Tout le Pack Réseaux 12', 'Stratégie mensuelle complète', 'Réponses aux commentaires et messages de vos pages'],
+    prices: { monthly: 449 },
+    checkout: { monthly: 'studio_presence_monthly' },
+  },
+  {
+    id: 'video-demarrage',
+    family: 'video',
+    name: 'Démarrage Stratégie',
+    tagline: 'Le point de départ, une seule fois',
+    features: ['Audit de vos réseaux et de 3 concurrents', 'Ligne éditoriale et ton de marque', 'Calendrier sur 3 mois', 'Appel de 45 min'],
+    oneTime: 290,
+    checkout: { oneTime: 'studio_demarrage_strategie_290' },
+    quantity: { min: 1, max: 1 },
+  },
+  {
+    id: 'video-option-strategie',
+    family: 'video',
+    name: 'Option Stratégie',
+    tagline: 'À ajouter à un Pack Réseaux',
+    features: ['Calendrier du mois', 'Idées et scripts de vidéos', 'Rapport mensuel et appel de 30 min'],
+    prices: { monthly: 99 },
+    checkout: { monthly: 'studio_option_strategie_monthly' },
+    addon: true,
+  },
   {
     id: 'video-reel',
     family: 'video',

@@ -39,6 +39,9 @@ test('checkout plans only use known Stripe lookup keys and reject unpriced offer
   assert.throws(() => buildCheckoutPlan('video-reseaux-8', 'yearly'));
   assert.equal(buildCheckoutPlan('video-reel', 'one_time', 3).items[0].lookupKey, 'studio_reel_49');
   assert.throws(() => buildCheckoutPlan('video-ecran', 'monthly'), /offer-not-payable/);
+  assert.equal(buildCheckoutPlan('video-visibilite', 'monthly').items[0].lookupKey, 'studio_visibilite_monthly');
+  assert.equal(buildCheckoutPlan('video-demarrage', 'one_time', 1).items[0].lookupKey, 'studio_demarrage_strategie_290');
+  assert.throws(() => buildCheckoutPlan('video-demarrage', 'one_time', 2));
   assert.throws(() => buildCheckoutPlan('pack-business', 'monthly'), /offer-not-payable/);
   assert.throws(() => buildCheckoutPlan('hainoflow-pro', 'monthly'), /offer-not-payable/);
 
