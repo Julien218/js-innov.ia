@@ -57,7 +57,7 @@ function CheckoutDialog({ offer, billing, onClose }) {
           <div>
             <p className="text-xs font-black uppercase tracking-[0.16em]" style={{ color: GOLD }}>Commande sécurisée</p>
             <h2 id="checkout-title" className="mt-1 text-xl font-black">{offer.family === 'signelya' ? `Signelya ${offer.name}` : offer.name}</h2>
-            {!offer.oneTime && <p className="mt-1 text-xs text-white/45">{BILLING_LABELS[billing]}</p>}
+            {!offer.oneTime && <p className="mt-1 text-xs text-white/45">{offer.family === 'signelya' ? BILLING_LABELS[billing] : 'Mensuel sans engagement'}</p>}
           </div>
           <button type="button" onClick={onClose} aria-label="Fermer" className="rounded-full p-1 text-white/50 hover:text-white"><X className="h-5 w-5" /></button>
         </div>
@@ -196,7 +196,7 @@ export default function Offres() {
         </div>
       </section>
 
-      {selected && <CheckoutDialog offer={selected} billing={selected.oneTime ? 'one_time' : billing} onClose={() => setSelected(null)} />}
+      {selected && <CheckoutDialog offer={selected} billing={selected.oneTime ? 'one_time' : (selected.checkout?.[billing] ? billing : 'monthly')} onClose={() => setSelected(null)} />}
     </div>
   );
 }

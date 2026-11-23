@@ -35,7 +35,10 @@ test('checkout plans only use known Stripe lookup keys and reject unpriced offer
   assert.throws(() => buildCheckoutPlan('signelya-spot', 'one_time', 0));
   assert.throws(() => buildCheckoutPlan('signelya-spot', 'one_time', 999));
   assert.throws(() => buildCheckoutPlan('signelya-crea-4', 'weekly'));
-  assert.throws(() => buildCheckoutPlan('video-reels', 'monthly'), /offer-not-payable/);
+  assert.deepEqual(buildCheckoutPlan('video-reseaux-8', 'monthly').items, [{ lookupKey: 'studio_reseaux8_monthly', quantity: 1 }]);
+  assert.throws(() => buildCheckoutPlan('video-reseaux-8', 'yearly'));
+  assert.equal(buildCheckoutPlan('video-reel', 'one_time', 3).items[0].lookupKey, 'studio_reel_49');
+  assert.throws(() => buildCheckoutPlan('video-ecran', 'monthly'), /offer-not-payable/);
   assert.throws(() => buildCheckoutPlan('pack-business', 'monthly'), /offer-not-payable/);
   assert.throws(() => buildCheckoutPlan('hainoflow-pro', 'monthly'), /offer-not-payable/);
 
@@ -61,7 +64,7 @@ test('Stripe webhook signatures are verified with timestamp tolerance', async ()
 test('checkout refuses missing terms acceptance before any Stripe call', async () => {
   const { createCheckoutSession } = await import('../server-shop.mjs');
   await assert.rejects(() => createCheckoutSession({ offerId: 'signelya-crea-4', billing: 'yearly' }), /conditions générales/);
-  await assert.rejects(() => createCheckoutSession({ offerId: 'video-reels', acceptTerms: true }), /Offre ou formule invalide/);
+  await assert.rejects(() => createCheckoutSession({ offerId: 'video-ecran', acceptTerms: true }), /Offre ou formule invalide/);
 });
 
 test('Stripe form encoding uses bracket notation for nested params', async () => {

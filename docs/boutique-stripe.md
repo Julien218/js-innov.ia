@@ -11,7 +11,9 @@ Page publique : `/offres` (alias `/tarifs`, `/boutique`). Confirmation : `/paiem
 | Player (mensuel uniquement, offert en annuel) | `signelya_player_49` |
 | Spot vidéo supplémentaire | `signelya_spot_19` |
 
-Les autres offres (fabrique vidéo Reels, packs de création) restent **sur devis**. HainoFlow renvoie vers son application.
+Studio vidéo : `studio_reseaux4_monthly`, `studio_reseaux8_monthly`, `studio_reseaux12_monthly` (mensuel) et `studio_reel_49` (unité).
+
+Les packs de création restent **sur devis**. HainoFlow renvoie vers son application.
 Pour rendre une offre payable : créer le prix dans Stripe avec une `lookup_key`, puis renseigner `checkout` dans `src/config/offers.js`. Le serveur ne crée jamais de prix à la volée.
 
 ## Circuit

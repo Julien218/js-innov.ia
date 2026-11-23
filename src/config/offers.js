@@ -51,20 +51,35 @@ export const OFFER_FAMILIES = [
 
 // billing: 'monthly' = mensuel sans engagement ; 'yearly' = engagement 12 mois payé à l'année.
 export const OFFERS = [
-  // ── Studio vidéo : prix à valider, vendus sur devis tant qu'aucun prix Stripe n'existe.
-  {
-    id: 'video-reels',
+  // ── Studio vidéo : packs Reels (prix Stripe live créés le 23/11/2026), mensuels sans engagement.
+  ...[
+    [4, 149, false], [8, 259, true], [12, 349, false],
+  ].map(([count, monthly, popular]) => ({
+    id: `video-reseaux-${count}`,
     family: 'video',
-    name: 'Reels pour vos réseaux',
-    tagline: 'Création + publication Facebook / Instagram',
+    name: `Pack Réseaux ${count}`,
+    tagline: `${count} Reels par mois, publiés pour vous`,
     features: [
-      'Vos vidéos montées selon l’ADN de votre marque',
+      `${count} Reels par mois à l’image de votre marque`,
       'Sous-titres dynamiques, musique, générique',
       'Textes des posts et premier commentaire rédigés',
       'Validation par lien WhatsApp avant publication',
-      'Publication immédiate ou programmée par nos soins',
+      'Publication Facebook et Instagram, immédiate ou programmée',
+      '1 modification incluse par Reel · 60 s maximum',
     ],
-    priceLabel: 'Sur devis',
+    prices: { monthly },
+    checkout: { monthly: `studio_reseaux${count}_monthly` },
+    popular,
+  })),
+  {
+    id: 'video-reel',
+    family: 'video',
+    name: 'Reel à l’unité',
+    tagline: 'Un Reel, sans abonnement',
+    features: ['Créé à partir de vos rushs', 'Validation WhatsApp', 'Publication Facebook et Instagram'],
+    oneTime: 49,
+    checkout: { oneTime: 'studio_reel_49' },
+    quantity: { min: 1, max: 12 },
   },
   {
     id: 'video-ecran',
