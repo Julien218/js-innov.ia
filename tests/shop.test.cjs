@@ -69,3 +69,22 @@ test('Stripe form encoding uses bracket notation for nested params', async () =>
   const encoded = decodeURIComponent(encodeStripeForm({ line_items: [{ price: 'p', quantity: 1 }], automatic_tax: { enabled: true } }).join('&'));
   assert.equal(encoded, 'line_items[0][price]=p&line_items[0][quantity]=1&automatic_tax[enabled]=true');
 });
+
+test('orders keep payment status and are never acknowledged without the Cockpit', async () => {
+  const { orderFromEvent, handleStripeWebhook } = await import('../server-shop.mjs');
+  const pending = orderFromEvent({ id: 'evt_1', type: 'checkout.session.completed', data: { object: { object: 'checkout.session', id: 'cs_1', payment_status: 'unpaid', metadata: { offer_id: 'signelya-crea-4' } } } });
+  assert.equal(pending.payment_status, 'unpaid');
+  assert.equal(pending.fulfill, false);
+  const paid = orderFromEvent({ id: 'evt_2', type: 'checkout.session.completed', data: { object: { object: 'checkout.session', id: 'cs_2', payment_status: 'paid' } } });
+  assert.equal(paid.fulfill, true);
+  assert.equal(orderFromEvent({ id: 'evt_3', type: 'checkout.session.async_payment_succeeded', data: { object: { object: 'checkout.session', payment_status: 'paid' } } }).fulfill, true);
+
+  const secret = 'whsec_unit';
+  process.env.STRIPE_WEBHOOK_SECRET = secret;
+  delete process.env.COCKPIT_ORDER_WEBHOOK_URL;
+  const body = JSON.stringify({ id: 'evt_4', type: 'checkout.session.completed', data: { object: { object: 'checkout.session', payment_status: 'paid' } } });
+  const t = Math.floor(Date.now() / 1000);
+  const sig = crypto.createHmac('sha256', secret).update(`${t}.${body}`).digest('hex');
+  await assert.rejects(() => handleStripeWebhook(body, `t=${t},v1=${sig}`), (error) => error.statusCode === 503);
+  delete process.env.STRIPE_WEBHOOK_SECRET;
+});

@@ -8,6 +8,7 @@ const SIGNATURE_TOLERANCE_S = 300;
 const FORWARDED_EVENTS = new Set([
   'checkout.session.completed',
   'checkout.session.async_payment_succeeded',
+  'checkout.session.async_payment_failed',
   'invoice.paid',
   'invoice.payment_failed',
   'customer.subscription.deleted',
@@ -164,6 +165,10 @@ export function orderFromEvent(event) {
     livemode: event.livemode === true,
     offer_id: object.metadata?.offer_id || object.subscription_details?.metadata?.offer_id || object.parent?.subscription_details?.metadata?.offer_id || null,
     billing: object.metadata?.billing || null,
+    // 'paid' | 'unpaid' | 'no_payment_required' : le Cockpit ne livre que si le paiement est acquis.
+    payment_status: object.object === 'checkout.session' ? object.payment_status || null : (object.object === 'invoice' ? (object.status === 'paid' ? 'paid' : 'unpaid') : null),
+    fulfill: event.type === 'checkout.session.async_payment_succeeded' || event.type === 'invoice.paid'
+      || (event.type === 'checkout.session.completed' && ['paid', 'no_payment_required'].includes(object.payment_status)),
     stripe: {
       checkout_session: object.object === 'checkout.session' ? object.id : null,
       invoice: object.object === 'invoice' ? object.id : (typeof object.invoice === 'string' ? object.invoice : null),
@@ -192,8 +197,10 @@ export async function handleStripeWebhook(rawBody, signatureHeader) {
 
   const order = orderFromEvent(event);
   if (!cockpitUrl || cockpitSecret.length < 32) {
-    console.warn('[shop] commande reçue mais Cockpit non configuré :', event.type, event.id);
-    return { received: true, forwarded: false };
+    // Ne jamais acquitter une commande non transmise : Stripe relivrera l'événement
+    // (jusqu'à 3 jours) une fois le Cockpit configuré.
+    console.error('[shop] commande non transmise, Cockpit non configuré :', event.type, event.id);
+    throw new ShopError('Cockpit non configuré', 503);
   }
   const payload = JSON.stringify(order);
   const upstream = await fetch(cockpitUrl, {

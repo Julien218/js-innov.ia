@@ -19,9 +19,9 @@ Pour rendre une offre payable : créer le prix dans Stripe avec une `lookup_key`
 1. Le visiteur choisit une offre, accepte les CGV → `POST /api/shop/checkout`.
 2. Le serveur retrouve les prix Stripe par `lookup_key` et ouvre une session Checkout : adresse de facturation obligatoire, n° de TVA, TVA calculée par Stripe Tax, codes promo.
 3. Stripe envoie la facture automatiquement (abonnements : à chaque échéance ; achats ponctuels : `invoice_creation`).
-4. `POST /api/shop/webhook` vérifie la signature Stripe puis transmet la commande au Cockpit (`COCKPIT_ORDER_WEBHOOK_URL`), signée `x-jsinnovia-signature: t=…,v1=HMAC-SHA256(t.body)`. Si le Cockpit répond en erreur, Stripe relivre l'événement.
+4. `POST /api/shop/webhook` vérifie la signature Stripe puis transmet la commande au Cockpit (`COCKPIT_ORDER_WEBHOOK_URL`), signée `x-jsinnovia-signature: t=…,v1=HMAC-SHA256(t.body)`. Si le Cockpit répond en erreur ou n'est pas encore configuré, le site répond 503/502 et Stripe relivre l'événement (jusqu'à 3 jours). Chaque commande transmise porte `payment_status` et `fulfill` : le Cockpit ne lance la production que si `fulfill` vaut `true` (un paiement différé arrive d'abord `unpaid`, puis `async_payment_succeeded`).
 
-Événements transmis : `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `invoice.paid`, `invoice.payment_failed`, `customer.subscription.deleted`.
+Événements transmis : `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `invoice.paid`, `invoice.payment_failed`, `customer.subscription.deleted`.
 
 ## Variables du serveur
 
