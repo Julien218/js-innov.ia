@@ -10,8 +10,11 @@ FROM node:22-alpine
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /app/dist ./dist
+COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/server.mjs ./server.mjs
 COPY --from=build /app/server-seo-audit.mjs ./server-seo-audit.mjs
 COPY --from=build /app/privacy-consent.mjs ./privacy-consent.mjs
+COPY --from=build /app/server-shop.mjs ./server-shop.mjs
+COPY --from=build /app/src/config/offers.js ./src/config/offers.js
 EXPOSE 8080
 CMD ["node", "server.mjs"]
