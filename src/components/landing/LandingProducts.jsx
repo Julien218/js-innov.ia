@@ -1,7 +1,17 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, MonitorPlay, ReceiptText } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowUpRight, Clapperboard, MonitorPlay, ReceiptText } from 'lucide-react';
 
 const products = [
+  {
+    name: 'Fabrique vidéo automatisée',
+    signature: 'Connectée au Cockpit Js‑Innov.IA',
+    description: 'Déposez vos rushs : vos Reels sont montés à l’image de votre marque, validés par vous sur WhatsApp puis publiés automatiquement sur Facebook et Instagram.',
+    url: '/offres#video',
+    action: 'Voir l’offre vidéo',
+    icon: Clapperboard,
+    color: '#FF5A8A',
+  },
   {
     name: 'HainoFlow',
     signature: 'HainoFlow — by JS‑Innov.IA',
@@ -28,14 +38,14 @@ export default function LandingProducts() {
     <section id="produits" className="relative px-5 py-24">
       <div className="mx-auto max-w-6xl">
         <div className="mb-12 text-center">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-300">Applications produits</p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-white md:text-5xl">Des solutions JS‑Innov.IA prêtes à travailler</h2>
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-300">Produits Js‑Innov.IA</p>
+          <h2 className="mt-4 text-3xl font-black tracking-tight text-white md:text-5xl">Des solutions prêtes à travailler pour vous</h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-white/45">
-            Chaque produit possède son espace dédié et peut évoluer avec les besoins de votre entreprise.
+            Prix publics, paiement en ligne sécurisé par Stripe et facture automatique.
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-5 md:grid-cols-3">
           {products.map(({ icon: Icon, ...product }, index) => (
             <motion.a
               key={product.name}
@@ -67,6 +77,11 @@ export default function LandingProducts() {
               </span>
             </motion.a>
           ))}
+        </div>
+        <div className="mt-10 text-center">
+          <Link to="/offres" className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-black text-black" style={{ background: 'linear-gradient(135deg, #D4AF37, #F5D77A)' }}>
+            Voir toutes les offres et les tarifs <ArrowUpRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
     </section>

@@ -3,6 +3,7 @@ import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { extname, join, normalize } from 'node:path';
 import { auditSeo, SeoAuditError } from './server-seo-audit.mjs';
+import { createCheckoutSession, getCheckoutSummary, handleStripeWebhook, shopStatus, ShopError } from './server-shop.mjs';
 import { PRIVACY_CONSENT_TEXT, PRIVACY_NOTICE_VERSION, PRIVACY_POLICY_PATH, purposeForSource } from './privacy-consent.mjs';
 
 const dist = join(process.cwd(), 'dist');
@@ -58,6 +59,17 @@ const isSensitiveProbePath = (pathname) => {
     || lower.startsWith('/@vite/')
     || lower.startsWith('/___proxy_subdomain_')
     || lower === '/v2/_catalog';
+};
+
+const readRaw = async (request, limit = 1_000_000) => {
+  const chunks = [];
+  let size = 0;
+  for await (const chunk of request) {
+    size += chunk.length;
+    if (size > limit) throw new Error('payload-too-large');
+    chunks.push(chunk);
+  }
+  return Buffer.concat(chunks).toString('utf8');
 };
 
 const readJson = async (request) => {
@@ -245,6 +257,31 @@ createServer(async (request, response) => {
   }
 
   if (pathname === '/api/health') return json(response, 200, { status: 'ok', service: 'js-innovia-site', backend: 'nova' });
+
+  if (pathname.startsWith('/api/shop/')) {
+    try {
+      if (pathname === '/api/shop/webhook') {
+        if (request.method !== 'POST') { response.setHeader('Allow', 'POST'); return json(response, 405, { error: 'Méthode non autorisée' }); }
+        return json(response, 200, await handleStripeWebhook(await readRaw(request), request.headers['stripe-signature']));
+      }
+      if (pathname === '/api/shop/status' && request.method === 'GET') return json(response, 200, shopStatus());
+      if (pathname === '/api/shop/checkout') {
+        if (request.method !== 'POST') { response.setHeader('Allow', 'POST'); return json(response, 405, { error: 'Méthode non autorisée' }); }
+        if (!allow(request, 'checkout', 10, 10 * 60_000)) return json(response, 429, { error: 'Trop de tentatives. Réessayez dans quelques minutes.' });
+        return json(response, 200, await createCheckoutSession(await readJson(request)));
+      }
+      if (pathname === '/api/shop/session' && request.method === 'GET') {
+        if (!allow(request, 'checkout-session', 30)) return json(response, 429, { error: 'Trop de requêtes.' });
+        const sessionId = new URL(request.url, 'http://localhost').searchParams.get('id') || '';
+        return json(response, 200, await getCheckoutSummary(sessionId));
+      }
+      return json(response, 404, { error: 'Not found' });
+    } catch (error) {
+      const status = error instanceof ShopError ? error.statusCode : (error.message === 'payload-too-large' ? 413 : 500);
+      if (!(error instanceof ShopError)) console.error('[shop]', error.message);
+      return json(response, status, { error: error instanceof ShopError ? error.message : 'Paiement momentanément indisponible.' });
+    }
+  }
   if (pathname.startsWith('/api/platform/')) {
     if (!allow(request)) return json(response, 429, { error: 'Trop de requêtes. Réessayez dans une minute.' });
     try {
@@ -378,7 +415,7 @@ createServer(async (request, response) => {
   let filePath = join(dist, relativePath);
   if (!filePath.startsWith(dist) || !existsSync(filePath) || !statSync(filePath).isFile()) filePath = join(dist, 'index.html');
 
-  if (pathname === '/catalogue-tarifs-brouillon' || pathname === '/validation' || pathname.startsWith('/validation/')) {
+  if (pathname === '/paiement-reussi' || pathname === '/catalogue-tarifs-brouillon' || pathname === '/validation' || pathname.startsWith('/validation/')) {
     response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
   }
   return serveStaticFile(request, response, filePath);
