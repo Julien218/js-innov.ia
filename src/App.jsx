@@ -34,9 +34,12 @@ const SaasChatbotAdmin = lazy(() => import('./pages/saas/SaasChatbotAdmin'));
 const EcranLed = lazy(() => import('./pages/saas/EcranLed'));
 const EcranEspaceC = lazy(() => import('./pages/saas/EcranEspaceC'));
 const Ps = lazy(() => import('./pages/Ps'));
+const Validation = lazy(() => import('./pages/Validation'));
 const CockpitConnectedSite = lazy(() => import('./pages/CockpitConnectedSite'));
 const CataloguePricingDraft = lazy(() => import('./pages/CataloguePricingDraft'));
 const HainoFlowLanding = lazy(() => import('./pages/HainoFlowLanding'));
+const Offres = lazy(() => import('./pages/Offres'));
+const PaiementReussi = lazy(() => import('./pages/PaiementReussi'));
 const WebStudio = lazy(() => import('./components/web-studio/WebStudioExperience'));
 
 const { Pages, Layout } = pagesConfig;
@@ -102,6 +105,11 @@ const AuthenticatedApp = () => {
       <Route path="/saas-client" element={<SaasLayout><SaasClientDashboard /></SaasLayout>} />
       <Route path="/saas-events" element={<SaasLayout><SaasEvents /></SaasLayout>} />
       <Route path="/saas-chatbot-admin" element={<SaasLayout><SaasChatbotAdmin /></SaasLayout>} />
+      <Route path="/offres" element={<SaasLayout><Offres /></SaasLayout>} />
+      <Route path="/tarifs" element={<Navigate to="/offres" replace />} />
+      <Route path="/boutique" element={<Navigate to="/offres" replace />} />
+      <Route path="/paiement-reussi" element={<SaasLayout><PaiementReussi /></SaasLayout>} />
+      <Route path="/cgv" element={<SaasLayout><SaasLegal type="cgv" /></SaasLayout>} />
       <Route path="/cockpit" element={<CockpitConnectedSite />} />
       <Route path="/site-cockpit" element={<CockpitConnectedSite />} />
       <Route path="/hainoflow" element={<SaasLayout><HainoFlowLanding /><SaasChatbot /></SaasLayout>} />
@@ -109,6 +117,7 @@ const AuthenticatedApp = () => {
       <Route path="/ecran" element={<EcranLed />} />
       <Route path="/ecranespacec" element={<EcranEspaceC />} />
       <Route path="/ps" element={<Ps />} />
+      <Route path="/validation" element={<Validation />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
