@@ -1,0 +1,19 @@
+name: Diagnostic cle de mise en ligne (temporaire)
+on:
+  push:
+    branches: [diag/empreinte-cle-deploy]
+permissions:
+  contents: read
+jobs:
+  empreinte:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Empreinte publique du secret (aucune valeur secrete affichee)
+        env:
+          DEPLOY_KEY: ${{ secrets.IONOS_SITE_DEPLOY_KEY }}
+        run: |
+          umask 077
+          printf '%s\n' "$DEPLOY_KEY" | tr -d '\r' | sed -e 's/[[:space:]]*$//' > k
+          echo "Lignes : $(wc -l < k)"
+          ssh-keygen -y -f k | ssh-keygen -lf -
+          rm -f k
