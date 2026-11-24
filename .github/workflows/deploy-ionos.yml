@@ -1,0 +1,68 @@
+name: Mise en ligne IONOS
+
+# À chaque fusion dans main : vérifications, puis mise en ligne du site sur le serveur IONOS.
+# La clé SSH (secret IONOS_SITE_DEPLOY_KEY) ne peut lancer que /usr/local/bin/jsinnovia-site-deploy
+# sur le serveur : construction, test, bascule, retour arrière si problème.
+# Sans le secret IONOS_SITE_DEPLOY_KEY, le travail s'arrête proprement.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-ionos-site
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      HAS_KEY: ${{ secrets.IONOS_SITE_DEPLOY_KEY != '' }}
+      # Clé publique du serveur IONOS (pas un secret), identique à celle du Cockpit.
+      SERVER_HOST_KEY: "31.70.173.171 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICehkeuDSpA5ZEpY2JHZse45cImMxn8/wKJWu5rGusy8"
+    steps:
+      - name: Secret présent ?
+        if: env.HAS_KEY != 'true'
+        run: echo "::notice::Mise en ligne automatique du site pas encore activée (secret IONOS_SITE_DEPLOY_KEY absent)."
+
+      - uses: actions/checkout@v4
+        if: env.HAS_KEY == 'true'
+
+      - uses: actions/setup-node@v4
+        if: env.HAS_KEY == 'true'
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Tests, lint et build
+        if: env.HAS_KEY == 'true'
+        run: |
+          npm ci --no-audit --no-fund
+          npm test
+          npm run lint
+          npm run build
+
+      - name: Mise en ligne sur IONOS
+        if: env.HAS_KEY == 'true'
+        env:
+          DEPLOY_KEY: ${{ secrets.IONOS_SITE_DEPLOY_KEY }}
+        run: |
+          set -euo pipefail
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" | tr -d '\r' | sed -e 's/[[:space:]]*$//' > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+          if ! ssh-keygen -y -f ~/.ssh/deploy > /dev/null 2>&1; then
+            echo "::error::Le secret IONOS_SITE_DEPLOY_KEY n'est pas une clé privée lisible. Recolle tout le bloc (de -----BEGIN à -----END inclus)."
+            exit 1
+          fi
+          printf '%s\n' "$SERVER_HOST_KEY" > ~/.ssh/known_hosts
+          git archive --format=tar.gz HEAD | ssh -i ~/.ssh/deploy -o IdentitiesOnly=yes -o BatchMode=yes -o PreferredAuthentications=publickey -o StrictHostKeyChecking=yes \
+            -o ServerAliveInterval=30 -o ConnectTimeout=20 root@31.70.173.171 "deploy ${GITHUB_SHA}"
+
+      - name: Nettoyage
+        if: always()
+        run: rm -f ~/.ssh/deploy
